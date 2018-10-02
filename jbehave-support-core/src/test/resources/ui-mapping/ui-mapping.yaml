@@ -1,0 +1,9 @@
+home:
+  id: "#search-id"
+  submit: "#search-submit"
+
+search-result:
+  id: "#id"
+  firstName: "#first-name"
+  lastName: "#last-name"
+

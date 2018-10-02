@@ -1,0 +1,97 @@
+<xs:schema xmlns:tns="http://jbehavesupport.org/definitions" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified" targetNamespace="http://jbehavesupport.org/definitions">
+    <xs:element name="NameRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="tns:Name"/>
+                <xs:element name="CUID" type="xs:string" nillable="true" minOccurs="0"/>
+                <xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="contact" type="tns:Contact"/>
+                <xs:element name="cell" type="tns:CellPhoneContact"/>
+                <xs:element name="phoneContact" type="tns:PhoneContact" nillable="true" minOccurs="0"/>
+                <xs:element name="addressList" type="tns:AddressList"/>
+                <xs:element name="passDate" type="xs:dateTime" nillable="true" minOccurs="0"/>
+                <xs:element name="photoInfo" type="tns:PhotoInfo" minOccurs="0"/>
+                <xs:element name="maxResults" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="NameResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="firstName" type="tns:Name" minOccurs="0"/>
+                <xs:element name="lastName" type="tns:Name" minOccurs="0"/>
+                <xs:element name="age" type="xs:int" minOccurs="0"/>
+                <xs:element name="married" type="xs:boolean"/>
+                <xs:element name="parent" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="error" type="tns:Error" minOccurs="0"/>
+                <xs:element name="testResponse" type="xs:string" minOccurs="0"/>
+                <xs:element name="relatives" type="tns:Relative" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="Name">
+        <xs:restriction base="xs:string">
+            <xs:length value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Error">
+        <xs:sequence>
+            <xs:element name="code" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Contact" abstract="true"/>
+    <xs:complexType name="PhoneContact">
+        <xs:complexContent>
+            <xs:extension base="tns:Contact">
+                <xs:sequence>
+                    <xs:element name="number" type="xs:string"/>
+                    <xs:element name="validTo" type="xs:dateTime" nillable="true" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CellPhoneContact">
+        <xs:complexContent>
+            <xs:extension base="tns:PhoneContact">
+                <xs:sequence>
+                    <xs:element name="cellType" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="AddressList">
+        <xs:sequence>
+            <xs:element name="addressInfo" type="tns:AddressInfo" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AddressInfo">
+        <xs:sequence>
+            <xs:element name="city" type="xs:string" minOccurs="0"/>
+            <xs:element name="zip" type="xs:string" minOccurs="0"/>
+            <xs:element name="livingSince" type="xs:dateTime" nillable="true" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PhotoInfo">
+        <xs:sequence>
+            <xs:element name="photo" type="xs:base64Binary" minOccurs="0"/>
+            <xs:element name="path" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Relative">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string" minOccurs="0"/>
+            <xs:element name="Surname" type="xs:string" minOccurs="0"/>
+            <xs:element name="Relation" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

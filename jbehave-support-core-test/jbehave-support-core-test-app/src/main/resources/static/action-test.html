@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>WebAction test page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1>WebAction test page</h1>
+        <p>
+            <button id="click-btn" onclick="getElementById('click-result').innerHTML = 'OK'">CLICK</button>
+            <span id="click-result"></span>
+        </p>
+        <p>
+            <button id="double-click-btn" ondblclick="getElementById('double-click-result').innerHTML = 'OK'">DOUBLE_CLICK</button>
+            <span id="double-click-result"></span>
+        </p>
+        <p>
+            <button id="press-btn" onkeydown="getElementById('press-result').innerHTML = 'OK'">PRESS</button>
+            <span id="press-result"></span>
+        </p>
+        <p>
+            <button id="alert-accept-btn" onclick="getElementById('alert-accept-result').innerHTML = confirm('ALERT ACCEPT') ? 'OK' : 'bug'">ALERT ACCEPT</button>
+            <span id="alert-accept-result"></span>
+        </p>
+        <p>
+            <button id="alert-dismiss-btn" onclick="getElementById('alert-dismiss-result').innerHTML = !confirm('ALERT DISMISS') ? 'OK' : 'bug'">ALERT DISMISS</button>
+            <span id="alert-dismiss-result"></span>
+        </p>
+        <p>
+            <input id="clear-input" type="text" value="Lorem ipsum">
+        </p>
+        <p>
+            <input id="fill-input" type="text" value="Lorem ipsum">
+        </p>
+        <p>
+            <select id="select">
+                <option value="1">one</option>
+                <option value="2">two</option>
+                <option value="3">three</option>
+            </select>
+        </p>
+    </div>
+</div>
+</body>
+</html>

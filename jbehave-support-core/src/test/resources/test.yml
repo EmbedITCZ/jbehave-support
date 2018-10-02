@@ -1,0 +1,30 @@
+ws:
+  url: http://localhost:11110/services/
+
+rest:
+  url: http://localhost:11110/rest/
+  username: sa
+  password: sa
+
+db:
+  url: jdbc:h2:tcp://localhost:11112/mem:test;MODE=ORACLE
+  driver: org.h2.Driver
+  username: sa
+  password: sa
+
+web:
+  url: http://localhost:11110/
+  browser.driver.version: 2.38
+
+ssh:
+  hostname: localhost
+  port: 2000
+  logPath: app.log
+  timestampFormat: yyyy-MM-dd HH:mm:ss,SSS
+  credentials:
+    user: sa
+    password: sa
+    keyPath: 'classpath:/ssh/privateKey.pem'
+
+jms:
+  brokerUrl: vm://localhost?broker.persistent=false

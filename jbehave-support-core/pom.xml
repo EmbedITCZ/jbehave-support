@@ -11,7 +11,6 @@
     </parent>
 
     <artifactId>jbehave-support-core</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <skipUnitTests>false</skipUnitTests>
@@ -68,24 +67,6 @@
                         <exclude>**/*IT.java</exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <target>
-                                <echo>replacing BUILD_VERSION</echo>
-                                <replace dir="target/classes/" includes="*.xslt" token="#BUILD_VERSION" value="${project.version}"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -223,10 +204,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.jboss.spec.javax.transaction</groupId>
-            <artifactId>jboss-transaction-api_1.2_spec</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.hierynomus</groupId>
             <artifactId>sshj</artifactId>
         </dependency>
@@ -325,11 +302,6 @@
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-exec</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

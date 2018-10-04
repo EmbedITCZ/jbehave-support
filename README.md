@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/EmbedITCZ/jbehave-support.svg?branch=master)](https://travis-ci.org/EmbedITCZ/jbehave-support)
 # jbehave-support
 Light extension to JBehave.
 

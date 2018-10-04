@@ -34,12 +34,22 @@
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
-                <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"/>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" crossorigin="anonymous"></script>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                      crossorigin="anonymous"/>
+                <link rel="stylesheet"
+                      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+                      crossorigin="anonymous"/>
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+                        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"/>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                        crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                        crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"
+                        crossorigin="anonymous"></script>
                 <script src="functions.js"/>
                 <script>$(document).ready(function(){reportReady()});</script>
 
@@ -50,18 +60,19 @@
                     .pointerCursor { cursor:pointer; }
                     .parameterlessStep { padding-left: 20px; }
                     .sidebar {
-                        position: fixed;
-                        top: 0px;
-                        bottom: 0;
-                        left: 0;
-                        z-index: 1000;
-                        padding: 20px 0;
-                        overflow-x: hidden;
-                        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-                        border-right: 1px solid #eee;
+                    position: fixed;
+                    top: 0px;
+                    bottom: 0;
+                    left: 0;
+                    z-index: 1000;
+                    padding: 20px 0;
+                    overflow-x: hidden;
+                    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+                    border-right: 1px solid #eee;
                     }
                     #story-overview-table td:first-child { font-weight: bold; }
-                    #story-overview-table { border-collapse: separate; border-spacing: 5px 0; /* space between columns */ }
+                    #story-overview-table { border-collapse: separate; border-spacing: 5px 0; /* space between columns
+                    */ }
 
                     .json-string { color: blue; }
                     .json-number { color: dimgray; }
@@ -96,7 +107,9 @@
 
                 <div class="border-bottom">
                     <div class="btn-group form-group col align-self-center">
-                        <button type="button" class="btn btn-sm btn-info btn-block" onclick="location.href = 'index.xml'">&lt; Index</button>
+                        <button type="button" class="btn btn-sm btn-info btn-block"
+                                onclick="location.href = 'index.xml'">&lt; Index
+                        </button>
                         <button type="button" class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
                         <div class="dropdown-menu" style="max-width: 90%">
@@ -166,7 +179,8 @@
                     <ol class="breadcrumb">
 
                         <xsl:for-each select="ancestor::story">
-                            <xsl:variable name="storyID" select="$totalStories - count(following::story) - count(descendant::story)"/>
+                            <xsl:variable name="storyID"
+                                          select="$totalStories - count(following::story) - count(descendant::story)"/>
                             <li class="breadcrumb-item">
                                 <a href="#" onclick="display('story1')">
                                     <xsl:attribute name="onclick">
@@ -231,7 +245,9 @@
                 <div>
                     <xsl:attribute name="class">
                         <xsl:choose>
-                            <xsl:when test="count(descendant::step[@outcome = 'failed']) = 0">card-header bg-success text-white</xsl:when>
+                            <xsl:when test="count(descendant::step[@outcome = 'failed']) = 0">card-header bg-success
+                                text-white
+                            </xsl:when>
                             <xsl:otherwise>card-header bg-danger text-white</xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -395,7 +411,9 @@
                 <div>
                     <xsl:attribute name="class">
                         <xsl:choose>
-                            <xsl:when test="not(descendant::step[@outcome='failed'])">card-header bg-success text-white</xsl:when>
+                            <xsl:when test="not(descendant::step[@outcome='failed'])">card-header bg-success
+                                text-white
+                            </xsl:when>
                             <xsl:otherwise>card-header bg-danger text-white</xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -415,8 +433,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
-                        <xsl:apply-templates select="meta"/>
-                    </div>
+                                <xsl:apply-templates select="meta"/>
+                            </div>
                             <div class="col-6">
                                 <xsl:call-template name="renderStepOccurrence"/>
                             </div>
@@ -473,7 +491,8 @@
     <xsl:template name="renderStepOccurrence">
         <div class="progress" style="height: 18px;">
             <div class="progress-bar bg-success" role="progressbar" title="successful">
-                <xsl:variable name="percent" select="format-number((count(step[@outcome='successful']) div count(step)), '0%')"/>
+                <xsl:variable name="percent"
+                              select="format-number((count(step[@outcome='successful']) div count(step)), '0%')"/>
                 <xsl:attribute name="style">
                     width:
                     <xsl:value-of select="$percent"/>
@@ -482,7 +501,8 @@
             </div>
             <xsl:if test="count(step[@outcome='failed']) > 0">
                 <div class="progress-bar bg-danger" role="progressbar" title="failed">
-                    <xsl:variable name="percent" select="format-number((count(step[@outcome='failed']) div count(step)), '0%')"/>
+                    <xsl:variable name="percent"
+                                  select="format-number((count(step[@outcome='failed']) div count(step)), '0%')"/>
                     <xsl:attribute name="style">
                         width:
                         <xsl:value-of select="$percent"/>
@@ -492,7 +512,8 @@
             </xsl:if>
             <xsl:if test="count(step[@outcome='ignorable']) > 0">
                 <div class="progress-bar bg-warning" role="progressbar" title="ignored">
-                    <xsl:variable name="percent" select="format-number((count(step[@outcome='ignorable']) div count(step)), '0%')"/>
+                    <xsl:variable name="percent"
+                                  select="format-number((count(step[@outcome='ignorable']) div count(step)), '0%')"/>
                     <xsl:attribute name="style">
                         width:
                         <xsl:value-of select="$percent"/>
@@ -502,7 +523,8 @@
             </xsl:if>
             <xsl:if test="count(step[@outcome='notPerformed']) > 0">
                 <div class="progress-bar bg-secondary" role="progressbar" title="not performed">
-                    <xsl:variable name="percent" select="format-number((count(step[@outcome='notPerformed']) div count(step)), '0%')"/>
+                    <xsl:variable name="percent"
+                                  select="format-number((count(step[@outcome='notPerformed']) div count(step)), '0%')"/>
                     <xsl:attribute name="style">
                         width:
                         <xsl:value-of select="$percent"/>
@@ -511,7 +533,8 @@
                 </div>
             </xsl:if>
             <div class="progress-bar bg-info" role="progressbar" title="comment">
-                <xsl:variable name="percent" select="format-number((count(step[@outcome='comment']) div count(step)), '0%')"/>
+                <xsl:variable name="percent"
+                              select="format-number((count(step[@outcome='comment']) div count(step)), '0%')"/>
                 <xsl:attribute name="style">
                     width:
                     <xsl:value-of select="$percent"/>
@@ -541,7 +564,8 @@
                             <xsl:otherwise>text-success</xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
-                    <xsl:variable name="storyID" select="$totalStories - count(following::story) - count(descendant::story)"/>
+                    <xsl:variable name="storyID"
+                                  select="$totalStories - count(following::story) - count(descendant::story)"/>
                     <xsl:attribute name="onclick">
                         <xsl:value-of select="concat('display(&quot;story',$storyID,'&quot;)')"/>
                     </xsl:attribute>
@@ -611,59 +635,59 @@
 
     <xsl:template name="renderStacktraceModal">
         <xsl:param name="scenarioIndex"/>
-                    <a href="#" data-toggle="modal" class="badge badge-pill badge-danger">
-                        <xsl:attribute name="data-target">
-                            <xsl:value-of select="concat('#stacktraceModal', $scenarioIndex)"/>
-                        </xsl:attribute>
-                        Stacktrace
-                    </a>
-                    <div class="modal fade" tabindex="-1">
-                        <xsl:attribute name="id">
-                            <xsl:value-of select="concat('stacktraceModal',$scenarioIndex)"/>
-                        </xsl:attribute>
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <textarea class="form-control" wrap="off" readonly="true" rows="26">
-                                            <xsl:value-of select="../failure"/>
-                                        </textarea>
-                                    </div>
-                                </div>
-                            </div>
+        <a href="#" data-toggle="modal" class="badge badge-pill badge-danger">
+            <xsl:attribute name="data-target">
+                <xsl:value-of select="concat('#stacktraceModal', $scenarioIndex)"/>
+            </xsl:attribute>
+            Stacktrace
+        </a>
+        <div class="modal fade" tabindex="-1">
+            <xsl:attribute name="id">
+                <xsl:value-of select="concat('stacktraceModal',$scenarioIndex)"/>
+            </xsl:attribute>
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control" wrap="off" readonly="true" rows="26">
+                                <xsl:value-of select="../failure"/>
+                            </textarea>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
     </xsl:template>
 
     <xsl:template name="renderScreenshotModal">
         <xsl:param name="scenarioIndex"/>
-                        <a href="#" data-toggle="modal" class="badge badge-pill badge-info">
-                            <xsl:attribute name="data-target">
-                                <xsl:value-of select="concat('#screenshotModal', $scenarioIndex)"/>
-                            </xsl:attribute>
-                            Screenshot
-                        </a>
-                        <div class="modal fade" tabindex="-1">
-                            <xsl:attribute name="id">
-                                <xsl:value-of select="concat('screenshotModal',$scenarioIndex)"/>
-                            </xsl:attribute>
+        <a href="#" data-toggle="modal" class="badge badge-pill badge-info">
+            <xsl:attribute name="data-target">
+                <xsl:value-of select="concat('#screenshotModal', $scenarioIndex)"/>
+            </xsl:attribute>
+            Screenshot
+        </a>
+        <div class="modal fade" tabindex="-1">
+            <xsl:attribute name="id">
+                <xsl:value-of select="concat('screenshotModal',$scenarioIndex)"/>
+            </xsl:attribute>
 
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <a>
-                                            <xsl:attribute name="href">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <a>
+                            <xsl:attribute name="href">
                                 <xsl:value-of select="../following-sibling::*[1]/errorScreenshots/screenshot"/>
-                                            </xsl:attribute>
-                                            <img class="img-fluid" width="770">
-                                                <xsl:attribute name="src">
+                            </xsl:attribute>
+                            <img class="img-fluid" width="770">
+                                <xsl:attribute name="src">
                                     <xsl:value-of select="../following-sibling::*[1]/errorScreenshots/screenshot"/>
-                                                </xsl:attribute>
-                                            </img>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                                </xsl:attribute>
+                            </img>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </xsl:template>
 

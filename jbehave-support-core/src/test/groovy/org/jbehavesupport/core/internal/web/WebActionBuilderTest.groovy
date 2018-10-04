@@ -20,7 +20,7 @@ class WebActionBuilderTest extends Specification {
 
         when:
         b.on("a1").perform("b1").value("c1").alias("d1").and()
-         .on("a2").perform("b2").value("c2").alias("d2");
+            .on("a2").perform("b2").value("c2").alias("d2");
 
         then:
         deleteWhitespace(b.buildExamplesTable().tableAsString) ==
@@ -35,13 +35,13 @@ class WebActionBuilderTest extends Specification {
 
         when:
         b.acceptAlert()
-         .dismissAlert()
-         .on("1").clear()
-         .on("2").click()
-         .on("3").doubleClick()
-         .on("4").fill("a")
-         .on("5").press("b")
-         .on("6").select("c");
+            .dismissAlert()
+            .on("1").clear()
+            .on("2").click()
+            .on("3").doubleClick()
+            .on("4").fill("a")
+            .on("5").press("b")
+            .on("6").select("c");
 
         then:
         deleteWhitespace(b.buildExamplesTable().tableAsString) ==
@@ -62,8 +62,8 @@ class WebActionBuilderTest extends Specification {
 
         when:
         b.headerSeparator("!")
-         .valueSeparator("?")
-         .on("a1").perform("b1").and();
+            .valueSeparator("?")
+            .on("a1").perform("b1").and();
 
         then:
         deleteWhitespace(b.buildExamplesTable().tableAsString) ==

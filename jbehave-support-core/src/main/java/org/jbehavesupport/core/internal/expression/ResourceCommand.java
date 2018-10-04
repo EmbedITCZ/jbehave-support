@@ -29,7 +29,7 @@ public class ResourceCommand implements ExpressionCommand {
         isInstanceOf(String.class, params[0], "Parameter must be string");
 
         String referenceKey = ctx.createReferenceKey();
-        ctx.put(referenceKey, resourceLoader.getResource((String)params[0]));
+        ctx.put(referenceKey, resourceLoader.getResource((String) params[0]));
         return referenceKey;
     }
 }

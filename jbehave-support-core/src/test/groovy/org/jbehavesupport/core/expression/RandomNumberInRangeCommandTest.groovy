@@ -33,7 +33,7 @@ class RandomNumberInRangeCommandTest extends Specification {
         expected == exception.class
 
         where:
-        params      || expected
-        ["1", "4", "10"]  || IllegalArgumentException.class
+        params           || expected
+        ["1", "4", "10"] || IllegalArgumentException.class
     }
 }

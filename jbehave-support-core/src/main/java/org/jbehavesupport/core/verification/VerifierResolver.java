@@ -11,6 +11,7 @@ public interface VerifierResolver {
 
     /**
      * Finds single registered bean by verifier name. Exactly one must exist otherwise {@link NoUniqueBeanDefinitionException} or {@link NoSuchBeanDefinitionException} is thrown.
+     *
      * @param name Verifier name regards bean setup, or from {@link VerifierNames}
      * @return Single found verifier.
      */

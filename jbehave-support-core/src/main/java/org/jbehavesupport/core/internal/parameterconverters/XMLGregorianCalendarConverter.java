@@ -7,6 +7,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.jbehave.core.steps.ParameterConverters;
 import org.springframework.stereotype.Component;
 
@@ -28,10 +29,10 @@ public class XMLGregorianCalendarConverter implements ParameterConverters.Parame
     private XMLGregorianCalendar convert(LocalDate localDate) {
         try {
             return DatatypeFactory.newInstance().newXMLGregorianCalendarDate(
-                        localDate.getYear(),
-                        localDate.getMonthValue(),
-                        localDate.getDayOfMonth(),
-                    DatatypeConstants.FIELD_UNDEFINED);
+                localDate.getYear(),
+                localDate.getMonthValue(),
+                localDate.getDayOfMonth(),
+                DatatypeConstants.FIELD_UNDEFINED);
         } catch (DatatypeConfigurationException e) {
             throw new IllegalArgumentException(e);
         }

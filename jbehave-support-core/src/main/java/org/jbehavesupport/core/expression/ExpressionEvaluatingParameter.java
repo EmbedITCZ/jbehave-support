@@ -13,7 +13,7 @@ import lombok.Value;
  *    ...
  * }
  * </pre>
- *
+ * <p>
  * Example usage:
  * <pre>
  * Given the value [{CURRENT_DATE}] is saved as [MY_DATE]

@@ -27,8 +27,9 @@ public class TestContextUtil {
     /**
      * Put all data from example table to test context.
      * As a keys records from the "name" column are used with prefix.
+     *
      * @param testContext current test context
-     * @param data example table with two columns "name" and "data"
+     * @param data        example table with two columns "name" and "data"
      * @param prefix
      */
     public static void putDataIntoContext(final TestContext testContext, final ExamplesTable data, final String prefix) {
@@ -57,8 +58,9 @@ public class TestContextUtil {
     /**
      * Put all data from example table to test context.
      * As a keys records from the "name" column are used.
+     *
      * @param testContext current test context
-     * @param data example table with two columns "name" and "data"
+     * @param data        example table with two columns "name" and "data"
      */
     public static void putDataIntoContext(final TestContext testContext, final ExamplesTable data) {
         putDataIntoContext(testContext, data, null);
@@ -68,9 +70,9 @@ public class TestContextUtil {
      * Put all data from example table to test context.
      *
      * @param testContext current test context
-     * @param data example table with data
-     * @param key column name which is used as key in test context
-     * @param value column name which is used as value in test context
+     * @param data        example table with data
+     * @param key         column name which is used as key in test context
+     * @param value       column name which is used as value in test context
      */
     public static void putDataIntoContext(final TestContext testContext, final ExamplesTable data, final String key, final String value) {
         if (data.getHeaders().contains(ExampleTableConstraints.ALIAS)) {

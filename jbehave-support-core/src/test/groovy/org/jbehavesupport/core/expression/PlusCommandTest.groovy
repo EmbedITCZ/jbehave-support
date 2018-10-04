@@ -14,13 +14,13 @@ class PlusCommandTest extends Specification {
         then:
         expected == actual
         where:
-        params                  || expected
-        ["1", "1"]              || new BigDecimal("2")
-        [2, 2]                  || new BigDecimal("4")
-        ["1.1", "1.1"]          || new BigDecimal("2.2")
-        [2.2, 2.2]              || new BigDecimal("4.4")
-        ["1.1", "1.1", "1"]     || new BigDecimal("3.2")
-        [2.2D, 2.2F, 2L]        || new BigDecimal("6.4")
+        params              || expected
+        ["1", "1"]          || new BigDecimal("2")
+        [2, 2]              || new BigDecimal("4")
+        ["1.1", "1.1"]      || new BigDecimal("2.2")
+        [2.2, 2.2]          || new BigDecimal("4.4")
+        ["1.1", "1.1", "1"] || new BigDecimal("3.2")
+        [2.2D, 2.2F, 2L]    || new BigDecimal("6.4")
     }
 
     def "Plus command evaluation for #params should throw #expected"() {
@@ -33,10 +33,10 @@ class PlusCommandTest extends Specification {
         message == exception.message
 
         where:
-        params      || expected                         || message
-        ["1"]       || IllegalArgumentException.class   || "At least two parameters were expected"
-        ["a", "1"]  || IllegalArgumentException.class   || "String parameter must be numeric: a"
-        ["1,1", "1"]|| IllegalArgumentException.class   || "String parameter must be numeric: 1,1"
+        params       || expected                       || message
+        ["1"]        || IllegalArgumentException.class || "At least two parameters were expected"
+        ["a", "1"]   || IllegalArgumentException.class || "String parameter must be numeric: a"
+        ["1,1", "1"] || IllegalArgumentException.class || "String parameter must be numeric: 1,1"
     }
 
 }

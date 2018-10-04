@@ -70,6 +70,7 @@ public class DefaultWebProperties {
             public String name() {
                 return "DISPLAYED";
             }
+
             @Override
             public Boolean value(WebPropertyContext ctx) {
                 try {

@@ -62,7 +62,7 @@ public class YamlPropertiesConfigurer implements BeanFactoryPostProcessor, Envir
 
     private void configureYamlPropertiesSource() {
         PropertySource yamlPropertiesSource = resolveYamlPropertiesSource();
-        ((ConfigurableEnvironment)environment).getPropertySources().addLast(yamlPropertiesSource);
+        ((ConfigurableEnvironment) environment).getPropertySources().addLast(yamlPropertiesSource);
     }
 
     private PropertySource resolveYamlPropertiesSource() {

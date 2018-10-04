@@ -96,6 +96,7 @@ public abstract class AbstractSpringStories extends JUnitStories {
 
     /**
      * Initialize story class with timeout.
+     *
      * @param timeout timeout in seconds
      */
     public AbstractSpringStories(final Long timeout) {
@@ -192,9 +193,10 @@ public abstract class AbstractSpringStories extends JUnitStories {
     /**
      * Load specific resources based on path (must be on classpath) and story name.
      * e.g. <code>
-     *     Stream<Resource> resources = loadResources("org/jbehavesupport/test", "TUS7009");
+     * Stream<Resource> resources = loadResources("org/jbehavesupport/test", "TUS7009");
      * </code>
-     * @param path path on classpath
+     *
+     * @param path      path on classpath
      * @param storyName
      * @return resources from classpath
      * @throws IOException

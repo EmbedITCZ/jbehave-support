@@ -187,6 +187,7 @@ public abstract class WebServiceHandler {
      *      endpointRegistry.registry(Request.class, Response.class)
      *          .registry...
      * }</pre>
+     *
      * @param endpointRegistry
      */
     protected abstract void initEndpoints(WebServiceEndpointRegistry endpointRegistry);
@@ -201,6 +202,7 @@ public abstract class WebServiceHandler {
      *          .authenticatingMessageSender("username", "password")
      *          .header(this::getHeader);
      * }</pre>
+     *
      * @param templateConfigurer
      */
     protected void initTemplate(WebServiceTemplateConfigurer templateConfigurer) {
@@ -209,17 +211,18 @@ public abstract class WebServiceHandler {
 
     /**
      * Custom initialization of {@link RequestFactory}.
-     *
+     * <p>
      * e.g change default bean access strategy to field access strategy;
      * <pre>{@code
      *      requestFactory.withFieldAccessStrategy();
      * }</pre>
-     *
+     * <p>
      * or you can reqister custom handler for request modification
      * <pre>{@code
      *      requestFactory
      *          .handler...
      * }</pre>
+     *
      * @param requestFactory
      */
     protected void initRequestFactory(RequestFactory requestFactory) {
@@ -233,6 +236,7 @@ public abstract class WebServiceHandler {
      *      return "|code|description|\n" +
      *             "|0   |Successful |";
      * }</pre>
+     *
      * @return
      */
     protected String getSuccessResult() {
@@ -242,6 +246,7 @@ public abstract class WebServiceHandler {
     /**
      * Verify response object and as expected result example table is used.
      * Method is internally called by API method {@link WebServiceHandler#responseResultIs}.
+     *
      * @param response
      * @param expectedResults
      */
@@ -251,6 +256,7 @@ public abstract class WebServiceHandler {
 
     /**
      * Once you will override this method you can create request object manually.
+     *
      * @param requestClass
      * @return
      */
@@ -262,6 +268,7 @@ public abstract class WebServiceHandler {
 
     /**
      * By overriding this method you can modify default send request and receive response behaviour.
+     *
      * @param request
      * @return
      */

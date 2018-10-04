@@ -20,12 +20,12 @@ public class MapCommand implements ExpressionCommand {
         isInstanceOf(String.class, params[0], "First parameter must be string");
         isInstanceOf(String.class, params[1], "Second parameter must be string");
 
-        String value = (String)params[0];
-        String map = (String)params[1];
+        String value = (String) params[0];
+        String map = (String) params[1];
         isTrue(mapPattern.matcher(map).matches(), "Pattern of '" + map + "' doesn't match expected pattern");
 
         String[] groups = map.split("\\[");
-        for (int i = 1 ; i < groups.length; i++) {
+        for (int i = 1; i < groups.length; i++) {
             if (groups[i].contains(",")) {
                 String[] mapping = groups[i].substring(0, groups[i].indexOf(']')).split("\\,", -1);
                 if (value.equals(mapping[0])) {
@@ -36,6 +36,6 @@ public class MapCommand implements ExpressionCommand {
             }
         }
 
-        throw new IllegalArgumentException("value '"+ value + "' not found in mapping '" + map + "'");
+        throw new IllegalArgumentException("value '" + value + "' not found in mapping '" + map + "'");
     }
 }

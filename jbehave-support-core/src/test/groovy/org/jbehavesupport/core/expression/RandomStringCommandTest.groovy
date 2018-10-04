@@ -16,11 +16,11 @@ class RandomStringCommandTest extends Specification {
         result.length() == expected
 
         where:
-        params     || expected
-        ["5"]      || 5
-        [5]        || 5
-        ["10000"]  || 10000
-        [10000]    || 10000
+        params    || expected
+        ["5"]     || 5
+        [5]       || 5
+        ["10000"] || 10000
+        [10000]   || 10000
 
     }
 
@@ -33,7 +33,7 @@ class RandomStringCommandTest extends Specification {
         expected == exception.class
 
         where:
-        params      || expected
-        ["1", "4"]  || IllegalArgumentException.class
+        params     || expected
+        ["1", "4"] || IllegalArgumentException.class
     }
 }

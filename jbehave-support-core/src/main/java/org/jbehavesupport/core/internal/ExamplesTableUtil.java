@@ -20,8 +20,9 @@ public class ExamplesTableUtil {
 
     /**
      * Transforms {@link ExamplesTable} values to {@link Map} entries.
+     *
      * @param table the jbehave examples table
-     * @param key header name to be used as map key
+     * @param key   header name to be used as map key
      * @param value header name to be used as map value
      * @return the map
      */
@@ -50,6 +51,7 @@ public class ExamplesTableUtil {
 
     /**
      * Create {@link List} which contains {@link Map} with converted values for every row of {@link ExamplesTable}.
+     *
      * @param table input table
      * @return input table converted to a list of maps
      */
@@ -63,8 +65,9 @@ public class ExamplesTableUtil {
 
     /**
      * Checks whether provided table has some value under certain column header
-     * @param table table to be checked
-     * @param column column to be searched in, or null if unrestricted
+     *
+     * @param table     table to be checked
+     * @param column    column to be searched in, or null if unrestricted
      * @param predicate predicate to be used in value comparison
      * @return true if table contains searched value, false otherwise
      */

@@ -14,8 +14,8 @@ class MapCommandTest extends Specification {
         then:
         expected == actual
         where:
-        expression || expected
-        ["1", "[0,OK],[1,NOK]"]   || "NOK"
+        expression              || expected
+        ["1", "[0,OK],[1,NOK]"] || "NOK"
     }
 
     def "test execute with #expression throws #expected"() {
@@ -26,9 +26,9 @@ class MapCommandTest extends Specification {
         expected == exception.class
         message == exception.getMessage()
         where:
-        expression          || expected                         || message
-        []                  || IllegalArgumentException.class   || "Two parameters were expected"
-        ["a", "1"]          || IllegalArgumentException.class   || "Pattern of '1' doesn't match expected pattern"
+        expression || expected                       || message
+        []         || IllegalArgumentException.class || "Two parameters were expected"
+        ["a", "1"] || IllegalArgumentException.class || "Pattern of '1' doesn't match expected pattern"
     }
 
 }

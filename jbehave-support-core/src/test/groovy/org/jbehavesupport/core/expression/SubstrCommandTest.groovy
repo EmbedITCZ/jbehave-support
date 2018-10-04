@@ -16,11 +16,11 @@ class SubstrCommandTest extends Specification {
         result == expected
 
         where:
-        params              || expected
-        ["test", "1"]       || "est"
-        ["test", 1]         || "est"
-        ["test", "1", "3"]  || "es"
-        ["test", 1, 3]      || "es"
+        params             || expected
+        ["test", "1"]      || "est"
+        ["test", 1]        || "est"
+        ["test", "1", "3"] || "es"
+        ["test", 1, 3]     || "es"
     }
 
     def "test argument exception #expected"() {
@@ -32,8 +32,8 @@ class SubstrCommandTest extends Specification {
         expected == exception.class
 
         where:
-        params            || expected
-        ["1"]             || IllegalArgumentException.class
-        ["1", 1, 2, "3"]  || IllegalArgumentException.class
+        params           || expected
+        ["1"]            || IllegalArgumentException.class
+        ["1", 1, 2, "3"] || IllegalArgumentException.class
     }
 }

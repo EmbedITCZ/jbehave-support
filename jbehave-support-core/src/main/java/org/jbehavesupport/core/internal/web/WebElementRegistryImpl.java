@@ -24,7 +24,7 @@ public class WebElementRegistryImpl implements WebElementRegistry {
         requireNonNull(elementName, "Parameter elementName is required.");
         Map<String, By> elementRegistry = pageRegistry.get(pageName);
 
-        if(isNull(elementRegistry) && elementName.startsWith(ID_PREFIX)) {
+        if (isNull(elementRegistry) && elementName.startsWith(ID_PREFIX)) {
             return By.cssSelector(elementName);
         }
         requireNonNull(elementRegistry, "Unable to find any element locators for page [" + pageName + "].");

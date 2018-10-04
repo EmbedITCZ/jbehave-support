@@ -17,6 +17,7 @@ public class CommandHelper {
 
     /**
      * Extract command name from expression.
+     *
      * @param expression the expression
      * @return the string
      */
@@ -31,6 +32,7 @@ public class CommandHelper {
 
     /**
      * Extract command params from expression.
+     *
      * @param expression the expression
      * @return the string [ ]
      */

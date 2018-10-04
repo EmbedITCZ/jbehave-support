@@ -26,7 +26,7 @@ public class YamlElementLocatorParser {
     private static final String CSS_LOCATOR_TYPE = "css";
     private static final String XPATH_LOCATOR_TYPE = "xpath";
     private static final String DEFAULT_LOCATOR_TYPE = CSS_LOCATOR_TYPE;
-    private static final String[] LOCATOR_TYPES = { CSS_LOCATOR_TYPE, XPATH_LOCATOR_TYPE };
+    private static final String[] LOCATOR_TYPES = {CSS_LOCATOR_TYPE, XPATH_LOCATOR_TYPE};
 
     @Autowired
     private WebElementRegistry elementRegistry;

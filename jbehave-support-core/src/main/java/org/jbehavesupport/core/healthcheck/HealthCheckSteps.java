@@ -48,7 +48,7 @@ public final class HealthCheckSteps {
     private ConfigurableListableBeanFactory beanFactory;
 
     @Given("these components are healthy:$componentList")
-    public void checkComponentsAreHealthy(ExamplesTable componentList) throws MultipleFailureException{
+    public void checkComponentsAreHealthy(ExamplesTable componentList) throws MultipleFailureException {
         List<String> componentQualifiers = componentList.getRowsAsParameters().stream()
             .map(Row::values)
             .map(row -> row.get("component"))

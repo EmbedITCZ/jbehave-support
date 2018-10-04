@@ -23,7 +23,7 @@ public class SubstrCommand implements ExpressionCommand {
         isTrue(params.length == 2 || params.length == 3, "Two or three parameters were expected");
         isInstanceOf(String.class, params[0], "First param must be string");
 
-        String input = (String)params[0];
+        String input = (String) params[0];
         Integer startIndex = parseInteger(params[1]);
         if (params.length == 2) {
             return input.substring(startIndex);
@@ -36,7 +36,7 @@ public class SubstrCommand implements ExpressionCommand {
     private int parseInteger(Object number) {
         isTrue(number instanceof String || number instanceof Number, "Parameter must be String or Number");
         if (number instanceof String) {
-            isTrue(StringUtils.isNumeric((String)number), "String must be numeric");
+            isTrue(StringUtils.isNumeric((String) number), "String must be numeric");
             return Integer.parseInt((String) number);
         } else {
             return ((Number) number).intValue();

@@ -26,7 +26,7 @@ public class RandomNumberInRangeCommand implements ExpressionCommand {
     private long parseLong(Object number) {
         isTrue(number instanceof String || number instanceof Number, "Parameter must be String or Number");
         if (number instanceof String) {
-            isTrue(StringUtils.isNumeric((String)number), "String must be numeric");
+            isTrue(StringUtils.isNumeric((String) number), "String must be numeric");
             return Long.parseLong((String) number);
         } else {
             return ((Number) number).longValue();

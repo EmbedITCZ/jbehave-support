@@ -33,7 +33,7 @@ public class WebDriverDelegate implements WebDriver, JavascriptExecutor,
 
     private RemoteWebDriver driver = null;
 
-    @Delegate(excludes = { Quit.class, TakesScreenshot.class})
+    @Delegate(excludes = {Quit.class, TakesScreenshot.class})
     private RemoteWebDriver getDelegate() {
         if (driver == null) {
             driver = webDriverFactoryResolver.resolveWebDriverFactory().createWebDriver();

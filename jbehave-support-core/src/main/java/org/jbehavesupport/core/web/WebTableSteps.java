@@ -254,7 +254,9 @@ public class WebTableSteps {
         }
     }
 
-    /** returns the row which matches the item in the list */
+    /**
+     * returns the row which matches the item in the list
+     */
     private int listContainsItem(final List<Map<String, String>> list, Map<String, String> item, Set<Integer> skipRows) {
         boolean verificationResult = false;
         for (int i = 0; i < list.size(); i++) {

@@ -42,7 +42,7 @@ public class GroovyMetaFilterBuilder {
     private String features;
 
     // If we need to include standard filter for ignored items
-    private boolean ignore=true;
+    private boolean ignore = true;
 
     // Delimiter to splitting list of features and meta attributes
     private String delimiter = StringUtils.SPACE;
@@ -50,16 +50,17 @@ public class GroovyMetaFilterBuilder {
 
     /**
      * Creates builder
+     *
      * @param clazz - test class to look for metafilter via @Metafilter annotation
      */
-    public GroovyMetaFilterBuilder(Class clazz){
+    public GroovyMetaFilterBuilder(Class clazz) {
         this.clazz = clazz;
     }
 
     /**
      * Builds MetaFilter with given parameters for given test class and parameters
      */
-    public org.jbehave.core.embedder.MetaFilter build(){
+    public org.jbehave.core.embedder.MetaFilter build() {
         List<String> clauses = new ArrayList<>();
 
         // Adding filters passed bay calling code
@@ -83,7 +84,7 @@ public class GroovyMetaFilterBuilder {
         }
 
         // Adding predefined ignore/skip filters
-        if (ignore){
+        if (ignore) {
             clauses.add(IGNORE_FILTER);
         }
 
@@ -100,7 +101,7 @@ public class GroovyMetaFilterBuilder {
 
     private List<String> getAnnotatedMetafilters(Class<? extends ConfigurableEmbedder> testClass) {
         List<String> result = new ArrayList<>();
-        if (testClass!= null && testClass.getAnnotation(MetaFilter.class) != null ) {
+        if (testClass != null && testClass.getAnnotation(MetaFilter.class) != null) {
             Collections.addAll(result, testClass.getAnnotation(MetaFilter.class).expressions());
         }
         return result;
@@ -122,7 +123,7 @@ public class GroovyMetaFilterBuilder {
         private Field metaField;
         private Method match;
 
-        public GroovyMetaMatcher(){
+        public GroovyMetaMatcher() {
             this(StringUtils.SPACE);
         }
 
@@ -157,31 +158,31 @@ public class GroovyMetaFilterBuilder {
             }
         }
 
-        protected String groovyClass(String filter){
+        protected String groovyClass(String filter) {
             return "public class GroovyMatcher {"
                 + "public org.jbehave.core.model.Meta meta \n"
 
                 + "public boolean match() {\n "
-                + "     return ( "+filter+" )\n  "
+                + "     return ( " + filter + " )\n  "
                 + "}\n  "
                 // a.intersect(b) is not empty
                 + "public boolean any(String key, String ... values) {\n"
-                + "     return !exists(key) || !meta.getProperty(key).split('"+delimiter+"').toList().intersect(values.toList()).isEmpty() \n"
+                + "     return !exists(key) || !meta.getProperty(key).split('" + delimiter + "').toList().intersect(values.toList()).isEmpty() \n"
                 + "}\n"
 
                 // a.intersect(b) is empty
                 + "public boolean none(String key, String ... values) {\n"
-                + "     return !exists(key) || meta.getProperty(key).split('"+delimiter+"').toList().intersect(values.toList()).isEmpty() \n"
+                + "     return !exists(key) || meta.getProperty(key).split('" + delimiter + "').toList().intersect(values.toList()).isEmpty() \n"
                 + "}\n"
 
                 // metadata[key].containsAll(values)
                 + "public boolean all(String key, String ... values) {\n"
-                + "     return !exists(key) || meta.getProperty(key).split('"+delimiter+"').toList().containsAll(values.toList()) \n"
+                + "     return !exists(key) || meta.getProperty(key).split('" + delimiter + "').toList().containsAll(values.toList()) \n"
                 + "}\n"
 
                 // values.containsAll(metadata[key])
                 + "public boolean only(String key, String ... values) {\n"
-                + "     return !exists(key) || values.toList().containsAll(meta.getProperty(key).split('"+delimiter+"').toList()) \n"
+                + "     return !exists(key) || values.toList().containsAll(meta.getProperty(key).split('" + delimiter + "').toList()) \n"
                 + "}\n"
 
                 // Equals

@@ -10,8 +10,8 @@ import org.jbehavesupport.core.expression.ExpressionCommand;
 import org.springframework.stereotype.Component;
 
 /**
- *  Concat two or more strings.
- *  We are calling explicit {@link String#valueOf} for getting string to concat.
+ * Concat two or more strings.
+ * We are calling explicit {@link String#valueOf} for getting string to concat.
  */
 @Component
 public class ConcatCommand implements ExpressionCommand {

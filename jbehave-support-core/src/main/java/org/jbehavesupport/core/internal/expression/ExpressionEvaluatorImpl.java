@@ -105,5 +105,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
     }
 
     @Override
-    public void registerShorthand(String shortHand, String command) { this.shorthands.putIfAbsent(shortHand, command);}
+    public void registerShorthand(String shortHand, String command) {
+        this.shorthands.putIfAbsent(shortHand, command);
+    }
 }

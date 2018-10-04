@@ -8,7 +8,7 @@ import java.util.List;
 public class SimpleRollingLogResolver implements RollingLogResolver {
     @Override
     public List<String> resolveLogNames(final String configuredLogPath, final SshTemplate sshTemplate, final ZonedDateTime startTime,
-        final ZonedDateTime endTime) throws IOException {
+                                        final ZonedDateTime endTime) throws IOException {
         return Arrays.asList(configuredLogPath);
     }
 }

@@ -27,11 +27,11 @@ public class TestContextCopyCommand implements ExpressionCommand {
         isTrue(params.length == 1 || params.length == 2, "Only one or two parameters were expected");
         isInstanceOf(String.class, params[0], "First param must be string");
 
-        String key = (String)params[0];
+        String key = (String) params[0];
         String prefix = "";
         if (params.length == 2) {
             isInstanceOf(String.class, params[1], "Second param must be string");
-            prefix = (String )params[1];
+            prefix = (String) params[1];
         }
 
         Object value = testContext.get(key);

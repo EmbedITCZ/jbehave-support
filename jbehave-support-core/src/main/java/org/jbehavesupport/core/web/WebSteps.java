@@ -156,17 +156,18 @@ public final class WebSteps {
 
     /**
      * Waits on given page, until requested condition is met, or timeout runs out.
-     * @param page page defined in yml file
-     * @param element element specified under page in same yml file or reserved keyword: @url | @title
-     * @param condition parsed for following expressions: <ul>
-     *     <li>is present</li>
-     *     <li>is clickable</li>
-     *     <li>is visible</li>
-     *     <li>is not visible</li>
-     *     <li>has $attr $attrVal (i.e. has text someText | has class issue | has id)</li>
-     *     <li>missing $attr $attrVal (i.e. missing text java | missing customAttributeName working | missing class)</li>
      *
-     * </ul>
+     * @param page      page defined in yml file
+     * @param element   element specified under page in same yml file or reserved keyword: @url | @title
+     * @param condition parsed for following expressions: <ul>
+     *                  <li>is present</li>
+     *                  <li>is clickable</li>
+     *                  <li>is visible</li>
+     *                  <li>is not visible</li>
+     *                  <li>has $attr $attrVal (i.e. has text someText | has class issue | has id)</li>
+     *                  <li>missing $attr $attrVal (i.e. missing text java | missing customAttributeName working | missing class)</li>
+     *
+     *                  </ul>
      */
     @Then("on [$page] page wait until [$element] $condition")
     public void waitUntilCondition(String page, String element, String condition) {
@@ -203,13 +204,13 @@ public final class WebSteps {
 
     @When("navigated back")
     @Then("navigate back")
-    public void navigateBack(){
+    public void navigateBack() {
         driver.navigate().back();
     }
 
     @When("navigated forward")
     @Then("navigate forward")
-    public void navigateForward(){
+    public void navigateForward() {
         driver.navigate().forward();
     }
 

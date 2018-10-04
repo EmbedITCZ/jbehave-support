@@ -41,6 +41,7 @@ public class WebSetting {
     @Singular
     private List<String> elementLocatorsSources;
     @Builder.Default
-    private Consumer<WebDriver> waitForLoad = webDriver -> {};
+    private Consumer<WebDriver> waitForLoad = webDriver -> {
+    };
 
 }

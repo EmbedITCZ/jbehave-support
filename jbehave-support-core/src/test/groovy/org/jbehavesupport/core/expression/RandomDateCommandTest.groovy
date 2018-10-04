@@ -26,7 +26,7 @@ class RandomDateCommandTest extends Specification {
         expected == exception.class
 
         where:
-        params      || expected
-        ["1"]       || IllegalArgumentException.class
+        params || expected
+        ["1"]  || IllegalArgumentException.class
     }
 }

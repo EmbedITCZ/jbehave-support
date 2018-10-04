@@ -9,7 +9,7 @@ class RandomEmailCommandTest extends Specification {
     def "test random email generating"() {
         when:
         def result = new RandomEmailCommand().execute()
-        def pattern =  /[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})/
+        def pattern = /[_A-Za-z0-9-]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})/
 
         then:
         result != null
@@ -26,7 +26,7 @@ class RandomEmailCommandTest extends Specification {
         expected == exception.class
 
         where:
-        params      || expected
-        ["1"]       || IllegalArgumentException.class
+        params || expected
+        ["1"]  || IllegalArgumentException.class
     }
 }

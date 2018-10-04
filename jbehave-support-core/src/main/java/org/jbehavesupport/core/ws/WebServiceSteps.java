@@ -16,48 +16,47 @@ import org.springframework.stereotype.Component;
  * Steps:
  * <ul>
  * <li>
- *     <code>Given [REQUEST] data for [APPLICATION]: DATA</code>
+ * <code>Given [REQUEST] data for [APPLICATION]: DATA</code>
  * </li>
  * <li>
- *     <code>Given [REQUEST] data for [APPLICATION] with overrides: DATA</code>
+ * <code>Given [REQUEST] data for [APPLICATION] with overrides: DATA</code>
  * </li>
  * <li>
- *     <code>When [REQUEST] is sent to [APPLICATION]</code>
+ * <code>When [REQUEST] is sent to [APPLICATION]</code>
  * </li>
  * <li>
- *     <code>When [REQUEST] is sent to [APPLICATION] with success</code>
+ * <code>When [REQUEST] is sent to [APPLICATION] with success</code>
  * </li>
  * <li>
- *     <code>When [REQUEST] is sent to [APPLICATION] with fault</code>
+ * <code>When [REQUEST] is sent to [APPLICATION] with fault</code>
  * </li>
  * <li>
- *     <code>Then [RESPONSE] result is success for [APPLICATION]</code>
+ * <code>Then [RESPONSE] result is success for [APPLICATION]</code>
  * </li>
  * <li>
- *     <code>Then [RESPONSE] result from [APPLICATION] is: EXPECTED_RESULT</code>
+ * <code>Then [RESPONSE] result from [APPLICATION] is: EXPECTED_RESULT</code>
  * </li>
  * <li>
- *     <code>Then [RESPONSE] values from [APPLICATION] match: EXPECTED_VALUES</code>
+ * <code>Then [RESPONSE] values from [APPLICATION] match: EXPECTED_VALUES</code>
  * </li>
  * <li>
- *     <code>Given/When/Then [REQUEST/RESPONSE] values from [APPLICATION] are saved: MAPPING</code>
+ * <code>Given/When/Then [REQUEST/RESPONSE] values from [APPLICATION] are saved: MAPPING</code>
  * </li>
  * </ul>
- *
+ * <p>
  * Parameters:
  * <ul>
  * <li>
- *     <code>REQUEST</code> - simple class name or alias of request object
+ * <code>REQUEST</code> - simple class name or alias of request object
  * </li>
  * <li>
- *     <code>RESPONSE</code> - simple class name or alias of response object
+ * <code>RESPONSE</code> - simple class name or alias of response object
  * </li>
  * <li>
- *     <code>APPLICATION</code> - application qualifier used to resolve {@link WebServiceHandler},
- *     which implements individual steps and where is possible to provide application specific customization
+ * <code>APPLICATION</code> - application qualifier used to resolve {@link WebServiceHandler},
+ * which implements individual steps and where is possible to provide application specific customization
  * </li>
  * </ul>
- *
  */
 @Component
 public final class WebServiceSteps {

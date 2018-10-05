@@ -846,36 +846,47 @@
 
         <div>
             <a href="#soap-call-{$callNum}" data-toggle="collapse" class="pointerCursor">
-                Call <xsl:value-of select="$callNum"/>:
+                <xsl:value-of select="current()/request/@type"/> ↔ <xsl:value-of select="current()/response/@type"/>
             </a>
             <div id="soap-call-{$callNum}" class="collapse">
-                <xsl:apply-templates select="request | response" mode="ws"/>
+                <ul class="list-group list-group-flush">
+                    <xsl:apply-templates select="request | response" mode="ws"/>
+                </ul>
             </div>
         </div>
     </xsl:template>
 
     <xsl:template match="request" mode="ws">
-        <div>
-            Request:
-            <span class="time-string-millis">
-                <xsl:value-of select="@time"/>
-            </span>
-            <pre>
-                <xsl:value-of select="." disable-output-escaping="yes"/>
-            </pre>
-        </div>
+        <li class="list-group-item list-group-item-light">
+            <strong>Request:
+                <span class="time-string-millis">
+                    <xsl:value-of select="@time"/>
+                </span>
+            </strong>
+            <xsl:value-of select="concat(' ', @type)"/>
+            <xsl:if test=".">
+                <pre class="mb-0">
+                    <xsl:value-of select="." disable-output-escaping="yes"/>
+                </pre>
+            </xsl:if>
+        </li>
     </xsl:template>
 
     <xsl:template match="response" mode="ws">
-        <div>
-            Response:
-            <span class="time-string-millis">
-                <xsl:value-of select="@time"/>
-            </span>
-            <pre>
-                <xsl:value-of select="." disable-output-escaping="yes"/>
-            </pre>
-        </div>
+        <li class="list-group-item list-group-item-light">
+            <strong>Response:
+                <span class="time-string-millis">
+                    <xsl:value-of select="@time"/>
+                </span>
+            </strong>
+            <xsl:value-of select="concat(' ', @type)"/>
+            <xsl:if test=".">
+                <pre class="mb-0">
+                    <xsl:value-of select="." disable-output-escaping="yes"/>
+                </pre>
+            </xsl:if>
+        </li>
+
     </xsl:template>
 
     <!-- REST -->

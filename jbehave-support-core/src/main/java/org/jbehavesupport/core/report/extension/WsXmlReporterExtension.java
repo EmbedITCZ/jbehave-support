@@ -7,16 +7,14 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-
-import org.jbehavesupport.core.report.ReportContext;
-
+import javax.xml.transform.dom.DOMSource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.jbehavesupport.core.report.ReportContext;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
@@ -106,6 +104,8 @@ public class WsXmlReporterExtension extends AbstractXmlReporterExtension impleme
     private void printWebServiceMessage(final Writer writer, final Type type, final WebServiceMessage msg, final LocalDateTime timestamp) {
         Map<String, String> attributes = new HashMap<>();
         attributes.put("time", timestamp.atZone(ZoneId.systemDefault()).toString());
+        String requestName = ((DOMSource) msg.getPayloadSource()).getNode().getLocalName();
+        attributes.put("type", requestName);
 
         printBegin(writer, type.typeName, attributes);
         StringBuilder message = new StringBuilder();

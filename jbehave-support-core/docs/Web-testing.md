@@ -142,7 +142,7 @@ There are the following actions available at the moment:
 - FILL - for inserting text value
 - CLEAR - for clearing text value of input/textarea
 - PRESS - for pressing special keys from the org.openqa.selenium.Keys enum
-- SELECT - for selecting a value in an HTML select input
+- SELECT - for selecting a value in an HTML select and checkbox input
 
 For building examples table with actions programmatically is possible to use `WebActionBuilder`.
 

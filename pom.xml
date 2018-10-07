@@ -21,6 +21,28 @@
         <url>https://github.com/EmbedITCZ/jbehave-support/issues</url>
     </issueManagement>
 
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://raw.githubusercontent.com/EmbedITCZ/jbehave-support/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Michal Bocek</name>
+            <email>michal.bocek@gmail.com</email>
+            <organization>EmbedIT</organization>
+            <organizationUrl>https://embedit.cz</organizationUrl>
+        </developer>
+        <developer>
+            <name>Tomas Hradec</name>
+            <email>thradec@gmail.com</email>
+            <organization>EmbedIT</organization>
+            <organizationUrl>https://embedit.cz</organizationUrl>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

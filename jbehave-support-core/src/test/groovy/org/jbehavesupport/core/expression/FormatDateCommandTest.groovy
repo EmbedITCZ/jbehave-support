@@ -17,8 +17,8 @@ class FormatDateCommandTest extends Specification {
         result == expected
 
         where:
-        expression                      || expected
-        ["2031-05-20", "MM/dd/yyyy"]    || "05/20/2031"
+        expression                   || expected
+        ["2031-05-20", "MM/dd/yyyy"] || "05/20/2031"
     }
 
     def "test execute with #expression throws #exception"() {

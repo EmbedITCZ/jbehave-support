@@ -186,7 +186,7 @@ public class RestServiceHandler {
     }
 
     private HttpEntity<MultiValueMap<String, Object>> createMultipartRequestEntity(final List<Triple<String, String, String>> requestDataList,
-        HttpHeaders headers) {
+                                                                                   HttpHeaders headers) {
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
 
         for (Iterator<Triple<String, String, String>> iterator = requestDataList.iterator(); iterator.hasNext(); ) {
@@ -198,7 +198,7 @@ public class RestServiceHandler {
                 if (data instanceof Resource) {
                     multipartRequest.add(line.getLeft(), data);
                 } else if (data instanceof byte[]) {
-                    multipartRequest.add(line.getLeft(), new ByteArrayResource((byte[])data));
+                    multipartRequest.add(line.getLeft(), new ByteArrayResource((byte[]) data));
                 }
             } else {
                 multipartRequest.add(line.getLeft(), value);
@@ -219,7 +219,7 @@ public class RestServiceHandler {
                     byte[] bytes = IOUtils.toByteArray(((Resource) data).getInputStream());
                     value = new String(bytes);
                 } else if (data instanceof byte[]) {
-                    value = new String((byte[])data);
+                    value = new String((byte[]) data);
                 }
             }
             handleContextAlias(line.getRight(), value);
@@ -493,6 +493,7 @@ public class RestServiceHandler {
      *          .basicAuthorization("username", "password")
      *          .header(this::headers);
      * }</pre>
+     *
      * @param templateConfigurer
      */
     protected void initTemplate(RestTemplateConfigurer templateConfigurer) {

@@ -27,10 +27,10 @@ class LowerCaseCommandTest extends Specification {
         Exception exception = thrown()
         expected == exception.class
         where:
-        expression          || expected
-        []                  || IllegalArgumentException.class
-        ["a", "1"]          || IllegalArgumentException.class
-        [LocalDate.now()]   || IllegalArgumentException.class
+        expression        || expected
+        []                || IllegalArgumentException.class
+        ["a", "1"]        || IllegalArgumentException.class
+        [LocalDate.now()] || IllegalArgumentException.class
     }
 
 }

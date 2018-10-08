@@ -67,7 +67,7 @@ public class WebServiceTemplateConfigurer {
         AuthenticatingUrlConnectionMessageSender authenticatingMessageSender = new AuthenticatingUrlConnectionMessageSender();
         authenticatingMessageSender.setUsername(username);
         authenticatingMessageSender.setPassword(password);
-        authenticatingMessageSender.setTrustManagers(new TrustManager[]{ new DummyX509TrustManager() });
+        authenticatingMessageSender.setTrustManagers(new TrustManager[]{new DummyX509TrustManager()});
         try {
             authenticatingMessageSender.afterPropertiesSet();
         } catch (Exception e) {

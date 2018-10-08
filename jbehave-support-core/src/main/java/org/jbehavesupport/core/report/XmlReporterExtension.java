@@ -8,7 +8,7 @@ public interface XmlReporterExtension {
 
     Long getPriority();
 
-    default ReportRenderingPhase getReportRenderingPhase()  {
+    default ReportRenderingPhase getReportRenderingPhase() {
         return ReportRenderingPhase.AFTER_STORY;
     }
 

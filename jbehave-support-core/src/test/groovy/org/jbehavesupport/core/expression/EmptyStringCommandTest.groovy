@@ -25,7 +25,7 @@ class EmptyStringCommandTest extends Specification {
 
         where:
         expression || exception
-        ["1"] || IllegalArgumentException
+        ["1"]      || IllegalArgumentException
     }
 
 }

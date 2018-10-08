@@ -34,7 +34,7 @@ public class WebServiceEndpointRegistry {
     /**
      * Register endpoint for request and response class.
      *
-     * @param requestClass the request class
+     * @param requestClass  the request class
      * @param responseClass the response class
      * @return the web service endpoint registry
      */
@@ -47,8 +47,8 @@ public class WebServiceEndpointRegistry {
      * Request and response classes can have aliases. So in case of same class name from different packages we are
      * able to distinguish between them.
      *
-     * @param requestClass the request class
-     * @param requestAlias the request alias
+     * @param requestClass  the request class
+     * @param requestAlias  the request alias
      * @param responseClass the response class
      * @param responseAlias the response alias
      * @return the web service endpoint registry

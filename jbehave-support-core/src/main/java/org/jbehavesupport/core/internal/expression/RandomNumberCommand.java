@@ -22,7 +22,7 @@ public class RandomNumberCommand implements ExpressionCommand {
 
         int length;
         if (params[0] instanceof String) {
-            isTrue(StringUtils.isNumeric((String)params[0]), "String must be numeric");
+            isTrue(StringUtils.isNumeric((String) params[0]), "String must be numeric");
             length = Integer.parseInt((String) params[0]);
         } else {
             length = ((Number) params[0]).intValue();

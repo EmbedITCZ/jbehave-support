@@ -16,14 +16,16 @@ public interface TestContext {
      */
     interface Entry {
         String getKey();
+
         <T> T getValue();
+
         List<Metadata> getMetadata();
     }
 
     /**
      * Metadata holder.
      */
-    @Value(staticConstructor="of")
+    @Value(staticConstructor = "of")
     class Metadata {
         String name;
         Object value;
@@ -42,6 +44,7 @@ public interface TestContext {
 
     /**
      * Get object for specific key converted to specific type.
+     *
      * @param key
      * @param type target type
      * @param <T>
@@ -51,6 +54,7 @@ public interface TestContext {
 
     /**
      * Get entry from context.
+     *
      * @param key
      * @param <T>
      * @return entry
@@ -60,7 +64,7 @@ public interface TestContext {
     /**
      * Put data under specific key.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value
      */
     void put(String key, Object value);
@@ -68,8 +72,8 @@ public interface TestContext {
     /**
      * Put data under specific key with metadata.
      *
-     * @param key the key
-     * @param value the value
+     * @param key      the key
+     * @param value    the value
      * @param metadata the metadata
      */
     void put(String key, Object value, Metadata... metadata);
@@ -84,6 +88,7 @@ public interface TestContext {
 
     /**
      * Remove specific entry from context
+     *
      * @param key the key
      * @param <T>
      * @return removed object
@@ -97,24 +102,28 @@ public interface TestContext {
 
     /**
      * Remove data from context based on predicate.
+     *
      * @param p
      */
     void clear(Predicate<String> p);
 
     /**
      * Get set of keys.
+     *
      * @return
      */
     Set<String> keySet();
 
     /**
      * Create unique key which will be used as reference.
+     *
      * @return
      */
     String createReferenceKey();
 
     /**
      * Check if provided key is the reference.
+     *
      * @param referenceKey
      * @return
      */

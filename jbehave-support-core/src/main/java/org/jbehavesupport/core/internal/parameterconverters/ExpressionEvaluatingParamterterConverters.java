@@ -31,17 +31,17 @@ public final class ExpressionEvaluatingParamterterConverters extends ParameterCo
     public Object convert(String value, Type type) {
         if (isExpressionEvaluatingParameter(type)) {
             return new ExpressionEvaluatingParameter<>(
-                        super.convert(
-                            String.valueOf(expressionEvaluator.evaluate(value)),
-                            ((ParameterizedType)type).getActualTypeArguments()[0]
-                        )
-                    );
+                super.convert(
+                    String.valueOf(expressionEvaluator.evaluate(value)),
+                    ((ParameterizedType) type).getActualTypeArguments()[0]
+                )
+            );
         }
         return super.convert(value, type);
     }
 
     private boolean isExpressionEvaluatingParameter(Type type) {
         return type instanceof ParameterizedType
-                && ((ParameterizedType)type).getRawType() == ExpressionEvaluatingParameter.class;
+            && ((ParameterizedType) type).getRawType() == ExpressionEvaluatingParameter.class;
     }
 }

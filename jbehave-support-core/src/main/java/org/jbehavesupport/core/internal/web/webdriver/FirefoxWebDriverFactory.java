@@ -56,7 +56,7 @@ public class FirefoxWebDriverFactory implements WebDriverFactory {
         }
 
         FirefoxOptions options = new FirefoxOptions().setLegacy(true);
-        if(browserStartupArguments != null) {
+        if (browserStartupArguments != null) {
             options.addArguments(browserStartupArguments);
         }
         driver = new FirefoxDriver(options);

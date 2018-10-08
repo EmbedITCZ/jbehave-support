@@ -41,7 +41,7 @@ public final class RandomGeneratorHelper {
     public static LocalDate randomDate() {
         long minDay = LocalDate.of(1970, 1, 1).toEpochDay();
         long maxDay = LocalDate.of(2050, 12, 31).toEpochDay();
-        long randomDay = RandomUtils.nextInt((int)minDay, (int)maxDay);
+        long randomDay = RandomUtils.nextInt((int) minDay, (int) maxDay);
         return LocalDate.ofEpochDay(randomDay);
     }
 }

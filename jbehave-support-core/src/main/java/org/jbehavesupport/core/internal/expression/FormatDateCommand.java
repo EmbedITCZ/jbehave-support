@@ -26,9 +26,9 @@ public class FormatDateCommand implements ExpressionCommand {
         isInstanceOf(String.class, params[0], "First parameter must be string");
         isInstanceOf(String.class, params[1], "Second parameter must be string");
 
-        LocalDate input = LocalDate.parse((String)params[0]);
-        String dateFormat  = (String)params[1];
-        DateTimeFormatter dtf  = DateTimeFormatter.ofPattern(dateFormat);
+        LocalDate input = LocalDate.parse((String) params[0]);
+        String dateFormat = (String) params[1];
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateFormat);
         return dtf.format(input);
     }
 }

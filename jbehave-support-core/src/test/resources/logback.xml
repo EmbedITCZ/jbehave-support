@@ -10,10 +10,10 @@
     </appender>
 
     <logger name="org.springframework.ws.client.MessageTracing" level="trace" additivity="false">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>

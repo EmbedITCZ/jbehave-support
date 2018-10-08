@@ -51,7 +51,8 @@ public class ReflectionUtils {
 
     /**
      * Travers object tree structure by property path
-     * @param bean root object to start with
+     *
+     * @param bean         root object to start with
      * @param propertyPath dot separated path of attributes
      * @return value of located attribute
      */

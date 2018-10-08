@@ -16,8 +16,8 @@ class UnescapeCommandTest extends Specification {
         then:
         expected == actual
         where:
-        expression     || expected
-        ["\\t"]        || "\t"
+        expression    || expected
+        ["\\t"]       || "\t"
         ["foo\\nbar"] || "foo\nbar"
     }
 
@@ -28,10 +28,10 @@ class UnescapeCommandTest extends Specification {
         Exception exception = thrown()
         expected == exception.class
         where:
-        expression          || expected
-        []                  || IllegalArgumentException.class
-        ["a", "1"]          || IllegalArgumentException.class
-        [LocalDate.now()]   || IllegalArgumentException.class
+        expression        || expected
+        []                || IllegalArgumentException.class
+        ["a", "1"]        || IllegalArgumentException.class
+        [LocalDate.now()] || IllegalArgumentException.class
     }
 
 }

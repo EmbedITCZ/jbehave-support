@@ -19,7 +19,7 @@ public class UnescapeCommand implements ExpressionCommand {
         isTrue(params.length == 1, "Only one parameter was expected");
         isInstanceOf(String.class, params[0], "First parameter must be string");
 
-        String input = (String)params[0];
+        String input = (String) params[0];
         return StringEscapeUtils.unescapeJava(input);
     }
 

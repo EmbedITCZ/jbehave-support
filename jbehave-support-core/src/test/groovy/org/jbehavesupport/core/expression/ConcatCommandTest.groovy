@@ -18,9 +18,9 @@ class ConcatCommandTest extends Specification {
         result == expected
 
         where:
-        params || expected
-        ["test", "TEST"] || "testTEST"
-        ["test", "TEST", 1L] || "testTEST1"
+        params                                     || expected
+        ["test", "TEST"]                           || "testTEST"
+        ["test", "TEST", 1L]                       || "testTEST1"
         ["test", LocalDate.of(2000, 12, 31), 1.54] || "test2000-12-311.54"
     }
 
@@ -33,8 +33,8 @@ class ConcatCommandTest extends Specification {
         expected == exception.class
 
         where:
-        params      || expected
-        []          || IllegalArgumentException.class
-        ["1"]       || IllegalArgumentException.class
+        params || expected
+        []     || IllegalArgumentException.class
+        ["1"]  || IllegalArgumentException.class
     }
 }

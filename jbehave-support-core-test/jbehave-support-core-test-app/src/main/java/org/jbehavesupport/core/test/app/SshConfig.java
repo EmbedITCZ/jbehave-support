@@ -19,7 +19,7 @@ public class SshConfig {
         return new CustomCrashProperties();
     }
 
-    private class CustomCrashProperties extends ShellProperties.CrshShellAuthenticationProperties{
+    private class CustomCrashProperties extends ShellProperties.CrshShellAuthenticationProperties {
         protected void applyToCrshShellConfig(Properties config) {
             config.put("crash.ssh.port", env.getProperty("ssh.port"));
             config.put("crash.ssh.auth_timeout", env.getProperty("ssh.timeouts.auth"));

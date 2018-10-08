@@ -34,7 +34,7 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     private static final String HEADERS_TAG = "headers";
     private static final String HEADER_TAG = "header";
     private static MimeType[] compatibleMimeTypes =
-        new MimeType[]{ new MimeType("text"), new MimeType("application", "json"), new MimeType("application", "xml") };
+        new MimeType[]{new MimeType("text"), new MimeType("application", "json"), new MimeType("application", "xml")};
 
     private final Set<RestMessageContext> messages = new LinkedHashSet<>();
 

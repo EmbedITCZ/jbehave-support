@@ -9,11 +9,20 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
                 <title>Test reports index</title>
 
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"/>
-                <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"/>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                      crossorigin="anonymous"/>
+                <link rel="stylesheet"
+                      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+                      crossorigin="anonymous"/>
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+                        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"/>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                        crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                        crossorigin="anonymous"></script>
                 <script src="functions.js"/>
                 <script>$(document).ready(function(){indexReady()});</script>
 
@@ -30,10 +39,12 @@
                                 <div>
                                     <xsl:attribute name="class">
                                         <xsl:choose>
-                                            <xsl:when test="count(/index/item[status='SUCCESSFUL']) = count(/index/item)">
+                                            <xsl:when
+                                                test="count(/index/item[status='SUCCESSFUL']) = count(/index/item)">
                                                 card-header bg-success text-white font-weight-bold
                                             </xsl:when>
-                                            <xsl:otherwise>card-header bg-danger text-white font-weight-bold</xsl:otherwise>
+                                            <xsl:otherwise>card-header bg-danger text-white font-weight-bold
+                                            </xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:attribute>
                                     Test results
@@ -42,15 +53,18 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-6 align-self-start">
                                             <div class="progress font-weight-bold">
-                                                <div class="progress-bar bg-success" role="progressbar" title="SUCCESSFUL">
-                                                    <xsl:variable name="percent" select="round(count(//item[status='SUCCESSFUL']) div count(//item) * 100)"/>
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                     title="SUCCESSFUL">
+                                                    <xsl:variable name="percent"
+                                                                  select="round(count(//item[status='SUCCESSFUL']) div count(//item) * 100)"/>
                                                     <xsl:attribute name="style">
                                                         width: <xsl:value-of select="$percent"/>%
                                                     </xsl:attribute>
                                                     <xsl:value-of select="$percent"/>%
                                                 </div>
                                                 <div class="progress-bar bg-danger" role="progressbar" title="FAILED">
-                                                    <xsl:variable name="percent" select="round(count(//item[status='FAILED']) div count(//item) * 100)"/>
+                                                    <xsl:variable name="percent"
+                                                                  select="round(count(//item[status='FAILED']) div count(//item) * 100)"/>
                                                     <xsl:attribute name="style">
                                                         width: <xsl:value-of select="$percent"/>%
                                                     </xsl:attribute>
@@ -71,11 +85,15 @@
                                 <div class="row justify-content-between">
                                     <div class="col-6">
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <button type="button" class="btn btn-outline-primary pt-0 pb-0" onclick="filter()">All</button>
-                                            <button type="button" class="btn btn-outline-success pt-0 pb-0" onclick="filter('SUCCESSFUL')">
+                                            <button type="button" class="btn btn-outline-primary pt-0 pb-0"
+                                                    onclick="filter()">All
+                                            </button>
+                                            <button type="button" class="btn btn-outline-success pt-0 pb-0"
+                                                    onclick="filter('SUCCESSFUL')">
                                                 <i class="fa fa-check-circle"/>
                                             </button>
-                                            <button type="button" class="btn btn-outline-danger pt-0 pb-0" onclick="filter('FAILED')">
+                                            <button type="button" class="btn btn-outline-danger pt-0 pb-0"
+                                                    onclick="filter('FAILED')">
                                                 <i class="fa fa-exclamation-circle"/>
                                             </button>
                                         </div>
@@ -83,7 +101,8 @@
                                     <div class="col-5 align-self-end text-right">
                                         <small class="text-secondary">
                                             Total test count:
-                                            <xsl:value-of select="count(index/item)"/> (<xsl:value-of select="count(index/item[status='FAILED'])"/> failed);
+                                            <xsl:value-of select="count(index/item)"/> (<xsl:value-of
+                                            select="count(index/item[status='FAILED'])"/> failed);
                                             total duration:
                                             <xsl:call-template name="formatTime">
                                                 <xsl:with-param name="millis" select="sum(//item/duration)"/>

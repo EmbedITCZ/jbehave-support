@@ -26,9 +26,9 @@ public class DateParseCommand implements ExpressionCommand {
         isInstanceOf(String.class, params[0], "First param must be string");
         isInstanceOf(String.class, params[1], "Second param must be string");
 
-        String dateAsString = (String)params[0];
-        String dateFormat  = (String)params[1];
-        DateTimeFormatter dtf  = DateTimeFormatter.ofPattern(dateFormat);
+        String dateAsString = (String) params[0];
+        String dateFormat = (String) params[1];
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateFormat);
         return LocalDate.parse(dateAsString, dtf);
     }
 }

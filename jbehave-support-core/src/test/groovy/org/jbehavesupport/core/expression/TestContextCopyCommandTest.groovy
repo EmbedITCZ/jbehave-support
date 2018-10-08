@@ -23,10 +23,10 @@ class TestContextCopyCommandTest extends Specification {
         result == expected
 
         where:
-        params              || expected
-        ["test"]            || "TEST"
-        ["test", "new"]     || "newTEST"
-        ["nullTest"]        || NullCommand.NULL_VALUE
+        params          || expected
+        ["test"]        || "TEST"
+        ["test", "new"] || "newTEST"
+        ["nullTest"]    || NullCommand.NULL_VALUE
     }
 
     def "test argument exception #expected"() {
@@ -42,9 +42,9 @@ class TestContextCopyCommandTest extends Specification {
         expected == exception.class
 
         where:
-        params            || expected
-        [1]               || IllegalArgumentException.class
-        ["test", 1, 2]    || IllegalArgumentException.class
-        ["1", "1", 2]     || IllegalArgumentException.class
+        params         || expected
+        [1]            || IllegalArgumentException.class
+        ["test", 1, 2] || IllegalArgumentException.class
+        ["1", "1", 2]  || IllegalArgumentException.class
     }
 }

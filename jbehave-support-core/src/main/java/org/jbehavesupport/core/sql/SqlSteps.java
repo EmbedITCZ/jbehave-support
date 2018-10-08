@@ -73,7 +73,7 @@ public final class SqlSteps {
 
         try {
             result = resolveJdbcTemplate(databaseId)
-            .queryForList(resolvedStatement, ExamplesTableUtil.convertMap(parameters, ExampleTableConstraints.NAME, ExampleTableConstraints.DATA));
+                .queryForList(resolvedStatement, ExamplesTableUtil.convertMap(parameters, ExampleTableConstraints.NAME, ExampleTableConstraints.DATA));
             testContext.put(SQL_RESULT_KEY, result);
             testContext.put(SQL_QUERY_KEY, resolvedStatement);
         } catch (DataAccessException e) {

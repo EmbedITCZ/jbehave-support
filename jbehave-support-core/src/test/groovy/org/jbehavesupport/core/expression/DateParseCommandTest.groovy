@@ -17,8 +17,8 @@ class DateParseCommandTest extends Specification {
         result == expected
 
         where:
-        expression                      || expected
-        ["05/20/2031", "MM/dd/yyyy"]    || LocalDate.of(2031,05,20)
+        expression                   || expected
+        ["05/20/2031", "MM/dd/yyyy"] || LocalDate.of(2031, 05, 20)
     }
 
     def "test execute with #expression throws #exception"() {
@@ -29,8 +29,8 @@ class DateParseCommandTest extends Specification {
         thrown(exception)
 
         where:
-        expression || exception
-        ["1", "2", "3"] || IllegalArgumentException
+        expression                      || exception
+        ["1", "2", "3"]                 || IllegalArgumentException
         [LocalDate.now(), "MM/dd/yyyy"] || IllegalArgumentException
     }
 

@@ -17,7 +17,7 @@ class CheckSqlError extends Specification implements TestSupport {
         def result = runner.run(runWith("issue/CheckSqlErrorForSingleRowSaved.story"))
 
         then:
-        result.failures.stream().anyMatch({e -> e.exception.message.contains("Table \"PERSON_\" not found")})
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("Table \"PERSON_\" not found") })
     }
 
     def "check sql error for step: these columns from the multi-row query result are saved:\$storedData"() {
@@ -25,7 +25,7 @@ class CheckSqlError extends Specification implements TestSupport {
         def result = runner.run(runWith("issue/CheckSqlErrorForMultiRowSaved.story"))
 
         then:
-        result.failures.stream().anyMatch({e -> e.exception.message.contains("Table \"PERSON_\" not found")})
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("Table \"PERSON_\" not found") })
     }
 
     def "check sql error for step: these columns from the query result are equal:\$columnsToCompare"() {
@@ -33,7 +33,7 @@ class CheckSqlError extends Specification implements TestSupport {
         def result = runner.run(runWith("issue/CheckSqlErrorForColumnsFromQueryAreEqual.story"))
 
         then:
-        result.failures.stream().anyMatch({e -> e.exception.message.contains("Table \"PERSON_\" not found")})
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("Table \"PERSON_\" not found") })
     }
 
     def "check sql error for step: these rows match the query result:\$matchingData"() {
@@ -41,7 +41,7 @@ class CheckSqlError extends Specification implements TestSupport {
         def result = runner.run(runWith("issue/CheckSqlErrorForRowsMatchQueryResult.story"))
 
         then:
-        result.failures.stream().anyMatch({e -> e.exception.message.contains("Table \"PERSON_\" not found")})
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("Table \"PERSON_\" not found") })
     }
 
     def "check sql error for step: these rows are present in the query result:\$presentData"() {
@@ -49,7 +49,7 @@ class CheckSqlError extends Specification implements TestSupport {
         def result = runner.run(runWith("issue/CheckSqlErrorForRowsArePresentInQueryResult.story"))
 
         then:
-        result.failures.stream().anyMatch({e -> e.exception.message.contains("Table \"PERSON_\" not found")})
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("Table \"PERSON_\" not found") })
     }
 
     def "check sql error for step: the result set has \$rowCount row(s)"() {
@@ -85,6 +85,6 @@ class CheckSqlError extends Specification implements TestSupport {
         def result = runner.run(runWith("issue/CheckSqlErrorAfterScenario.story"))
 
         then:
-        result.failures.stream().anyMatch({e -> e.exception.message.contains("Table \"PERSON_\" not found")})
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("Table \"PERSON_\" not found") })
     }
 }

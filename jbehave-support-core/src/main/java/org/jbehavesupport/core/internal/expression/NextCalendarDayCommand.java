@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * Set day to {@link java.time.LocalDate}.
  * Command consumes one parameter day. If the day is higher or equal to day from {@link TimeFacade} current month is used.
  * If the day is lower than day from {@link TimeFacade} we will reset day to 1 and set month to next month.
- *
+ * <p>
  * TimeFacade: 20-5-2005
  * Param: 1, 20, 31
  * Result: 1-6-2005, 20-5-2005, 31-5-2005
@@ -60,7 +60,7 @@ public class NextCalendarDayCommand implements ExpressionCommand {
             returnDate.set(Calendar.DAY_OF_MONTH, 1);
         }
 
-        Instant  instant = returnDate.toInstant();
+        Instant instant = returnDate.toInstant();
         ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
         return zdt.toLocalDate();
     }

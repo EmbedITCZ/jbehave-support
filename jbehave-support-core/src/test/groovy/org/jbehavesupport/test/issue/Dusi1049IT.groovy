@@ -7,7 +7,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 
-class Dusi1049IT extends Specification  implements TestSupport {
+class Dusi1049IT extends Specification implements TestSupport {
     @Shared
         runner = new JUnitCore()
 

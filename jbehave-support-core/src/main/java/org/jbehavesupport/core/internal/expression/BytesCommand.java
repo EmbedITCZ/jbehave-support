@@ -23,7 +23,7 @@ public class BytesCommand implements ExpressionCommand {
         isInstanceOf(String.class, params[0], "Parameter must be string");
 
         String referenceKey = ctx.createReferenceKey();
-        ctx.put(referenceKey, ((String)params[0]).getBytes());
+        ctx.put(referenceKey, ((String) params[0]).getBytes());
         return referenceKey;
     }
 }

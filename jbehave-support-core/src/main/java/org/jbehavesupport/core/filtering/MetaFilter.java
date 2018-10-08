@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 
 /**
  * Setting of metafilter for particular test
- *
+ * <p>
  * Ex: @Metafilter("all('api','rest') && all('authentication','plain')")
  * We will use this filter when we want to run scenarios in the story designed for rest api and supporting plain authentication
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE})
+@Target({ElementType.TYPE})
 @Inherited
 @Documented
 public @interface MetaFilter {

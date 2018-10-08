@@ -21,32 +21,32 @@ import org.springframework.stereotype.Component;
  * Steps:
  * <ul>
  * <li>
- *     <code>Given [METHOD] request to [APPLICATION]/[URL] is sent</code>
+ * <code>Given [METHOD] request to [APPLICATION]/[URL] is sent</code>
  * </li>
  * <li>
- *     <code>Given [METHOD] request to [APPLICATION]/[URL] is sent with data: DATA</code>
+ * <code>Given [METHOD] request to [APPLICATION]/[URL] is sent with data: DATA</code>
  * </li>
  * <li>
- *     <code>Then response from [APPLICATION] REST API has status [STATUS]</code>
+ * <code>Then response from [APPLICATION] REST API has status [STATUS]</code>
  * </li>
  * <li>
- *     <code>Then response from [APPLICATION] REST API has status [STATUS] and values match: DATA</code>
+ * <code>Then response from [APPLICATION] REST API has status [STATUS] and values match: DATA</code>
  * </li>
  * <li>
- *     <code>Then response values from [APPLICATION] REST API are saved: MAPPING</code>
+ * <code>Then response values from [APPLICATION] REST API are saved: MAPPING</code>
  * </li>
  * <p>
  * Parameters:
  * <ul>
  * <li>
- *     <code>METHOD</code> - HTTP request methods, eg. <code>GET</code>, <code>POST</code>, ...
+ * <code>METHOD</code> - HTTP request methods, eg. <code>GET</code>, <code>POST</code>, ...
  * </li>
  * <li>
- *     <code>APPLICATION</code> - application qualifier used to resolve {@link RestServiceHandler},
- *     which implements individual steps and where is possible to provide application specific customization
+ * <code>APPLICATION</code> - application qualifier used to resolve {@link RestServiceHandler},
+ * which implements individual steps and where is possible to provide application specific customization
  * </li>
  * <li>
- *     <code>URL</code> - the path in URL, eg. <code>user/?order=1</code>
+ * <code>URL</code> - the path in URL, eg. <code>user/?order=1</code>
  * </li>
  * </ul>
  */

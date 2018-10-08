@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 /**
  * The NextMonthCommand can be used in JBehave's tables in three ways:
  * <ul>
- *     <li><code>{NEXT_MONTH}</code> without parameter, is evaluated to the first day of the next month</li>
- *     <li><code>{NEXT_MONTH:&lt;number&gt;}</code> with numeric parameter, is evaluated to the first day of the next month shifted about given number of days</li>
- *     <li><code>{NEXT_MONTH:&lt;period&gt;}</code> with period parameter, is evaluated to the first day of the next month shifted about given period of time, see {@link Period#parse}</li>
+ * <li><code>{NEXT_MONTH}</code> without parameter, is evaluated to the first day of the next month</li>
+ * <li><code>{NEXT_MONTH:&lt;number&gt;}</code> with numeric parameter, is evaluated to the first day of the next month shifted about given number of days</li>
+ * <li><code>{NEXT_MONTH:&lt;period&gt;}</code> with period parameter, is evaluated to the first day of the next month shifted about given period of time, see {@link Period#parse}</li>
  * </ul>
  */
 @Component

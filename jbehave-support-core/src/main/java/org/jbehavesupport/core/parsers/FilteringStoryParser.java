@@ -15,7 +15,6 @@ import org.jbehave.core.parsers.RegexStoryParser;
 
 /**
  * Story parser assigning given name and filtering stories with given filter
- *
  */
 @Slf4j
 public class FilteringStoryParser extends RegexStoryParser {
@@ -42,7 +41,7 @@ public class FilteringStoryParser extends RegexStoryParser {
     /**
      * Full constructor for creating parser and defining story and scenario asMeta() prefixes allowing to use scenario name or description as metadata
      * and distinguish them from true metadata attributes.
-     *
+     * <p>
      * You can also specify story nameGenerator - this is function accepting storyPath as a parameter and generating custom story name.
      * Story name has to be unique during test execution session
      */
@@ -90,7 +89,7 @@ public class FilteringStoryParser extends RegexStoryParser {
             scenarios
         );
 
-        result.namedAs(nameGenerator != null?nameGenerator.apply(story.getPath()):story.getName());
+        result.namedAs(nameGenerator != null ? nameGenerator.apply(story.getPath()) : story.getName());
         return result;
     }
 

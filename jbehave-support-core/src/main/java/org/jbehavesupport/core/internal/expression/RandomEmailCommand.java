@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RandomEmailCommand implements ExpressionCommand {
 
-    private static final String[] DOMAINS = new String[] {"com", "gov", "org", "cz", "sk", "uk"};
+    private static final String[] DOMAINS = new String[]{"com", "gov", "org", "cz", "sk", "uk"};
 
     @Override
     public Object execute(Object... params) {

@@ -33,7 +33,7 @@ public class EnvironmentInfoXmlReporterExtension extends AbstractXmlReporterExte
 
     @Override
     public void print(final Writer writer, final ReportContext reportContext) {
-        final Map<String, Object > environmentInfo = environmentInfo();
+        final Map<String, Object> environmentInfo = environmentInfo();
         environmentInfo.keySet()
             .stream()
             .forEach(key -> printKyeValue(writer, key.substring(ENVIRONMENT_INFO_BEGINNING.length()), environmentInfo.get(key)));

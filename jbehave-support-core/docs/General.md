@@ -16,23 +16,23 @@ and in [EscapingInContext story](../src/test/groovy/org/jbehavesupport/test/samp
 
 ### Comparison operators
 
-For some verification steps it's possible to use verifiers such as:  
-`EQ` - equals - default when no operator is specified  
-`NE` - not equals  
-`LT` - lower than  
-`GT` - greater than  
-`CONTAINS` - String contains another String  
-`NOT_CONTAINS` - String doesn't contain another String  
-`SIZE_EQ` - Size of collection is exactly expected value  
-`SIZE_LT` - Size of collection is lower than expected value  
-`SIZE_GT` - Size of collection is greater than expected value  
+For some verification steps it's possible to use verifiers such as:
+`EQ` - equals - default when no operator is specified
+`NE` - not equals
+`LT` - lower than
+`GT` - greater than
+`CONTAINS` - String contains another String
+`NOT_CONTAINS` - String doesn't contain another String
+`SIZE_EQ` - Size of collection is exactly expected value
+`SIZE_LT` - Size of collection is lower than expected value
+`SIZE_GT` - Size of collection is greater than expected value
 `REGEX_MATCH` - Matches String using regular expression
 
-The following sample step compares data from a SetGetClientReponse from CIF against values in test context using operators.
+The following sample step compares data from a ClientReponse from MYAPP against values in test context using operators.
 
 ```
-Then SetGetClientResponse values from CIF match:
-| elementName | verifier | expectedValue |
+Then [ClientResponse] values from [MYAPP] match:
+| name        | verifier | expectedValue |
 | client.cuid | NE       | {CP:CUID_1}   |
 | client.cuid | NE       | {CP:CUID_2}   |
 | client.cuid | NE       | {CP:CUID_3}   |

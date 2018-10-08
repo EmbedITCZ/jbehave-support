@@ -10,22 +10,28 @@ cache:
   directories:
   - '$HOME/.m2/repository'
 
-addons:
-  chrome: stable
-
 stages:
 - build
 - test
+- system-test
 
 jobs:
   include:
   - stage: build
     script: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - stage: test
-    script: mvn test -B -V
-  - stage: test
+    script:
+    - mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -Dmaven.test.failure.ignore=false -B -V
+    - curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
+    - java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco/jacoco.xml --partial
+  - stage: system-test
+    addons:
+      chrome: stable
     before_script:
     - "export DISPLAY=:99.0"
     - "sh -e /etc/init.d/xvfb start"
     - sleep 3 # give xvfb some time to start
-    script: mvn verify -DskipUnitTests=true -Djbehave.report.level=STORY -Pintegration-test -B -V
+    script:
+    - mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -Pintegration-test -B -V
+    - curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
+    - java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco-it/jacoco.xml

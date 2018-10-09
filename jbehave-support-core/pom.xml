@@ -81,7 +81,7 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <configuration>
                             <skip>${skipIntegrationTests}</skip>
-                            <argLine>${failsafeArgLine}</argLine>
+                            <argLine>${argLine}</argLine>
                             <includes>
                                 <include>**/*IT.java</include>
                             </includes>

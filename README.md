@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/EmbedITCZ/jbehave-support.svg?branch=master)](https://travis-ci.org/EmbedITCZ/jbehave-support)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8ea8521c8073490ca0ac1b95d492bc07)](https://www.codacy.com/app/jbehavesupport/jbehave-support?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EmbedITCZ/jbehave-support&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1e5c39dfaa6240b8b448d0df114c0d8e)](https://www.codacy.com/app/jbehavesupport/jbehave-support?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EmbedITCZ/jbehave-support&amp;utm_campaign=Badge_Grade)
 # jbehave-support
 Light extension to JBehave.
 

@@ -2,57 +2,47 @@
 
 ## Web Service steps
 
-The following sample steps will prepare a ws request of type SetGetClientRequest (it can be class name or alias defined in request registration), fill it with input data, store that data in the test context under the variable names specified in the contextAlias column.
+The following sample steps will prepare a ws request of type ClientRequest (it can be class name or alias defined in request registration), fill it with input data, store that data in the test context under the variable names specified in the contextAlias column.
 
 ```
-Given [SetGetClientRequest] data for [CIF]:
-| name                               | data               | contextAlias    |
-| client.clientDetails.0.trustLevel  | 5                  | TRUST_LEVEL_1   |
-| client.clientDetails.0.firstName   | {RANDOM_STRING:10} | FIRST_NAME_1    |
-| client.clientDetails.0.lastName    | {RANDOM_STRING:15} | LAST_NAME_1     |
-| client.clientDetails.0.dateOfBirth | {RANDOM_DATE}      | DATE_OF_BIRTH_1 |
+Given [ClientRequest] data for [MYAPP]:
+| name               | data               | contextAlias    |
+| client.firstName   | {RANDOM_STRING:10} | FIRST_NAME_1    |
+| client.lastName    | {RANDOM_STRING:15} | LAST_NAME_1     |
+| client.dateOfBirth | {RANDOM_DATE}      | DATE_OF_BIRTH_1 |
 ```
 
 The next step sends the request to a ws api and verifies the result code is SUCCESS.
 
 ```
-When [SetGetClientRequest] is sent to [CIF] with success
+When [ClientRequest] is sent to [MYAPP] with success
 ```
 
-When it's necessary te verify a non-success response code (for example ERROR_CLIENT_MERGE) the following steps should be used.
+When it's necessary te verify a non-success response code (for example ERROR_CLIENT_NOT_FOUND) the following steps should be used.
 
 ```
-When [SetGetClientRequest] is sent to [CIF]
+When [ClientRequest] is sent to [MYAPP]
 
-Then [SetGetClientResponse] result from [CIF] is:
-| code               |
-| ERROR_CLIENT_MERGE |
-
+Then [ClientRequest] result from [MYAPP] is:
+| code                   |
+| ERROR_CLIENT_NOT_FOUND |
 ```
 
-The next step will verify the response received from the called system - CIF in this case.
+The next step will verify the response received from the called system - MYAPP in this case.
 
 ```
-Then [SetGetClientResponse] values from [CIF] match:
-| name                               | expectedValue        |
-| client.cuid                        | {NOT_NULL}           |
-| version                            | {NOT_NULL}           |
-| client.clientDetails.0.firstName   | {CP:FIRST_NAME_1}    |
-| client.clientDetails.0.lastName    | {CP:LAST_NAME_1}     |
-| client.clientDetails.0.dateOfBirth | {CP:DATE_OF_BIRTH_1} |
-| client.randomNumbers.rndNo6        | {NOT_NULL}           |
-| client.randomNumbers.rndNo7        | {NOT_NULL}           |
-| client.randomNumbers.rndNo8        | {NOT_NULL}           |
-| client.randomNumbers.rndNo9        | {NOT_NULL}           |
-| client.randomNumbers.rndNo10       | {NOT_NULL}           |
+Then [ClientRequest] values from [MYAPP] match:
+| name                             | expectedValue        |
+| client.id                        | {NOT_NULL}           |
+| client.version                   | {NOT_NULL}           |
 ```
 
 The following step will save the specified values from the response to test context.
 
 ```
-Given [SetGetClientResponse] values from [CIF] are saved:
-| name        | contextAlias |
-| client.cuid | CUID         |
+Given [ClientRequest] values from [MYAPP] are saved:
+| name      | contextAlias |
+| client.id | ID           |
 ```
 Any prefix (`Given`/`When`/`Then`) can be used for this step.
 
@@ -84,9 +74,8 @@ public ConversionService conversionService(){
 In some cases, request class can have abstract attribute with several implementations. In this case you need to specify which implementation you want to use per request.
 This can be specified directly in example table. Provide fully qualified class name in separate type column. Data column for particular line will be ignored if type is present.
 ```
-Given [CreateAccountRequest] data for [am_account_management]:
-| name                                   | data | type                                                                               |
-| contract.contractParameters            |      | org.hss.integration.account.oxm.account.v2.CurrentContractParametersDto |
-| contract.contractParameters.billingDay | 7    |                                                                                    |
-
+Given [CreateAccountRequest] data for [MYAPP]:
+| name                                   | data | type                                       |
+| contract.contractParameters            |      | org.myapp.oxm.CurrentContractParametersDto |
+| contract.contractParameters.billingDay | 7    |                                            |
 ```

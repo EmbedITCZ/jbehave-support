@@ -1,12 +1,16 @@
 package org.jbehavesupport.test.support;
 
+import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonMap;
+import static org.jbehavesupport.core.ssh.SshSetting.builder;
 
 import java.io.IOException;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
@@ -26,9 +30,6 @@ import org.jbehavesupport.core.support.YamlPropertiesConfigurer;
 import org.jbehavesupport.core.test.app.oxm.NameRequest;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -138,28 +139,34 @@ public class TestConfig {
     @Bean
     @Qualifier("TEST")
     public SshTemplate[] sshTemplate() throws IOException {
-        SshSetting passwordSetting = SshSetting.builder()
-            .hostname(env.getProperty("ssh.hostname"))
-            .user(env.getProperty("ssh.credentials.user"))
+        String hostname = env.getProperty("ssh.hostname");
+        String user = env.getProperty("ssh.credentials.user");
+        int port = parseInt(env.getProperty("ssh.port"));
+        String logPath = env.getProperty("ssh.logPath");
+
+        SshSetting passwordSetting = builder()
+            .hostname(hostname)
+            .user(user)
             .password(env.getProperty("ssh.credentials.password"))
-            .port(Integer.parseInt(env.getProperty("ssh.port")))
-            .logPath(env.getProperty("ssh.logPath"))
+            .port(port)
+            .logPath(logPath)
             .build();
 
         String keyPath = resourceLoader.getResource(env.getProperty("ssh.credentials.keyPath"))
             .getURL()
             .getFile();
-        SshSetting keySetting = SshSetting.builder()
-            .hostname(env.getProperty("ssh.hostname"))
-            .user(env.getProperty("ssh.credentials.user"))
+        SshSetting keySetting = builder()
+            .hostname(hostname)
+            .user(user)
             .keyPath(keyPath)
-            .port(Integer.parseInt(env.getProperty("ssh.port")))
-            .logPath(env.getProperty("ssh.logPath"))
+            .port(port)
+            .logPath(logPath)
             .build();
 
         RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver();
-        SshTemplate passwordTemplate = new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver);
-        SshTemplate keyTemplate = new SshTemplate(keySetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver);
+        String timestampFormat = env.getProperty("ssh.timestampFormat");
+        SshTemplate passwordTemplate = new SshTemplate(passwordSetting, timestampFormat, rollingLogResolver);
+        SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver);
 
         return new SshTemplate[]{passwordTemplate, keyTemplate};
     }

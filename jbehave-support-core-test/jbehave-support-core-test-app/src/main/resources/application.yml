@@ -2,17 +2,16 @@ spring:
   datasource:
     port: 11112
     url: jdbc:h2:tcp://localhost:${spring.datasource.port}/mem:test;MODE=ORACLE
-    driver: org.h2.Driver
     username: sa
     password: sa
+    driver-class-name: org.h2.Driver
+  security:
+    user:
+      name: sa
+      password: sa
 
 server:
   port: 11110
-
-security:
-  user:
-    name: sa
-    password: sa
 
 ssh:
   port: 2000
@@ -20,6 +19,6 @@ ssh:
     auth: 600000
     idle: 600000
   credentials:
-    user: ${security.user.name}
-    password: ${security.user.password}
+    user: ${spring.security.user.name}
+    password: ${spring.security.user.password}
     key: 'classpath:/ssh/publicKey.pem'

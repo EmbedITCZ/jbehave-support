@@ -137,6 +137,10 @@
                             <stopPort>9099</stopPort>
                             <war>${project.build.directory}/jbehave-support-core-test-app.war</war>
 
+                            <supportedPackagings>
+                                <supportedPackaging>jar</supportedPackaging>
+                            </supportedPackagings>
+
                             <httpConnector>
                                 <port>11110</port>
                             </httpConnector>

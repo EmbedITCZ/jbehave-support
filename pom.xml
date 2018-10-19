@@ -86,7 +86,7 @@
         <plugin.version.maven-deploy-plugin>2.4</plugin.version.maven-deploy-plugin>
         <plugin.version.maven-resources-plugin>2.5</plugin.version.maven-resources-plugin>
         <plugin.version.maven-compiler-plugin>2.3.2</plugin.version.maven-compiler-plugin>
-        <plugin.version.jetty-maven-plugin>9.2.20.v20161216</plugin.version.jetty-maven-plugin>
+        <plugin.version.jetty-maven-plugin>9.4.11.v20180605</plugin.version.jetty-maven-plugin>
         <plugin.version.surefire-maven-plugin>2.18.1</plugin.version.surefire-maven-plugin>
         <plugin.version.gmavenplus-plugin>1.5</plugin.version.gmavenplus-plugin>
         <plugin.version.maven-release-plugin>2.5.3</plugin.version.maven-release-plugin>

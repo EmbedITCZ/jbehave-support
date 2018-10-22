@@ -6,6 +6,7 @@ import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -250,14 +251,14 @@ public final class SqlSteps {
                 List<Map<String, String>> notExpectedData = new ArrayList<>(expectedData);
                 List<Map<String, String>> convertedActualData = new ArrayList<>();
 
-                actualData
-                    .forEach(map ->
-                        convertedActualData.add(map
-                            .entrySet()
-                            .stream()
-                            .collect(Collectors.toMap(Map.Entry::getKey,
-                                e -> String.valueOf(e.getValue()))))
-                    );
+                actualData.forEach(map -> {
+                    Map<String, String> convertedMap = new HashMap<>();
+                    map.forEach((key, value) -> {
+                        String convertedValue = value == null ? null : String.valueOf(value);
+                        convertedMap.put(key, convertedValue);
+                    });
+                    convertedActualData.add(convertedMap);
+                });
 
                 notExpectedData.removeAll(convertedActualData);
 
@@ -284,7 +285,7 @@ public final class SqlSteps {
                 expectedDataBuilder.append("\n| ");
                 for (Object value : row.values()) {
                     expectedDataBuilder
-                        .append(value.toString())
+                        .append(String.valueOf(value))
                         .append(" | ");
                 }
                 int index = notExpectedData.indexOf(row);
@@ -309,7 +310,7 @@ public final class SqlSteps {
                 foundInDbDataBuilder.append("\n| ");
                 for (Object value : row.values()) {
                     foundInDbDataBuilder
-                        .append(value.toString())
+                        .append(String.valueOf(value))
                         .append(" | ");
                 }
             }

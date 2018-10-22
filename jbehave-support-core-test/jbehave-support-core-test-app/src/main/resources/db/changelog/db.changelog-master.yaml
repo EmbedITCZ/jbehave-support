@@ -63,3 +63,12 @@ databaseChangeLog:
               - column:
                   name: last_update
                   value: '2018-06-18'
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: first_name
+                  value: Michael
+              - column:
+                  name: last_name
+                  value: Doe

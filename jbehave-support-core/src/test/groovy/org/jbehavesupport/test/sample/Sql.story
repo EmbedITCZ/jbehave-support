@@ -9,12 +9,13 @@ Scenario: Execute SQL query on database and verify result
 
 Given this query is performed on [TEST]:
 select * from person order by first_name
-Then the result set has 2 row(s)
-Then the result set has {PLUS:1:1} row(s)
+Then the result set has 3 row(s)
+Then the result set has {PLUS:1:1:1} row(s)
 Then these rows match the query result:
 | FIRST_NAME | LAST_NAME |
 | Jane       | Doe       |
 | John       | Doe       |
+| Michael    | Doe       |
 
 Scenario: Execute update SQL query on database and verify result
 
@@ -109,3 +110,11 @@ Scenario: Query fails with message
 Given this query is performed on [TEST]:
 select first_name from person_
 Then query fails and error message contains: Table "PERSON_" not found
+
+
+Scenario: NULL command in step - these rows are present in the query result
+Given this query is performed on [TEST]:
+select first_name, last_name, age, last_update from person
+Then these rows are present in the query result:
+| first_name | last_name | age    | last_update |
+| Michael    | Doe       | {NULL} | {NULL}      |

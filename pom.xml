@@ -9,10 +9,11 @@
     <name>jbehave-support</name>
     <packaging>pom</packaging>
     <description>Lightweight extension to jbehave</description>
+    <url>https://embeditcz.github.io/jbehave-support/</url>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com:EmbedITCZ/jbehave-support.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:EmbedITCZ/jbehave-support.git</developerConnection>
+        <connection>scm:git:https://github.com/EmbedITCZ/jbehave-support.git</connection>
+        <developerConnection>scm:git:https://github.com/EmbedITCZ/jbehave-support.git</developerConnection>
         <url>https://github.com/EmbedITCZ/jbehave-support</url>
     </scm>
 

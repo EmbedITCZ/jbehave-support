@@ -222,7 +222,7 @@ public final class SqlSteps {
             DataSource dataSource = BeanFactoryAnnotationUtils.qualifiedBeanOfType(beanFactory, DataSource.class, databaseId);
             return new NamedParameterJdbcTemplate(dataSource);
         } catch (NoSuchBeanDefinitionException e) {
-            throw new IllegalArgumentException("SqlSteps requires DataSource bean with qualifier [" + databaseId + "] but no was found", e);
+            throw new IllegalArgumentException("SqlSteps requires single DataSource bean with qualifier [" + databaseId + "]", e);
         }
     }
 

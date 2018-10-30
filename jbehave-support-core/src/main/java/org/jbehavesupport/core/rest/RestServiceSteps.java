@@ -90,7 +90,7 @@ public final class RestServiceSteps {
         try {
             return BeanFactoryAnnotationUtils.qualifiedBeanOfType(beanFactory, RestServiceHandler.class, application);
         } catch (NoSuchBeanDefinitionException e) {
-            throw new IllegalArgumentException("RestServiceSteps requires a RestServiceHandler bean with qualifier [" + application + "] but none was found", e);
+            throw new IllegalArgumentException("RestServiceSteps requires single RestServiceHandler bean with qualifier [" + application + "]", e);
         }
     }
 

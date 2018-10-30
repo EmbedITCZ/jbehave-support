@@ -62,7 +62,7 @@ public final class JmsSteps {
             return qualifiedBeanOfType(beanFactory, JmsHandler.class, broker);
         } catch (NoSuchBeanDefinitionException e) {
             throw new IllegalArgumentException(
-                "JmsSteps requires JmsHandler bean with qualifier [" + broker + "], but none was found", e);
+                "JmsSteps requires single JmsHandler bean with qualifier [" + broker + "]", e);
         }
     }
 

@@ -115,7 +115,7 @@ public final class WebServiceSteps {
         try {
             return BeanFactoryAnnotationUtils.qualifiedBeanOfType(beanFactory, WebServiceHandler.class, application);
         } catch (NoSuchBeanDefinitionException e) {
-            throw new IllegalArgumentException("WebServiceSteps requires WebServiceHandler bean with qualifier [" + application + "] but no was found", e);
+            throw new IllegalArgumentException("WebServiceSteps requires single WebServiceHandler bean with qualifier [" + application + "]", e);
         }
     }
 

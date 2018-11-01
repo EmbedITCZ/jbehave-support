@@ -14,6 +14,7 @@ import static org.springframework.util.StreamUtils.copyToString;
 import static org.springframework.util.StringUtils.isEmpty;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -40,14 +41,18 @@ public class SshTemplate {
         static final String CMD_DELIMITER = "; ";
     }
 
-    public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver) throws IOException {
+    public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver) {
         isTrue(!isEmpty(sshSetting.getLogPath()), "log path must not be null or empty");
         isTrue(!isEmpty(timestampFormat), "timestamp format must not be null or empty");
 
         this.sshSetting = sshSetting;
         this.timestampFormat = timestampFormat;
         this.rollingLogResolver = rollingLogResolver;
-        this.getLogBetweenTimestampsCommand = copyToString(new ClassPathResource("get-log-between-timestamps-template.awk").getInputStream(), defaultCharset());
+        try {
+            this.getLogBetweenTimestampsCommand = copyToString(new ClassPathResource("get-log-between-timestamps-template.awk").getInputStream(), defaultCharset());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     public SshSetting getSshSetting() {

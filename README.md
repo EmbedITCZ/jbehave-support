@@ -1,3 +1,4 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jbehavesupport/jbehave-support-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jbehavesupport/jbehave-support-core)
 [![Build Status](https://travis-ci.org/EmbedITCZ/jbehave-support.svg?branch=master)](https://travis-ci.org/EmbedITCZ/jbehave-support)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1e5c39dfaa6240b8b448d0df114c0d8e)](https://www.codacy.com/app/jbehavesupport/jbehave-support?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EmbedITCZ/jbehave-support&amp;utm_campaign=Badge_Grade)
 # jbehave-support

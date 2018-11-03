@@ -48,6 +48,12 @@
             <organization>EmbedIT</organization>
             <organizationUrl>https://embedit.cz</organizationUrl>
         </developer>
+        <developer>
+            <name>Amy Kosinova</name>
+            <email>amy.kosinova@gmail.com</email>
+            <organization>EmbedIT</organization>
+            <organizationUrl>https://embedit.cz</organizationUrl>
+        </developer>
     </developers>
 
     <properties>

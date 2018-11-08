@@ -24,3 +24,6 @@ Recommended set of plugins:
 ## modules
 - [core](jbehave-support-core/README.md) - details about integration and usage 
 
+>
+> The release process is done by maven and for the setup, you should follow [the release document](docs/Release.md)
+> 

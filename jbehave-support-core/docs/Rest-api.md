@@ -110,7 +110,7 @@ The response headers can be verified using the following step.
 Then response from [TEST] REST API has status [200] and values match:
 | name                 | expectedValue    | verifier |
 | @header.Content-Type | application/json | CONTAINS |
-| id                   | {NOT_NULL}       |          |
+| id                   |                  | NOT_NULL |
 | firstName            | Bruno            |          |
 | lastName             | Schmidt          |          |
 ```

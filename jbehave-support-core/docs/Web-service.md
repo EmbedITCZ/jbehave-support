@@ -32,9 +32,9 @@ The next step will verify the response received from the called system - MYAPP i
 
 ```
 Then [ClientRequest] values from [MYAPP] match:
-| name                             | expectedValue        |
-| client.id                        | {NOT_NULL}           |
-| client.version                   | {NOT_NULL}           |
+| name           | expectedValue | verifier |
+| client.id      | {NULL}        | NE       |
+| client.version | {NULL}        | NE       |
 ```
 
 The following step will save the specified values from the response to test context.

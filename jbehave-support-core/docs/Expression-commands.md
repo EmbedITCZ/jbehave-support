@@ -34,7 +34,7 @@ List of commands:
 #### BYTES
 Provides byte array for string in SOAP or REST requests.
 * param - string 
-* result - reference in meaning TestContext to byte array
+* result - TestContext reference pointing to byte array
 
 #### CONCAT
 This command simply concatenates the arguments it is supplied with. It can concatenate two and more arguments and the arguments can be commands as well.
@@ -199,7 +199,7 @@ Generate random string with specific length. Command consumes one parameter whic
 #### RESOURCE
 Provides byte array for sending files in SOAP or REST requests. 
 * param - string path to resource
-* result - reference in meaning TestContext to Resource
+* result - TestContext reference pointing to Resource
 
 > Example:
 > ```

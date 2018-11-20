@@ -29,6 +29,7 @@ There are several extensions already prepared and ready to use:
  - `WsXmlReporterExtension` (copies SOAP requests/responses from [WebServiceSteps](Web-service.md))
  - `TestContextXmlReporterExtension` (copies contents of [TestContext](Test-context.md))
  - `ServerLogXmlReporterExtension` (copies server log(s) for each system with configured [SshTemplate](Ssh.md))
+- `FailScreenshotsReporterExtension` (prints out error screenshots from [Web testing](Web-testing.md) - if any were generated)
 
 To use these extensions simply register the wanted extension as a bean, e.g.:
 ```

@@ -1,8 +1,8 @@
 # Configuration for release to maven central
 
-Register at [sonatype jira](https://issues.sonatype.org) - credential should be used in ossrh server section.
-Create the task in sonatype's jira for getting permission to deploy. 
-Generate gpg key for signing artifacts. You can use steps from [sonatype blog](https://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/) - use only steps for generating keys and registering to the central server - rest should be already configured.
+- Register at [sonatype jira](https://issues.sonatype.org) - credential should be used in ossrh server section.
+- Create the task in sonatype's jira for getting permission to deploy (see [OSSRH-44075](https://issues.sonatype.org/browse/OSSRH-44075))
+- Generate gpg key for signing artifacts. You can use steps from [sonatype blog](https://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/) - use only steps for generating keys and registering to the central server - rest should be already configured.
 
 Fragment from settings.xml (replace variables with values above):
 ```xml
@@ -22,7 +22,7 @@ Fragment from settings.xml (replace variables with values above):
       </activation>
       <properties>
         <gpg.executable>gpg</gpg.executable>
-        <gpg.passphrase>${gpg password}</gpg.passphrase>
+        <gpg.passphrase>${gpg.password}</gpg.passphrase>
       </properties>
     </profile>
   </profiles>

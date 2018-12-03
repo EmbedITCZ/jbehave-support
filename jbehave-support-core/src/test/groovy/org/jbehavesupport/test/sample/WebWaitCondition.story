@@ -2,6 +2,7 @@ Given [TEST]/[wait-condition-test.html] url is open
 
 Then on [home] page wait until [@url] has text wait-condition-test
 Then on [home] page wait until [@title] has text WebWaitCondition
+Then on [home] page wait until [@title] has text WebWaitCondition test page
 
 Then on [home] page wait until [@url] missing text XXX
 Then on [home] page wait until [@title] missing text XXX

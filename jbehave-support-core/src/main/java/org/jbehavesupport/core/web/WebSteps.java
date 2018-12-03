@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.prependIfMissing;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils.qualifiedBeanOfType;
+import static java.util.Arrays.asList;
 
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -216,7 +217,7 @@ public final class WebSteps {
 
     private String parseConditionValue(String condition) {
         String[] conditionParts = condition.split(" ");
-        return conditionParts.length == 3 ? conditionParts[2] : null;
+        return conditionParts.length >= 3 ? String.join(" ", asList(conditionParts).subList(2,conditionParts.length)) : null;
     }
 
     private Object resolvePropertyValue(String page, Map<String, String> row) {

@@ -18,6 +18,7 @@ import org.jbehavesupport.core.report.ReportContext;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
+import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.xml.transform.StringResult;
 
@@ -110,9 +111,12 @@ public class WsXmlReporterExtension extends AbstractXmlReporterExtension impleme
         printBegin(writer, type.typeName, attributes);
         StringBuilder message = new StringBuilder();
         try {
-            StringResult headerResult = new StringResult();
-            transformer.transform(((SoapMessage) msg).getSoapHeader().getSource(), headerResult);
-            message.append(headerResult.toString().trim());
+            SoapHeader soapHeader = ((SoapMessage) msg).getSoapHeader();
+            if (soapHeader != null) {
+                StringResult headerResult = new StringResult();
+                transformer.transform(soapHeader.getSource(), headerResult);
+                message.append(headerResult.toString().trim());
+            }
 
             StringResult bodyResult = new StringResult();
             transformer.transform(msg.getPayloadSource(), bodyResult);

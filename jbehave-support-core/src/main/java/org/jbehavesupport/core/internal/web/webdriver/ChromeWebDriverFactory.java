@@ -65,7 +65,7 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
 
         ChromeOptions options = new ChromeOptions();
         if (browserStartupArguments != null) {
-            options.addArguments(browserStartupArguments);
+            options.addArguments(browserStartupArguments.split("\\s+"));
         } else {
             options.addArguments("--start-maximized");
         }

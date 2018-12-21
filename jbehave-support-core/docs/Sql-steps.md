@@ -112,4 +112,24 @@ When this update is performed on [MYAPP]:
 delete from client
 ```
 
+#### Exception checking
+
+By default any exceptions are thrown from the steps right away as they occur.
+A delayed exception handling can be enabled by using the step variants including the phrase `with expected exception` e.g.:
+```
+When this update with expected exception is performed on [MYAPP]:
+```
+```
+Given this query with expected exception is performed on [MYAPP]:
+```
+
+These step variants cause the sql exception __NOT__ to be thrown immediately and allows the checking of exception using the following step
+(in the example below we are checking the error message for the sentence `Table "PERSON_" not found`):
+```
+Then query fails and error message contains: Table "PERSON_" not found
+```
+
+If a step with delayed exception throwing is used using the above mentioned and there is another sql related test step run afterwards without first checking the exception, then the next step will fail with the original exception.
+(And if there is no such sql related step run then the exception will be thrown at the end of the scenario - in AfterScenario)
+
 ---

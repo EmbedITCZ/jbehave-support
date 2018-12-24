@@ -33,7 +33,7 @@ public class SshTemplate {
     private SSHClient sshClient;
 
     private abstract static class Commands {
-        static final String TIMEZONE = "timedatectl | grep zone | grep -Po '(.*zone: )\\K(\\S+)'";
+        static final String TIMEZONE = "date +%z";
         static final String EPOCH_TIME = "date +%s";
     }
 

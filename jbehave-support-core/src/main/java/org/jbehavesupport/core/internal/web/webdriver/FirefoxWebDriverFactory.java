@@ -2,6 +2,8 @@ package org.jbehavesupport.core.internal.web.webdriver;
 
 import java.util.concurrent.TimeUnit;
 
+import io.github.bonigarcia.wdm.DriverManagerType;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jbehavesupport.core.web.WebDriverFactory;
 
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
@@ -50,7 +52,7 @@ public class FirefoxWebDriverFactory implements WebDriverFactory {
             if (browserDriverLocation != null) {
                 System.setProperty("webdriver.gecko.driver", browserDriverLocation);
             } else {
-                FirefoxDriverManager.getInstance().version("v0.8.0").setup();
+                WebDriverManager.firefoxdriver().version("v0.8.0").setup();
             }
             driverSetup = true;
         }

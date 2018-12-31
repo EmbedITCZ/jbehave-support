@@ -36,6 +36,13 @@ function reportReady() {
         $(this).html(jsonPrettyPrint($(this).text()));
     });
 
+    /* copy to clipboard */
+    $('.btn-copy-clipboard').each(function () {
+        $(this).click(function () {
+            copyToClipboard($(this));
+        });
+    });
+
     display('story1');
     checkNewVersion();
 }
@@ -130,4 +137,24 @@ function display(storyId) {
         $(this).toggle($(this).attr('id') == storyId);
     });
     $('body').attr('data-target', '#' + $('div[id=' + storyId + ']').find('nav').attr('id'));
+}
+
+function copyToClipboard(element) {
+    let copiedElement;
+    let selector = element.attr('data-selector');
+    if (selector.charAt(0) === "#") {
+        copiedElement = $(selector);
+    } else {
+        copiedElement = element.find(selector);
+    }
+
+    /* copy command needs to have the element selected which not all elements support
+    thus we copy the text into temporary textarea which supports the select() operation
+    and after the operation we remove it from the dom tree again */
+    let copyTextArea = document.createElement("textarea");
+    copyTextArea.value = copiedElement.text();
+    document.body.appendChild(copyTextArea);
+    copyTextArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(copyTextArea);
 }

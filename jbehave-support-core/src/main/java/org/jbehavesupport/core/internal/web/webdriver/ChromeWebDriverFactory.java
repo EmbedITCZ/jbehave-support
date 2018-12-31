@@ -2,10 +2,10 @@ package org.jbehavesupport.core.internal.web.webdriver;
 
 import java.util.concurrent.TimeUnit;
 
-import org.jbehavesupport.core.web.WebDriverFactory;
-
-import io.github.bonigarcia.wdm.BrowserManager;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.DriverManagerType;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.jbehavesupport.core.web.WebDriverFactory;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -54,7 +54,7 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
             if (browserDriverLocation != null) {
                 System.setProperty("webdriver.chrome.driver", browserDriverLocation);
             } else {
-                BrowserManager browserManager = ChromeDriverManager.getInstance();
+                WebDriverManager browserManager = WebDriverManager.chromedriver();
                 if (browserDriverVersion != null) {
                     browserManager.version(browserDriverVersion);
                 }

@@ -816,9 +816,12 @@
                 </tbody>
             </table>
 
-            <p>
-                <a href="#sshlog-{$logNum}" data-toggle="collapse" class="pointerCursor">Show/hide log contents</a>
-            </p>
+            <div class="btn-group form-group align-self-center">
+                <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide log contents</a>
+                <button type="button" class="btn btn-sm btn-outline-info btn-copy-clipboard" data-selector="#sshlog-{$logNum}" title="Copy to clipboard">
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                </button>
+            </div>
 
             <div id="sshlog-{$logNum}" class="collapse">
                 <p>
@@ -889,6 +892,9 @@
             </strong>
             <xsl:value-of select="concat(' ', @type)"/>
             <xsl:if test=".">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                </button>
                 <pre class="mb-0">
                     <xsl:value-of select="." disable-output-escaping="yes"/>
                 </pre>
@@ -905,6 +911,9 @@
             </strong>
             <xsl:value-of select="concat(' ', @type)"/>
             <xsl:if test=".">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                </button>
                 <pre class="mb-0">
                     <xsl:value-of select="." disable-output-escaping="yes"/>
                 </pre>
@@ -968,6 +977,9 @@
             </strong>
             <br/>
             <xsl:if test="body">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                </button>
                 <pre class="json-message">
                     <xsl:value-of select="body" disable-output-escaping="yes"/>
                 </pre>
@@ -986,6 +998,9 @@
             <xsl:value-of select="@status"/>
 
             <xsl:if test="body">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                </button>
                 <pre class="json-message">
                     <xsl:value-of select="body" disable-output-escaping="yes"/>
                 </pre>

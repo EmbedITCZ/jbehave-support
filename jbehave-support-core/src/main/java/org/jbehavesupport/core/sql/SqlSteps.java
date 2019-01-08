@@ -1,5 +1,7 @@
 package org.jbehavesupport.core.sql;
 
+import static org.jbehavesupport.core.sql.SqlSteps.ExceptionHandling.CATCH_EXCEPTION;
+import static org.jbehavesupport.core.sql.SqlSteps.ExceptionHandling.THROW_EXCEPTION;
 import static org.jbehavesupport.core.support.TestContextUtil.putDataIntoContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.util.Assert.isTrue;
@@ -56,21 +58,43 @@ public final class SqlSteps {
     @Autowired
     private ContainsVerifier containsVerifier;
 
+    enum ExceptionHandling {
+        THROW_EXCEPTION,
+        CATCH_EXCEPTION
+    }
+
     @Given("this query is performed on [$databaseId]:$sqlStatement")
     @When("this query is performed on [$databaseId]:$sqlStatement")
     public void executeQuery(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement) {
         checkSqlException();
-        executeQuery(databaseId, sqlStatement, new ExamplesTable(""));
+        executeQuery(databaseId, sqlStatement, new ExamplesTable(""), THROW_EXCEPTION);
+    }
+
+    @Given("this query with expected exception is performed on [$databaseId]:$sqlStatement")
+    @When("this query with expected exception is performed on [$databaseId]:$sqlStatement")
+    public void executeQueryCatchException(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement) {
+        checkSqlException();
+        executeQuery(databaseId, sqlStatement, new ExamplesTable(""), CATCH_EXCEPTION);
     }
 
     @Given(value = "this query is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
     @When(value = "this query is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
     public void executeQuery(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement, ExamplesTable parameters) {
+        executeQuery(databaseId, sqlStatement, parameters, THROW_EXCEPTION);
+    }
+
+    @Given(value = "this query with expected exception is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
+    @When(value = "this query with expected exception is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
+    public void executeQueryCatchException(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement, ExamplesTable parameters) {
+        executeQuery(databaseId, sqlStatement, parameters, CATCH_EXCEPTION);
+    }
+
+    private void executeQuery(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement, ExamplesTable parameters, ExceptionHandling exceptionHandling) {
         checkSqlException();
         putDataIntoContext(testContext, parameters, ExampleTableConstraints.ALIAS, ExampleTableConstraints.DATA);
         String resolvedStatement = sqlStatement.getValue();
 
-        List<Map<String, Object>> result = new ArrayList<>();
+        List<Map<String, Object>> result;
 
         try {
             result = resolveJdbcTemplate(databaseId)
@@ -79,6 +103,9 @@ public final class SqlSteps {
             testContext.put(SQL_QUERY_KEY, resolvedStatement);
         } catch (DataAccessException e) {
             testContext.put(SQL_EXCEPTION_KEY, e);
+            if (exceptionHandling != CATCH_EXCEPTION) {
+                throw e;
+            }
         }
     }
 
@@ -86,12 +113,29 @@ public final class SqlSteps {
     @When("this update is performed on [$databaseId]:$sqlStatement")
     public void executeUpdate(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement) {
         checkSqlException();
-        executeUpdate(databaseId, sqlStatement, new ExamplesTable(""));
+        executeUpdate(databaseId, sqlStatement, new ExamplesTable(""), THROW_EXCEPTION);
+    }
+
+    @Given("this update with expected exception is performed on [$databaseId]:$sqlStatement")
+    @When("this update with expected exception is performed on [$databaseId]:$sqlStatement")
+    public void executeUpdateCatchException(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement) {
+        checkSqlException();
+        executeUpdate(databaseId, sqlStatement, new ExamplesTable(""), CATCH_EXCEPTION);
     }
 
     @Given(value = "this update is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
     @When(value = "this update is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
     public void executeUpdate(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement, ExamplesTable parameters) {
+        executeUpdate(databaseId, sqlStatement, parameters, THROW_EXCEPTION);
+    }
+
+    @Given(value = "this update with expected exception is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
+    @When(value = "this update with expected exception is performed on [$databaseId]:$sqlStatement with parameters:$parameters", priority = 100)
+    public void executeUpdateCatchException(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement, ExamplesTable parameters) {
+        executeUpdate(databaseId, sqlStatement, parameters, CATCH_EXCEPTION);
+    }
+
+    private void executeUpdate(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement, ExamplesTable parameters, ExceptionHandling exceptionHandling) {
         checkSqlException();
         putDataIntoContext(testContext, parameters, ExampleTableConstraints.ALIAS, ExampleTableConstraints.DATA);
         String resolvedStatement = sqlStatement.getValue();
@@ -100,11 +144,13 @@ public final class SqlSteps {
                 .convertMap(parameters, ExampleTableConstraints.NAME, ExampleTableConstraints.DATA));
         } catch (DataAccessException e) {
             testContext.put(SQL_EXCEPTION_KEY, e);
+            if (exceptionHandling != CATCH_EXCEPTION) {
+                throw e;
+            }
         }
 
         testContext.put(SQL_QUERY_KEY, resolvedStatement);
     }
-
 
     @Given("these columns from the single-row query result are saved:$storedData")
     @When("these columns from the single-row query result are saved:$storedData")

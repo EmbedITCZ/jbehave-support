@@ -107,7 +107,7 @@ delete from person where first_name = 'null';
 
 Scenario: Query fails with message
 
-Given this query is performed on [TEST]:
+Given this query with expected exception is performed on [TEST]:
 select first_name from person_
 Then query fails and error message contains: Table "PERSON_" not found
 

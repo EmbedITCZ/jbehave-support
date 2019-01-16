@@ -5,7 +5,7 @@ import org.crsh.cli.Usage
 import org.crsh.command.InvocationContext
 
 class awk {
-    @Usage("Dummy awk command always returning foo bar")
+    @Usage("Dummy awk command containing longer text with CDATA")
     @Command
     def main(InvocationContext context) {
         return "some long string containing cdata in many Cdata forms." +

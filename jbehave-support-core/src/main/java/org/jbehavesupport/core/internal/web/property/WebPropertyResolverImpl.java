@@ -17,7 +17,7 @@ public class WebPropertyResolverImpl implements WebPropertyResolver {
 
     public WebPropertyResolverImpl(List<WebProperty> properties) {
         this.properties = properties.stream()
-            .collect(toMap(e -> e.name(), e -> e));
+            .collect(toMap(WebProperty::name, e -> e));
     }
 
     @Override

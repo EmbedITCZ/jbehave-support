@@ -28,7 +28,7 @@ For some verification steps it's possible to use verifiers such as:
 `SIZE_GT` - Size of collection is greater than expected value
 `REGEX_MATCH` - Matches String using regular expression
 
-The following sample step compares data from a ClientReponse from MYAPP against values in test context using operators.
+The following sample step compares data from a ClientResponse from MYAPP against values in test context using operators.
 
 ```
 Then [ClientResponse] values from [MYAPP] match:

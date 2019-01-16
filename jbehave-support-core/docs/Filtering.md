@@ -1,7 +1,7 @@
 [Contents](../README.md)
 
 ## Filtering
-There is support for filtering stories/scenarions based on metadata attributes. Filtering is implemented as extended story parser accepting custom MetaFilter implementation.
+There is support for filtering stories/scenarios based on metadata attributes. Filtering is implemented as extended story parser accepting custom MetaFilter implementation.
 Parser also allows to set custom story name instead of default derived from story file name. This is extremely useful in the cases where single story file is reused and executed by different test suites and you need to distinguish one execution from another.
 
 Below there is a description of features supported by extended filtering framework.

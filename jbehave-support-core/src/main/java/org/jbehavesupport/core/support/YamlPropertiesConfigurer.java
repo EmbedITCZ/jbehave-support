@@ -76,7 +76,7 @@ public class YamlPropertiesConfigurer implements BeanFactoryPostProcessor, Envir
             .map(this::resolveLocation)
             .flatMap(Function.identity())
             .map(location -> resourceLoader.getResource(location))
-            .toArray(size -> new Resource[size]);
+            .toArray(Resource[]::new);
     }
 
     private Stream<String> resolveLocation(String location) {

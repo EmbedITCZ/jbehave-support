@@ -2,11 +2,8 @@ package org.jbehavesupport.core.internal.web.webdriver;
 
 import java.util.concurrent.TimeUnit;
 
-import io.github.bonigarcia.wdm.DriverManagerType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jbehavesupport.core.web.WebDriverFactory;
-
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;

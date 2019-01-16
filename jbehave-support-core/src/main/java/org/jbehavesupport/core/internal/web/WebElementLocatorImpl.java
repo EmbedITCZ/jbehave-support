@@ -1,17 +1,16 @@
 package org.jbehavesupport.core.internal.web;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.web.WebElementLocator;
 import org.jbehavesupport.core.web.WebElementRegistry;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.web.WebSteps;
-
-import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -47,7 +46,7 @@ public class WebElementLocatorImpl implements WebElementLocator {
     private FluentWait<WebDriver> waiting() {
         waitForDocumentIsReady();
         waitForCustomCondition();
-        return new FluentWait<>(driver).withTimeout(timeout, SECONDS);
+        return new FluentWait<>(driver).withTimeout(Duration.ofSeconds(timeout));
     }
 
     private void waitForDocumentIsReady() {

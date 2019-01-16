@@ -92,7 +92,7 @@ public class WebServiceEndpointRegistry {
     public final Class[] endpointsClasses() {
         return endpoints.stream()
             .flatMap(e -> Stream.of(e.getRequestClass(), e.getResponseClass()))
-            .toArray(size -> new Class<?>[size]);
+            .toArray(Class[]::new);
     }
 
     @Value

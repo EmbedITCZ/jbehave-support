@@ -1,6 +1,5 @@
 package org.jbehavesupport.core.ws;
 
-import static org.jbehavesupport.core.support.TestContextUtil.putDataIntoContext;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.state;
@@ -10,20 +9,19 @@ import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
 
-import org.jbehavesupport.core.TestContext;
-import org.jbehavesupport.core.internal.verification.VerifierNames;
-import org.jbehavesupport.core.support.RequestFactory;
-import org.jbehavesupport.core.verification.Verifier;
-import org.jbehavesupport.core.verification.VerifierResolver;
-
 import lombok.Data;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Parameters;
 import org.jbehave.core.steps.Row;
+import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.internal.ExampleTableConstraints;
 import org.jbehavesupport.core.internal.MetadataUtil;
 import org.jbehavesupport.core.internal.ReflectionUtils;
+import org.jbehavesupport.core.internal.verification.VerifierNames;
+import org.jbehavesupport.core.support.RequestFactory;
 import org.jbehavesupport.core.support.TestContextUtil;
+import org.jbehavesupport.core.verification.Verifier;
+import org.jbehavesupport.core.verification.VerifierResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ws.FaultAwareWebServiceMessage;
@@ -217,7 +215,7 @@ public abstract class WebServiceHandler {
      *      requestFactory.withFieldAccessStrategy();
      * }</pre>
      * <p>
-     * or you can reqister custom handler for request modification
+     * or you can register custom handler for request modification
      * <pre>{@code
      *      requestFactory
      *          .handler...

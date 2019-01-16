@@ -36,7 +36,7 @@ END {
     exit 0;
   }
 
-  # end line number is ocurrence of next timestamp after end timestamp, we want everything before
+  # end line number is occurrence of next timestamp after end timestamp, we want everything before
   endLineNumber--;
 
   # we did not find an end, so print everything until EOF

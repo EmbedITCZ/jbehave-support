@@ -20,7 +20,7 @@ public class ConcatCommand implements ExpressionCommand {
     public Object execute(Object... params) {
         isTrue(params.length >= 2, "At least two parameters were expected");
 
-        return Arrays.asList(params).stream()
+        return Arrays.stream(params)
             .map(String::valueOf)
             .collect(Collectors.joining());
     }

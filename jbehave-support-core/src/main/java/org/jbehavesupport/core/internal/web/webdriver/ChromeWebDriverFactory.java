@@ -2,8 +2,6 @@ package org.jbehavesupport.core.internal.web.webdriver;
 
 import java.util.concurrent.TimeUnit;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.DriverManagerType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jbehavesupport.core.web.WebDriverFactory;
 import org.openqa.selenium.chrome.ChromeDriver;

@@ -17,7 +17,7 @@ public class WebActionResolverImpl implements WebActionResolver {
 
     public WebActionResolverImpl(List<WebAction> actions) {
         this.actions = actions.stream()
-            .collect(toMap(e -> e.name(), e -> e));
+            .collect(toMap(WebAction::name, e -> e));
     }
 
     @Override

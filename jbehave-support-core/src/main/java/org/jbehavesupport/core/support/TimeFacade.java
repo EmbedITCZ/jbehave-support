@@ -14,7 +14,7 @@ import java.util.Date;
 public interface TimeFacade {
 
     static TimeFacade getDefault() {
-        return () -> Instant.now();
+        return Instant::now;
     }
 
     Instant getCurrentInstant();

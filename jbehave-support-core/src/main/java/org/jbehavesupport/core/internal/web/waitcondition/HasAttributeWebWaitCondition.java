@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import org.jbehavesupport.core.web.WebWaitConditionContext;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.springframework.stereotype.Component;
@@ -26,17 +25,14 @@ public class HasAttributeWebWaitCondition extends AbstractWebWaitCondition {
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
         String attributeName = parseAttributeName(ctx);
-        wait(ctx).until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver driver) {
-                WebElement element = findElement(ctx);
-                String attributeValue = element.getAttribute(attributeName);
+        wait(ctx).until((ExpectedCondition<WebElement>) driver -> {
+            WebElement element = findElement(ctx);
+            String attributeValue = element.getAttribute(attributeName);
 
-                if (attributeValue != null && ctx.getValue() == null) {
-                    return element;
-                } else {
-                    return contains(attributeValue, ctx.getValue()) ? element : null;
-                }
+            if (attributeValue != null && ctx.getValue() == null) {
+                return element;
+            } else {
+                return contains(attributeValue, ctx.getValue()) ? element : null;
             }
         });
     }

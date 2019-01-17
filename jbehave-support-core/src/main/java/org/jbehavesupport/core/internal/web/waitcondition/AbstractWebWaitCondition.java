@@ -1,11 +1,10 @@
 package org.jbehavesupport.core.internal.web.waitcondition;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import java.time.Duration;
 
 import org.jbehavesupport.core.web.WebElementRegistry;
 import org.jbehavesupport.core.web.WebWaitCondition;
 import org.jbehavesupport.core.web.WebWaitConditionContext;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -26,8 +25,8 @@ public abstract class AbstractWebWaitCondition implements WebWaitCondition {
 
     protected final FluentWait<WebDriver> wait(WebWaitConditionContext ctx) {
         return new FluentWait<>(driver)
-            .pollingEvery(1, SECONDS)
-            .withTimeout(timeout, SECONDS)
+            .pollingEvery(Duration.ofSeconds(1))
+            .withTimeout(Duration.ofSeconds(timeout))
             .ignoring(NoSuchElementException.class);
     }
 

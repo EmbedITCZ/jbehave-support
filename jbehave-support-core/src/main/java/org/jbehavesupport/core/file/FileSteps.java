@@ -5,6 +5,7 @@ import static org.jbehavesupport.core.internal.MetadataUtil.userDefined;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.Charset;
 
 import org.jbehavesupport.core.TestContext;
 
@@ -26,7 +27,7 @@ public final class FileSteps {
         try {
             File tempFile = File.createTempFile("test", extension);
             tempFile.deleteOnExit();
-            FileUtils.writeStringToFile(tempFile, content);
+            FileUtils.writeStringToFile(tempFile, content, Charset.defaultCharset());
             testContext.put(alias, tempFile.getCanonicalPath(), userDefined());
         } catch (IOException e) {
             throw new UncheckedIOException(e);

@@ -2,6 +2,7 @@ package org.jbehavesupport.core.ws;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
@@ -122,7 +123,7 @@ public class WebServiceTemplateConfigurer {
             sb.append(getUsername());
             sb.append(':');
             sb.append(getPassword());
-            return Base64.getEncoder().encodeToString(sb.toString().getBytes("US-ASCII"));
+            return Base64.getEncoder().encodeToString(sb.toString().getBytes(StandardCharsets.US_ASCII));
         }
 
         @Override

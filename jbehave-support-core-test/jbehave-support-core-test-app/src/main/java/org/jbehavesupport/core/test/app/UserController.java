@@ -36,8 +36,8 @@ public class UserController {
 
     @PostConstruct
     public void postConstruct() {
-        users.put(Long.valueOf(5), User.builder().id(Long.valueOf(5)).firstName("Emanuel").lastName("Rego").build());
-        users.put(Long.valueOf(9), User.builder().id(Long.valueOf(9)).firstName("Alison").lastName("Cerutti").build());
+        users.put(5L, User.builder().id(5L).firstName("Emanuel").lastName("Rego").build());
+        users.put(9L, User.builder().id(9L).firstName("Alison").lastName("Cerutti").build());
     }
 
     @PatchMapping("/init/")

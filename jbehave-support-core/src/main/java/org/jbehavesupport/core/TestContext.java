@@ -56,7 +56,6 @@ public interface TestContext {
      * Get entry from context.
      *
      * @param key
-     * @param <T>
      * @return entry
      */
     Entry getEntry(String key);

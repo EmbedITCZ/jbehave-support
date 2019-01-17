@@ -14,7 +14,7 @@ class VerifierResolverTest extends Specification {
     @Autowired
     VerifierResolver verifierResolver;
 
-    def "GetVerifierByNamePossitive"() {
+    def "GetVerifierByNamePositive"() {
 
         expect:
         verifierResolver.getVerifierByName(VerifierNames.EQ) != null;

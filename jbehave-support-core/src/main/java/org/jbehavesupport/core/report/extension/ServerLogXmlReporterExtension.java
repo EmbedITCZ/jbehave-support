@@ -68,12 +68,12 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
     }
 
     private Map<String, String> getSshTemplateAttributes(ReportContext reportContext, SshTemplate sshTemplate) {
-        Map<String, String> sshTemplateAtrributes = new HashMap<>();
-        sshTemplateAtrributes.put("startDate", reportContext.startExecutionZoned().toString());
-        sshTemplateAtrributes.put("endDate", reportContext.endExecutionZoned().toString());
-        sshTemplateAtrributes.put("host", sshTemplate.getSshSetting().getHostname() + ":" + sshTemplate.getSshSetting().getPort());
-        sshTemplateAtrributes.put("logPath", sshTemplate.getSshSetting().getLogPath());
-        return sshTemplateAtrributes;
+        Map<String, String> sshTemplateAttributes = new HashMap<>();
+        sshTemplateAttributes.put("startDate", reportContext.startExecutionZoned().toString());
+        sshTemplateAttributes.put("endDate", reportContext.endExecutionZoned().toString());
+        sshTemplateAttributes.put("host", sshTemplate.getSshSetting().getHostname() + ":" + sshTemplate.getSshSetting().getPort());
+        sshTemplateAttributes.put("logPath", sshTemplate.getSshSetting().getLogPath());
+        return sshTemplateAttributes;
     }
 
     private <T> Map<String, List<T>> getSshTemplatesForType(Class<T> clazz) {

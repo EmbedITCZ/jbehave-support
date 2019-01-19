@@ -1,5 +1,5 @@
-let nexusAPI = "https://mvnrepository.com/artifact/org.jbehavesupport/jbehave-support-core";
-let nexusJbusLocation = "https://mvnrepository.com/artifact/org.jbehavesupport/jbehave-support";
+let repositoryAPI = "https://mvnrepository.com/artifact/org.jbehavesupport/jbehave-support-core";
+let repositoryJbusLocation = "https://mvnrepository.com/artifact/org.jbehavesupport/jbehave-support";
 
 function indexReady() {
     checkNewVersion();
@@ -61,7 +61,7 @@ function filter(status) {
 function checkNewVersion() {
     $.ajax({
         method: "GET",
-        url: nexusAPI,
+        url: repositoryAPI,
         crossDomain: true,
         headers: {
             'Access-Control-Allow-Origin': '*'
@@ -74,7 +74,7 @@ function checkNewVersion() {
                 let currentVersionDiv = $('#currentVersion');
                 currentVersionDiv.removeClass('invisible');
                 currentVersionDiv.empty();
-                currentVersionDiv.append('<a href="' + nexusJbusLocation + '">Newer version available: ' + newestVersion + '</a>');
+                currentVersionDiv.append('<a href="' + repositoryJbusLocation + '">Newer version available: ' + newestVersion + '</a>');
             }
         }
     });

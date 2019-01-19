@@ -1018,8 +1018,8 @@
                             Help
                         </a>
                     </div>
-                    <div class="col-4 text-muted text-center" id="userVersion" version="#BUILD_VERSION">
-                        Created by jbehave-support reporter (build #BUILD_VERSION)
+                    <div class="col-4 text-muted text-center" id="userVersion" version="${project.version}">
+                        Created by jbehave-support reporter (build ${project.version})
                     </div>
                     <div class="col-4 text-muted text-center invisible" id="currentVersion">
                         Current version: connection error

@@ -70,11 +70,11 @@
         <version.spockframework>1.2-groovy-2.5</version.spockframework>
         <version.assertj>3.11.1</version.assertj>
         <version.spring>4.3.21.RELEASE</version.spring>
-        <version.spring.ws-support>2.3.1.RELEASE</version.spring.ws-support>
+        <version.spring.ws-support>2.4.4.RELEASE</version.spring.ws-support>
         <version.activemq-broker>5.15.8</version.activemq-broker>
         <version.sshj>0.26.0</version.sshj>
         <version.selenium>3.141.59</version.selenium>
-        <version.webdrivermanager>3.1.1</version.webdrivermanager>
+        <version.webdrivermanager>3.2.0</version.webdrivermanager>
         <version.snakeyaml>1.23</version.snakeyaml>
         <version.h2>1.4.197</version.h2>
         <version.json-path>2.4.0</version.json-path>

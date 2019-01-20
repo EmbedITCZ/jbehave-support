@@ -29,6 +29,20 @@
         </testResources>
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
 
+        <resources>
+            <resource>
+                <!-- xslt gets filtered for maven placeholders - used to replace eg. project version -->
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xslt</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>

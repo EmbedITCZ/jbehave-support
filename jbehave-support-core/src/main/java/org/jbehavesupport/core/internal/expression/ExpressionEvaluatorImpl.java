@@ -2,6 +2,7 @@ package org.jbehavesupport.core.internal.expression;
 
 import static org.jbehavesupport.core.support.TestContextUtil.unescape;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -13,6 +14,7 @@ import org.jbehavesupport.core.expression.ExpressionEvaluator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jbehavesupport.core.support.TestContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -85,7 +87,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
             throw new IllegalStateException("Unable to evaluate: '" + expression + "'. Check command: " + commandName);
         }
 
-        return evaluationCommand.execute(commandParams);
+        String[] unescapedParams = Arrays.stream(commandParams)
+            .map(TestContextUtil::unescape)
+            .toArray(String[]::new);
+        return TestContextUtil.escape(evaluationCommand.execute(unescapedParams));
     }
 
     private String resolveBeanName(String commandName) {

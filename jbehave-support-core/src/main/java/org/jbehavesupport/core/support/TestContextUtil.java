@@ -87,7 +87,11 @@ public class TestContextUtil {
 
     public static Object escape(Object value) {
         if (value instanceof String) {
-            return ((String) value).replace(":", "\\:").replace("{", "\\{").replace("}", "\\}");
+            return ((String) value)
+                .replace(":", "\\:")
+                .replace("{", "\\{")
+                .replace("}", "\\}")
+                .replace("'", "\\'");
         }
 
         return value;
@@ -95,7 +99,11 @@ public class TestContextUtil {
 
     public static Object unescape(Object value) {
         if (value instanceof String) {
-            return ((String) value).replace("\\:", ":").replace("\\{", "{").replace("\\}", "}");
+            return ((String) value)
+                .replace("\\:", ":")
+                .replace("\\{", "{")
+                .replace("\\}", "}")
+                .replace("\\'", "'");
         }
 
         return value;

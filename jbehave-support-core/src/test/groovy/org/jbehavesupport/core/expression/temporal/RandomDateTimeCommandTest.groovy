@@ -1,25 +1,25 @@
-package org.jbehavesupport.core.expression
+package org.jbehavesupport.core.expression.temporal
 
 
-import org.jbehavesupport.core.internal.expression.RandomDateCommand
+import org.jbehavesupport.core.internal.expression.temporal.RandomDateTimeCommand
 import spock.lang.Specification
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
-class RandomDateCommandTest extends Specification {
+class RandomDateTimeCommandTest extends Specification {
 
     def "test random date generating"() {
         when:
-        def result = new RandomDateCommand().execute()
+        def result = new RandomDateTimeCommand().execute()
 
         then:
         result != null
-        result instanceof LocalDate
+        result instanceof LocalDateTime
     }
 
     def "test argument exception"() {
         when:
-        new RandomDateCommand().execute(*params)
+        new RandomDateTimeCommand().execute(*params)
 
         then:
         Exception exception = thrown()

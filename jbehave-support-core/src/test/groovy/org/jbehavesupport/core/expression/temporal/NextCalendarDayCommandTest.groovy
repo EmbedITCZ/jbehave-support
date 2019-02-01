@@ -1,7 +1,7 @@
-package org.jbehavesupport.core.expression
+package org.jbehavesupport.core.expression.temporal
 
 
-import org.jbehavesupport.core.internal.expression.NextCalendarDayCommand
+import org.jbehavesupport.core.internal.expression.temporal.NextCalendarDayCommand
 import org.jbehavesupport.core.support.TimeFacade
 import spock.lang.Specification
 import spock.lang.Unroll

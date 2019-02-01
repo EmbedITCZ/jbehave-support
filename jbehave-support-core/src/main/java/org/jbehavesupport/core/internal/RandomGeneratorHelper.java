@@ -1,6 +1,8 @@
 package org.jbehavesupport.core.internal;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -44,4 +46,15 @@ public final class RandomGeneratorHelper {
         long randomDay = RandomUtils.nextInt((int) minDay, (int) maxDay);
         return LocalDate.ofEpochDay(randomDay);
     }
+
+    public static LocalDateTime randomDateTime() {
+        LocalDate date = randomDate();
+        int hour = RandomUtils.nextInt(0, 24);
+        int minute = RandomUtils.nextInt(0, 60);
+        int second = RandomUtils.nextInt(0, 60);
+        LocalTime time = LocalTime.of(hour, minute, second);
+
+        return LocalDateTime.of(date, time);
+    }
+
 }

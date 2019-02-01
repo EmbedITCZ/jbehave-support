@@ -1,7 +1,7 @@
-package org.jbehavesupport.core.expression
+package org.jbehavesupport.core.expression.temporal
 
 
-import org.jbehavesupport.core.internal.expression.CurrentDateCommand
+import org.jbehavesupport.core.internal.expression.temporal.CurrentDateCommand
 import org.jbehavesupport.core.support.TimeFacade
 import spock.lang.Specification
 import spock.lang.Unroll

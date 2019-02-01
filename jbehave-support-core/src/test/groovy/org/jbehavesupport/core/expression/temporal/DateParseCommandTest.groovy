@@ -1,7 +1,7 @@
-package org.jbehavesupport.core.expression
+package org.jbehavesupport.core.expression.temporal
 
 
-import org.jbehavesupport.core.internal.expression.DateParseCommand
+import org.jbehavesupport.core.internal.expression.temporal.DateParseCommand
 import spock.lang.Specification
 import spock.lang.Unroll
 

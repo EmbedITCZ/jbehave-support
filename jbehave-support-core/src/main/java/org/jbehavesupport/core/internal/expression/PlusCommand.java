@@ -23,7 +23,7 @@ public class PlusCommand implements ExpressionCommand {
         Arrays.stream(params).forEach(e -> {
                 isTrue(e instanceof String || e instanceof Number, "Parameter must be String or Number: " + e);
                 if (e instanceof String) {
-                    isTrue(NumberUtils.isNumber((String) e), "String parameter must be numeric: " + e);
+                    isTrue(NumberUtils.isCreatable((String) e), "String parameter must be numeric: " + e);
                 }
             }
         );

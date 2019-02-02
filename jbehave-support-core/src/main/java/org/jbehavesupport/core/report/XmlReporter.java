@@ -3,7 +3,6 @@ package org.jbehavesupport.core.report;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
 
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
@@ -49,7 +48,7 @@ public class XmlReporter extends XmlOutput {
     private void println(String... args) {
         for (String arg : args) {
             print(arg);
-            print(LINE_SEPARATOR);
+            print(System.lineSeparator());
         }
     }
 

@@ -975,11 +975,13 @@
                     <xsl:value-of select="@time"/>
                 </span>
             </strong>
-            <br/>
             <xsl:if test="body">
                 <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
                     <i class="fa fa-copy" aria-hidden="true"></i>
                 </button>
+            </xsl:if>
+            <br/>
+            <xsl:if test="body">
                 <pre class="json-message">
                     <xsl:value-of select="body" disable-output-escaping="yes"/>
                 </pre>

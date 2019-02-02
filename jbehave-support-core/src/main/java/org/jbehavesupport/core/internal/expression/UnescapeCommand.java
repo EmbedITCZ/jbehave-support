@@ -3,9 +3,9 @@ package org.jbehavesupport.core.internal.expression;
 import static org.springframework.util.Assert.isInstanceOf;
 import static org.springframework.util.Assert.isTrue;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.jbehavesupport.core.expression.ExpressionCommand;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Component;
 
 /**

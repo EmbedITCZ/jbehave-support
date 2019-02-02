@@ -1,16 +1,16 @@
 package org.jbehavesupport.core.report.extension;
 
-import static org.apache.commons.lang3.StringEscapeUtils.escapeXml11;
+import static org.apache.commons.text.StringEscapeUtils.escapeXml11;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.jbehavesupport.core.report.XmlReporterExtension;
 
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.jbehavesupport.core.report.XmlReporter;
 
 public abstract class AbstractXmlReporterExtension implements XmlReporterExtension {

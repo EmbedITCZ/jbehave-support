@@ -48,7 +48,7 @@ import org.xml.sax.SAXException;
 
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.StringEscapeUtils.escapeXml10;
+import static org.apache.commons.text.StringEscapeUtils.escapeXml10;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Slf4j

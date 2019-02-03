@@ -1,7 +1,5 @@
 package org.jbehavesupport.core.internal.web.webdriver;
 
-import java.util.concurrent.TimeUnit;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jbehavesupport.core.web.WebDriverFactory;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ChromeWebDriverFactory implements WebDriverFactory {
@@ -44,6 +44,8 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
     public RemoteWebDriver createWebDriver() {
         createChromeDriver();
         driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.SECONDS);
         return driver;
     }
 

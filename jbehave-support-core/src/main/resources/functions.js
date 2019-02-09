@@ -18,6 +18,10 @@ function reportReady() {
         showHideAllInElement('#rest-calls-body');
     });
 
+    $('#expand-all-sql-queries').click(function () {
+        showHideAllInElement('#sql-queries-body');
+    });
+
     $('#expand-all-shell-logs').click(function () {
         showHideAllInElement('#shell-logs-body');
     });

@@ -58,7 +58,7 @@
                     .comment, .notPerformed { color: grey !important; }
                     a.inactiveLink:hover{ font-weight: normal; }
                     .pointerCursor { cursor:pointer; }
-                    .parameterlessStep { padding-left: 20px; }
+                    .parameterlessStep, .emptySqlStatement { padding-left: 20px; }
                     .sidebar {
                     position: fixed;
                     top: 0px;
@@ -160,6 +160,17 @@
                             </a>
                         </li>
                     </xsl:if>
+                    <xsl:if test="sql">
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="concat('#sql-queries',$storyIndex)"/>
+                                </xsl:attribute>
+                                <i class="fa fa-table" aria-hidden="true"></i>
+                                SQL queries
+                            </a>
+                        </li>
+                    </xsl:if>
                     <xsl:if test="serverLog">
                         <li class="nav-item">
                             <a class="nav-link">
@@ -211,6 +222,9 @@
                     <xsl:with-param name="storyIndex" select="$storyIndex"/>
                 </xsl:apply-templates>
                 <xsl:apply-templates select="rest">
+                    <xsl:with-param name="storyIndex" select="$storyIndex"/>
+                </xsl:apply-templates>
+                <xsl:apply-templates select="sql">
                     <xsl:with-param name="storyIndex" select="$storyIndex"/>
                 </xsl:apply-templates>
                 <xsl:apply-templates select="serverLog">
@@ -626,7 +640,7 @@
             <xsl:choose>
                 <xsl:when test="parameter/parameters">
                     <div id="step-details-{position()}" class="collapse">
-                        <xsl:apply-templates select="parameter/parameters"/>
+                        <xsl:apply-templates select="parameter/parameters" mode="scenario" />
                     </div>
                 </xsl:when>
             </xsl:choose>
@@ -691,7 +705,7 @@
         </div>
     </xsl:template>
 
-    <xsl:template match="parameters">
+    <xsl:template match="parameters" mode="scenario">
         <table class="table table-sm table-hover">
             <thead>
                 <xsl:apply-templates select="names"/>
@@ -1008,6 +1022,116 @@
         </li>
     </xsl:template>
 
+    <!-- SQL -->
+    <xsl:template match="sql">
+        <xsl:param name="storyIndex"/>
+        <p>
+            <div class="card">
+                <xsl:attribute name="id">
+                    <xsl:value-of select="concat('sql-queries',$storyIndex)"/>
+                </xsl:attribute>
+                <div class="card-header">
+                    <i class="fa fa-table" aria-hidden="true"></i>
+                    SQL queries (<a href="#sql-queries-body" id="expand-all-sql-queries">Toggle all queries</a>)
+                    <a href="#sql-queries-body" data-toggle="collapse" class="float-right">Collapse</a>
+                </div>
+                <div id="sql-queries-body" class="card-body collapse show">
+                    <xsl:choose>
+                        <xsl:when test="statementResult">
+                            <xsl:apply-templates select="statementResult"/>
+                        </xsl:when>
+                        <xsl:otherwise>No SQL queries available</xsl:otherwise>
+                    </xsl:choose>
+                </div>
+            </div>
+        </p>
+    </xsl:template>
+
+    <xsl:template match="statementResult">
+        <xsl:variable name="statementNum">
+            <xsl:number level="any"/>
+        </xsl:variable>
+
+        <div>
+            <xsl:attribute name="class">
+                <xsl:if test="not(parameters) and not(results)">emptySqlStatement</xsl:if>
+            </xsl:attribute>
+
+            <a data-toggle="collapse">
+                <xsl:attribute name="class">
+                    <xsl:choose>
+                        <xsl:when test="parameters or results">pointerCursor</xsl:when>
+                        <xsl:otherwise>inactiveLink</xsl:otherwise>
+                    </xsl:choose>
+                </xsl:attribute>
+
+                <xsl:if test="parameters or results">
+                    <xsl:attribute name="href">
+                        #sql-query-<xsl:value-of select="$statementNum"/>
+                    </xsl:attribute>
+                    <i class="fa fa-plus-circle" aria-hidden="true"/>
+                </xsl:if>
+                <xsl:value-of select="statement" disable-output-escaping="yes"/>
+            </a>
+
+            <div id="sql-query-{$statementNum}" class="collapse">
+                <xsl:if test="parameters">
+                    <ul class="list-group list-group-flush">
+                        <xsl:apply-templates select="parameters" mode="sql"/>
+                    </ul>
+                </xsl:if>
+                <xsl:if test="results">
+                    <ul class="list-group list-group-flush">
+                        <xsl:apply-templates select="results"/>
+                    </ul>
+                </xsl:if>
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="parameters" mode="sql">
+        Parameters:
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <xsl:for-each select="parameter">
+                        <tr>
+                            <td><xsl:value-of select="name"/></td>
+                            <td><xsl:value-of select="value"/></td>
+                        </tr>
+                    </xsl:for-each>
+                </tbody>
+            </table>
+    </xsl:template>
+
+    <xsl:template match="results">
+        Results:
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <xsl:for-each select="columns/column">
+                        <th><xsl:value-of select="."/></th>
+                    </xsl:for-each>
+                </tr>
+            </thead>
+            <tbody>
+                <xsl:for-each select="rows/row">
+                    <tr>
+                        <xsl:for-each select="value">
+                            <td><xsl:value-of select="."/></td>
+                        </xsl:for-each>
+                    </tr>
+                </xsl:for-each>
+            </tbody>
+        </table>
+    </xsl:template>
+
+    <!-- footer -->
     <xsl:template name="renderFooter">
         <div class="fixed-bottom bg-white border-top">
             <div class="container-fluid">

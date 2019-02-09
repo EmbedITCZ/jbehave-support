@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
+import org.jbehavesupport.core.internal.sql.InterceptingNamedParameterJdbcTemplate;
 import org.jbehavesupport.core.internal.verification.ContainsVerifier;
 import org.jbehavesupport.core.internal.verification.EqualsVerifier;
 
@@ -31,12 +32,12 @@ import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.internal.ExampleTableConstraints;
 import org.jbehavesupport.core.internal.ExamplesTableUtil;
 import org.jbehavesupport.core.internal.MetadataUtil;
+import org.jbehavesupport.core.report.extension.SqlXmlReporterExtension;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -57,6 +58,9 @@ public final class SqlSteps {
 
     @Autowired
     private ContainsVerifier containsVerifier;
+
+    @Autowired(required = false)
+    private SqlXmlReporterExtension sqlXmlReporterExtension;
 
     enum ExceptionHandling {
         THROW_EXCEPTION,
@@ -264,10 +268,10 @@ public final class SqlSteps {
         return testContext.get(SQL_RESULT_KEY);
     }
 
-    private NamedParameterJdbcTemplate resolveJdbcTemplate(String databaseId) {
+    private InterceptingNamedParameterJdbcTemplate resolveJdbcTemplate(String databaseId) {
         try {
             DataSource dataSource = BeanFactoryAnnotationUtils.qualifiedBeanOfType(beanFactory, DataSource.class, databaseId);
-            return new NamedParameterJdbcTemplate(dataSource);
+            return new InterceptingNamedParameterJdbcTemplate(dataSource, sqlXmlReporterExtension);
         } catch (NoSuchBeanDefinitionException e) {
             throw new IllegalArgumentException("SqlSteps requires single DataSource bean with qualifier [" + databaseId + "]", e);
         }

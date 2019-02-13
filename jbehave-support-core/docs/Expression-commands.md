@@ -10,10 +10,13 @@ List of commands:
 - [BYTES](#bytes)
 - [CONCAT](#concat)
 - [CURRENT_DATE](#current_date)
+- [CURRENT_DATE_TIME](#current_date_time)
 - [DATE_PARSE](#date_parse)
+- [DATE_TIME_PARSE](#date_time_parse)
 - [EMPTY_STRING](#empty_string)
 - [FILE](#file)
 - [FORMAT_DATE](#format_date)
+- [FORMAT_DATE_TIME](#format_date_time)
 - [LOWER_CASE](#lower_case)
 - [MAP](#map)
 - [NEXT_CALENDAR_DATE](#next_calendar_date)
@@ -21,6 +24,7 @@ List of commands:
 - [NULL](#null)
 - [PLUS](#plus)
 - [RANDOM_DATE](#random_date)
+- [RANDOM_DATE_TIME](#random_date_time)
 - [RANDOM_EMAIL](#random_email)
 - [RANDOM_NUMBER](#random_number)
 - [RANDOM_NUMBER_IN_RANGE](#random_number_in_range)
@@ -54,6 +58,14 @@ The CurrentDateCommand can be used in JBehave's tables in three ways:
 * ```{CURRENT_DATE:<number>}``` with numeric parameter, is evaluated to the current date shifted about given number of days
 * ```{CURRENT_DATE:<period>}``` with period parameter, is evaluated to the current day shifted about given period of time, see {@link Period#parse}
 
+#### CURRENT_DATE_TIME
+Current datetime command returns text form of current datetime. 
+
+The CurrentDateTimeCommand can be used in JBehave's tables in three ways:
+* ```{CURRENT_DATE_TIME}``` without parameter, is evaluated to the current datetime
+* ```{CURRENT_DATE_TIME:<number>}``` with numeric parameter, is evaluated to the current datetime shifted about given number of seconds
+* ```{CURRENT_DATE_TIME:<period>}``` with period parameter, is evaluated to the current datetime shifted about given period of time, see {@link Period#parse}
+
 #### DATE_PARSE
 Command for parsing date.
 Command consumes two arguments: 
@@ -63,6 +75,17 @@ Command consumes two arguments:
 > Example:
 > ``` 
 > {DATE_PARSE:05/20/2031:MM/dd/yyyy} 
+> ```
+
+#### DATE_TIME_PARSE
+Command for parsing datetime.
+Command consumes two arguments: 
+* datetime in string format 
+* format.
+
+> Example:
+> ``` 
+> {DATE_TIME_PARSE:10.15.30 05/20/2031:HH.mm.ss MM/dd/yyyy} 
 > ```
 
 #### EMPTY_STRING
@@ -92,8 +115,19 @@ Format date to expected format. Command consumes two arguments:
 
 > Example:
 > ```
-> {FORMAT_DATE:2031-05-20:MM/dd/yyyy
+> {FORMAT_DATE:2031-05-20:MM/dd/yyyy}
 > ```
+
+#### FORMAT_DATE_TIME
+Format datetime to expected format. Command consumes two arguments:
+* datetime in string format
+* output format
+
+> Example:
+> ```
+> {FORMAT_DATE_TIME:2031-05-20T10\:30\:11:MM/dd/yyyy HH:mm:ss}
+> ```
+
 
 #### LOWER_CASE
 This command takes one parameter that gets converted to lower case.
@@ -151,13 +185,22 @@ This command simply do the sum of parameters.
 > Result of the command: `7`
 
 #### RANDOM_DATE
-Command generate random date in range 1970 - 2059.
+Generates random date in range 1970 - 2059.
 
 > Example:
 > ```
 > {RANDOM_DATE}
 > ```
 > Result of the command: `LocalDate object`
+
+#### RANDOM_DATE_TIME
+Generates random datetime in range 1970 - 2059.
+
+> Example:
+> ```
+> {RANDOM_DATE_TIME}
+> ```
+> Result of the command: `LocalDateTime object`
 
 #### RANDOM_EMAIL
 Creates a valid random email according with fixed length.

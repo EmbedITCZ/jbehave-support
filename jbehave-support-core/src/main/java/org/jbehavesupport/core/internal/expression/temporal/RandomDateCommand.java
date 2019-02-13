@@ -1,4 +1,4 @@
-package org.jbehavesupport.core.internal.expression;
+package org.jbehavesupport.core.internal.expression.temporal;
 
 
 import static org.springframework.util.Assert.isTrue;

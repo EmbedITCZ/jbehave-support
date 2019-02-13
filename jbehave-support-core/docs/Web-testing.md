@@ -31,6 +31,7 @@ public WebSetting webSetting() {
 Default behavior can be influenced by several properties:
 
 - `web.timeout` - Sets the timeout for Web Driver operation, defaults to `10` seconds if not set
+    - timeout is used for webdriver implicitlyWait, setScriptTimeout, pageLoadTimeout
 - `web.browser` - Sets the browser which will be used, default supported values are `chrome` and `firefox47` (custom values can be optionally used as well, for more info see [custom browser support](#custom-browser-support)).
 Defaults to `chrome` if not set. Firefox support is experimental and should not be used.
 - `web.browser.driver.location` - Sets the absolute path to the webdriver on disk, if not set then Web Driver is downloaded from the Internet.

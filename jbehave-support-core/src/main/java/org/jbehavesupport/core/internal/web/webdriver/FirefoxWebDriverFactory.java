@@ -1,7 +1,5 @@
 package org.jbehavesupport.core.internal.web.webdriver;
 
-import java.util.concurrent.TimeUnit;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jbehavesupport.core.web.WebDriverFactory;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -9,6 +7,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @deprecated kept for backwards compatibility only, should not be used otherwise
@@ -41,6 +41,8 @@ public class FirefoxWebDriverFactory implements WebDriverFactory {
     public RemoteWebDriver createWebDriver() {
         createFirefox47Driver();
         driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.SECONDS);
         return driver;
     }
 

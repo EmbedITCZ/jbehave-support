@@ -5,7 +5,6 @@ import static org.springframework.util.Assert.isTrue;
 
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionCommand;
-import org.jbehavesupport.core.support.TestContextUtil;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -35,7 +34,7 @@ public class TestContextCopyCommand implements ExpressionCommand {
         }
 
         Object value = testContext.get(key);
-        return value != null ? prefix + TestContextUtil.escape(value) : NullCommand.NULL_VALUE;
+        return value != null ? prefix + value : NullCommand.NULL_VALUE;
     }
 
 }

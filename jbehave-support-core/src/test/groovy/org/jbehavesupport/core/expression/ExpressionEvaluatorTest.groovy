@@ -81,6 +81,7 @@ class ExpressionEvaluatorTest extends Specification {
         command                        || expected
         '{CONCAT:12:\\::345}'          || "12:345"
         '{CONCAT:\\{Hello:, world\\}}' || "{Hello, world}"
+        "{CONCAT:We:\\'re}"            || "We're"
     }
 
     @Unroll

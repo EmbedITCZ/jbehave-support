@@ -13,7 +13,7 @@ import lombok.experimental.UtilityClass;
 public class CommandHelper {
 
     private static final String SPLITTER = "(?<!\\\\):";
-    private static final String KEEPER = "'";
+    private static final String KEEPER = "(?<!\\\\)'";
 
     /**
      * Extract command name from expression.

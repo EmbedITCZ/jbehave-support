@@ -71,6 +71,7 @@ class CommandHelperTest extends Specification {
         "keep:0:'A:B:C:D'"                || ["0", "A:B:C:D"]
         "keep:0:'A:B:C:D':1"              || ["0", "A:B:C:D", "1"]
         "keep:0:'A:B:C:D':1:2"            || ["0", "A:B:C:D", "1", "2"]
+        "do_not_keep:\\'0:1\\'"           || ["\\'0", "1\\'"]
 
         "keep_more:'A':'B'"               || ["A", "B"]
         "keep_more:'A:B':C"               || ["A:B", "C"]

@@ -2,10 +2,11 @@
 
 ## Escaping special characters
 
-Characters ':', '{' and '}' are treated as special characters they are used to mark an expression command or delimit parameters for an expression command.
-When JBehave-support tries to parse the string {x:y} as an expression command it will return an error.
-If you need use such a string you have to use '\' as an escape character. The string above should be typed as \{x\:y\}.
-The behaviour is documented in [ExpressionEvaluatorTest](../src/test/groovy/org/jbehavesupport/core/expression/ExpressionEvaluatorTest.groovy)
+Characters `:`, `'`, `{` and `}` are treated as special characters they are used to mark an expression command (`{` and `}`), delimit parameters (`:`) or to force ignoring of the `:` delimiter (using `'`) in an expression command.
+When JBehave-support tries to parse the string `{x:y}` as an expression command it will return an error.
+If you need use such a string you have to use `\` as an escape character for each special character individually. The string above should be typed as `\{x\:y\}`.   
+You can also use the `'` character to escape whole sequences with delimiter, so for string `11:22:33` you could just type `'11:22:33'` instead of escaping each `:`.  
+This behaviour is documented in [ExpressionEvaluatorTest](../src/test/groovy/org/jbehavesupport/core/expression/ExpressionEvaluatorTest.groovy)
 and in [EscapingInContext story](../src/test/groovy/org/jbehavesupport/test/sample/EscapingInContext.story).
 
 

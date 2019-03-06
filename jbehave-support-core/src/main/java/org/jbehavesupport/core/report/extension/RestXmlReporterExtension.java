@@ -5,6 +5,9 @@ import static org.springframework.util.StringUtils.isEmpty;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -13,9 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jbehavesupport.core.report.ReportContext;
-
 import org.apache.commons.io.IOUtils;
+import org.jbehavesupport.core.AbstractSpringStories;
+import org.jbehavesupport.core.TestContext;
+import org.jbehavesupport.core.report.ReportContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequest;
@@ -26,6 +32,12 @@ import org.springframework.util.MimeType;
 
 public class RestXmlReporterExtension extends AbstractXmlReporterExtension implements ClientHttpRequestInterceptor {
 
+    @Value("${rest.directory:./target/reports}")
+    private String restDirectory;
+
+    @Autowired
+    private TestContext testContext;
+
     private static final String REST_XML_REPORTER_EXTENSION = "rest";
     private static final String REQUEST_RESPONSE_TAG = "requestResponse";
     private static final String REQUEST_TAG = "request";
@@ -35,6 +47,8 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     private static final String HEADER_TAG = "header";
     private static MimeType[] compatibleMimeTypes =
         new MimeType[]{new MimeType("text"), new MimeType("application", "json"), new MimeType("application", "xml")};
+    private static MimeType multipartFormDataType = new MimeType("multipart", "form-data");
+    private static final String FILE_NAME_PATTERN = "multipart_%s.log";
 
     private final Set<RestMessageContext> messages = new LinkedHashSet<>();
 
@@ -67,6 +81,9 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
                     break;
                 }
             }
+            if (multipartFormDataType.isCompatibleWith(requestContentType)) {
+                restMessageContextBuilder.requestJsonBody(handleMultipart(((ClientHttpRequest) httpRequest).getBody().toString()));
+            }
 
             clientHttpResponse = clientHttpRequestExecution.execute(httpRequest, bytes);
             String responseBodyAsString = IOUtils.toString(clientHttpResponse.getBody(), Charset.forName("UTF-8"));
@@ -80,6 +97,9 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
                     restMessageContextBuilder.responseJsonBody(responseBodyAsString);
                     break;
                 }
+            }
+            if (multipartFormDataType.isCompatibleWith(responseContentType)) {
+                restMessageContextBuilder.responseJsonBody(handleMultipart(responseBodyAsString));
             }
         } finally {
             messages.add(restMessageContextBuilder.build());
@@ -137,6 +157,26 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
         headerAttributes.put("key", header.getKey());
         headerAttributes.put("value", header.getValue().get(0));
         return headerAttributes;
+    }
+
+    private String handleMultipart(String body) throws IOException {
+        Path destinationPath = getBodyDestinationPath();
+        Files.write(destinationPath, body.getBytes());
+        return "multipart/form-data: " + destinationPath;
+    }
+
+    private Path getBodyDestinationPath() {
+        if (testContext.contains(AbstractSpringStories.JBEHAVE_SCENARIO)) {
+            final String storyName = testContext.get(AbstractSpringStories.JBEHAVE_SCENARIO, String.class).split("#")[0];
+            Path destinationPath = Paths.get(restDirectory, String.format(FILE_NAME_PATTERN, storyName));
+            int i = 1;
+            while (destinationPath.toFile().exists()) {
+                destinationPath = Paths.get(restDirectory, String.format(FILE_NAME_PATTERN, storyName + "-" + i++));
+            }
+            return destinationPath;
+        } else {
+            return Paths.get(restDirectory, "multipart-" + System.currentTimeMillis() + ".log");
+        }
     }
 
 }

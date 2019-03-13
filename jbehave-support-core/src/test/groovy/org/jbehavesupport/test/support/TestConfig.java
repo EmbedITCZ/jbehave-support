@@ -18,6 +18,7 @@ import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
+import org.jbehavesupport.core.report.extension.SqlXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.TestContextXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.WsXmlReporterExtension;
 import org.jbehavesupport.core.rest.RestServiceHandler;
@@ -106,6 +107,11 @@ public class TestConfig {
     @Bean
     public ServerLogXmlReporterExtension serverLogXmlReporterExtension() {
         return new ServerLogXmlReporterExtension();
+    }
+
+    @Bean
+    public SqlXmlReporterExtension sqlXmlReporterExtension() {
+        return new SqlXmlReporterExtension();
     }
 
     @Bean

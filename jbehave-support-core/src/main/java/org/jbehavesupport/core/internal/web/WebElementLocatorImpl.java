@@ -12,12 +12,9 @@ import org.jbehavesupport.core.web.WebElementRegistry;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.web.WebSteps;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -44,14 +41,8 @@ public class WebElementLocatorImpl implements WebElementLocator {
     }
 
     private FluentWait<WebDriver> waiting() {
-        waitForDocumentIsReady();
         waitForCustomCondition();
         return new FluentWait<>(driver).withTimeout(Duration.ofSeconds(timeout));
-    }
-
-    private void waitForDocumentIsReady() {
-        new WebDriverWait(driver, 10).until((ExpectedCondition<Boolean>) wd ->
-            ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
     }
 
     private void waitForCustomCondition() {

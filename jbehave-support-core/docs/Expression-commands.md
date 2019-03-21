@@ -125,7 +125,7 @@ Format datetime to expected format. Command consumes two arguments:
 
 > Example:
 > ```
-> {FORMAT_DATE_TIME:2031-05-20T10\:30\:11:MM/dd/yyyy HH:mm:ss}
+> {FORMAT_DATE_TIME:2031-05-20T10\:30\:11:MM/dd/yyyy HH\:mm\:ss}
 > ```
 
 

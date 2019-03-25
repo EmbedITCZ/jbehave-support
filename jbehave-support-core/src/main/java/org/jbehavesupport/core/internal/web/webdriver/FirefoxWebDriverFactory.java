@@ -2,6 +2,7 @@ package org.jbehavesupport.core.internal.web.webdriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jbehavesupport.core.web.WebDriverFactory;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -61,6 +62,11 @@ public class FirefoxWebDriverFactory implements WebDriverFactory {
             options.addArguments(browserStartupArguments);
         }
         driver = new FirefoxDriver(options);
+    }
+
+    @Override
+    public Class<? extends WebDriver> getProxyClass() {
+        return FirefoxDriver.class;
     }
 
 }

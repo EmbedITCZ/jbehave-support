@@ -6,12 +6,14 @@ import org.jbehavesupport.core.healthcheck.HealthCheck
 import org.jbehavesupport.core.healthcheck.HealthCheckSteps
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter
 import org.jbehavesupport.core.internal.verification.RegexVerifier
+import org.jbehavesupport.core.internal.web.by.XpathByFactory
 import org.jbehavesupport.core.ssh.RollingLogResolver
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver
 import org.jbehavesupport.core.ssh.SshSetting
 import org.jbehavesupport.core.ssh.SshTemplate
 import org.jbehavesupport.core.support.YamlPropertiesConfigurer
 import org.jbehavesupport.core.verification.Verifier
+import org.jbehavesupport.core.web.ByFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationContext
@@ -73,6 +75,12 @@ class TestConfig {
     @Qualifier("TEST")
     Verifier anotherRegexVerifier() {
         return new RegexVerifier();
+    }
+
+    @Bean
+    @Qualifier("TEST")
+    ByFactory anotherXpathByFactory() {
+        return new XpathByFactory();
     }
 
     @Bean

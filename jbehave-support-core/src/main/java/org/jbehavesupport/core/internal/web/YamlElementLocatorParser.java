@@ -1,35 +1,45 @@
 package org.jbehavesupport.core.internal.web;
 
 import static java.util.stream.Collectors.joining;
-import static org.apache.commons.lang3.ArrayUtils.contains;
 import static org.springframework.util.StringUtils.isEmpty;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
+import org.jbehavesupport.core.internal.web.by.CssByFactory;
+import org.jbehavesupport.core.web.ByFactory;
+import org.jbehavesupport.core.web.ByFactoryResolver;
 import org.jbehavesupport.core.web.WebElementRegistry;
 
 import org.openqa.selenium.By;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class YamlElementLocatorParser {
 
     private static final String SEPARATOR = ".";
     private static final Pattern PATTERN = Pattern.compile("([^\\.]+)\\.?(.*)\\.([^\\.]+)");
-    private static final String CSS_LOCATOR_TYPE = "css";
-    private static final String XPATH_LOCATOR_TYPE = "xpath";
-    private static final String DEFAULT_LOCATOR_TYPE = CSS_LOCATOR_TYPE;
-    private static final String[] LOCATOR_TYPES = {CSS_LOCATOR_TYPE, XPATH_LOCATOR_TYPE};
 
-    @Autowired
-    private WebElementRegistry elementRegistry;
+    private final WebElementRegistry elementRegistry;
+    private final ByFactoryResolver byFactoryResolver;
+    private final CssByFactory defaultByCreator;
+
+    private List<String> locatorTypes;
+
+    @PostConstruct
+    public void init() {
+        locatorTypes = byFactoryResolver.getRegisteredTypes();
+    }
 
     public void process(Resource elementLocatorsResource) {
         Properties properties = loadYamlProperties(elementLocatorsResource);
@@ -56,8 +66,8 @@ public class YamlElementLocatorParser {
             String middlePart = matcher.group(2).isEmpty() ? matcher.group(3) : matcher.group(2);
             String lastPart = matcher.group(2).isEmpty() ? null : matcher.group(3);
 
-            String type = DEFAULT_LOCATOR_TYPE;
-            if (contains(LOCATOR_TYPES, lastPart)) {
+            String type = defaultByCreator.getType();
+            if (locatorTypes.contains(lastPart)) {
                 type = lastPart;
             } else {
                 middlePart = Stream.of(middlePart, lastPart)
@@ -72,14 +82,8 @@ public class YamlElementLocatorParser {
     }
 
     private By by(String type, String value) {
-        switch (type) {
-            case CSS_LOCATOR_TYPE:
-                return By.cssSelector(value);
-            case XPATH_LOCATOR_TYPE:
-                return By.xpath(value);
-            default:
-                throw new IllegalArgumentException();
-        }
+        ByFactory byFactory = byFactoryResolver.resolveByFactory(type);
+        return byFactory.getBy(value);
     }
 
     private Properties loadYamlProperties(Resource elementLocatorsResource) {

@@ -80,6 +80,27 @@ When on [home] page these actions are performed:
 
 In the example above `#search-id` references HTML element with property `id="search-id"`.
 
+#### Custom mapping types
+
+The mapping files by default support only CSS and XPATH selectors, but it is possible to use a custom selectors by registering a bean implementing the `ByFactory` interface.
+E.g. a custom bean for searching by id might look something like this:
+
+```
+@Component
+public class IdByFactory implements ByFactory {
+    @Override
+    public By getBy(String value) { return By.id(value); }
+
+    @Override
+    public String getType() { return "id"; }
+}  
+```
+
+And mapping that uses the above factory in the yaml file could then look like:
+```
+search.button.id: "search-button"
+```
+
 ### WEB steps
 
 #### Opening page in a browser

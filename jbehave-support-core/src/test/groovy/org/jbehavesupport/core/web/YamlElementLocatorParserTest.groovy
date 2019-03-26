@@ -2,6 +2,9 @@ package org.jbehavesupport.core.web
 
 import org.jbehavesupport.core.internal.web.WebElementRegistryImpl
 import org.jbehavesupport.core.internal.web.YamlElementLocatorParser
+import org.jbehavesupport.core.internal.web.by.ByFactoryResolverImpl
+import org.jbehavesupport.core.internal.web.by.CssByFactory
+import org.jbehavesupport.core.internal.web.by.XpathByFactory
 import org.junit.Test
 
 import static org.openqa.selenium.By.cssSelector
@@ -11,8 +14,11 @@ class YamlElementLocatorParserTest {
 
     @Test
     void shouldParseLocators() {
-        def registry = new WebElementRegistryImpl();
-        def parser = new YamlElementLocatorParser(elementRegistry: registry);
+        def registry = new WebElementRegistryImpl()
+        def cssFactory = new CssByFactory()
+        def creatorResolver = new ByFactoryResolverImpl(Arrays.asList(new XpathByFactory(), cssFactory))
+        def parser = new YamlElementLocatorParser(registry, creatorResolver, cssFactory)
+        parser.init()
 
         parser.processEntry("p-g.el1", "#id1");
         parser.processEntry("p.el-2.css", "#id2");

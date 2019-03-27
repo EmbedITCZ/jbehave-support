@@ -9,13 +9,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.jbehavesupport.core.TestContext;
-import org.jbehavesupport.core.internal.web.webdriver.WebDriverDelegate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.codehaus.plexus.util.FileUtils;
 import org.jbehavesupport.core.AbstractSpringStories;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -30,20 +31,21 @@ public class WebScreenshotCreator {
     @Value("${web.screenshot.directory:./target/reports}")
     private String screenshotDirectory;
 
-    private final WebDriverDelegate driver;
+    private final WebDriver driver;
     private final TestContext testContext;
 
     public final void createScreenshot() {
         try {
-            if (driver.isInitialized()) {
+            if (driver instanceof TakesScreenshot) {
                 log.info("Taking error screenshot will place it in {}", screenshotDirectory);
                 prepareDirectory();
 
-                File screenshot = driver.getScreenshotAs(OutputType.FILE);
-                File destinationFile = getDestinationFile();
-                FileUtils.copyFile(screenshot, destinationFile);
-
-                storeInTestContext(destinationFile.getName());
+                File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+                if (screenshot != null) {
+                    File destinationFile = getDestinationFile();
+                    FileUtils.copyFile(screenshot, destinationFile);
+                    storeInTestContext(destinationFile.getName());
+                }
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);

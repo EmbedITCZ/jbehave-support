@@ -2,6 +2,7 @@ package org.jbehavesupport.core.internal.web.webdriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jbehavesupport.core.web.WebDriverFactory;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -78,6 +79,11 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
         }
 
         driver = new ChromeDriver(driverServiceBuilder.build(), options);
+    }
+
+    @Override
+    public Class<? extends WebDriver> getProxyClass() {
+        return ChromeDriver.class;
     }
 
 }

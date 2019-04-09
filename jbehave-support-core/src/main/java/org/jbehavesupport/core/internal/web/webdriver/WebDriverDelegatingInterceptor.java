@@ -4,7 +4,6 @@ import javax.annotation.PreDestroy;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.jbehavesupport.core.web.WebDriverFactory;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.springframework.aop.DynamicIntroductionAdvice;
 import org.springframework.aop.IntroductionInterceptor;
@@ -98,7 +97,7 @@ public class WebDriverDelegatingInterceptor extends IntroductionInfoSupport
     }
 
     private boolean isTakeScreenShotMethod(MethodInvocation mi) {
-        return isSpecificMethod(mi, "getScreenshotAs", OutputType.class);
+        return mi.getMethod().getName().equals("getScreenshotAs");
     }
 
     private boolean isToStringMethod(MethodInvocation mi) {

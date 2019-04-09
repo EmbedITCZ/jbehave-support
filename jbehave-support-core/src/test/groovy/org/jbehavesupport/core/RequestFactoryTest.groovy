@@ -2,9 +2,12 @@ package org.jbehavesupport.core
 
 import groovy.transform.EqualsAndHashCode
 import lombok.Data
-import org.jbehavesupport.core.internal.TestContextImpl
+import org.jbehave.core.model.ExamplesTable
+import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter
 import org.jbehavesupport.core.support.RequestFactory
 import org.jbehavesupport.core.test.app.oxm.NameRequest
+import org.jbehavesupport.core.ws.WebServiceSteps
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,49 +28,62 @@ import java.util.function.Consumer
 
 import static groovy.test.GroovyAssert.shouldFail
 import static groovy.test.GroovyAssert.shouldFailWithCause
-import static org.jbehavesupport.core.internal.MetadataUtil.type
-import static org.junit.Assert.fail
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig)
 class RequestFactoryTest {
 
-    TestContext ctx = new TestContextImpl()
+    @Autowired
+    TestContext ctx
 
     @Autowired
-    ConfigurableConversionService conversionService;
+    ConfigurableConversionService conversionService
+
+    @Autowired
+    ExamplesEvaluationTableConverter etFactory
+
+    @Autowired
+    WebServiceSteps webServiceSteps
+
+    @Before
+    void init() {
+        ctx.clear()
+    }
 
     @Test
-    void shouldCreateRequest() {
-        ctx.put("Foo.nil", null)
-        ctx.put("Foo.string", "abc")
-        ctx.put("Foo.bool1", "true")
-        ctx.put("Foo.bool2", "false")
-        ctx.put("Foo.int1", "11")
-        ctx.put("Foo.int2", "22")
-        ctx.put("Foo.long1", "111")
-        ctx.put("Foo.long2", "222")
-        ctx.put("Foo.bigDecimal", "1.23")
-        ctx.put("Foo.bigInteger", "123")
-        ctx.put("Foo.localDate", "2017-02-14")
-        ctx.put("Foo.localDatetime", "2016-01-13T15:22:39")
-        ctx.put("Foo.zonedDateTime", "2015-12-30T14:21:28+02:00")
-        ctx.put("Foo.xmlGregorianCalendar1", "2017-02-14")
-        ctx.put("Foo.xmlGregorianCalendar2", "2017-02-14T11:12:00")
-        ctx.put("Foo.xmlGregorianCalendar3", "2017-02-14T11:12:13+01:00")
-        ctx.put("Foo.barList.0.text", "a")
-        ctx.put("Foo.barList.1.text", "b")
-        ctx.put("Foo.barSet.0.text", "c")
-        ctx.put("Foo.barSet.1.text", "d")
-        ctx.put("Foo.stringList.0", "item 1")
-        ctx.put("Foo.stringList.1", "item 2")
-        ctx.put("Foo.abar", null, type("org.jbehavesupport.core.Bar"))
-        ctx.put("Foo.abar.text", "barr")
-        ctx.put("Foo.abarList.0", null, type("org.jbehavesupport.core.Bar"))
-        ctx.put("Foo.abarList.0.text", "barr")
-        ctx.put("Foo.nestList.barNestedList.0.text", "veryNested")
+    void "Should create request"() {
+        def etData = etFactory.convertValue("" +
+            "| name                          | data                      | type                        |\n" +
+            "| string                        | abc                       |                             |\n" +
+            "| bool1                         | true                      |                             |\n" +
+            "| bool2                         | false                     |                             |\n" +
+            "| int1                          | 11                        |                             |\n" +
+            "| int2                          | 22                        |                             |\n" +
+            "| long1                         | 111                       |                             |\n" +
+            "| long2                         | 222                       |                             |\n" +
+            "| bigDecimal                    | 1.23                      |                             |\n" +
+            "| bigInteger                    | 123                       |                             |\n" +
+            "| localDate                     | 2017-02-14                |                             |\n" +
+            "| localDatetime                 | 2016-01-13T15:22:39       |                             |\n" +
+            "| zonedDateTime                 | 2015-12-30T14:21:28+02:00 |                             |\n" +
+            "| xmlGregorianCalendar1         | 2017-02-14                |                             |\n" +
+            "| xmlGregorianCalendar2         | 2017-02-14T11:12:00       |                             |\n" +
+            "| xmlGregorianCalendar3         | 2017-02-14T11:12:13+01:00 |                             |\n" +
+            "| barList.0.text                | a                         |                             |\n" +
+            "| barList.1.text                | b                         |                             |\n" +
+            "| barSet.0.text                 | c                         |                             |\n" +
+            "| barSet.1.text                 | d                         |                             |\n" +
+            "| stringList.0                  | item 1                    |                             |\n" +
+            "| stringList.1                  | item 2                    |                             |\n" +
+            "| abar                          |                           | org.jbehavesupport.core.Bar |\n" +
+            "| abar.text                     | barr                      |                             |\n" +
+            "| abarList.0                    |                           | org.jbehavesupport.core.Bar |\n" +
+            "| abarList.0.text               | barr                      |                             |\n" +
+            "| nestList.barNestedList.0.text | veryNested                |                             |",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
-        def nestList = new NestedList();
+        def nestList = new NestedList()
         nestList.setBarNestedList([new Bar(text: "veryNested")])
 
         def fooExpected = new Foo(
@@ -103,9 +119,14 @@ class RequestFactoryTest {
     }
 
     @Test
-    public void shouldOverride() throws Exception {
-        ctx.put("Foo.bool2", "false")
-        ctx.put("Foo.myKey", "11")
+    void "Should override"() throws Exception {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name  | data  |\n" +
+            "| bool2 | false |\n" +
+            "| myKey | 11    |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
         def fooExpected = new Foo(
             bool2: false,
@@ -114,14 +135,22 @@ class RequestFactoryTest {
         def requestFactory = new RequestFactory(Foo, ctx, conversionService)
         requestFactory.override("myKey", "int1")
 
-        def request = requestFactory.createRequest()
-        assert request == fooExpected
+        when:
+        def fooActual = requestFactory.createRequest()
+
+        then:
+        fooActual == fooExpected
     }
 
     @Test
-    public void shouldUseCustomPrefix() throws Exception {
-        ctx.put("MyClass.bool2", "false")
-        ctx.put("MyClass.int1", "11")
+    void "Should use custom prefix"() throws Exception {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name  | data  |\n" +
+            "| bool2 | false |\n" +
+            "| int1  | 11    |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("MyClass", "TEST", etData)
 
         def fooExpected = new Foo(
             bool2: false,
@@ -130,13 +159,21 @@ class RequestFactoryTest {
         def requestFactory = new RequestFactory(Foo, ctx, conversionService)
         requestFactory.prefix("MyClass")
 
-        def request = requestFactory.createRequest()
-        assert request == fooExpected
+        when:
+        def fooActual = requestFactory.createRequest()
+
+        then:
+        fooActual == fooExpected
     }
 
     @Test
-    public void shouldUseCustomHandler() throws Exception {
-        ctx.put("Foo.abar.text", "should be handled instead")
+    void "Should use custom handler"() throws Exception {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name      | data                      |\n" +
+            "| abar.text | should be handled instead |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
         def fooExpected = new Foo(abar: new Bar(text: "barr"))
 
@@ -144,83 +181,135 @@ class RequestFactoryTest {
         requestFactory.handler("Foo.abar.text", new Consumer<Foo>() {
             @Override
             void accept(final Foo foo) {
-                Abar a = new Bar();
+                Abar a = new Bar()
                 a.setText("barr")
                 foo.setAbar(a)
             }
         })
 
-        def request = requestFactory.createRequest()
-        assert request == fooExpected
+        when:
+        def fooActual = requestFactory.createRequest()
+
+        then:
+        fooActual == fooExpected
     }
 
     @Test
-    void shouldFailWithExplanation() {
-        ctx.put("Foo.bug", "")
+    void "Should fail with explanation"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name | data  |\n" +
+            "| bug  |       |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
-        try {
+        when:
+        def exception = shouldFail() {
             new RequestFactory(Foo, ctx, conversionService).createRequest()
-            fail()
-        } catch (Exception e) {
-            assert e.message.contains("Unable to create request Foo")
-            assert e.cause.message.contains("There is no property bug in class Foo")
         }
+
+        then:
+        assert exception.message.contains("Unable to create request Foo")
+        assert exception.cause.message.contains("There is no property bug in class Foo")
     }
 
     @Test
-    void shouldNotInstantiateAbstract() {
-        ctx.put("Foo.abar.text", "barr")
-        try {
+    void "Should not instantiate abstract"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name      | data |\n" +
+            "| abar.text | barr |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
+
+        when:
+        def exception = shouldFail() {
             new RequestFactory(Foo, ctx, conversionService).createRequest()
-            fail()
-        } catch (Exception e) {
-            assert e.message.contains("Unable to create request Foo")
-            assert e.cause.message.contains("Field Foo.abar is abstract. Please provide fully qualified class name in example table or register custom handler")
         }
+
+        then:
+        exception.message.contains("Unable to create request Foo")
+        exception.cause.message.contains("Field Foo.abar is abstract. Please provide fully qualified class name in example table or register custom handler")
     }
 
     @Test
-    void shouldMissImplementationOfAbstract() {
+    void "Should miss implementation of abstract"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name | data | type             |\n" +
+            "| abar |      | wrong.class.path |\n",
+            null) as ExamplesTable
+
+        when:
         String message = shouldFail(IllegalArgumentException.class) {
-            ctx.put("Foo.abar", null, type("wrong.class.path"))
+            webServiceSteps.requestData("Foo", "TEST", etData)
         }
+
+        then:
         assert message.contains("Provided class not found")
     }
 
     @Test
-    void shouldMissField() throws Exception {
-        ctx.put("Foo.mySecretField.value", "19")
+    void "Should miss field"() throws Exception {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name                | data |\n" +
+            "| mySecretField.value | 19   |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
+        when:
         String message = shouldFailWithCause(NoSuchElementException.class) {
             new RequestFactory(Foo, ctx, conversionService).withFieldAccessStrategy().createRequest()
         }
 
-        assert message.contains("There is no field mySecretField in class Foo, please check keys in test story")
+        then:
+        message.contains("There is no field mySecretField in class Foo, please check keys in test story")
     }
 
     @Test
-    void shouldFailOnAbstractInstantiation() {
-        ctx.put("Foo.abar", null, type("org.jbehavesupport.core.Abar"))
+    void "Should fail on abstract instantiation"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name | data | type             |\n" +
+            "| abar |      | org.jbehavesupport.core.Abar |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
+        when:
         String message = shouldFailWithCause(IllegalStateException.class) {
             new RequestFactory(Foo, ctx, conversionService).createRequest()
         }
-        assert message.contains("Provided implementation could not be instantiated")
+        then:
+        message.contains("Provided implementation could not be instantiated")
     }
 
     @Test
-    void shouldNotParseWrongTime() throws Exception {
-        ctx.put("Foo.localDate", "tomorrow")
+    void "Should not parse wrong time"() throws Exception {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name      | data     |\n" +
+            "| localDate | tomorrow |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
+        when:
         String message = shouldFailWithCause(DateTimeParseException.class) {
             new RequestFactory(Foo, ctx, conversionService).createRequest()
         }
-        assert message.contains("Text 'tomorrow' could not be parsed")
+
+        then:
+        message.contains("Text 'tomorrow' could not be parsed")
     }
 
     @Test
-    void shouldUseConversionService() {
-        ctx.put("Foo.dataHandler", "<foo>bar</foo>")
+    void "Should use conversion service"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name        | data           |\n" +
+            "| dataHandler | <foo>bar</foo> |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
 
         def conversionService = new DefaultConversionService()
         conversionService.addConverter(new Converter<String, DataHandler>() {
@@ -230,59 +319,125 @@ class RequestFactoryTest {
             }
         })
 
+        when:
         def foo = RequestFactory.newInstance(Foo, ctx, conversionService).createRequest()
 
-        assert foo.dataHandler != null
-        assert foo.dataHandler.content == "<foo>bar</foo>"
-        assert foo.dataHandler.contentType == "application/xml"
+        then:
+        foo.dataHandler != null
+        foo.dataHandler.content == "<foo>bar</foo>"
+        foo.dataHandler.contentType == "application/xml"
     }
 
     @Test
-    public void shouldTestAccessStrategies() throws Exception {
-        ctx.put("NameRequest.CUID", "1234")
+    void "Should test access strategies"() throws Exception {
+        def etData = etFactory.convertValue("" +
+            "| name | data |\n" +
+            "| CUID | 1234 |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("NameRequest", "TEST", etData)
+
         //pass with bean
-        new RequestFactory(NameRequest, ctx, conversionService).createRequest();
+        new RequestFactory(NameRequest, ctx, conversionService).createRequest()
 
         //fails with field
         String message = shouldFailWithCause(NoSuchElementException.class) {
-            new RequestFactory(NameRequest, ctx, conversionService).withFieldAccessStrategy().createRequest();
+            new RequestFactory(NameRequest, ctx, conversionService).withFieldAccessStrategy().createRequest()
         }
-
         assert message.contains("There is no field CUID in class NameRequest, please check keys in test story")
     }
 
     @Test
-    public void shouldFailOnMultipleFields() throws Exception {
-        ctx.put("Ugly.attribute", "{nil}")
-        ctx.put("Ugly.AtTribute", "456}")
+    void "Should fail on multiple fields"() throws Exception {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name      | data  |\n" +
+            "| attribute | {NIL} |\n" +
+            "| AtTribute | 456   |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Ugly", "TEST", etData)
 
+        when:
         String message = shouldFailWithCause(UnsupportedOperationException.class) {
-            new RequestFactory(Ugly, ctx, conversionService).withFieldAccessStrategy().createRequest();
+            new RequestFactory(Ugly, ctx, conversionService).withFieldAccessStrategy().createRequest()
         }
 
-        assert message.contains("multiple fields match name condition")
+        then:
+        message.contains("multiple fields match name condition")
     }
 
     @Test
-    public void shouldDetectNestedGenerics() {
+    void "Should detect nested generics"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name      | data  |\n" +
+            "| attribute | {NIL} |\n" +
+            "| AtTribute | 456   |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Ugly", "TEST", etData)
+
         ctx.put("UnsupportedClass.listInList.0", "0-0")
 
         String message = shouldFailWithCause(UnsupportedOperationException.class) {
-            new RequestFactory(UnsupportedClass, ctx, conversionService).withFieldAccessStrategy().createRequest();
+            new RequestFactory(UnsupportedClass, ctx, conversionService).withFieldAccessStrategy().createRequest()
         }
 
         assert message.contains("Nested generic types are not supported")
     }
 
     @Test
-    public void shouldDetectAbstracGenerics() {
-        ctx.put("UnsupportedClass.abstractList.0.text", "inputTxt")
+    void "Should detect abstract generics"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name                | data     |\n" +
+            "| abstractList.0.text | inputTxt |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("UnsupportedClass", "TEST", etData)
 
+        when:
         String message = shouldFailWithCause(UnsupportedOperationException.class) {
-            new RequestFactory(UnsupportedClass, ctx, conversionService).withFieldAccessStrategy().createRequest();
+            new RequestFactory(UnsupportedClass, ctx, conversionService).withFieldAccessStrategy().createRequest()
         }
 
-        assert message.contains("Abstract classes are not supported as generic")
+        then:
+        message.contains("Abstract classes are not supported as generic")
+    }
+
+    @Test
+    void "Should accept user type before explicit one"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name           | data   | type                             |\n" +
+            "| knownBar       | noRole | org.jbehavesupport.core.ChildBar |\n" +
+            "| knownBar.nummy | 99     |                                  |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
+
+        when:
+        Foo fooActual = new RequestFactory(Foo, ctx, conversionService).createRequest()
+
+        then:
+        fooActual.getKnownBar().getClass() == ChildBar.class
+        ((ChildBar) fooActual.getKnownBar()).getNummy() == 99L
+    }
+
+    @Test
+    void "Should refuse user type, that is not applicable"() {
+        given:
+        def etData = etFactory.convertValue("" +
+            "| name           | data   | type                                     |\n" +
+            "| knownBar       | noRole | org.jbehavesupport.core.UnsupportedClass |\n" +
+            "| knownBar.nummy | 99     |                                          |\n",
+            null) as ExamplesTable
+        webServiceSteps.requestData("Foo", "TEST", etData)
+
+        when:
+        String message = shouldFailWithCause(IllegalStateException.class) {
+            new RequestFactory(Foo, ctx, conversionService).createRequest()
+        }
+
+        then:
+        true
+        message.contains("Failed to convert property value of type 'org.jbehavesupport.core.UnsupportedClass'")
     }
 
     @Data
@@ -311,6 +466,7 @@ class RequestFactoryTest {
         Abar abar
         List<Abar> abarList
         NestedList nestList
+        Bar knownBar
     }
 
     @Data
@@ -320,8 +476,8 @@ class RequestFactoryTest {
     }
 
     static class Ugly {
-        JAXBElement<String> attribute;
-        JAXBElement<Integer> AtTribute;
+        JAXBElement<String> attribute
+        JAXBElement<Integer> AtTribute
     }
 }
 
@@ -337,9 +493,15 @@ class Bar extends Abar {
 }
 
 @Data
+@EqualsAndHashCode
+class ChildBar extends Bar {
+    Long nummy
+}
+
+@Data
 class UnsupportedClass {
 
-    List<List<String>> listInList;
-    List<Abar> abstractList;
+    List<List<String>> listInList
+    List<Abar> abstractList
 
 }

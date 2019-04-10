@@ -32,18 +32,18 @@ import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 
-import org.jbehavesupport.core.TestContext;
-import org.jbehavesupport.core.internal.MetadataUtil;
-import org.jbehavesupport.core.internal.expression.NilCommand;
-
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.codehaus.plexus.util.ReflectionUtils;
+import org.jbehavesupport.core.TestContext;
+import org.jbehavesupport.core.internal.MetadataUtil;
+import org.jbehavesupport.core.internal.expression.NilCommand;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.InvalidPropertyException;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.util.Assert;
 
 /**
  * The {@code RequestFactory} is responsible for creation of request objects and setting their values specified in {@code TestContext}.
@@ -283,6 +283,10 @@ public class RequestFactory<REQUEST> {
 
     private Object resolveValue(TestContext testContext, String key, Class type) {
         Object value = testContext.get(key);
+        Class<?> metaType = getMetaType(testContext, key);
+        if (metaType != null) {
+            return instantiateClass(metaType);
+        }
         if (value == null) {
             value = null;
         } else if (isAssignable(type, JAXBElement.class)) { //Very tricky to extract to converter
@@ -290,14 +294,16 @@ public class RequestFactory<REQUEST> {
         } else if (conversionService.canConvert(value.getClass(), type)) {
             value = conversionService.convert(value, type);
         }
-        if (value == null && isAbstract(type)) { // Reused functionality with JAXB
-            value = instantiateClass((Class<?>) testContext.getEntry(key).getMetadata().stream()
-                .filter(MetadataUtil::isType)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Required metadata type was not found"))
-                .getValue());
-        }
+        Assert.isTrue(!(value == null && isAbstract(type)), "Please specify type for " + key);
         return value;
+    }
+
+    private Class<?> getMetaType(TestContext testContext, String key) {
+        return (Class<?>) testContext.getEntry(key).getMetadata().stream()
+            .filter(MetadataUtil::isType)
+            .findFirst()
+            .orElse(TestContext.Metadata.of("TYPE", null))
+            .getValue();
     }
 
     private Object resolveJaxbElement(final TestContext testContext, final String key, Object value) {

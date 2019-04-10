@@ -1,6 +1,5 @@
 package org.jbehavesupport.core
 
-
 import org.jbehave.core.configuration.MostUsefulConfiguration
 import org.jbehavesupport.core.healthcheck.HealthCheck
 import org.jbehavesupport.core.healthcheck.HealthCheckSteps
@@ -12,8 +11,12 @@ import org.jbehavesupport.core.ssh.SimpleRollingLogResolver
 import org.jbehavesupport.core.ssh.SshSetting
 import org.jbehavesupport.core.ssh.SshTemplate
 import org.jbehavesupport.core.support.YamlPropertiesConfigurer
+import org.jbehavesupport.core.test.app.oxm.NameRequest
+import org.jbehavesupport.core.test.app.oxm.NameResponse
 import org.jbehavesupport.core.verification.Verifier
 import org.jbehavesupport.core.web.ByFactory
+import org.jbehavesupport.core.ws.WebServiceEndpointRegistry
+import org.jbehavesupport.core.ws.WebServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationContext
@@ -96,5 +99,20 @@ class TestConfig {
 
         RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver();
         return new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver);
+    }
+
+    @Bean
+    @Qualifier("TEST")
+    WebServiceHandler requestFactoryTestHandler() {
+        return new WebServiceHandler() {
+            @Override
+            protected void initEndpoints(WebServiceEndpointRegistry endpointRegistry) {
+                endpointRegistry.register(RequestFactoryTest.Foo.class, RequestFactoryTest.Foo.class);
+                endpointRegistry.register(RequestFactoryTest.Foo.class, "MyClass", RequestFactoryTest.Foo.class, "MyClass");
+                endpointRegistry.register(NameRequest.class, NameResponse.class);
+                endpointRegistry.register(RequestFactoryTest.Ugly.class, RequestFactoryTest.Ugly.class);
+                endpointRegistry.register(UnsupportedClass.class, UnsupportedClass.class);
+            }
+        }
     }
 }

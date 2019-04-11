@@ -256,19 +256,37 @@ Then response from [TEST] REST API has status [BAD_REQUEST]
 
 Scenario: file upload
 When [POST] request to [TEST]/[base64/multipart/] is sent with data:
-| name                 | data                |
-| @header.Content-Type | multipart/form-data |
-| file1                | {RESOURCE:image.png}    |
-| file2                | {RESOURCE:image.png}    |
+| name                 | data                 |
+| @header.Content-Type | multipart/form-data  |
+| file1                | {RESOURCE:image.png} |
+| file2                | {RESOURCE:image.png} |
 Then response from [TEST] REST API has status [OK] and values match:
 | name  | expectedValue |
 | file1 | file1         |
 | file2 | file2         |
 
 When [POST] request to [TEST]/[base64/multipart/] is sent with data:
-| name                 | data                |
-| @header.Content-Type | multipart/form-data |
-| data                 | {RESOURCE:image.png}    |
-| firstName            | someName            |
-| lastName             | lastName            |
+| name                 | data                 |
+| @header.Content-Type | multipart/form-data  |
+| data                 | {RESOURCE:image.png} |
+| firstName            | someName             |
+| lastName             | lastName             |
 Then response from [TEST] REST API has status [OK]
+
+Scenario: test success handlers
+When [POST] request to [TEST]/[mirror/] is sent with data:
+| name             | data        |
+| httpStatus       | CREATED     |
+| payload[0]       | happy       |
+Then response from [TEST] REST API is successful
+
+When [POST] request to [TEST]/[mirror/] is sent with data:
+| name             | data        |
+| httpStatus       | CREATED     |
+| payload[0]       | happy       |
+| payload[1]       | astronaut   |
+Then response from [TEST] REST API is successful and values match:
+| name       | expectedValue |
+| payload[1] | astronaut     |
+
+

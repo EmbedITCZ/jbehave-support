@@ -93,6 +93,10 @@ Then response from [TEST] REST API has status [OK] and values match:
 | [1].lastName  | Cerutti       |
 ```
 
+Each of steps above can be used as one of successful variants, where you define default success status and result (data).
+`Then response from [TEST] REST API is successful` or `Then response from [TEST] REST API is successful and values match`.
+Successful response is defined in form of ExamplesTable in `RestServiceHandler#getSuccessResult()`
+
 #### Handling headers
 By default `application/json` will be send. If you need multipart request, i.e.: for sending file you have to specify appropriate header: `multipart/form-data`
 

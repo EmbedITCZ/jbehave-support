@@ -14,6 +14,7 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Parameters;
+import org.springframework.util.Assert;
 
 @UtilityClass
 public class ExamplesTableUtil {
@@ -81,6 +82,27 @@ public class ExamplesTableUtil {
                 .map(me -> me.get(column))
                 .anyMatch(predicate);
         }
+    }
+
+    /**
+     * Retrieves value from specified column based on key present in different column.
+     * @param table table to retrieve data from
+     * @param keyColumn header name to seek in for key
+     * @param key search key
+     * @param valueColumn column to get the value from
+     * @return
+     */
+    public static String getValue(ExamplesTable table, String keyColumn, String key, String valueColumn) {
+        Assert.notNull(table, "Examples table must be provided");
+        Assert.notEmpty(table.getHeaders(), "Examples table has no headers");
+        Assert.isTrue(table.getHeaders().contains(keyColumn), "Column " + keyColumn + " is not present in examples table");
+        Assert.isTrue(table.getHeaders().contains(valueColumn), "Column " + valueColumn + " is not present in examples table");
+
+        return table.getRows().stream()
+            .filter(row -> row.get(keyColumn).equals(key))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Record not found in examples table under key: " + keyColumn))
+            .get(valueColumn);
     }
 
     private static List<Map<String, String>> convertTable(ExamplesTable table, boolean caseSensitiveMap) {

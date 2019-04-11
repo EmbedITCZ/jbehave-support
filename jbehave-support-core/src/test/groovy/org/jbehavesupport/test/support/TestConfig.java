@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
@@ -117,7 +118,16 @@ public class TestConfig {
     @Bean
     @Qualifier("TEST")
     public RestServiceHandler testRestServiceHandler() {
-        return new RestServiceHandler(env.getProperty("rest.url"));
+        return new RestServiceHandler(env.getProperty("rest.url")) {
+
+            @Override
+            public ExamplesTable getSuccessResult() {
+                return new ExamplesTable("" +
+                    "| name           | expectedValue |\n" +
+                    "| @header.Status | CREATED       |\n" +
+                    "| payload[0]     | happy         |");
+            }
+        };
     }
 
     @Bean
@@ -174,7 +184,7 @@ public class TestConfig {
         SshTemplate passwordTemplate = new SshTemplate(passwordSetting, timestampFormat, rollingLogResolver);
         SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver);
 
-        return new SshTemplate[]{passwordTemplate, keyTemplate};
+        return new SshTemplate[]{ passwordTemplate, keyTemplate };
     }
 
     @Bean
@@ -191,7 +201,7 @@ public class TestConfig {
     @Bean
     @Qualifier("TEST")
     public JmsJaxbHandler jmsJaxbHandler() {
-        Class[] classesToBeBound = {NameRequest.class};
+        Class[] classesToBeBound = { NameRequest.class };
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         return new JmsJaxbHandler(jmsTemplate, classesToBeBound);
     }

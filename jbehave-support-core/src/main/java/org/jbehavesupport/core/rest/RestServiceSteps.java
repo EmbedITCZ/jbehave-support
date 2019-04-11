@@ -2,13 +2,12 @@ package org.jbehavesupport.core.rest;
 
 import java.io.IOException;
 
-import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
-
 import lombok.RequiredArgsConstructor;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
+import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -78,6 +77,19 @@ public final class RestServiceSteps {
     @Then("response from [$application] REST API has status [$status] and values match: $data")
     public void verifyResponse(String application, String status, ExamplesTable data) {
         resolveHandler(application).verifyResponse(status, data);
+    }
+
+    @Then("response from [$application] REST API is successful")
+    public void verifySuccessfulResponse(String application) {
+        verifySuccessfulResponse(application, new ExamplesTable(""));
+    }
+
+    @Then("response from [$application] REST API is successful and values match: $data")
+    public void verifySuccessfulResponse(String application, ExamplesTable data) {
+        RestServiceHandler restServiceHandler = resolveHandler(application);
+        restServiceHandler.verifyResponse(null, restServiceHandler.getSuccessResult());
+        restServiceHandler.verifyResponse(null, data);
+
     }
 
     @When("response values from [$application] REST API are saved: $mapping")

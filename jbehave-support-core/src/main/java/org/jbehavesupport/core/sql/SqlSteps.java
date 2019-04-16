@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
 @Component
 public final class SqlSteps {
@@ -236,7 +237,9 @@ public final class SqlSteps {
             .map(String::toUpperCase)
             .collect(Collectors.toCollection(ArrayList::new));
 
-        for (Map<String, Object> row : getSqlResult()) {
+        for (Map<String, Object> originalRow : getSqlResult()) {
+            // do not manipulate original row in case of additional saving/verification
+            LinkedCaseInsensitiveMap<Object> row = copyResultRow(originalRow);
             row.entrySet().removeIf(r -> !upperCaseHeaders.contains(r.getKey()));
             if (!row.isEmpty()) {
                 queryResultsToMatch.add(row);
@@ -375,6 +378,12 @@ public final class SqlSteps {
                 .assertThatCode(() -> equalsVerifier.verify(actualRow.get(key), expectedRow.get(key)))
                 .doesNotThrowAnyException();
         }
+    }
+
+    private LinkedCaseInsensitiveMap<Object> copyResultRow(Map<String, Object> originalRow) {
+        LinkedCaseInsensitiveMap<Object> row = new LinkedCaseInsensitiveMap<>(originalRow.size());
+        row.putAll(originalRow);
+        return row;
     }
 
     @AfterScenario

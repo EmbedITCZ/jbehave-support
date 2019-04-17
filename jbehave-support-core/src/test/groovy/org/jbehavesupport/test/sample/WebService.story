@@ -68,10 +68,10 @@ Then [NameResponse] values from [TEST] match:
 
 Scenario: Ws scenario to confirm request has valid implementation of abstract class
 Given [NameRequest] data for [TEST]:
-| name           | data        | type                                                         |
-| name           | test        |                                                              |
+| name           | data        | type                                              |
+| name           | test        |                                                   |
 | contact        |             | org.jbehavesupport.core.test.app.oxm.PhoneContact |
-| contact.number | 399 811 477 |                                                              |
+| contact.number | 399 811 477 |                                                   |
 When [NameRequest] is sent to [TEST] with success
 
 Scenario: nested list
@@ -119,9 +119,10 @@ Then [NameResponse] values from [TEST] match:
 
 Scenario: complex jaxbElement
 Given [NameRequest] data for [TEST]:
-| name                | data      |
-| name                | complexJB |
-| phoneContact.number | 44        |
+| name                 | data          |
+| name                 | complexJB     |
+| phoneContact.number  | 44            |
+| phoneContact.validTo | {RANDOM_DATE} |
 When [NameRequest] is sent to [TEST] with success
 Then [NameResponse] values from [TEST] match:
 | name         | expectedValue |

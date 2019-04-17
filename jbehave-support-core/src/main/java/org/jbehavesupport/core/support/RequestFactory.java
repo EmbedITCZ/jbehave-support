@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 
 import lombok.Getter;
@@ -108,7 +107,6 @@ public class RequestFactory<REQUEST> {
     private String pathCurrent = null;
     private String pathPrevious = null;
     private AccessStrategy accessStrategy;
-    private DatatypeFactory datatypeFactory;
 
     public RequestFactory(Class<REQUEST> requestClazz, TestContext testContext, ConversionService conversionService) {
         requireNonNull(testContext);
@@ -206,15 +204,12 @@ public class RequestFactory<REQUEST> {
     private void handleLastStep(String key) {
         Object target = factoryContext.get(pathPrevious);
         Class type = parameterizedTypes.containsKey(pathPrevious) ? parameterizedTypes.get(pathPrevious) : accessStrategy.getType(target, pathStep);
-        Object value = resolveValue(testContext, key, type);
+        Object value = resolveValue(testContext, key, braceForJaxb(type));
         if (isCollectionIndexStep()) {
             Object collection = factoryContext.get(pathPrevious);
             ((Collection) collection).add(value);
         } else {
-            if (isAssignable(target.getClass(), JAXBElement.class)) {
-                target = ((JAXBElement) target).getValue();
-            }
-            accessStrategy.setValue(target, value, pathStep);
+            accessStrategy.setValue(braceForJaxb(target), value, pathStep);
         }
         factoryContext.put(pathCurrent, value);
     }
@@ -269,8 +264,7 @@ public class RequestFactory<REQUEST> {
     private void resolveParametrizedType(Object target, String pathStep) {
         if (!parameterizedTypes.containsKey(pathCurrent)) {
             Class<?> type = accessStrategy.getType(target, pathStep);
-            if (isAssignable(type, Set.class) || isAssignable(type, List.class)
-                || isAssignable(type, JAXBElement.class)) {
+            if (isAnyAssignable(type, Set.class, List.class, JAXBElement.class)) {
                 try {
                     Class typeParameter = accessStrategy.getGenericType(target, pathStep);
                     parameterizedTypes.put(pathCurrent, typeParameter);
@@ -279,6 +273,17 @@ public class RequestFactory<REQUEST> {
                 }
             }
         }
+    }
+
+    private boolean isAnyAssignable(Class<?> sourceType, Class<?>... targetTypes) {
+        Assert.notNull(sourceType, "source type must be provided");
+        Assert.notEmpty(targetTypes, "target types must be provided");
+        for (Class<?> targetType : targetTypes) {
+            if (isAssignable(sourceType, targetType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Object resolveValue(TestContext testContext, String key, Class type) {
@@ -296,6 +301,30 @@ public class RequestFactory<REQUEST> {
         }
         Assert.isTrue(!(value == null && isAbstract(type)), "Please specify type for " + key);
         return value;
+    }
+
+    /**
+     * This handles jaxb element on type that is wrapped inside another jaxb element.
+     * Unwraps parent Jaxb Element attribute
+     * @return type of generic Jaxb Element
+     */
+    private Class braceForJaxb(Class type) {
+        if (isAssignable(factoryContext.get(pathPrevious).getClass(), JAXBElement.class)) {
+            return accessStrategy.getType(((JAXBElement) factoryContext.get(pathPrevious)).getValue(), pathStep);
+        }
+        return type;
+    }
+
+    /**
+     * Unwraps Jaxb Element
+     * @param object to be unwrapped
+     * @return native object from Jaxb Element
+     */
+    private Object braceForJaxb(Object object) {
+        if (isAssignable(object.getClass(), JAXBElement.class)) {
+            return ((JAXBElement) object).getValue();
+        }
+        return object;
     }
 
     private Class<?> getMetaType(TestContext testContext, String key) {
@@ -322,7 +351,7 @@ public class RequestFactory<REQUEST> {
     }
 
     private XmlElementRef getXmlElementRef() {
-        Object parentInstance = factoryContext.get(pathPrevious);
+        Object parentInstance = braceForJaxb(factoryContext.get(pathPrevious));
         Field annotatedField = ReflectionUtils.getFieldsIncludingSuperclasses(parentInstance.getClass()).stream()
             .filter(f -> f.getName().equalsIgnoreCase(pathStep))
             .reduce((a, b) -> {
@@ -406,7 +435,7 @@ public class RequestFactory<REQUEST> {
         @Override
         @SuppressWarnings("squid:S1166")
         public Class getGenericType(final Object target, final String pathStep) {
-            BeanWrapper beanWrapper = new BeanWrapperImpl(target);
+            BeanWrapper beanWrapper = new BeanWrapperImpl(braceForJaxb(target));
             PropertyDescriptor property = resolveProperty(beanWrapper, pathStep);
             Method getter = property.getReadMethod();
             Type genericType = getter.getGenericReturnType();
@@ -451,7 +480,7 @@ public class RequestFactory<REQUEST> {
 
         @Override
         public Class getGenericType(final Object target, final String pathStep) {
-            Field field = getField(target, pathStep);
+            Field field = getField(braceForJaxb(target), pathStep);
             return org.jbehavesupport.core.internal.ReflectionUtils.getGenericClass(field);
         }
 

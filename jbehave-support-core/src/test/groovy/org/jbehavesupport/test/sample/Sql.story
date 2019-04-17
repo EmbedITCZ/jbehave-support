@@ -26,6 +26,11 @@ select * from person where first_name = 'James'
 Then these rows match the query result:
 | FIRST_NAME | LAST_NAME |
 | James      | Doe       |
+
+When these columns from the single-row query result are saved:
+| name | contextAlias |
+| id   | john_id      |
+
 Given this update is performed on [TEST]:
 update person set first_name = 'John' where first_name = 'James'
 

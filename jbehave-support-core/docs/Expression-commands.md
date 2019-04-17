@@ -185,16 +185,27 @@ This command simply do the sum of parameters.
 > Result of the command: `7`
 
 #### RANDOM_DATE
-Generates random date in range 1970 - 2059.
+Generates random date in range 1970 - 2059 by default.
+Takes up to 2 optional parameters to specify start and/or end date in several formats:
+- YYYY
+- YYYY-M
+- YYYY-M-D
 
 > Example:
 > ```
 > {RANDOM_DATE}
+> {RANDOM_DATE:1999}        //Random date since 1999-1-1 till 2059-12-31
+> {RANDOM_DATE:2000-5}      //Random date since 2000-5-1 till 2059-12-31
+> {RANDOM_DATE:2001-6-7}    //Random date since 2001-6-7 till 2059-12-31
+> {RANDOM_DATE:2002:2003}   //Random date since 2002-1-1 till 2003-1-1
+> {RANDOM_DATE:2002-4-5:2003-8-9} //Random date since 2002-4-5 till 2003-8-9
 > ```
 > Result of the command: `LocalDate object`
 
 #### RANDOM_DATE_TIME
-Generates random datetime in range 1970 - 2059.
+Generates random datetime in range 1970 - 2059 be default.
+Takes up to 2 optional parameters to specify start and/or end date see [RANDOM_DATE](#random_date).
+Time range is not implemented yet, please rise request if you see reasonable application for your test case.
 
 > Example:
 > ```

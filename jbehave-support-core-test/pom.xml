@@ -28,6 +28,10 @@
         <version.commons-lang3>3.8.1</version.commons-lang3>
         <version.commons-io>2.6</version.commons-io>
         <version.crash>1.3.2</version.crash>
+        <version.jaxb-api>2.3.1</version.jaxb-api>
+        <version.javax-activation>1.2.0</version.javax-activation>
+        <version.javax.xml.soap-api>1.4.0</version.javax.xml.soap-api>
+        <version.saaj-impl>1.5.1</version.saaj-impl>
         <plugin.version.maven-jaxb2-plugin>0.14.0</plugin.version.maven-jaxb2-plugin>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -64,6 +68,31 @@
                 <groupId>org.crashub</groupId>
                 <artifactId>crash.embed.spring</artifactId>
                 <version>${version.crash}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${version.jaxb-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.soap</groupId>
+                <artifactId>javax.xml.soap-api</artifactId>
+                <version>${version.javax.xml.soap-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.messaging.saaj</groupId>
+                <artifactId>saaj-impl</artifactId>
+                <version>${version.saaj-impl}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${version.jaxb-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.activation</groupId>
+                <artifactId>javax.activation</artifactId>
+                <version>${version.javax-activation}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -19,7 +19,7 @@ List of commands:
 - [FORMAT_DATE_TIME](#format_date_time)
 - [LOWER_CASE](#lower_case)
 - [MAP](#map)
-- [NEXT_CALENDAR_DATE](#next_calendar_date)
+- [NEXT_CALENDAR_DAY](#next_calendar_day)
 - [NIL](#nil)
 - [NULL](#null)
 - [PLUS](#plus)
@@ -148,14 +148,14 @@ Maps the first argument according to the mapping supplied in the second argument
 > ```
 > Produces result `Zero`
 
-#### NEXT_CALENDAR_DATE
+#### NEXT_CALENDAR_DAY
 Command consumes one parameter as day. If the day is higher or equal to day from `TimeFacade` current month is used. If the day is lower than day from `TimeFacade` we will reset day to 1 and set month to next month.
 
 > Example:
 > ```
-> {NEXT_CALENDAR_DATE:2}
+> {NEXT_CALENDAR_DAY:2}
 > ```
-> If today is `10.3.2018` the result will be `12.3.2018`
+> If today is `2018-03-10` the result will be `2018-03-12`
 
 #### NIL
 Dedicated to send nil=true in SOAP request for JAXBElement.

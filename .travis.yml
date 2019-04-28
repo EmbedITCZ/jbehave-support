@@ -3,7 +3,7 @@ jdk:
 - oraclejdk8
 
 install: true
-dist: trusty
+dist: xenial
 sudo: required
 
 cache:

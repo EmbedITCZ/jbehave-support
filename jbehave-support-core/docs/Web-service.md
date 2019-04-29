@@ -18,7 +18,7 @@ The next step sends the request to a ws api and verifies the result code is SUCC
 When [ClientRequest] is sent to [MYAPP] with success
 ```
 
-When it's necessary te verify a non-success response code (for example ERROR_CLIENT_NOT_FOUND) the following steps should be used.
+When it's necessary to verify a non-success response code (for example ERROR_CLIENT_NOT_FOUND) the following steps should be used.
 
 ```
 When [ClientRequest] is sent to [MYAPP]
@@ -45,6 +45,17 @@ Given [ClientRequest] values from [MYAPP] are saved:
 | client.id | ID           |
 ```
 Any prefix (`Given`/`When`/`Then`) can be used for this step.
+
+To verify standard SOAP Fault response the step below can be used:
+
+```
+When [ClientRequest] is sent to [MYAPP] with fault:
+| name        | expectedValue |
+| faultCode   | Server        |
+| faultReason | someReason    |
+```
+Note the special `faultCode` and `faultReason` parameters that can be checked (either one of them or both can be checked).
+
 
 ---
 ### Custom type converters

@@ -9,9 +9,7 @@ import java.util.Map;
 import org.jbehavesupport.core.web.WebElementRegistry;
 
 import org.openqa.selenium.By;
-import org.springframework.stereotype.Component;
 
-@Component
 public class WebElementRegistryImpl implements WebElementRegistry {
 
     private static final String ID_PREFIX = "#";

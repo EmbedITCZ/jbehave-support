@@ -2,19 +2,17 @@ package org.jbehavesupport.core.internal.verification;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.verification.Verifier;
 import org.jbehavesupport.core.verification.VerifierResolver;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
+@RequiredArgsConstructor
 public class VerifierResolverImpl implements VerifierResolver {
 
-    @Autowired
-    private List<Verifier> verifiers;
+    private final List<Verifier> verifiers;
 
     public Verifier getVerifierByName(String name) {
         return verifiers.stream()

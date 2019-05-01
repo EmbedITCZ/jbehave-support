@@ -8,9 +8,6 @@ import java.util.Map;
 import org.jbehavesupport.core.web.WebProperty;
 import org.jbehavesupport.core.web.WebPropertyResolver;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class WebPropertyResolverImpl implements WebPropertyResolver {
 
     private final Map<String, WebProperty> properties;

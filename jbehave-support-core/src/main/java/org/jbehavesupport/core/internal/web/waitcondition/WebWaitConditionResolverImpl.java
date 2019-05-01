@@ -7,9 +7,7 @@ import org.jbehavesupport.core.web.WebWaitConditionContext;
 import org.jbehavesupport.core.web.WebWaitConditionResolver;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class WebWaitConditionResolverImpl implements WebWaitConditionResolver {
 

@@ -11,13 +11,16 @@ public XmlReporterFactory xmlReporterFactory() {
 }
 ```
 
-The generated XML report by default contains only information about:
+Plus at least one [reporter extension](#reporter-extensions) (bean implementing a XmlReporterExtension interface).
+
+The default generated XML report contains only information about:
  - story start time
  - story end time
  - story duration
  - story status (e.g. failed, successful)
  - story steps
 
+Rest of the information available in the report depends on the extensions used/registered.
 
 ### Reporter extensions
 The default report can be extended with other info by registering beans implementing the interface XmlReporterExtension 
@@ -29,7 +32,8 @@ There are several extensions already prepared and ready to use:
  - `WsXmlReporterExtension` (copies SOAP requests/responses from [WebServiceSteps](Web-service.md))
  - `TestContextXmlReporterExtension` (copies contents of [TestContext](Test-context.md))
  - `ServerLogXmlReporterExtension` (copies server log(s) for each system with configured [SshTemplate](Ssh.md))
-- `FailScreenshotsReporterExtension` (prints out error screenshots from [Web testing](Web-testing.md) - if any were generated)
+ - `FailScreenshotsReporterExtension` (prints out error screenshots from [Web testing](Web-testing.md) - if any were generated)
+ - `SqlXmlReporterExtension` (copies SQL statements/results from [SqlSteps](Sql-steps.md))
 
 To use these extensions simply register the wanted extension as a bean, e.g.:
 ```

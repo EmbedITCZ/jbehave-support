@@ -20,23 +20,30 @@ public class InterceptingNamedParameterJdbcTemplate {
     }
 
     public int update(String sql, Map<String, ?> paramMap) {
-        reporterExtension.addSqlStatement(SqlStatementContext.builder()
-            .statement(sql)
-            .paramMap(paramMap)
-            .build());
+        if (reporterExtension != null) {
+            reporterExtension.addSqlStatement(SqlStatementContext.builder()
+                .statement(sql)
+                .paramMap(paramMap)
+                .build());
+        }
         return jdbcTemplate.update(sql, paramMap);
     }
 
     public List<Map<String, Object>> queryForList(String sql, Map<String, ?> paramMap) {
-        SqlStatementContext sqlStatementContext = SqlStatementContext.builder()
-            .statement(sql)
-            .paramMap(paramMap)
-            .build();
-        reporterExtension.addSqlStatement(sqlStatementContext);
+        SqlStatementContext sqlStatementContext = null;
+        if (reporterExtension != null) {
+            sqlStatementContext = SqlStatementContext.builder()
+                .statement(sql)
+                .paramMap(paramMap)
+                .build();
+            reporterExtension.addSqlStatement(sqlStatementContext);
+        }
 
         List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, paramMap);
-        sqlStatementContext.setResults(resultList);
-        return  resultList;
+        if (sqlStatementContext != null) {
+            sqlStatementContext.setResults(resultList);
+        }
+        return resultList;
     }
 
 }

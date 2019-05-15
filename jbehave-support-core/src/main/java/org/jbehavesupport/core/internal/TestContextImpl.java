@@ -21,10 +21,8 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.jbehavesupport.core.AbstractSpringStories;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class TestContextImpl implements TestContext {
     private static final String REFERENCE_PREFIX = "*_reference_";

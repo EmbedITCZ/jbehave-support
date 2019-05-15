@@ -15,11 +15,8 @@ import org.jbehavesupport.core.expression.ExpressionEvaluator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbehavesupport.core.support.TestContextUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
     //
     private static final Pattern EXPRESSION = Pattern.compile("(.*)(?<!\\\\)\\{(([^\\{\\}]|\\\\\\{|\\\\\\})*)(?<!\\\\)\\}(.*)", Pattern.DOTALL);
@@ -27,10 +24,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
     private final Map<String, String> aliases;
     private final Map<String, String> shorthands;
 
-    @Autowired
     private Map<String, ExpressionCommand> commands;
 
-    public ExpressionEvaluatorImpl() {
+    public ExpressionEvaluatorImpl(Map<String, ExpressionCommand> commands) {
+        this.commands = commands;
         aliases = new HashMap<>();
         shorthands = new HashMap<>();
         shorthands.put("CP", "TEST_CONTEXT_COPY");

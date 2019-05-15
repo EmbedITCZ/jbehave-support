@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.web.ByFactory;
 import org.jbehavesupport.core.web.ByFactoryResolver;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class ByFactoryResolverImpl implements ByFactoryResolver {
 

@@ -8,9 +8,6 @@ import java.util.Map;
 import org.jbehavesupport.core.web.WebAction;
 import org.jbehavesupport.core.web.WebActionResolver;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class WebActionResolverImpl implements WebActionResolver {
 
     private final Map<String, WebAction> actions;

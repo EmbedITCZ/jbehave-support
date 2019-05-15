@@ -11,9 +11,7 @@ import org.jbehavesupport.core.web.WebActionBuilder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jbehave.core.model.ExamplesTable;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class WebActionBuilderImpl implements WebActionBuilder {
 

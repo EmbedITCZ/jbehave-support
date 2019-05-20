@@ -86,7 +86,7 @@
         <version.slf4j>1.7.26</version.slf4j>
         <version.logback>1.2.3</version.logback>
         <version.jackson-mapper-asl>1.9.13</version.jackson-mapper-asl>
-        <version.jackson>2.9.8</version.jackson>
+        <version.jackson>2.9.9</version.jackson>
 
         <plugin.version.maven-javadoc-plugin>3.1.0</plugin.version.maven-javadoc-plugin>
         <plugin.version.maven-failsafe-plugin>2.22.1</plugin.version.maven-failsafe-plugin>

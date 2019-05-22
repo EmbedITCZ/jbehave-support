@@ -172,12 +172,12 @@ public final class WebSteps {
      *                  </ul>
      */
     @Then("on [$page] page wait until [$element] $condition")
-    public void waitUntilCondition(String page, String element, String condition) {
+    public void waitUntilCondition(String page, String element, ExpressionEvaluatingParameter<String> condition) {
         WebWaitConditionContext waitConditionCtx = WebWaitConditionContext.builder()
             .page(page)
             .element(element)
-            .condition(condition)
-            .value(parseConditionValue(condition))
+            .condition(condition.getValue())
+            .value(parseConditionValue(condition.getValue()))
             .build();
 
         WebWaitCondition waitCondition = waitConditionResolver.resolveWaitCondition(waitConditionCtx);

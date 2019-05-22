@@ -34,6 +34,7 @@ class EqualsVerifierTest extends Specification {
         "tst"                      | "tst"
         new LocalDate(2002, 7, 14) | new LocalDate(2002, 7, 14)
         12                         | 12
+        [1,2,3,4] as int[]         | [1,2,3,4] as int[]
     }
 
     @Unroll
@@ -43,7 +44,7 @@ class EqualsVerifierTest extends Specification {
 
         then:
         def exception = thrown(Throwable)
-        exception.getMessage() == message
+        exception.getMessage().contains(message)
 
         where:
         actual                     | expected                   || message
@@ -52,5 +53,6 @@ class EqualsVerifierTest extends Specification {
         "me"                       | "you"                      || "value 'me' is not equal to 'you'"
         null                       | "we"                       || "Actual value must be provided"
         "they"                     | null                       || "value 'they' is not equal to 'null'"
+        [1,2,3,4] as int[]         | [4,3,2,1] as int[]         || "is not equal to"
     }
 }

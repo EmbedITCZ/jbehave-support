@@ -20,7 +20,7 @@ public class DatabaseConfig {
     public Server initServer() {
         Server h2Server;
         try {
-            h2Server = Server.createTcpServer("-tcpPort", env.getProperty("spring.datasource.port")).start();
+            h2Server = Server.createTcpServer("-ifNotExists", "-tcpPort", env.getProperty("spring.datasource.port")).start();
             if (h2Server.isRunning(true)) {
                 log.info("H2 server was started and is running.");
             } else {

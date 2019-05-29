@@ -36,6 +36,9 @@ matrix:
         - chmod +x ci/trusty-before-system-test.sh
         - source ./ci/trusty-before-system-test.sh # we need sourcing to have the exported variables available outside of script
       env: CI_SCRIPT=ci/system-test.sh
+      after_success:
+        - chmod +x ci/report_upload.sh
+        - ci/report_upload.sh
     - stage: system-test
       dist: xenial
       jdk: openjdk11

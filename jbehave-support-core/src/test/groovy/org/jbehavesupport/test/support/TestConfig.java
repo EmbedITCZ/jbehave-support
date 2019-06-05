@@ -10,7 +10,7 @@ import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;

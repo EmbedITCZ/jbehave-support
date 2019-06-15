@@ -142,6 +142,33 @@ When navigated forward
 Then navigate forward
 ```
 
+To focus iframes and return to main frame.
+```
+Given on page [home] frame [iframe] is focused
+```
+```
+Given main frame is focused
+```
+
+To open a new tab.
+```
+Then open and focus new tab
+```
+
+To focus any opened tab using part of its URL or title
+```
+Then tab with [url] containing [google] is focused
+Then tab with [title] containing [google] is focused
+```
+
+To close current tab or whole browser
+```
+When current tab is closed
+```
+```
+Given browser is closed
+```
+
 #### Performing an action on HTML elements
 
 To perform an action on a page use the following step.
@@ -161,6 +188,7 @@ There are the following actions available at the moment:
 - DISMISS - for dismissing alert dialog
 - CLICK
 - DOUBLE_CLICK
+- FORCE_CLICK - for clicking on enabled but invisible elements
 - FILL - for inserting text value
 - CLEAR - for clearing text value of input/textarea
 - PRESS - for pressing special keys from the org.openqa.selenium.Keys enum

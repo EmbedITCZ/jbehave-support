@@ -4,6 +4,7 @@ When on [home] page these actions are performed:
 | element               | action       | data  |
 | #click-btn            | CLICK        |       |
 | #double-click-btn     | DOUBLE_CLICK |       |
+| #force-click-btn      | FORCE_CLICK  |       |
 | #press-btn            | PRESS        | UP    |
 | #clear-input          | CLEAR        |       |
 | #fill-input           | FILL         | foo   |
@@ -19,6 +20,7 @@ Then on [home] page these conditions are verified:
 | element               | property      | data           |
 | #click-result         | TEXT          | OK             |
 | #double-click-result  | TEXT          | OK             |
+| #force-click-result   | TEXT          | OK             |
 | #press-result         | TEXT          | OK             |
 | #clear-input          | VALUE         | {EMPTY_STRING} |
 | #fill-input           | VALUE         | foo            |

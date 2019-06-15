@@ -7,3 +7,10 @@ search-result:
   firstName: "#first-name"
   lastName: "#last-name"
 
+title:
+ text: "#text"
+ firstFrame: "*[title='firstFrame']"
+ secondFrame: "*[title='secondFrame']"
+ thirdFrame: "*[title='thirdFrame']"
+ numberOfFrame: "*[data-selector='number']"
+

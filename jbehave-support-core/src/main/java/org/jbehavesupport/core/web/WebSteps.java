@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 
+import org.assertj.core.api.Assertions;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.internal.verification.VerifierNames;
@@ -32,7 +33,10 @@ import org.jbehave.core.steps.Parameters;
 import org.jbehave.core.steps.Row;
 import org.jbehavesupport.core.internal.ExampleTableConstraints;
 import org.jbehavesupport.core.internal.MetadataUtil;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
@@ -59,6 +63,9 @@ public final class WebSteps {
     public static WebSetting getCurrentSetting() {
         return CURRENT_SETTING.get();
     }
+
+    @Autowired
+    private WebElementRegistry elementRegistry;
 
     @BeforeScenario
     public void beforeScenario() {
@@ -185,12 +192,63 @@ public final class WebSteps {
         waitCondition.evaluate(waitConditionCtx);
     }
 
+    /**
+     * @deprecated because it's not opening new tab, only focus tab opened by another action
+     *             getLastOpenedWindowHandler() may not work correctly on all browsers (https://developer.mozilla.org/en-US/docs/Web/WebDriver/Commands/GetWindowHandles)
+     */
+    @Deprecated
     @Then("new tab is opened and focused")
     public void switchToNewTab() {
         assertThat(driver.getWindowHandles().size())
             .as("last tab remains, new was not opened")
             .isGreaterThan(0);
         driver.switchTo().window(getLastOpenedWindowHandler());
+    }
+
+    @Then("open and focus new tab")
+    public void openAndFocusNewTab() {
+        Set<String> handlesBefore = driver.getWindowHandles();
+        if (driver instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) driver).executeScript("window.open()");
+            Set<String> handlesAfter = driver.getWindowHandles();
+            if (handlesAfter.size() == handlesBefore.size() + 1) {
+                handlesAfter.removeAll(handlesBefore);
+                driver.switchTo().window(handlesAfter.iterator().next());
+                return;
+            }
+        }
+        throw new AssertionError("Opening new tab failed");
+    }
+
+    @Then("tab with [$urlTitle] containing [$text] is focused")
+    public void findTabWithUrl(String urlTitle, ExpressionEvaluatingParameter<String> text) {
+        Assertions.assertThat(urlTitle).matches("url|title").as("Must be url or title");
+        driver.getWindowHandles().stream()
+            .filter(handle -> {
+                try {
+                    driver.switchTo().window(handle);
+                } catch (Exception e) {
+                    return urlTitlecontainsText(urlTitle, text.getValue());
+                }
+                return urlTitlecontainsText(urlTitle, text.getValue());
+            })
+            .findAny()
+            .orElseThrow(IllegalStateException::new);
+    }
+
+    private boolean urlTitlecontainsText(String urlTitle, String text) {
+        return urlTitle.contains("url") ? driver.getCurrentUrl().contains(text) : driver.getTitle().contains(text);
+    }
+
+    @Given("on page [$page] frame [$frame] is focused")
+    public void focusNamedFrame(ExpressionEvaluatingParameter<String> page, ExpressionEvaluatingParameter<String> frame) {
+        WebElement iFrame = driver.findElement(elementRegistry.getLocator(page.getValue(), frame.getValue()));
+        driver.switchTo().frame(iFrame);
+    }
+
+    @Given("main frame is focused")
+    public void focusMainFrame() {
+        driver.switchTo().defaultContent();
     }
 
     @When("current tab is closed")

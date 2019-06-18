@@ -195,6 +195,7 @@ public final class WebSteps {
     /**
      * @deprecated because it's not opening new tab, only focus tab opened by another action
      *             getLastOpenedWindowHandler() may not work correctly on all browsers (https://developer.mozilla.org/en-US/docs/Web/WebDriver/Commands/GetWindowHandles)
+     *             findTabWithUrlOrTitle() should be used instead
      */
     @Deprecated
     @Then("new tab is opened and focused")
@@ -221,7 +222,7 @@ public final class WebSteps {
     }
 
     @Then("tab with [$urlTitle] containing [$text] is focused")
-    public void findTabWithUrl(String urlTitle, ExpressionEvaluatingParameter<String> text) {
+    public void findTabWithUrlOrTitle(String urlTitle, ExpressionEvaluatingParameter<String> text) {
         Assertions.assertThat(urlTitle).matches("url|title").as("Must be url or title");
         driver.getWindowHandles().stream()
             .filter(handle -> {

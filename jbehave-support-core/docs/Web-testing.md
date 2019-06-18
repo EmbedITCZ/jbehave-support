@@ -150,7 +150,7 @@ Given on page [home] frame [iframe] is focused
 Given main frame is focused
 ```
 
-To open a new tab.
+To open a new tab. (works only in browsers with javascript enabled)
 ```
 Then open and focus new tab
 ```
@@ -188,7 +188,7 @@ There are the following actions available at the moment:
 - DISMISS - for dismissing alert dialog
 - CLICK
 - DOUBLE_CLICK
-- FORCE_CLICK - for clicking on enabled but invisible elements
+- FORCE_CLICK - for clicking on enabled but invisible elements (works only in browsers with javascript enabled)
 - FILL - for inserting text value
 - CLEAR - for clearing text value of input/textarea
 - PRESS - for pressing special keys from the org.openqa.selenium.Keys enum

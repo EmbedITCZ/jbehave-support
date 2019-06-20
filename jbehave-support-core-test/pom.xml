@@ -29,6 +29,8 @@
         <version.commons-io>2.6</version.commons-io>
         <version.crash>1.3.2</version.crash>
         <version.jaxb-api>2.3.1</version.jaxb-api>
+        <version.moxy>2.7.4</version.moxy>
+        <version.mail-api>1.6.2</version.mail-api>
         <version.javax-activation>1.2.0</version.javax-activation>
         <version.javax.xml.soap-api>1.4.0</version.javax.xml.soap-api>
         <version.saaj-impl>1.5.1</version.saaj-impl>
@@ -85,9 +87,14 @@
                 <version>${version.saaj-impl}</version>
             </dependency>
             <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-runtime</artifactId>
-                <version>${version.jaxb-api}</version>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.moxy</artifactId>
+                <version>${version.moxy}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>javax.mail-api</artifactId>
+                <version>${version.mail-api}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.activation</groupId>

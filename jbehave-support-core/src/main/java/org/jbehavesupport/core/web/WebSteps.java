@@ -206,6 +206,7 @@ public final class WebSteps {
         driver.switchTo().window(getLastOpenedWindowHandler());
     }
 
+    @Given("open and focus new tab")
     @Then("open and focus new tab")
     public void openAndFocusNewTab() {
         Set<String> handlesBefore = driver.getWindowHandles();
@@ -221,6 +222,7 @@ public final class WebSteps {
         throw new AssertionError("Opening new tab failed");
     }
 
+    @Given("tab with [$urlTitle] containing [$text] is focused")
     @Then("tab with [$urlTitle] containing [$text] is focused")
     public void findTabWithUrlOrTitle(String urlTitle, ExpressionEvaluatingParameter<String> text) {
         Assertions.assertThat(urlTitle).matches("url|title").as("Must be url or title");
@@ -242,12 +244,14 @@ public final class WebSteps {
     }
 
     @Given("on page [$page] frame [$frame] is focused")
+    @Then("on page [$page] frame [$frame] is focused")
     public void focusNamedFrame(ExpressionEvaluatingParameter<String> page, ExpressionEvaluatingParameter<String> frame) {
         WebElement iFrame = driver.findElement(elementRegistry.getLocator(page.getValue(), frame.getValue()));
         driver.switchTo().frame(iFrame);
     }
 
     @Given("main frame is focused")
+    @Then("main frame is focused")
     public void focusMainFrame() {
         driver.switchTo().defaultContent();
     }

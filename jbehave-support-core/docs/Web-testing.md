@@ -145,19 +145,22 @@ Then navigate forward
 To focus iframes and return to main frame.
 ```
 Given on page [home] frame [iframe] is focused
+Then on page [home] frame [iframe] is focused
 ```
 ```
 Given main frame is focused
+Then main frame is focused
 ```
 
 To open a new tab. (works only in browsers with javascript enabled)
 ```
+Given open and focus new tab
 Then open and focus new tab
 ```
 
 To focus any opened tab using part of its URL or title
 ```
-Then tab with [url] containing [google] is focused
+Given tab with [url] containing [google] is focused
 Then tab with [title] containing [google] is focused
 ```
 

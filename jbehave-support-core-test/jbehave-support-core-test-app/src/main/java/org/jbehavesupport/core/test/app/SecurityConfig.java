@@ -13,6 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/rest/secure/**").fullyAuthenticated()
             .and()
-            .httpBasic();
+            .httpBasic()
+            .and().headers().frameOptions().sameOrigin();
     }
 }

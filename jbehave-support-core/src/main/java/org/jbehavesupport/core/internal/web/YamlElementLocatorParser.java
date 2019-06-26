@@ -53,7 +53,8 @@ public class YamlElementLocatorParser {
                     "Unable to parse given entry [" + key + ": " + value + "] "
                         + "in file [" + elementLocatorsResource.getFilename() + "], "
                         + "the expected format is: pageName.elementName[.locatorType], "
-                        + "where locator type is optional, supported values are "
+                        + "where element name must be unique for page and "
+                        + "locator type is optional, supported values are "
                         + "css (default) and xpath", e);
             }
         }

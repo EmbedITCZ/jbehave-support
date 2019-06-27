@@ -41,7 +41,9 @@ public class WebElementRegistryImpl implements WebElementRegistry {
         requireNonNull(elementName, "Parameter elementName is required.");
         requireNonNull(locator, "Parameter locator is required.");
         Map<String, By> elementRegistry = pageRegistry.computeIfAbsent(pageName, p -> new HashMap<>());
-        elementRegistry.put(elementName, locator);
+        if(elementRegistry.put(elementName, locator) != null){
+            throw new IllegalStateException("Web elements mapping contains duplicate key [" + elementName + "] for page [" + pageName + "].");
+        }
     }
 
 }

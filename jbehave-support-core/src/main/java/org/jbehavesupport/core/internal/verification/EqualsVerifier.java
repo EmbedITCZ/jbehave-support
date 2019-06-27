@@ -1,7 +1,7 @@
 package org.jbehavesupport.core.internal.verification;
 
 import static org.jbehavesupport.core.internal.util.ArrayComparator.arraysEquals;
-import static org.jbehavesupport.core.internal.verification.VerifierNames.*;
+import static org.jbehavesupport.core.internal.verification.VerifierNames.EQ;
 import static org.springframework.util.Assert.notNull;
 
 import org.springframework.stereotype.Component;

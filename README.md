@@ -13,7 +13,7 @@ mvn clean install
 ```
 
 ## how to setup dev environment
-We are using Intellij IDEA as IDE (always last version). 
+We are using IntelliJ IDEA as IDE (always last version). 
 
 Recommended set of plugins:
 - SonarLint

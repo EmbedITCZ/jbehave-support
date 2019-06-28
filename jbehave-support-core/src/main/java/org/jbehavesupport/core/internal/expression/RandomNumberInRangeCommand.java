@@ -7,7 +7,6 @@ import org.jbehavesupport.core.expression.ExpressionCommand;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
  * Generate random number in range.
@@ -17,7 +16,7 @@ public class RandomNumberInRangeCommand implements ExpressionCommand {
 
     @Override
     public Object execute(Object... params) {
-        Assert.isTrue(params.length == 2, "Two parameters were expected");
+        isTrue(params.length == 2, "Two parameters were expected");
         Long startInclusive = parseLong(params[0]);
         Long endExclusive = parseLong(params[1]);
         return RandomUtils.nextLong(startInclusive, endExclusive);

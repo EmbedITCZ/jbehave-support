@@ -8,7 +8,6 @@ import java.util.Map;
 import org.jbehavesupport.core.TestContext;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Strings;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Parameters;
@@ -40,7 +39,7 @@ public class TestContextUtil {
             String value = row.valueAs(ExampleTableConstraints.DATA, String.class);
             String type = row.values().containsKey(COLUMN_TYPE) ? row.valueAs(COLUMN_TYPE, String.class) : null;
 
-            if (StringUtils.isNoneEmpty(type)) {
+            if (isNoneEmpty(type)) {
                 testContext.put(key, null, MetadataUtil.type(type));
             } else {
                 testContext.put(key, value);

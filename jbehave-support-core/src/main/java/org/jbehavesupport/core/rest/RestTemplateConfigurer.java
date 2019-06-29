@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -47,7 +47,7 @@ public class RestTemplateConfigurer {
     }
 
     public final RestTemplateConfigurer basicAuthorization(String username, String password) {
-        return interceptor(new BasicAuthorizationInterceptor(username, password));
+        return interceptor(new BasicAuthenticationInterceptor(username, password));
     }
 
 }

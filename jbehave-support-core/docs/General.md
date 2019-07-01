@@ -28,6 +28,7 @@ For some verification steps it's possible to use verifiers such as:
 `SIZE_LT` - Size of collection is lower than expected value
 `SIZE_GT` - Size of collection is greater than expected value
 `REGEX_MATCH` - Matches String using regular expression
+`REGEX_FIND` - Check if regular expression match any part of given value
 
 The following sample step compares data from a ClientResponse from MYAPP against values in test context using operators.
 
@@ -37,6 +38,19 @@ Then [ClientResponse] values from [MYAPP] match:
 | client.cuid | NE       | {CP:CUID_1}   |
 | client.cuid | NE       | {CP:CUID_2}   |
 | client.cuid | NE       | {CP:CUID_3}   |
+```
+
+Following step compares values in every row
+
+```
+Given following columns are compared:
+| actualValue                      | expectedValue | verifier   |
+| TEST                             | TEST          | EQ         |
+| TEST_CONTAINS                    | TEST          | CONTAINS   |
+
+Then following columns are compared:
+| actualValue       | expectedValue      | verifier |
+| {CP:ACTUAL_VALUE} |{CP:EXPECTED_VALUE} | EQ       |
 ```
 
 ---

@@ -28,7 +28,7 @@ For some verification steps it's possible to use verifiers such as:
 `SIZE_LT` - Size of collection is lower than expected value
 `SIZE_GT` - Size of collection is greater than expected value
 `REGEX_MATCH` - Matches String using regular expression
-`REGEX_FIND` - Check if regular expression match any part of given value
+`REGEX_FIND` - Check if regular expression matches any part of given value
 
 The following sample step compares data from a ClientResponse from MYAPP against values in test context using operators.
 

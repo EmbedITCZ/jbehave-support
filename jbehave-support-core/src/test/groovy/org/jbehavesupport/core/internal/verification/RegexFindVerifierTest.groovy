@@ -46,7 +46,7 @@ class RegexFindVerifierTest extends Specification {
         where:
         actual  | expected || message
         null    | "asd"    || "Actual value must be provided"
-        "asd"   | null     || "Actual value must be provided"
+        "asd"   | null     || "Expected value must be provided"
         "wrong" | ".*good" || "regex '.*good' wasn't found in: \nwrong"
     }
 

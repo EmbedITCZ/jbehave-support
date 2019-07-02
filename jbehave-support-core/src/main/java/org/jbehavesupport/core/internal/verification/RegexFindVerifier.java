@@ -14,6 +14,7 @@ public class RegexFindVerifier extends AbstractVerifier {
 
     public void verify(Object actual, Object expected) {
         Assert.notNull(actual, "Actual value must be provided");
+        Assert.notNull(expected, "Actual value must be provided");
         Matcher matcher = Pattern.compile(expected.toString()).matcher(actual.toString());
         if (!matcher.find()) {
             this.throwAssertionError("regex '%s' wasn't found in: \n%s", expected, actual);

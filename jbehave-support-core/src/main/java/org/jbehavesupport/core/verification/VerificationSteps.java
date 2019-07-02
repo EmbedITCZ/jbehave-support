@@ -2,6 +2,7 @@ package org.jbehavesupport.core.verification;
 
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.SoftAssertions;
 import org.codehaus.plexus.util.StringUtils;
 import org.jbehave.core.annotations.Given;
@@ -9,7 +10,6 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
 import org.jbehavesupport.core.internal.verification.VerifierNames;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.ACTUAL_VALUE;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
@@ -17,13 +17,11 @@ import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.convertTable;
 
 @Component
+@RequiredArgsConstructor
 public class VerificationSteps {
 
-    @Autowired
-    private VerifierResolver verifierResolver;
-
-    @Autowired
-    private ExamplesEvaluationTableConverter tableConverter;
+    private final VerifierResolver verifierResolver;
+    private final ExamplesEvaluationTableConverter tableConverter;
 
     @Given("following columns are compared: $stringTable")
     @Then("following columns are compared: $stringTable")

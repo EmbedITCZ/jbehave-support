@@ -14,13 +14,13 @@ class RegexFindVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        regexFindVerifier.name().equals("REGEX_FIND");
+        regexFindVerifier.name().equals("REGEX_FIND")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        regexFindVerifier.verify(actual, expected);
+        regexFindVerifier.verify(actual, expected)
 
         then:
         true
@@ -37,7 +37,7 @@ class RegexFindVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        regexFindVerifier.verify(actual, expected);
+        regexFindVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

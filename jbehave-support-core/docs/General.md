@@ -27,8 +27,8 @@ For some verification steps it's possible to use verifiers such as:
 `SIZE_EQ` - Size of collection is exactly expected value
 `SIZE_LT` - Size of collection is lower than expected value
 `SIZE_GT` - Size of collection is greater than expected value
-`REGEX_MATCH` - Matches String using regular expression
-`REGEX_FIND` - Check if regular expression matches any part of given value
+`REGEX_MATCH` - Matches String using regular expression - matches whole string
+`REGEX_FIND` - Check if regular expression matches any part of given value - matches data on one line
 
 The following sample step compares data from a ClientResponse from MYAPP against values in test context using operators.
 
@@ -40,17 +40,20 @@ Then [ClientResponse] values from [MYAPP] match:
 | client.cuid | NE       | {CP:CUID_3}   |
 ```
 
-Following step compares values in every row
+Following step compares values in every row (default verifier: EQ)
 
 ```
-Given following columns are compared:
-| actualValue                      | expectedValue | verifier   |
-| TEST                             | TEST          | EQ         |
-| TEST_CONTAINS                    | TEST          | CONTAINS   |
-
-Then following columns are compared:
-| actualValue       | expectedValue      | verifier |
-| {CP:ACTUAL_VALUE} |{CP:EXPECTED_VALUE} | EQ       |
+Then following data are compared:
+| data              | expectedValue      | verifier |
+| TEST              | TEST               | EQ       |
+| TEST_CONTAINS     | TEST               | CONTAINS |
+| {CP:ACTUAL_VALUE} |{CP:EXPECTED_VALUE} |          |
 ```
+
+#### Limiting verification error count in logs
+
+Verification steps use soft assertions to report errors - by default only first 10 comparison errors are reported (to avoid out of memory problems with long logs).  
+This number can be changed by setting the property `verifier.max.assert.count`.
+
 
 ---

@@ -1,6 +1,11 @@
 package org.jbehavesupport.core.rest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.ALIAS;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
+import static org.jbehavesupport.core.internal.ExamplesTableUtil.getValue;
 import static org.springframework.util.Assert.state;
 
 import java.io.IOException;
@@ -19,24 +24,24 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.jbehavesupport.core.TestContext;
-import org.jbehavesupport.core.internal.ExamplesTableUtil;
-import org.jbehavesupport.core.internal.SkipSslVerificationHttpRequestFactory;
-import org.jbehavesupport.core.internal.verification.VerifierNames;
-import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
-import org.jbehavesupport.core.verification.Verifier;
-import org.jbehavesupport.core.verification.VerifierResolver;
-
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Row;
+import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.internal.ExampleTableConstraints;
+import org.jbehavesupport.core.internal.ExamplesTableUtil;
 import org.jbehavesupport.core.internal.MetadataUtil;
+import org.jbehavesupport.core.internal.SkipSslVerificationHttpRequestFactory;
+import org.jbehavesupport.core.internal.verification.VerifierNames;
+import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
+import org.jbehavesupport.core.verification.Verifier;
+import org.jbehavesupport.core.verification.VerifierResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -72,6 +77,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * }
  */
+@Slf4j
 public class RestServiceHandler {
 
     private static final String REST_RESPONSE_CODE = "rest_response_code";
@@ -79,6 +85,7 @@ public class RestServiceHandler {
     private static final String REST_RESPONSE_HEADERS = "rest_response_headers";
     private static final String HEADER_START = "@header.";
     private static final String RAW_BODY_KEY = "@body";
+    private static final String STATUS_HEADER = HEADER_START + "Status";
     private static Pattern indexedKeyPattern = Pattern.compile("(.*)\\[(\\d+)\\]");
     private static Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)\\]\\.(.*)");
 
@@ -127,6 +134,15 @@ public class RestServiceHandler {
         }
     }
 
+    /**
+     * Each response that is meant to be successful must match data
+     * @return ExamplesTable that will be comparaed against response in same format
+     * as {@link RestServiceSteps#verifyResponse(java.lang.String, java.lang.String, org.jbehave.core.model.ExamplesTable)}
+     */
+    public ExamplesTable getSuccessResult() {
+        return new ExamplesTable("");
+    }
+
     private void storeResponse(final ResponseEntity<String> responseEntity) {
         testContext.put(REST_RESPONSE_CODE, responseEntity.getStatusCode().value());
         testContext.put(REST_RESPONSE_HEADERS, responseEntity.getHeaders());
@@ -143,11 +159,10 @@ public class RestServiceHandler {
         if (data == null) { //return dummy
             return new HttpEntity<>("", null);
         }
-        List<Triple<String, String, String>> requestDataList = ExamplesTableUtil
-            .convertTriple(data, ExampleTableConstraints.NAME, ExampleTableConstraints.DATA, ExampleTableConstraints.ALIAS);
+        List<Triple<String, String, String>> requestDataList = ExamplesTableUtil.convertTriple(data, NAME, DATA, ALIAS);
         HttpHeaders headers = createHeaders(requestDataList);
 
-        boolean isRaw = ExamplesTableUtil.tableContains(data, ExampleTableConstraints.NAME, RAW_BODY_KEY::equals);
+        boolean isRaw = ExamplesTableUtil.tableContains(data, NAME, RAW_BODY_KEY::equals);
         if (MediaType.MULTIPART_FORM_DATA.equals(headers.getContentType())) {
             state(!isRaw, "multipart request can not use raw data");
             return createMultipartRequestEntity(requestDataList, headers);
@@ -186,7 +201,7 @@ public class RestServiceHandler {
     }
 
     private HttpEntity<MultiValueMap<String, Object>> createMultipartRequestEntity(final List<Triple<String, String, String>> requestDataList,
-                                                                                   HttpHeaders headers) {
+        HttpHeaders headers) {
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
 
         for (Iterator<Triple<String, String, String>> iterator = requestDataList.iterator(); iterator.hasNext(); ) {
@@ -377,8 +392,8 @@ public class RestServiceHandler {
         HttpHeaders headers = testContext.get(REST_RESPONSE_HEADERS);
         DocumentContext jsonContext = JsonPath.parse(response);
         Consumer<Map<String, String>> rowConsumer = (row) -> {
-            String propertyName = row.get(ExampleTableConstraints.NAME);
-            String alias = row.get(ExampleTableConstraints.ALIAS);
+            String propertyName = row.get(NAME);
+            String alias = row.get(ALIAS);
             Object val;
             if (propertyName.startsWith(HEADER_START)) {
                 val = headers.get(propertyName.substring(HEADER_START.length())).get(0);
@@ -402,10 +417,10 @@ public class RestServiceHandler {
 
     private void verifyResponseHeaders(HttpHeaders actualHeaders, ExamplesTable data, String actualResponseMessage) {
         String usedOperator = data.getHeaders().contains(ExampleTableConstraints.VERIFIER) ? ExampleTableConstraints.VERIFIER : ExampleTableConstraints.OPERATOR;
-        List<Triple<String, String, String>> expectedData = ExamplesTableUtil.convertTriple(data, ExampleTableConstraints.NAME, ExampleTableConstraints.EXPECTED_VALUE, usedOperator);
+        List<Triple<String, String, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, usedOperator);
         for (Triple<String, String, String> triple : expectedData) {
             String key = triple.getLeft();
-            if (key.startsWith(HEADER_START)) {
+            if (key.startsWith(HEADER_START) && !key.equals(STATUS_HEADER)) {
                 String headerKey = key.substring(HEADER_START.length());
                 String assertionErrorMessage = "Headers don't contain " + headerKey + "\n" + actualResponseMessage;
                 assertThat(actualHeaders.containsKey(headerKey)).as(assertionErrorMessage).isTrue();
@@ -419,7 +434,7 @@ public class RestServiceHandler {
     private void verifyResponseJson(String response, ExamplesTable expectedDataTable, String actualResponseMessage) {
         String usedOperator = expectedDataTable.getHeaders().contains(ExampleTableConstraints.VERIFIER) ? ExampleTableConstraints.VERIFIER : ExampleTableConstraints.OPERATOR;
         List<Triple<String, String, String>> expectedData =
-            ExamplesTableUtil.convertTriple(expectedDataTable, ExampleTableConstraints.NAME, ExampleTableConstraints.EXPECTED_VALUE, usedOperator)
+            ExamplesTableUtil.convertTriple(expectedDataTable, NAME, EXPECTED_VALUE, usedOperator)
                 .stream()
                 .filter(i -> !i.getLeft().startsWith(HEADER_START))
                 .collect(Collectors.toList());
@@ -435,14 +450,19 @@ public class RestServiceHandler {
         verifyResponseStatus(actualResponseStatus, expectedResponseStatus, actualResponseMessage);
     }
 
-    public void verifyResponse(String status, ExamplesTable data) {
+    public void verifyResponse(String expectedStatus, ExamplesTable data) {
         HttpStatus actualResponseStatus = HttpStatus.valueOf((Integer) testContext.get(REST_RESPONSE_CODE));
         HttpHeaders actualHeaders = testContext.get(REST_RESPONSE_HEADERS);
         String actualResponseBody = testContext.get(REST_RESPONSE_JSON).toString();
-        HttpStatus expectedStatus = parseHttpStatus(status);
         String actualResponseMessage = createResponseAssertionErrorMessage(actualResponseStatus, actualHeaders, actualResponseBody);
 
-        verifyResponseStatus(actualResponseStatus, expectedStatus, actualResponseMessage);
+        if (!StringUtils.isEmpty(expectedStatus)) {
+            verifyResponseStatus(actualResponseStatus, parseHttpStatus(expectedStatus), actualResponseMessage);
+        }
+        if (ExamplesTableUtil.tableContains(data, NAME, STATUS_HEADER::equals)) {
+            verifyResponseStatus(actualResponseStatus, parseHttpStatus(getValue(data, NAME, STATUS_HEADER, EXPECTED_VALUE)), actualResponseMessage);
+        }
+
         verifyResponseHeaders(actualHeaders, data, actualResponseMessage);
         verifyResponseJson(actualResponseBody, data, actualResponseMessage);
     }

@@ -9,9 +9,11 @@ import java.io.IOException;
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jbehave.core.model.ExamplesTable;
+import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
@@ -32,8 +34,8 @@ import org.jbehavesupport.core.support.YamlPropertiesConfigurer;
 import org.jbehavesupport.core.test.app.oxm.NameRequest;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -45,13 +47,12 @@ import org.springframework.jms.core.JmsTemplate;
 
 @Configuration
 @ComponentScan
+@RequiredArgsConstructor
 public class TestConfig {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
-    @Autowired
-    ResourceLoader resourceLoader;
+    final ResourceLoader resourceLoader;
 
     @Bean
     public static YamlPropertiesConfigurer yamlPropertiesConfigurer() {
@@ -61,7 +62,7 @@ public class TestConfig {
     @Bean
     @Qualifier("TEST")
     public WebServiceHandler testWebServiceHandler() {
-        return new TestWebServiceHandler();
+        return new TestWebServiceHandler(env);
     }
 
     @Bean
@@ -91,23 +92,23 @@ public class TestConfig {
     }
 
     @Bean
-    public RestXmlReporterExtension restXmlReporterExtension() {
-        return new RestXmlReporterExtension();
+    public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext) {
+        return new RestXmlReporterExtension(testContext);
     }
 
     @Bean
     public EnvironmentInfoXmlReporterExtension environmentInfoXmlReporterExtension() {
-        return new EnvironmentInfoXmlReporterExtension();
+        return new EnvironmentInfoXmlReporterExtension(env);
     }
 
     @Bean
-    public TestContextXmlReporterExtension testContextXmlReporterExtension() {
-        return new TestContextXmlReporterExtension();
+    public TestContextXmlReporterExtension testContextXmlReporterExtension(TestContext testContext) {
+        return new TestContextXmlReporterExtension(testContext);
     }
 
     @Bean
-    public ServerLogXmlReporterExtension serverLogXmlReporterExtension() {
-        return new ServerLogXmlReporterExtension();
+    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory) {
+        return new ServerLogXmlReporterExtension(beanFactory);
     }
 
     @Bean

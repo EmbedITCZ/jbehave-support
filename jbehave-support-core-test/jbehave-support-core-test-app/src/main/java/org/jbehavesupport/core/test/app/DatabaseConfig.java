@@ -2,19 +2,19 @@ package org.jbehavesupport.core.test.app;
 
 import java.sql.SQLException;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class DatabaseConfig {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
     @Bean
     public Server initServer() {

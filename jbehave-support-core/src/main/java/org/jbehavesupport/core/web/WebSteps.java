@@ -36,7 +36,6 @@ import org.jbehavesupport.core.internal.MetadataUtil;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
@@ -59,13 +58,11 @@ public final class WebSteps {
     private final WebScreenshotCreator screenshotCreator;
     private final VerifierResolver verifierResolver;
     private final GivenStoryHelper givenStoryHelper;
+    private final WebElementRegistry elementRegistry;
 
     public static WebSetting getCurrentSetting() {
         return CURRENT_SETTING.get();
     }
-
-    @Autowired
-    private WebElementRegistry elementRegistry;
 
     @BeforeScenario
     public void beforeScenario() {

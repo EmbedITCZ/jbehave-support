@@ -4,20 +4,20 @@ import static java.util.Comparator.comparing;
 
 import java.io.Writer;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.report.ReportContext;
 import org.jbehavesupport.core.report.ReportRenderingPhase;
 
 import org.jbehavesupport.core.internal.MetadataUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 
+@RequiredArgsConstructor
 public class TestContextXmlReporterExtension extends AbstractXmlReporterExtension {
 
     private static final String TEXT_CONTEXT_XML_REPORTER_EXTENSION = "testContext";
     private static final String KEY_VALUE_TAG = "<values><key>%s</key><value><![CDATA[%s]]></value></values>";
 
-    @Autowired
-    private TestContext testContext;
+    private final TestContext testContext;
 
     @Override
     public String getName() {

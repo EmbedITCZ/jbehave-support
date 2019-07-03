@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.expression.ExpressionEvaluator;
 
@@ -14,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public final class ExpressionEvaluatingParameterConverters extends ParameterConverters {
 
-    @Autowired
-    private ExpressionEvaluator expressionEvaluator;
+    private final ExpressionEvaluator expressionEvaluator;
 
     @Autowired(required = false)
     private List<ParameterConverter> converters;

@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.jbehavesupport.core.AbstractSpringStories;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.report.ReportContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -30,13 +30,13 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.MimeType;
 
+@RequiredArgsConstructor
 public class RestXmlReporterExtension extends AbstractXmlReporterExtension implements ClientHttpRequestInterceptor {
 
     @Value("${rest.directory:./target/reports}")
     private String restDirectory;
 
-    @Autowired
-    private TestContext testContext;
+    private final TestContext testContext;
 
     private static final String REST_XML_REPORTER_EXTENSION = "rest";
     private static final String REQUEST_RESPONSE_TAG = "requestResponse";

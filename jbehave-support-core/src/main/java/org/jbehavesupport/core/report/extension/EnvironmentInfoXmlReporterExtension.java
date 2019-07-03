@@ -4,22 +4,22 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.report.ReportContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 
+@RequiredArgsConstructor
 public class EnvironmentInfoXmlReporterExtension extends AbstractXmlReporterExtension {
 
     private static final String ENVIRONMENT_INFO_XML_REPORTER_EXTENSION = "environmentInfo";
     private static final String ENVIRONMENT_INFO_BEGINNING = "environmentInfo.";
     private static final String KEY_VALUE_TAG = "<values><key>%s</key><value><![CDATA[%s]]></value></values>";
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
     @Override
     public String getName() {

@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
 
 import javax.sql.DataSource;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.internal.sql.InterceptingNamedParameterJdbcTemplate;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
 @Component
+@RequiredArgsConstructor
 public final class SqlSteps {
 
     private static final String SQL_RESULT_KEY = "sql_result";
@@ -49,16 +51,13 @@ public final class SqlSteps {
     private static final String MISSING_SQL_MESSAGE = "sql query must be run and saved in context prior to this step";
     private static final String SQL_EXCEPTION_KEY = "sql_exception";
 
-    @Autowired
-    private ConfigurableListableBeanFactory beanFactory;
-    @Autowired
-    private TestContext testContext;
+    private final ConfigurableListableBeanFactory beanFactory;
 
-    @Autowired
-    private EqualsVerifier equalsVerifier;
+    private final TestContext testContext;
 
-    @Autowired
-    private ContainsVerifier containsVerifier;
+    private final EqualsVerifier equalsVerifier;
+
+    private final ContainsVerifier containsVerifier;
 
     @Autowired(required = false)
     private SqlXmlReporterExtension sqlXmlReporterExtension;

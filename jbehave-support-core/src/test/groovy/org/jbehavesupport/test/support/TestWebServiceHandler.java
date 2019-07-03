@@ -3,6 +3,7 @@ package org.jbehavesupport.test.support;
 import static java.util.Objects.nonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.test.app.oxm.NameRequest;
 import org.jbehavesupport.core.test.app.oxm.NameResponse;
 import org.jbehavesupport.core.ws.WebServiceEndpointRegistry;
@@ -10,13 +11,12 @@ import org.jbehavesupport.core.ws.WebServiceHandler;
 import org.jbehavesupport.core.ws.WebServiceTemplateConfigurer;
 
 import org.jbehave.core.model.ExamplesTable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
+@RequiredArgsConstructor
 public class TestWebServiceHandler extends WebServiceHandler {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
     @Override
     protected void initEndpoints(WebServiceEndpointRegistry endpointRegistry) {

@@ -1,4 +1,5 @@
 language: java
+dist: xenial
 
 install: true
 sudo: required
@@ -10,37 +11,30 @@ cache:
 matrix:
   include:
     - stage: build
-      dist: trusty
-      jdk: oraclejdk8
+      jdk: openjdk8
       env: CI_SCRIPT=ci/build.sh
     - stage: build
-      dist: xenial
       jdk: openjdk11
       env: CI_SCRIPT=ci/build.sh
 
     - stage: test
-      dist: trusty
-      jdk: oraclejdk8
+      jdk: openjdk8
       env: CI_SCRIPT=ci/test.sh
     - stage: test
-      dist: xenial
       jdk: openjdk11
       env: CI_SCRIPT=ci/test.sh
 
     - stage: system-test
-      dist: trusty
-      jdk: oraclejdk8
+      jdk: openjdk8
       addons:
         chrome: stable
-      before_script:
-        - chmod +x ci/trusty-before-system-test.sh
-        - source ./ci/trusty-before-system-test.sh # we need sourcing to have the exported variables available outside of script
+      services:
+        - xvfb
       env: CI_SCRIPT=ci/system-test.sh
       after_success:
         - chmod +x ci/report_upload.sh
         - ci/report_upload.sh
     - stage: system-test
-      dist: xenial
       jdk: openjdk11
       addons:
         chrome: stable

@@ -11,6 +11,7 @@ public class VerifierNames {
     public static final String CONTAINS = "CONTAINS";
     public static final String NOT_CONTAINS = "NOT_CONTAINS";
     public static final String REGEX_MATCH = "REGEX_MATCH";
+    public static final String REGEX_FIND = "REGEX_FIND";
 
     public static final String GT = "GT";
     public static final String LT = "LT";

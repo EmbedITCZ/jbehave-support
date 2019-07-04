@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.jbehavesupport</groupId>
         <artifactId>jbehave-support-core-test</artifactId>
-        <version>1.0.7-SNAPSHOT</version>
+        <version>1.0.7</version>
     </parent>
 
     <artifactId>jbehave-support-core-test-oxm</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.7</version>
     <packaging>jar</packaging>
 
     <name>jbehave-support-core-test-oxm</name>

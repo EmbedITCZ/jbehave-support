@@ -8,7 +8,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
-import org.jbehavesupport.core.internal.verification.VerifierNames;
+import org.jbehavesupport.core.internal.verification.EqualsVerifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
@@ -23,6 +23,7 @@ public class VerificationSteps {
     @Value("${verifier.max.assert.count:10}")
     private int maxSoftAssertCount;
 
+    private final EqualsVerifier equalsVerifier;
     private final VerifierResolver verifierResolver;
     private final ExamplesEvaluationTableConverter tableConverter;
 
@@ -30,19 +31,19 @@ public class VerificationSteps {
     public void compareRows(String stringTable) {
         List<Map<String, String>> convertedTable = convertTable((ExamplesTable) tableConverter.convertValue(stringTable, null));
         SoftAssertions softly = new SoftAssertions();
-        convertedTable.forEach(e -> verifyRow(e, verifierResolver.getVerifierByName(VerifierNames.EQ), DATA, EXPECTED_VALUE, softly));
+        convertedTable.forEach(e -> verifyRow(e, softly));
         softly.assertAll();
     }
 
-    private void verifyRow(Map<String, String> tableRow, Verifier verifier, String searchColumn1, String searchColumn2, SoftAssertions softly) {
+    private void verifyRow(Map<String, String> tableRow, SoftAssertions softly) {
         if (softly.errorsCollected().size() >= maxSoftAssertCount) {
             softly.assertAll();
         }
-        softly.assertThatCode(() -> resolveVerifier(tableRow.get(VERIFIER), verifier).verify(tableRow.get(searchColumn1), tableRow.get(searchColumn2)))
+        softly.assertThatCode(() -> resolveVerifier(tableRow.get(VERIFIER)).verify(tableRow.get(DATA), tableRow.get(EXPECTED_VALUE)))
             .doesNotThrowAnyException();
     }
 
-    private Verifier resolveVerifier(String verifierName, Verifier defaultVerifier) {
-        return (StringUtils.isNotEmpty(verifierName)) ? verifierResolver.getVerifierByName(verifierName) : defaultVerifier;
+    private Verifier resolveVerifier(String verifierName) {
+        return (StringUtils.isNotEmpty(verifierName)) ? verifierResolver.getVerifierByName(verifierName) : equalsVerifier;
     }
 }

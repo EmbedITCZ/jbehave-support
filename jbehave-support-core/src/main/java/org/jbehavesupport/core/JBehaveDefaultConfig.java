@@ -16,6 +16,7 @@ import org.jbehavesupport.core.internal.web.property.WebPropertyResolverImpl;
 import org.jbehavesupport.core.internal.web.waitcondition.WebWaitConditionResolverImpl;
 import org.jbehavesupport.core.internal.web.webdriver.WebDriverDelegatingInterceptor;
 import org.jbehavesupport.core.internal.web.webdriver.WebDriverFactoryResolverImpl;
+import org.jbehavesupport.core.report.extension.StepScreenshotsReporterExtension;
 import org.jbehavesupport.core.support.TimeFacade;
 
 import org.jbehavesupport.core.verification.Verifier;
@@ -140,5 +141,8 @@ public class JBehaveDefaultConfig {
         proxyFactory.setTargetClass(webDriverFactory.getProxyClass());
         return (WebDriver) proxyFactory.getProxy();
     }
+
+    @Bean
+    public StepScreenshotsReporterExtension stepScreenshotsReporterExtension() { return new StepScreenshotsReporterExtension(); }
 
 }

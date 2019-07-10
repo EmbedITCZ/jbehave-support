@@ -244,4 +244,14 @@ Then on [home] page these values are saved:
 | client.ssn | VALUE    | SSN            |
 ```
 
+#### Making screenshots
+
+Following step allows taking of screenshots.
+When StepScreenshotsReporterExtension is enabled, screenshots are shown in report
+
+```
+When screenshot is taken
+Then screenshot is taken
+```
+
 TODO: add explanation of table steps, waits

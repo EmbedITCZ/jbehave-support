@@ -25,26 +25,41 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class WebScreenshotCreator {
 
-    public static final String SCREENSHOTS_KEY = "error_screenshots";
-    private static final String FILE_NAME_PATTERN = "FAILED_%s.png";
+    public static final String FAILED_SCREENSHOTS_KEY = "error_screenshots";
+    public static final String STEP_SCREENSHOTS_KEY = "step_screenshots";
+    public static final String FAILED = "FAILED";
+    public static final String STEP_SCREENSHOT = "STEP_SCREENSHOT";
+    private static final String FILE_NAME_PATTERN = "%s_%s.png";
 
     @Value("${web.screenshot.directory:./target/reports}")
     private String screenshotDirectory;
+    private String screenShotType;
 
     private final WebDriver driver;
     private final TestContext testContext;
 
-    public final void createScreenshot() {
+    public final void createScreenshot(String screenShotType) {
+        this.screenShotType = screenShotType;
         try {
             if (driver instanceof TakesScreenshot) {
-                log.info("Taking error screenshot will place it in {}", screenshotDirectory);
+                log.info("Taking {} screenshot will place it in {}", screenShotType.equals(FAILED) ? "error" : "step", screenshotDirectory);
                 prepareDirectory();
 
-                File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
                 if (screenshot != null) {
                     File destinationFile = getDestinationFile();
                     FileUtils.copyFile(screenshot, destinationFile);
-                    storeInTestContext(destinationFile.getName());
+                    switch (screenShotType) {
+                        case FAILED: {
+                            storeFailedInTestContext(destinationFile.getName());
+                            break;
+                        }
+
+                        case STEP_SCREENSHOT: {
+                            storeStepInTestContext(destinationFile.getName());
+                            break;
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
@@ -61,11 +76,11 @@ public class WebScreenshotCreator {
 
     private File getDestinationFile() {
         if (testContext.contains(AbstractSpringStories.JBEHAVE_SCENARIO)) {
-            final String storyName = testContext.get(AbstractSpringStories.JBEHAVE_SCENARIO, String.class).split("#")[0];
-            File destinationFile = new File(screenshotDirectory, String.format(FILE_NAME_PATTERN, storyName));
+            String storyName = testContext.get(AbstractSpringStories.JBEHAVE_SCENARIO, String.class).split("#")[0];
+            File destinationFile = new File(screenshotDirectory, String.format(FILE_NAME_PATTERN, screenShotType, storyName));
             int i = 1;
             while (destinationFile.exists()) {
-                destinationFile = new File(screenshotDirectory, String.format(FILE_NAME_PATTERN, storyName + "-" + i++));
+                destinationFile = new File(screenshotDirectory, String.format(FILE_NAME_PATTERN, screenShotType, storyName + "-" + i++));
             }
             return destinationFile;
         } else {
@@ -73,11 +88,18 @@ public class WebScreenshotCreator {
         }
     }
 
-    private void storeInTestContext(final String destFile) {
-        if (!testContext.contains(SCREENSHOTS_KEY)) {
-            testContext.put(SCREENSHOTS_KEY, new LinkedHashSet<String>());
+    private void storeFailedInTestContext(final String destFile) {
+        if (!testContext.contains(FAILED_SCREENSHOTS_KEY)) {
+            testContext.put(FAILED_SCREENSHOTS_KEY, new LinkedHashSet<String>());
         }
-        testContext.get(SCREENSHOTS_KEY, Set.class).add(destFile);
+        testContext.get(FAILED_SCREENSHOTS_KEY, Set.class).add(destFile);
+    }
+
+    private void storeStepInTestContext(final String destFile) {
+        if (!testContext.contains(STEP_SCREENSHOTS_KEY)) {
+            testContext.put(STEP_SCREENSHOTS_KEY, new LinkedHashSet<String>());
+        }
+        testContext.get(STEP_SCREENSHOTS_KEY, Set.class).add(destFile);
     }
 
 }

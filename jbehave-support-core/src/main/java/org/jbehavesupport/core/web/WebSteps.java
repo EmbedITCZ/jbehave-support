@@ -83,7 +83,7 @@ public final class WebSteps {
 
     @AfterScenario(uponType = ScenarioType.ANY, uponOutcome = AfterScenario.Outcome.FAILURE)
     public void afterFailedScenario() {
-        screenshotCreator.createScreenshot();
+        screenshotCreator.createScreenshot(WebScreenshotCreator.FAILED);
         if (!givenStoryHelper.isInGivenStory()) {
             driver.quit();
         }
@@ -277,6 +277,12 @@ public final class WebSteps {
     @Then("navigate forward")
     public void navigateForward() {
         driver.navigate().forward();
+    }
+
+    @When("screenshot is taken")
+    @Then("screenshot is taken")
+    public void takeScreenShot(){
+        screenshotCreator.createScreenshot(WebScreenshotCreator.STEP_SCREENSHOT);
     }
 
     private String parseConditionValue(String condition) {

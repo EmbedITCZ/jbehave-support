@@ -143,6 +143,6 @@ public class JBehaveDefaultConfig {
     }
 
     @Bean
-    public StepScreenshotsReporterExtension stepScreenshotsReporterExtension() { return new StepScreenshotsReporterExtension(); }
+    public StepScreenshotsReporterExtension stepScreenshotsReporterExtension(TestContext testContext) { return new StepScreenshotsReporterExtension(testContext); }
 
 }

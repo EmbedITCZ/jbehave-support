@@ -1164,7 +1164,7 @@
                         <xsl:when test="stepScreenshot">
                             <xsl:apply-templates select="stepScreenshot"/>
                         </xsl:when>
-                        <xsl:otherwise>No SQL queries available</xsl:otherwise>
+                        <xsl:otherwise>No screenshots available</xsl:otherwise>
                     </xsl:choose>
                 </div>
             </div>

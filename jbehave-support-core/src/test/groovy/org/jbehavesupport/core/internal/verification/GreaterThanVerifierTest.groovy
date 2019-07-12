@@ -12,18 +12,18 @@ import java.time.LocalDate
 class GreaterThanVerifierTest extends Specification {
 
     @Autowired
-    GreaterThanVerifier greaterThanVerifier;
+    GreaterThanVerifier greaterThanVerifier
 
     def "Name"() {
 
         expect:
-        greaterThanVerifier.name().equals("GT");
+        greaterThanVerifier.name().equals("GT")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        greaterThanVerifier.verify(actual, expected);
+        greaterThanVerifier.verify(actual, expected)
 
         then:
         true
@@ -40,7 +40,7 @@ class GreaterThanVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        greaterThanVerifier.verify(actual, expected);
+        greaterThanVerifier.verify(actual, expected)
 
         then:
         def thr = thrown(Throwable)

@@ -14,7 +14,7 @@ class TestContextCopyCommandTest extends Specification {
         setup:
         def testContext = new TestContextImpl()
         testContext.put("test", "TEST")
-        testContext.put("nullTest", null);
+        testContext.put("nullTest", null)
 
         when:
         def result = new TestContextCopyCommand(testContext).execute(*params)

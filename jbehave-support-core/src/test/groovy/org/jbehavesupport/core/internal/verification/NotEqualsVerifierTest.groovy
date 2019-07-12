@@ -12,17 +12,17 @@ import java.time.LocalDate
 class NotEqualsVerifierTest extends Specification {
 
     @Autowired
-    NotEqualsVerifier notEgualsVerifier;
+    NotEqualsVerifier notEgualsVerifier
 
     def "Name"() {
         expect:
-        notEgualsVerifier.name().equals("NE");
+        notEgualsVerifier.name().equals("NE")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        notEgualsVerifier.verify(actual, expected);
+        notEgualsVerifier.verify(actual, expected)
 
         then:
         true
@@ -38,7 +38,7 @@ class NotEqualsVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        notEgualsVerifier.verify(actual, expected);
+        notEgualsVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

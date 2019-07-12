@@ -12,10 +12,10 @@ import java.time.ZonedDateTime
 class SshStepsIT extends Specification {
 
     @Autowired
-    SshSteps sshSteps;
+    SshSteps sshSteps
 
     @Autowired
-    TestContext testContext;
+    TestContext testContext
 
     def "test soft assertions in logContainsData"() {
         given:

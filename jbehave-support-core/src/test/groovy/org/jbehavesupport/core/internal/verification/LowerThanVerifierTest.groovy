@@ -12,17 +12,17 @@ import java.time.LocalDate
 class LowerThanVerifierTest extends Specification {
 
     @Autowired
-    LowerThanVerifier lowerThanVerifier;
+    LowerThanVerifier lowerThanVerifier
 
     def "Name"() {
         expect:
-        lowerThanVerifier.name().equals("LT");
+        lowerThanVerifier.name().equals("LT")
     }
 
     @Unroll
     "Verify positive #actual to #expected"() {
         when:
-        lowerThanVerifier.verify(actual, expected);
+        lowerThanVerifier.verify(actual, expected)
 
         then:
         true
@@ -38,7 +38,7 @@ class LowerThanVerifierTest extends Specification {
     @Unroll
     "Verify negative #actual to #expected"() {
         when:
-        lowerThanVerifier.verify(actual, expected);
+        lowerThanVerifier.verify(actual, expected)
 
         then:
         def thr = thrown(Throwable)

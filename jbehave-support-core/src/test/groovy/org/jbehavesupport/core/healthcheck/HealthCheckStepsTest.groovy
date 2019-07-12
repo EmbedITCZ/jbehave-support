@@ -14,7 +14,7 @@ import static groovy.test.GroovyAssert.shouldFail
 class HealthCheckStepsTest extends Specification {
 
     @Autowired
-    HealthCheckSteps healthCheckSteps;
+    HealthCheckSteps healthCheckSteps
 
     def "CheckComponentsAreHealthy"() {
 

@@ -37,7 +37,7 @@ class SshSettingTest extends Specification {
             .users(users)
             .passwords(passwords)
             .logPaths(logs)
-            .build();
+            .build()
 
         expect:
         assert settings.size() == 2

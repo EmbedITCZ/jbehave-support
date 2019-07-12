@@ -10,17 +10,17 @@ import spock.lang.Unroll
 class ContainsVerifierTest extends Specification {
 
     @Autowired
-    ContainsVerifier containsVerifier;
+    ContainsVerifier containsVerifier
 
     def "Name"() {
         expect:
-        containsVerifier.name().equals("CONTAINS");
+        containsVerifier.name().equals("CONTAINS")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        containsVerifier.verify(actual, expected);
+        containsVerifier.verify(actual, expected)
 
         then:
         true
@@ -34,7 +34,7 @@ class ContainsVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        containsVerifier.verify(actual, expected);
+        containsVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

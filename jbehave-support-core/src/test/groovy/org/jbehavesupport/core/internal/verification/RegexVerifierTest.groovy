@@ -10,17 +10,17 @@ import spock.lang.Unroll
 class RegexVerifierTest extends Specification {
 
     @Autowired
-    RegexVerifier regexVerifier;
+    RegexVerifier regexVerifier
 
     def "Name"() {
         expect:
-        regexVerifier.name().equals("REGEX_MATCH");
+        regexVerifier.name().equals("REGEX_MATCH")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        regexVerifier.verify(actual, expected);
+        regexVerifier.verify(actual, expected)
 
         then:
         true
@@ -36,7 +36,7 @@ class RegexVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        regexVerifier.verify(actual, expected);
+        regexVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

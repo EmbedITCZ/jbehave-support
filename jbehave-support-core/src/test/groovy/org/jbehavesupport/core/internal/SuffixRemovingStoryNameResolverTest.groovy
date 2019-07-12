@@ -9,7 +9,7 @@ class SuffixRemovingStoryNameResolverTest extends Specification {
     def resolver
 
     void setup() {
-        resolver = new SuffixRemovingStoryNameResolver();
+        resolver = new SuffixRemovingStoryNameResolver()
     }
 
     def "Resolve name"() {
@@ -46,6 +46,6 @@ class SuffixRemovingStoryNameResolverTest extends Specification {
 
         then:
         def e = thrown(IllegalArgumentException)
-        e.getMessage() == "Provided path must not be null";
+        e.getMessage() == "Provided path must not be null"
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class FailScreenshotsReporterExtension extends AbstractXmlReporterExtension {
 
     private static final String FAIL_SCREENSHOTS_REPORTER_EXTENSION = "errorScreenshots";
-    private static final String SCREENSHOT_TAG = "<screenshot>%s</screenshot>\n";
+    private static final String SCREENSHOT_TAG = "<screenshot>%s</screenshot>";
 
     @Autowired
     private TestContext testContext;

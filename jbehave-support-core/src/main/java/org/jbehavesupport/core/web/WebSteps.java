@@ -3,6 +3,7 @@ package org.jbehavesupport.core.web;
 import static org.apache.commons.lang3.StringUtils.prependIfMissing;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.jbehavesupport.core.internal.web.WebScreenshotCreator.*;
 import static org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils.qualifiedBeanOfType;
 import static java.util.Arrays.asList;
 import static java.lang.String.join;
@@ -83,7 +84,7 @@ public final class WebSteps {
 
     @AfterScenario(uponType = ScenarioType.ANY, uponOutcome = AfterScenario.Outcome.FAILURE)
     public void afterFailedScenario() {
-        screenshotCreator.createScreenshot(WebScreenshotCreator.FAILED);
+        screenshotCreator.createScreenshot(Type.FAILED);
         if (!givenStoryHelper.isInGivenStory()) {
             driver.quit();
         }
@@ -93,12 +94,14 @@ public final class WebSteps {
     @When("[$url] url is open")
     public void openUrl(ExpressionEvaluatingParameter<String> url) {
         driver.get(url.getValue());
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Given("[$application] homepage is open")
     @When("[$application] homepage is open")
     public void openHomePage(String application) {
         driver.get(resolveHomePageUrl(application));
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Given(value = "[$application]/[$path] url is open", priority = 100)
@@ -107,6 +110,7 @@ public final class WebSteps {
         String path = prependIfMissing(pathExpression.getValue().replace("//(?!:)", "/"), "/");
         String url = resolveHomePageUrl(application) + path;
         driver.get(url);
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Given("[$application]/[$path] url is open with query parameters:$queryParameters")
@@ -119,6 +123,7 @@ public final class WebSteps {
             uriBuilder.addParameter(queryParameterName, queryParameterData);
         }
         driver.get(uriBuilder.build().toString());
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @When("on [$page] page these actions are performed:$actionTable")
@@ -136,7 +141,9 @@ public final class WebSteps {
                 .build();
 
             action.perform(actionContext);
+            screenshotCreator.createScreenshot(Type.DEBUG);
         }
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Given("on [$page] page these values are saved:$table")
@@ -147,6 +154,7 @@ public final class WebSteps {
             Object value = resolvePropertyValue(page, values);
             testContext.put(values.get(ExampleTableConstraints.ALIAS), value, MetadataUtil.userDefined());
         }
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Then("on [$page] page these conditions are verified:$table")
@@ -161,6 +169,7 @@ public final class WebSteps {
             Verifier verifier = verifierResolver.getVerifierByName(verifierName);
             verifier.verify(actual, expected);
         }
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     /**
@@ -190,6 +199,7 @@ public final class WebSteps {
         WebWaitCondition waitCondition = waitConditionResolver.resolveWaitCondition(waitConditionCtx);
 
         waitCondition.evaluate(waitConditionCtx);
+        screenshotCreator.createScreenshot(Type.WAIT);
     }
 
     /**
@@ -204,6 +214,7 @@ public final class WebSteps {
             .as("last tab remains, new was not opened")
             .isGreaterThan(0);
         driver.switchTo().window(getLastOpenedWindowHandler());
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Given("open and focus new tab")
@@ -216,6 +227,7 @@ public final class WebSteps {
             if (handlesAfter.size() == handlesBefore.size() + 1) {
                 handlesAfter.removeAll(handlesBefore);
                 driver.switchTo().window(handlesAfter.iterator().next());
+                screenshotCreator.createScreenshot(Type.STEP);
                 return;
             }
         }
@@ -237,6 +249,7 @@ public final class WebSteps {
             })
             .findAny()
             .orElseThrow(IllegalStateException::new);
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     private boolean urlTitlecontainsText(String urlTitle, String text) {
@@ -248,18 +261,21 @@ public final class WebSteps {
     public void focusNamedFrame(ExpressionEvaluatingParameter<String> page, ExpressionEvaluatingParameter<String> frame) {
         WebElement iFrame = driver.findElement(elementRegistry.getLocator(page.getValue(), frame.getValue()));
         driver.switchTo().frame(iFrame);
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Given("main frame is focused")
     @Then("main frame is focused")
     public void focusMainFrame() {
         driver.switchTo().defaultContent();
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @When("current tab is closed")
     public void closeTab() {
         driver.close();
         driver.switchTo().window(getLastOpenedWindowHandler());
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @Given("browser is closed")
@@ -271,18 +287,20 @@ public final class WebSteps {
     @Then("navigate back")
     public void navigateBack() {
         driver.navigate().back();
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @When("navigated forward")
     @Then("navigate forward")
     public void navigateForward() {
         driver.navigate().forward();
+        screenshotCreator.createScreenshot(Type.STEP);
     }
 
     @When("screenshot is taken")
     @Then("screenshot is taken")
     public void takeScreenShot(){
-        screenshotCreator.createScreenshot(WebScreenshotCreator.STEP_SCREENSHOT);
+        screenshotCreator.createScreenshot(Type.MANUAL);
     }
 
     private String parseConditionValue(String condition) {

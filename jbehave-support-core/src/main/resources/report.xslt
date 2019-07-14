@@ -81,6 +81,7 @@
                     .json-key { color: purple; }
                     .json-message { margin-bottom: 0px; line-height: 1.1}
                     .progress { height: 1.5em; }
+                    .report-screenshot { width: 70%; height: 70%; border: 1px solid black }
                 </style>
                 <title>
                     <xsl:value-of select="/story/@path"/> report
@@ -1187,7 +1188,7 @@
                 <xsl:attribute name="id">
                     <xsl:value-of select="concat('step-screen-shot-',$screenshotNum)"/>
                 </xsl:attribute>
-                <img style="width: 70%; height: 70%; border: 1px solid black">
+                <img class="report-screenshot">
                     <xsl:attribute name="src">
                         <xsl:value-of select="."/>
                     </xsl:attribute>

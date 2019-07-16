@@ -3,20 +3,20 @@ package org.jbehavesupport.core.report.extension;
 import java.io.Writer;
 import java.util.Set;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.report.ReportContext;
 import org.jbehavesupport.core.report.ReportRenderingPhase;
 
 import org.jbehavesupport.core.internal.web.WebScreenshotCreator;
-import org.springframework.beans.factory.annotation.Autowired;
 
+@RequiredArgsConstructor
 public class FailScreenshotsReporterExtension extends AbstractXmlReporterExtension {
 
     private static final String FAIL_SCREENSHOTS_REPORTER_EXTENSION = "errorScreenshots";
     private static final String SCREENSHOT_TAG = "<screenshot>%s</screenshot>";
 
-    @Autowired
-    private TestContext testContext;
+    private final TestContext testContext;
 
     @Override
     public String getName() {

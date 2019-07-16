@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.SoftAssertions;
 import org.codehaus.plexus.util.StringUtils;
@@ -26,7 +27,6 @@ import org.jbehavesupport.core.internal.verification.VerifierNames;
 import org.jbehavesupport.core.verification.Verifier;
 import org.jbehavesupport.core.verification.VerifierResolver;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -34,19 +34,16 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public final class SshSteps {
 
-    @Autowired
-    private TestContext testContext;
+    private final TestContext testContext;
 
-    @Autowired
-    private ConfigurableListableBeanFactory beanFactory;
+    private final ConfigurableListableBeanFactory beanFactory;
 
-    @Autowired
-    private ExamplesEvaluationTableConverter tableConverter;
+    private final ExamplesEvaluationTableConverter tableConverter;
 
-    @Autowired
-    private VerifierResolver verifierResolver;
+    private final VerifierResolver verifierResolver;
 
     @Value("${ssh.max.assert.count:10}")
     private int maxSoftAssertCount;

@@ -8,17 +8,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.report.ReportContext;
 import org.jbehavesupport.core.ssh.SshLog;
 import org.jbehavesupport.core.ssh.SshTemplate;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
+@RequiredArgsConstructor
 public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension {
 
     private static final String SSH_XML_REPORTER_EXTENSION = "serverLog";
@@ -26,8 +27,7 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
     private static final String SYSTEM = "system";
     private static final String FAIL = "fail";
 
-    @Autowired
-    private ConfigurableListableBeanFactory beanFactory;
+    private final ConfigurableListableBeanFactory beanFactory;
 
     @Override
     public String getName() {

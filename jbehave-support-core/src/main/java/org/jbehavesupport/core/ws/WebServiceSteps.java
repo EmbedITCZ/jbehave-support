@@ -1,11 +1,11 @@
 package org.jbehavesupport.core.ws;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
@@ -59,10 +59,10 @@ import org.springframework.stereotype.Component;
  * </ul>
  */
 @Component
+@RequiredArgsConstructor
 public final class WebServiceSteps {
 
-    @Autowired
-    private ConfigurableListableBeanFactory beanFactory;
+    private final ConfigurableListableBeanFactory beanFactory;
 
     @Given("[$request] data for [$application]: $data")
     public void requestData(String request, String application, ExamplesTable data) {

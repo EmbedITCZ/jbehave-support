@@ -5,22 +5,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.expression.ExpressionEvaluator;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.ExamplesTableFactory;
 import org.jbehave.core.steps.ParameterConverters;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ExamplesEvaluationTableConverter implements ParameterConverters.ParameterConverter {
 
-    private ExamplesTableFactory factory;
+    private final ExpressionEvaluator expressionEvaluator;
 
-    @Autowired
-    private ExpressionEvaluator expressionEvaluator;
+    private ExamplesTableFactory factory;
 
     public void setConfiguration(Configuration config) {
         this.factory = new ExamplesTableFactory(config);

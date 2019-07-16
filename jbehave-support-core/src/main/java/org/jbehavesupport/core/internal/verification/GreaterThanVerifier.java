@@ -4,15 +4,15 @@ import static org.jbehavesupport.core.internal.verification.VerifierNames.GT;
 import static org.springframework.util.Assert.isInstanceOf;
 import static org.springframework.util.Assert.isTrue;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public final class GreaterThanVerifier extends AbstractVerifier {
 
-    @Autowired
-    ConversionService conversionService;
+    final ConversionService conversionService;
 
     @Override
     public String name() {

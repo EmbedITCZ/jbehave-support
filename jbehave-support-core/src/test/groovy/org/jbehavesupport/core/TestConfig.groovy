@@ -19,6 +19,7 @@ import org.jbehavesupport.core.ws.WebServiceEndpointRegistry
 import org.jbehavesupport.core.ws.WebServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -49,8 +50,8 @@ class TestConfig {
     }
 
     @Bean
-    HealthCheckSteps healthCheckSteps() {
-        return new HealthCheckSteps()
+    HealthCheckSteps healthCheckSteps(ConfigurableListableBeanFactory beanFactory) {
+        return new HealthCheckSteps(beanFactory)
     }
 
     @Bean
@@ -77,13 +78,13 @@ class TestConfig {
     @Bean
     @Qualifier("TEST")
     Verifier anotherRegexVerifier() {
-        return new RegexVerifier();
+        return new RegexVerifier()
     }
 
     @Bean
     @Qualifier("TEST")
     ByFactory anotherXpathByFactory() {
-        return new XpathByFactory();
+        return new XpathByFactory()
     }
 
     @Bean
@@ -95,10 +96,10 @@ class TestConfig {
             .password(env.getProperty("ssh.credentials.password"))
             .port(Integer.parseInt(env.getProperty("ssh.port")))
             .logPath(env.getProperty("ssh.logPath"))
-            .build();
+            .build()
 
         RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver();
-        return new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver);
+        return new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver)
     }
 
     @Bean
@@ -107,11 +108,11 @@ class TestConfig {
         return new WebServiceHandler() {
             @Override
             protected void initEndpoints(WebServiceEndpointRegistry endpointRegistry) {
-                endpointRegistry.register(RequestFactoryTest.Foo.class, RequestFactoryTest.Foo.class);
-                endpointRegistry.register(RequestFactoryTest.Foo.class, "MyClass", RequestFactoryTest.Foo.class, "MyClass");
-                endpointRegistry.register(NameRequest.class, NameResponse.class);
-                endpointRegistry.register(RequestFactoryTest.Ugly.class, RequestFactoryTest.Ugly.class);
-                endpointRegistry.register(UnsupportedClass.class, UnsupportedClass.class);
+                endpointRegistry.register(RequestFactoryTest.Foo.class, RequestFactoryTest.Foo.class)
+                endpointRegistry.register(RequestFactoryTest.Foo.class, "MyClass", RequestFactoryTest.Foo.class, "MyClass")
+                endpointRegistry.register(NameRequest.class, NameResponse.class)
+                endpointRegistry.register(RequestFactoryTest.Ugly.class, RequestFactoryTest.Ugly.class)
+                endpointRegistry.register(UnsupportedClass.class, UnsupportedClass.class)
             }
         }
     }

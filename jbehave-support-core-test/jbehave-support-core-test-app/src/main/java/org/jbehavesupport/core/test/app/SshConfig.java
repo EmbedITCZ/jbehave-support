@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import lombok.RequiredArgsConstructor;
 import org.crsh.plugin.CRaSHPlugin;
 import org.crsh.plugin.PluginContext;
 import org.crsh.plugin.PluginDiscovery;
@@ -24,7 +25,6 @@ import org.crsh.vfs.FS;
 import org.crsh.vfs.spi.AbstractFSDriver;
 import org.crsh.vfs.spi.FSDriver;
 import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.SpringVersion;
@@ -37,14 +37,18 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
 @Configuration
+@RequiredArgsConstructor
 public class SshConfig {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
+
+    private final ListableBeanFactory beanFactory;
+
+    private final ResourcePatternResolver resourceLoader;
 
     @Bean
     public CrshBootstrapBean shellBootstrap() {
-        CrshBootstrapBean bootstrapBean = new CrshBootstrapBean();
+        CrshBootstrapBean bootstrapBean = new CrshBootstrapBean(beanFactory, env, resourceLoader);
         Properties config = new Properties();
         config.put("crash.ssh.port", env.getProperty("ssh.port"));
         config.put("crash.ssh.auth_timeout", env.getProperty("ssh.timeouts.auth"));
@@ -57,16 +61,14 @@ public class SshConfig {
         return bootstrapBean;
     }
 
+    @RequiredArgsConstructor
     public static class CrshBootstrapBean extends PluginLifeCycle {
 
-        @Autowired
-        private ListableBeanFactory beanFactory;
+        private final ListableBeanFactory beanFactory;
 
-        @Autowired
-        private Environment environment;
+        private final Environment environment;
 
-        @Autowired
-        private ResourcePatternResolver resourceLoader;
+        private final ResourcePatternResolver resourceLoader;
 
         @PreDestroy
         public void destroy() {

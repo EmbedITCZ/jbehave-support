@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.test.app.oxm.Error;
 import org.jbehavesupport.core.test.app.oxm.NameRequest;
 import org.jbehavesupport.core.test.app.oxm.NameResponse;
@@ -14,7 +15,6 @@ import org.jbehavesupport.core.test.app.oxm.ObjectFactory;
 import org.jbehavesupport.core.test.app.oxm.Relative;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -22,11 +22,11 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 @Endpoint
+@RequiredArgsConstructor
 public class NameEndpoint {
     private static final ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 
-    @Autowired
-    ResourceLoader resourceLoader;
+    final ResourceLoader resourceLoader;
 
     @PayloadRoot(namespace = "http://jbehavesupport.org/definitions", localPart = "NameRequest")
     @ResponsePayload

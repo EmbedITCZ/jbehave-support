@@ -1,4 +1,4 @@
-A story is collection of scenarious for testing web services
+A story is collection of scenarios for testing web services
 
 Narrative:
 In order to test ws call implemetation in jbehave-support-core

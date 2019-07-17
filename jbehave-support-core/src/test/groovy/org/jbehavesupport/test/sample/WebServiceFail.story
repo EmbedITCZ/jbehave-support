@@ -1,4 +1,4 @@
-A story is collection of scenarious for testing fault handler
+A story is collection of scenarios for testing fault handler
 
 Narrative:
 In order to test ws faulhandler in jbehave-support-core

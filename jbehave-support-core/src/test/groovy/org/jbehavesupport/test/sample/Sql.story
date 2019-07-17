@@ -1,4 +1,4 @@
-A story is collection of scenarious for testing sql steps
+A story is collection of scenarios for testing sql steps
 
 Narrative:
 In order to test sql steps in jbehave-support-core

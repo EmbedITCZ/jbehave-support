@@ -1,14 +1,5 @@
 package org.jbehavesupport.core.ws;
 
-import static org.junit.Assert.assertNotNull;
-import static org.springframework.util.Assert.isTrue;
-import static org.springframework.util.Assert.state;
-
-import java.util.Map;
-import java.util.function.Consumer;
-
-import javax.annotation.PostConstruct;
-
 import lombok.Data;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Parameters;
@@ -17,7 +8,7 @@ import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.internal.ExampleTableConstraints;
 import org.jbehavesupport.core.internal.MetadataUtil;
 import org.jbehavesupport.core.internal.ReflectionUtils;
-import org.jbehavesupport.core.internal.verification.VerifierNames;
+import org.jbehavesupport.core.internal.verification.EqualsVerifier;
 import org.jbehavesupport.core.support.RequestFactory;
 import org.jbehavesupport.core.support.TestContextUtil;
 import org.jbehavesupport.core.verification.Verifier;
@@ -28,6 +19,14 @@ import org.springframework.ws.FaultAwareWebServiceMessage;
 import org.springframework.ws.client.core.FaultMessageResolver;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
+
+import javax.annotation.PostConstruct;
+import java.util.Map;
+import java.util.function.Consumer;
+
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.util.Assert.isTrue;
+import static org.springframework.util.Assert.state;
 
 /**
  * This class implements steps for testing web services and provides customization
@@ -70,6 +69,9 @@ public abstract class WebServiceHandler {
 
     @Autowired
     private VerifierResolver verifierResolver;
+
+    @Autowired
+    private EqualsVerifier equalsVerifier;
 
     protected final WebServiceTemplate template = new WebServiceTemplate();
     protected final WebServiceTemplateConfigurer templateConfigurer = new WebServiceTemplateConfigurer(template);
@@ -295,18 +297,13 @@ public abstract class WebServiceHandler {
     }
 
     private Verifier getVerifier(Parameters parameters) {
-        String verifierName = VerifierNames.EQ;
-
-        Map.Entry<String, String> verifierEntry = parameters.values().entrySet().stream()
+        String verifierName = parameters.values().entrySet().stream()
             .filter(e -> e.getKey().equals(ExampleTableConstraints.OPERATOR) || e.getKey().equals(ExampleTableConstraints.VERIFIER))
+            .map(Map.Entry::getValue)
             .findFirst()
             .orElse(null);
 
-        if (verifierEntry != null && !verifierEntry.getValue().isEmpty()) {
-            verifierName = verifierEntry.getValue();
-        }
-
-        return verifierResolver.getVerifierByName(verifierName);
+        return verifierResolver.getVerifierByName(verifierName, equalsVerifier);
     }
 
 }

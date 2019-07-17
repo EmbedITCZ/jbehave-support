@@ -1,36 +1,12 @@
 package org.jbehavesupport.core.rest;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.jbehavesupport.core.internal.ExampleTableConstraints.ALIAS;
-import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
-import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
-import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
-import static org.jbehavesupport.core.internal.ExamplesTableUtil.getValue;
-import static org.springframework.util.Assert.state;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Row;
 import org.jbehavesupport.core.TestContext;
@@ -38,7 +14,7 @@ import org.jbehavesupport.core.internal.ExampleTableConstraints;
 import org.jbehavesupport.core.internal.ExamplesTableUtil;
 import org.jbehavesupport.core.internal.MetadataUtil;
 import org.jbehavesupport.core.internal.SkipSslVerificationHttpRequestFactory;
-import org.jbehavesupport.core.internal.verification.VerifierNames;
+import org.jbehavesupport.core.internal.verification.EqualsVerifier;
 import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
 import org.jbehavesupport.core.verification.Verifier;
 import org.jbehavesupport.core.verification.VerifierResolver;
@@ -58,6 +34,29 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.ALIAS;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
+import static org.jbehavesupport.core.internal.ExamplesTableUtil.getValue;
+import static org.springframework.util.Assert.state;
 
 /**
  * This class implements steps for testing REST API and provides customization
@@ -99,6 +98,9 @@ public class RestServiceHandler {
 
     @Autowired
     private VerifierResolver verifierResolver;
+
+    @Autowired
+    private EqualsVerifier equalsVerifier;
 
     protected final RestTemplate template = new RestTemplate();
     protected final RestTemplateConfigurer templateConfigurer = new RestTemplateConfigurer(template);
@@ -425,7 +427,7 @@ public class RestServiceHandler {
                 String assertionErrorMessage = "Headers don't contain " + headerKey + "\n" + actualResponseMessage;
                 assertThat(actualHeaders.containsKey(headerKey)).as(assertionErrorMessage).isTrue();
 
-                final Verifier verifier = verifierResolver.getVerifierByName(StringUtils.defaultIfEmpty(triple.getRight(), VerifierNames.EQ));
+                final Verifier verifier = verifierResolver.getVerifierByName(triple.getRight(), equalsVerifier);
                 verifier.verify(actualHeaders.get(headerKey).get(0), triple.getMiddle());
             }
         }
@@ -499,7 +501,7 @@ public class RestServiceHandler {
             String expectedValue = data.getMiddle();
 
             Object actualValue = jsonContext.read("$." + propertyName);
-            verifierResolver.getVerifierByName(StringUtils.isNotEmpty(data.getRight()) ? data.getRight() : VerifierNames.EQ)
+            verifierResolver.getVerifierByName(data.getRight(), equalsVerifier)
                 .verify(actualValue, expectedValue);
         }
     }

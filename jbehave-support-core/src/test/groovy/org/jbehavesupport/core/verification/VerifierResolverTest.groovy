@@ -1,7 +1,6 @@
 package org.jbehavesupport.core.verification
 
 import org.jbehavesupport.core.TestConfig
-import org.jbehavesupport.core.internal.verification.VerifierNames
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired

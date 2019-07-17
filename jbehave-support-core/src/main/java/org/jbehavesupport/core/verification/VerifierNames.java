@@ -1,4 +1,4 @@
-package org.jbehavesupport.core.internal.verification;
+package org.jbehavesupport.core.verification;
 
 import lombok.experimental.UtilityClass;
 

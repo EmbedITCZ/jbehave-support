@@ -20,7 +20,7 @@ class CurrentDateTimeCommandTest extends Specification {
         def result = currentDateTimeCommand.execute(*expression)
 
         then:
-        result.truncatedTo(ChronoUnit.SECONDS) == expected.truncatedTo(ChronoUnit.SECONDS)
+        ChronoUnit.SECONDS.between(expected, result) < 1
 
         where:
         expression || expected

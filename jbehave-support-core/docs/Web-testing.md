@@ -244,4 +244,24 @@ Then on [home] page these values are saved:
 | client.ssn | VALUE    | SSN            |
 ```
 
-TODO: add explanation of table steps, waits
+#### Waiting until a condition is met
+If you want to wait on a certain page, until a specified condition is met, use the `Then on [page] page wait until [element] [condition]` step.
+
+Element has to be defined under a page in a [configuration yaml file](#mapping-files). Special elements (need not to be defined) are `@url` and `@title`.
+
+Supported conditions are:
+* `is present`
+* `is clickable`
+* `is visible`
+* `is not visible`
+* `has [attribute] [attributeValue]` (i.e. has text someText | has class issue | has id)
+* `missing [attribute] [attributeValue]` (i.e. missing text java | missing customAttributeName working | missing class)
+
+Example:
+```
+Given [TEST]/[https://www.google.com] url is open
+Then on [home] page wait until [@title] has text Google
+```
+For more examples see [WebWaitCondition.story](../src/test/groovy/org/jbehavesupport/test/sample/WebWaitCondition.story)
+
+TODO: add explanation of table steps

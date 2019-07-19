@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Row;
 import org.jbehavesupport.core.TestContext;

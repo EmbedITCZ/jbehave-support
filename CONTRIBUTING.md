@@ -36,7 +36,7 @@ To build this project use the standard `mvn clean install`. We have 3 building p
     * Used for new version releases
     
 ## Bug reporting
-If you find a bug, please create new GitHub issue. Or:
+If you find a bug or have a question, feel free to create a new GitHub issue. Or contact us on:
 
 [![Gitter](https://badges.gitter.im/jbehave-support/community.svg)](https://gitter.im/jbehave-support/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 

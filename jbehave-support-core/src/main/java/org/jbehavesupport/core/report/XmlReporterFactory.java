@@ -12,6 +12,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import javax.annotation.PreDestroy;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -68,7 +70,7 @@ public class XmlReporterFactory extends Format {
     @Value("${report.template:report.xslt}")
     private Resource reportTemplate;
 
-    @Value("#{'${report.additionalResources:functions.js}'.split(',')}")
+    @Value("#{'${report.additionalResources:functions.js, report-generator}'.split(',')}")
     private List<Resource> additionalResources;
 
     @Value("${report.directory:reports}")
@@ -157,11 +159,59 @@ public class XmlReporterFactory extends Format {
     private void copyResourceToReportDirectory(Resource resource, String targetFilePath) {
         File targetFile = new File(targetFilePath);
         try {
-            FileUtils.copyInputStreamToFile(resource.getInputStream(), targetFile);
+            String resourcePath = String.valueOf(resource.getURI());
+            String jarPath = resourcePath.replace(("!/" + resource.getFilename()), "").replace("jar:file:", "");
+            File jarFile = new File(jarPath);
+
+            if (jarFile.isFile()) {
+                copyResourceFromJar(resource, targetFilePath, targetFile, jarFile);
+            } else {
+                copyResourceFromFile(resource, targetFile);
+            }
         } catch (IOException e) {
             log.error("Cannot copy resource file to target", e);
         }
     }
+
+    private void copyResourceFromFile(Resource resource, File targetFile) {
+        try {
+            if (resource.isFile() && resource.getFile().isDirectory()) {
+                FileUtils.copyDirectory(resource.getFile(), targetFile);
+            } else {
+                FileUtils.copyInputStreamToFile(resource.getInputStream(), targetFile);
+            }
+        }catch (IOException e){
+            log.error("{} is not a file!", resource.getFilename());
+        }
+    }
+
+    private void copyResourceFromJar(Resource resource, String targetFilePath, File targetFile, File jarFile) {
+    try{
+        try (JarFile jar = new JarFile(jarFile)) {
+            JarEntry entry = jar.getJarEntry(resource.getFilename());
+            if (entry.isDirectory()) {
+                jar.stream()
+                    .filter(file -> file.getName().startsWith(entry.getName()) && file.getName().endsWith(".xslt"))
+                    .forEach(file -> {
+                        String fileName = file.getName().replace(entry.getName(), "");
+                        File newFile = new File(targetFilePath + File.separator + fileName);
+                        try {
+                            FileUtils.copyInputStreamToFile(jar.getInputStream(file), newFile);
+                        } catch (IOException e) {
+                            log.error("Unable to get input stream for this file {}", targetFilePath + File.separator + fileName);
+                        }
+                    });
+            } else {
+                log.warn("File name: {}", entry.getName());
+
+                FileUtils.copyInputStreamToFile(jar.getInputStream(entry), targetFile);
+            }
+        }
+    } catch (IOException e) {
+            log.error("{} is not a jar file!", jarFile.getName());
+        }
+    }
+
 
     private IndexItem parseFile(File file) {
         try {

@@ -16,7 +16,7 @@ This project is written in Java 8 using the latest version of IntelliJ IDEA as a
 1. Do not use asterisk imports (`org.springframework.beans.factory.*`)
 2. If possible, use Lombok constructor injection
     * Do not use in groovy tests
-    * Do not use when @autowired (required = false)
+    * Do not use for optional dependencies `@Autowired(required = false)`
 3. If possible, write [tests](#testing) for Your code.
 4. Use SonarLint to prevent issues (delete unused imports etc.)
     

@@ -1,4 +1,4 @@
-Scenario: helathy component
+Scenario: healthy component
 
 Given these components are healthy:
 | component |

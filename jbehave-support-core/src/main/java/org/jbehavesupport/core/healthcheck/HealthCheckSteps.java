@@ -16,7 +16,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * This class contains step for checking healthy of tested components.
+ * This class contains a step for checking the health of tested components.
  * The health-check is performed by bean implementing interface {@link HealthCheck}
  * and with configured qualifier.
  * <p>

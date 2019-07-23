@@ -31,7 +31,7 @@ To build this project use the standard `mvn clean install`. We have 3 building p
 1. development
     * Build for contributors;
 2. integration-test
-    * Build for integration tests Builds the app with all tests and runs them.
+    * Build for integration tests; Builds the app with all tests and runs them against test application backend (launched as part of the profile). 
 3. release
     * Used for new version releases
     

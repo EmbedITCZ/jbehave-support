@@ -10,17 +10,17 @@ import spock.lang.Unroll
 class NotContainsVerifierTest extends Specification {
 
     @Autowired
-    NotContainsVerifier notContainsVerifier;
+    NotContainsVerifier notContainsVerifier
 
     def "Name"() {
         expect:
-        notContainsVerifier.name().equals("NOT_CONTAINS");
+        notContainsVerifier.name().equals("NOT_CONTAINS")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        notContainsVerifier.verify(actual, expected);
+        notContainsVerifier.verify(actual, expected)
 
         then:
         true
@@ -35,7 +35,7 @@ class NotContainsVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        notContainsVerifier.verify(actual, expected);
+        notContainsVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

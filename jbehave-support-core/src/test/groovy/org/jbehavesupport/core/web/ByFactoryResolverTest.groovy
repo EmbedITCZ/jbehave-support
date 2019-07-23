@@ -10,18 +10,18 @@ import spock.lang.Specification
 class ByFactoryResolverTest extends Specification {
 
     @Autowired
-    ByFactoryResolver byFactoryResolver;
+    ByFactoryResolver byFactoryResolver
 
     def "GetByCreatorByTypePositive"() {
 
         expect:
-        byFactoryResolver.resolveByFactory("css") != null;
+        byFactoryResolver.resolveByFactory("css") != null
     }
 
     def "GetByCreatorByTypeNegative"() {
 
         when:
-        byFactoryResolver.resolveByFactory("MySecretBy");
+        byFactoryResolver.resolveByFactory("MySecretBy")
 
         then:
         def e = thrown(IllegalArgumentException.class)
@@ -32,7 +32,7 @@ class ByFactoryResolverTest extends Specification {
     def "GetMultipleByCreatorsNegative"() {
 
         when:
-        byFactoryResolver.resolveByFactory("xpath");
+        byFactoryResolver.resolveByFactory("xpath")
 
         then:
         def e = thrown(NoUniqueBeanDefinitionException.class)

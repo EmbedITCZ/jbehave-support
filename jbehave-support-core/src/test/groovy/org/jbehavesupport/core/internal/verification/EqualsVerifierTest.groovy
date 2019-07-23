@@ -12,17 +12,17 @@ import java.time.LocalDate
 class EqualsVerifierTest extends Specification {
 
     @Autowired
-    EqualsVerifier equalsVerifier;
+    EqualsVerifier equalsVerifier
 
     def "Name"() {
         expect:
-        equalsVerifier.name().equals("EQ");
+        equalsVerifier.name().equals("EQ")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        equalsVerifier.verify(actual, expected);
+        equalsVerifier.verify(actual, expected)
 
         then:
         true
@@ -40,7 +40,7 @@ class EqualsVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        equalsVerifier.verify(actual, expected);
+        equalsVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

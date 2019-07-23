@@ -10,7 +10,7 @@ class NullCommandTest extends Specification {
 
     def "test execute with #expression returns #expected"() {
         expect:
-        new NullCommand().execute() == NullCommand.NULL_VALUE;
+        new NullCommand().execute() == NullCommand.NULL_VALUE
     }
 
     def "test execute with #expression throws #exception"() {

@@ -10,17 +10,17 @@ import spock.lang.Unroll
 class SizeEqualsVerifierTest extends Specification {
 
     @Autowired
-    SizeEqualsVerifier sizeEqualsVerifier;
+    SizeEqualsVerifier sizeEqualsVerifier
 
     def "Name"() {
         expect:
-        sizeEqualsVerifier.name().equals("SIZE_EQ");
+        sizeEqualsVerifier.name().equals("SIZE_EQ")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        sizeEqualsVerifier.verify(actual, expected);
+        sizeEqualsVerifier.verify(actual, expected)
 
         then:
         true
@@ -37,7 +37,7 @@ class SizeEqualsVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        sizeEqualsVerifier.verify(actual, expected);
+        sizeEqualsVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

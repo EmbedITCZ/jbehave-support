@@ -19,7 +19,7 @@ class AbstractXmlReporterExtensionTest extends Specification {
             void print(final Writer writer, final ReportContext reportContext) {
             }
         }
-        def writer = new StringWriter();
+        def writer = new StringWriter()
 
         when:
         extension.printBegin(writer, tag, attributes)

@@ -36,7 +36,7 @@ class GroovyFilteringTest {
         def parser = new FilteringStoryParser(null, true)
         def story = parser.parseStory(STORY, null)
         // Returns all scenarios
-        assert contains(story, "001", "002", "003", "004", "005", "006", "007", "008");
+        assert contains(story, "001", "002", "003", "004", "005", "006", "007", "008")
 
 
         parser = new FilteringStoryParser(filter(), true)
@@ -53,97 +53,97 @@ class GroovyFilteringTest {
     @Test
     void filterWithAny() {
         // Scenarios not having searched attribute are included by default, ignored and featured are not included
-        def parser = new FilteringStoryParser(filter("any('attribute', 'a1')"), true);
+        def parser = new FilteringStoryParser(filter("any('attribute', 'a1')"), true)
         def story = parser.parseStory(STORY, null)
         // No scenarios with attribute=1
         assert contains(story, "001", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter("any('attribute', 'a2')"), true);
+        parser = new FilteringStoryParser(filter("any('attribute', 'a2')"), true)
         story = parser.parseStory(STORY, null)
         // 002
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter("any('inherit', 'i1')"), true);
+        parser = new FilteringStoryParser(filter("any('inherit', 'i1')"), true)
         story = parser.parseStory(STORY, null)
         // 001, 002, 003
-        assert contains(story, "001", "002", "003");
+        assert contains(story, "001", "002", "003")
 
-        parser = new FilteringStoryParser(filter("any('inherit', 'i2')"), true);
+        parser = new FilteringStoryParser(filter("any('inherit', 'i2')"), true)
         story = parser.parseStory(STORY, null)
         // 007
-        assert contains(story, "007");
+        assert contains(story, "007")
 
-        parser = new FilteringStoryParser(filter("any('inherit', 'i1', 'i2')"), true);
+        parser = new FilteringStoryParser(filter("any('inherit', 'i1', 'i2')"), true)
         story = parser.parseStory(STORY, null)
-        assert contains(story, "001", "002", "003", "007");
+        assert contains(story, "001", "002", "003", "007")
 
-        parser = new FilteringStoryParser(filter("any('inherit', '')"), true);
+        parser = new FilteringStoryParser(filter("any('inherit', '')"), true)
         story = parser.parseStory(STORY, null)
         // 008 matches
-        assert contains(story, "008");
+        assert contains(story, "008")
     }
 
     @Test
     void filterWithAll() {
         // Scenarios not having searched attribute are included by default, ignored and featured are not included
-        def parser = new FilteringStoryParser(filter("all('attribute', 'a1', 'a2')"), true);
+        def parser = new FilteringStoryParser(filter("all('attribute', 'a1', 'a2')"), true)
         def story = parser.parseStory(STORY, null)
         // All by default
         assert contains(story, "001", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter("all('property', 'p1', 'p2')"), true);
+        parser = new FilteringStoryParser(filter("all('property', 'p1', 'p2')"), true)
         story = parser.parseStory(STORY, null)
         // 003 matches both
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter("all('property', 'p2', 'p3')"), true);
+        parser = new FilteringStoryParser(filter("all('property', 'p2', 'p3')"), true)
         story = parser.parseStory(STORY, null)
         // All by default
-        assert contains(story, "001", "002", "007", "008");
+        assert contains(story, "001", "002", "007", "008")
     }
 
     @Test
     void filterWithOnly() {
         // Scenarios not having searched attribute are included by default, ignored and featured are not included
-        def parser = new FilteringStoryParser(filter("only('property', 'p1', 'p2')"), true);
+        def parser = new FilteringStoryParser(filter("only('property', 'p1', 'p2')"), true)
         def story = parser.parseStory(STORY, null)
         // 003 matches
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter("only('property','p1', 'p2', 'p3')"), true);
+        parser = new FilteringStoryParser(filter("only('property','p1', 'p2', 'p3')"), true)
         story = parser.parseStory(STORY, null)
         // 003 matches
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter("only('property', 'p2', 'p3')"), true);
+        parser = new FilteringStoryParser(filter("only('property', 'p2', 'p3')"), true)
         story = parser.parseStory(STORY, null)
         // All by default
-        assert contains(story, "001", "002", "007", "008");
+        assert contains(story, "001", "002", "007", "008")
     }
 
     @Test
     void filterWithNone() {
         // Scenarios not having searched attribute are included by default, ignored and featured are not included
-        def parser = new FilteringStoryParser(filter("none('attribute', 'a2')"), true);
+        def parser = new FilteringStoryParser(filter("none('attribute', 'a2')"), true)
         def story = parser.parseStory(STORY, null)
         // 002 is excluded
         assert contains(story, "001", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter("none('property', 'p2', 'p3')"), true);
+        parser = new FilteringStoryParser(filter("none('property', 'p2', 'p3')"), true)
         story = parser.parseStory(STORY, null)
         // 003 is excluded
-        assert contains(story, "001", "002", "007", "008");
+        assert contains(story, "001", "002", "007", "008")
 
-        parser = new FilteringStoryParser(filter("none('inherit', 'i1', 'i2')"), true);
+        parser = new FilteringStoryParser(filter("none('inherit', 'i1', 'i2')"), true)
         story = parser.parseStory(STORY, null)
         // All excluded except 008
-        assert contains(story, "008");
+        assert contains(story, "008")
     }
 
     @Test
     void filterWithEq() {
         // Scenarios not having searched attribute are included by default, ignored and featured are not included
-        def parser = new FilteringStoryParser(filter("eq('inherit', 'i1')"), true);
+        def parser = new FilteringStoryParser(filter("eq('inherit', 'i1')"), true)
         def story = parser.parseStory(STORY, null)
         // 001, 002, 003 have exact match
         assert contains(story, "001", "002", "003")
@@ -151,7 +151,7 @@ class GroovyFilteringTest {
 
     @Test
     void filterWithEqualsign() {
-        def parser = new FilteringStoryParser(filter("inherit == 'i2'"), true);
+        def parser = new FilteringStoryParser(filter("inherit == 'i2'"), true)
         def story = parser.parseStory(STORY, null)
         //  Only 007 has inherit and it equals i2
         assert contains(story, "007")
@@ -159,7 +159,7 @@ class GroovyFilteringTest {
 
     @Test
     void filterWithExists() {
-        def parser = new FilteringStoryParser(filter("exists('attribute')"), true);
+        def parser = new FilteringStoryParser(filter("exists('attribute')"), true)
         def story = parser.parseStory(STORY, null)
         // Stories with defined meta 'attribute'
         assert contains(story, "002")
@@ -167,7 +167,7 @@ class GroovyFilteringTest {
 
     @Test
     void filterWithMatches() {
-        def parser = new FilteringStoryParser(filter("matches('id', '00[1|2|7]')"), true);
+        def parser = new FilteringStoryParser(filter("matches('id', '00[1|2|7]')"), true)
         def story = parser.parseStory(STORY, null)
         // Stories matching regexp
         assert contains(story, "001", "002", "007")
@@ -177,40 +177,40 @@ class GroovyFilteringTest {
     void filterWithFeatures() {
         // All scenarios not having features meta are included by default, ignored are not included
         // List of features has to contain all required features for scenario
-        def parser = new FilteringStoryParser(filter(null, "f1"), true);
+        def parser = new FilteringStoryParser(filter(null, "f1"), true)
         def story = parser.parseStory(STORY, null)
         // None scenarios require f1
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter(null, "f2"), true);
+        parser = new FilteringStoryParser(filter(null, "f2"), true)
         story = parser.parseStory(STORY, null)
         // None scenarios require f2
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter(null, "f3"), true);
+        parser = new FilteringStoryParser(filter(null, "f3"), true)
         story = parser.parseStory(STORY, null)
         // None scenarios require f3
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
 
-        parser = new FilteringStoryParser(filter(null, "f1 f2"), true);
+        parser = new FilteringStoryParser(filter(null, "f1 f2"), true)
         story = parser.parseStory(STORY, null)
         // 004 requires f1 and f2
-        assert contains(story, "001", "002", "003", "004", "007", "008");
+        assert contains(story, "001", "002", "003", "004", "007", "008")
 
-        parser = new FilteringStoryParser(filter(null, "f2 f3"), true);
+        parser = new FilteringStoryParser(filter(null, "f2 f3"), true)
         story = parser.parseStory(STORY, null)
         // 005 requires f2 and f3
-        assert contains(story, "001", "002", "003", "005", "007", "008");
+        assert contains(story, "001", "002", "003", "005", "007", "008")
 
-        parser = new FilteringStoryParser(filter(null, "f1 f2 f3"), true);
+        parser = new FilteringStoryParser(filter(null, "f1 f2 f3"), true)
         story = parser.parseStory(STORY, null)
         // 004, 005 requires f1, f2 and f3
-        assert contains(story, "001", "002", "003", "004", "005", "007", "008");
+        assert contains(story, "001", "002", "003", "004", "005", "007", "008")
 
         // No scenarios require f4
-        parser = new FilteringStoryParser(filter(null, "f4"), true);
+        parser = new FilteringStoryParser(filter(null, "f4"), true)
         story = parser.parseStory(STORY, null)
-        assert contains(story, "001", "002", "003", "007", "008");
+        assert contains(story, "001", "002", "003", "007", "008")
     }
 
     static MetaFilter filter(String filter = null, String features = null, boolean ignore = true) throws IOException {

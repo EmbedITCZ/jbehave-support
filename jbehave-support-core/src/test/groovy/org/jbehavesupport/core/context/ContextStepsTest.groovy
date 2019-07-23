@@ -7,10 +7,10 @@ class ContextStepsTest extends Specification {
     def "LoadDataFromResource negative"() {
 
         when:
-        new ContextSteps().loadDataFromResource("notYaml");
+        new ContextSteps().loadDataFromResource("notYaml")
 
         then:
-        def e = thrown(IllegalArgumentException);
+        def e = thrown(IllegalArgumentException)
         e.getMessage() == "Only yml extension is supported"
     }
 }

@@ -51,28 +51,28 @@ class ReflectionUtilsTest extends Specification {
 
 
     static class Boo {
-        String booString;
-        Integer booInteger;
-        Set<String> stringSet;
+        String booString
+        Integer booInteger
+        Set<String> stringSet
 
-        public Boo(String booString, Integer booInteger, Set<String> stringSet) {
-            this.booString = booString;
-            this.booInteger = booInteger;
-            this.stringSet = stringSet;
+        Boo(String booString, Integer booInteger, Set<String> stringSet) {
+            this.booString = booString
+            this.booInteger = booInteger
+            this.stringSet = stringSet
         }
     }
 
     static class Foo {
-        Boo boo;
-        String fooString;
-        Integer fooInteger;
-        List<String> stringList;
+        Boo boo
+        String fooString
+        Integer fooInteger
+        List<String> stringList
 
-        public Foo(Boo boo, String fooString, Integer fooInteger, List<String> stringList) {
-            this.boo = boo;
-            this.fooString = fooString;
-            this.fooInteger = fooInteger;
-            this.stringList = stringList;
+        Foo(Boo boo, String fooString, Integer fooInteger, List<String> stringList) {
+            this.boo = boo
+            this.fooString = fooString
+            this.fooInteger = fooInteger
+            this.stringList = stringList
         }
     }
 

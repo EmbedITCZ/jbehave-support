@@ -13,7 +13,7 @@ class WebServiceEndpointRegistryTest extends Specification {
     def registry
 
     void setup() {
-        registry = new WebServiceEndpointRegistry();
+        registry = new WebServiceEndpointRegistry()
     }
 
     def "Register"() {

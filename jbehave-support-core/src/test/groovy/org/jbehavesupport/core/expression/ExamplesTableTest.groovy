@@ -1,6 +1,5 @@
 package org.jbehavesupport.core.expression
 
-
 import org.jbehave.core.configuration.MostUsefulConfiguration
 import org.jbehave.core.model.ExamplesTable
 import org.jbehave.core.steps.ParameterConverters
@@ -11,6 +10,7 @@ import org.jbehavesupport.core.internal.parameterconverters.NullStringConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+
 @ContextConfiguration(classes = TestConfig)
 class ExamplesTableTest extends Specification {
 
@@ -40,7 +40,7 @@ class ExamplesTableTest extends Specification {
     def "test null value conversion with getRow"() {
         given:
         def paramsConverters = new ParameterConverters().addConverters(nullStringConverter)
-        converter.setConfiguration(new MostUsefulConfiguration().useParameterConverters(paramsConverters));
+        converter.setConfiguration(new MostUsefulConfiguration().useParameterConverters(paramsConverters))
 
         when:
         ExamplesTable result = converter.convertValue(nullTable, ExamplesTable.class)
@@ -53,7 +53,7 @@ class ExamplesTableTest extends Specification {
 
     def "test nested value conversion with getRow"() {
         given:
-        converter.setConfiguration(new MostUsefulConfiguration());
+        converter.setConfiguration(new MostUsefulConfiguration())
         def table = "|name      | value                                             |\n" +
                     "|test      |{CONCAT:{CONCAT:1:2}: :{CONCAT:3:4:5}}             |\n" +
                     "|test      |{CONCAT:{CONCAT:1:2}: :{CONCAT:3:{CONCAT:4:5}}}    |\n" +

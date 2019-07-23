@@ -10,17 +10,17 @@ import spock.lang.Unroll
 class SizeLowerThanVerifierTest extends Specification {
 
     @Autowired
-    SizeLowerThanVerifier sizeLowerThanVerifier;
+    SizeLowerThanVerifier sizeLowerThanVerifier
 
     def "Name"() {
         expect:
-        sizeLowerThanVerifier.name().equals("SIZE_LT");
+        sizeLowerThanVerifier.name().equals("SIZE_LT")
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        sizeLowerThanVerifier.verify(actual, expected);
+        sizeLowerThanVerifier.verify(actual, expected)
 
         then:
         true
@@ -36,7 +36,7 @@ class SizeLowerThanVerifierTest extends Specification {
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        sizeLowerThanVerifier.verify(actual, expected);
+        sizeLowerThanVerifier.verify(actual, expected)
 
         then:
         def exception = thrown(Throwable)

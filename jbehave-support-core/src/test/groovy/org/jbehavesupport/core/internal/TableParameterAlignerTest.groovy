@@ -8,7 +8,7 @@ class TableParameterAlignerTest extends Specification {
     @Unroll
     def "output of table parameter aligner for #input is #output"() {
         when:
-        def output = TableParameterAligner.alignTableInString(input);
+        def output = TableParameterAligner.alignTableInString(input)
 
         then:
         output == expected

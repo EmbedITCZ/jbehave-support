@@ -59,6 +59,7 @@ public final class WebSteps {
     private final VerifierResolver verifierResolver;
     private final GivenStoryHelper givenStoryHelper;
     private final WebElementRegistry elementRegistry;
+    private final WebDriverFactoryResolver webDriverFactoryResolver;
 
     public static WebSetting getCurrentSetting() {
         return CURRENT_SETTING.get();
@@ -274,6 +275,13 @@ public final class WebSteps {
     @Then("navigate forward")
     public void navigateForward() {
         driver.navigate().forward();
+    }
+
+    @When("browser is changed to [$browserName]")
+    @Given("browser is changed to [$browserName]")
+    public void changeBrowser(String browserName){
+        driver.quit();
+        webDriverFactoryResolver.setBrowserName(browserName);
     }
 
     private String parseConditionValue(String condition) {

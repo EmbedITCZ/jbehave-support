@@ -4,6 +4,7 @@ import javax.annotation.PreDestroy;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.jbehavesupport.core.web.WebDriverFactory;
+import org.jbehavesupport.core.web.WebDriverFactoryResolver;
 import org.openqa.selenium.WebDriver;
 import org.springframework.aop.DynamicIntroductionAdvice;
 import org.springframework.aop.IntroductionInterceptor;
@@ -18,16 +19,22 @@ import org.springframework.util.ClassUtils;
 public class WebDriverDelegatingInterceptor extends IntroductionInfoSupport
     implements IntroductionInterceptor {
 
-    private WebDriverFactory webDriverFactory;
 
-    private WebDriver driver = null;
+    private transient WebDriverFactoryResolver webDriverFactoryResolver;
 
-    public WebDriverDelegatingInterceptor(WebDriverFactory webDriverFactory) {
-        this.webDriverFactory = webDriverFactory;
+    private transient WebDriver driver = null;
+
+    public WebDriverDelegatingInterceptor(WebDriverFactoryResolver webDriverFactoryResolver) {
+        this.webDriverFactoryResolver = webDriverFactoryResolver;
         init();
     }
 
     private void init() {
+        initInterfaces(webDriverFactoryResolver.resolveWebDriverFactory());
+    }
+
+    private void initInterfaces(WebDriverFactory webDriverFactory) {
+        publishedInterfaces.clear();
         publishedInterfaces.addAll(webDriverFactory.getProxyInterfaces());
         publishedInterfaces.addAll(ClassUtils.getAllInterfacesForClassAsSet(webDriverFactory.getProxyClass()));
 
@@ -56,6 +63,8 @@ public class WebDriverDelegatingInterceptor extends IntroductionInfoSupport
 
     private Object doProceed(final MethodInvocation mi) throws Throwable {
         if (driver == null) {
+            WebDriverFactory webDriverFactory = webDriverFactoryResolver.resolveWebDriverFactory();
+            initInterfaces(webDriverFactory);
             driver = webDriverFactory.createWebDriver();
         }
 

@@ -140,4 +140,5 @@ public class JBehaveDefaultConfig {
         proxyFactory.setTargetClass(webDriverFactory.getProxyClass());
         return (WebDriver) proxyFactory.getProxy();
     }
+
 }

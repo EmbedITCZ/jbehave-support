@@ -109,6 +109,17 @@
                             </a>
                         </li>
                     </xsl:if>
+                    <xsl:if test="stepScreenshots">
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="concat('#step-screenshots',$storyIndex)"/>
+                                </xsl:attribute>
+                                <i class="fa fa-camera-retro" aria-hidden="true"></i>
+                                Screenshots
+                            </a>
+                        </li>
+                    </xsl:if>
                     <xsl:if test="serverLog">
                         <li class="nav-item">
                             <a class="nav-link">

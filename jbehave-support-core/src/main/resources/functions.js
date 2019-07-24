@@ -22,6 +22,10 @@ function reportReady() {
         showHideAllInElement('#sql-queries-body');
     });
 
+    $('#expand-all-step-screenshots').click(function () {
+            showHideAllInElement('#step-screen-shots');
+        });
+
     $('#expand-all-shell-logs').click(function () {
         showHideAllInElement('#shell-logs-body');
     });

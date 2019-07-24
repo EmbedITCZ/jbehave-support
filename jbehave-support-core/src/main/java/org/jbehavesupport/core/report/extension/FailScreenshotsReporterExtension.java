@@ -35,8 +35,8 @@ public class FailScreenshotsReporterExtension extends AbstractXmlReporterExtensi
 
     @Override
     public void print(final Writer writer, final ReportContext reportContext) {
-        if (testContext.contains(WebScreenshotCreator.SCREENSHOTS_KEY)) {
-            Set<String> screenshots = testContext.get(WebScreenshotCreator.SCREENSHOTS_KEY, Set.class);
+        if (testContext.contains(WebScreenshotCreator.FAILED_SCREENSHOTS_KEY)) {
+            Set<String> screenshots = testContext.get(WebScreenshotCreator.FAILED_SCREENSHOTS_KEY, Set.class);
             for (String screenshotName : screenshots) {
                 printScreenshotEntry(writer, screenshotName);
             }

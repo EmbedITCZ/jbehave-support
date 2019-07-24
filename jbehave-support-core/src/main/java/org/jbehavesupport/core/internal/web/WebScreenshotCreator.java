@@ -46,6 +46,9 @@ public class WebScreenshotCreator {
     public static final String REPORT_SCREENSHOTS_KEY = "report_screenshots";
     private static final String FILE_NAME_PATTERN = "%s_%s.png";
 
+    /**
+    * All types except FAILED are in development, so it's not recommended to use them.
+    */
     @Value("${web.screenshot.reporting.mode:MANUAL}")
     private Type desiredMode;
 

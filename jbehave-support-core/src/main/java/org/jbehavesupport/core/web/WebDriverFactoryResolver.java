@@ -10,6 +10,6 @@ public interface WebDriverFactoryResolver {
      */
     WebDriverFactory resolveWebDriverFactory();
 
-    void setBrowserName (String browserName);
+    void setBrowserName(String browserName);
 
 }

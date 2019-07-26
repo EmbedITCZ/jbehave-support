@@ -279,7 +279,7 @@ public final class WebSteps {
 
     @When("browser is changed to [$browserName]")
     @Given("browser is changed to [$browserName]")
-    public void changeBrowser(String browserName){
+    public void changeBrowser(String browserName) {
         driver.quit();
         webDriverFactoryResolver.setBrowserName(browserName);
     }

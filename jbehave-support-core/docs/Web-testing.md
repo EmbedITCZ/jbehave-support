@@ -172,7 +172,7 @@ When current tab is closed
 Given browser is closed
 ```
 
-To switch to another browser
+To switch to another browser (midstory, this will close the current browser automatically)
 ```
 When browser is changed to [$browserName]
 ```

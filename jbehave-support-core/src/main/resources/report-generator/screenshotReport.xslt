@@ -1,7 +1,5 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:template match="/">
-    </xsl:template>
     <xsl:template match="stepScreenshots">
         <xsl:param name="storyIndex"/>
         <p>
@@ -11,7 +9,8 @@
                 </xsl:attribute>
                 <div class="card-header">
                     <i class="fa fa-exchange" aria-hidden="true"></i>
-                    Step screen shots (<a href="#step-screen-shots" id="expand-all-step-screenshots">Toggle all screenshots</a>)
+                    Step screen shots (<a href="#step-screen-shots" id="expand-all-step-screenshots">Toggle all
+                    screenshots</a>)
                     <a href="#step-screen-shots" data-toggle="collapse" class="float-right">Collapse</a>
                 </div>
                 <div id="step-screen-shots" class="card-body collapse show">

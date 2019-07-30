@@ -5,9 +5,6 @@
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'"/>
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 
-    <xsl:template match="/">
-    </xsl:template>
-
     <!-- footer -->
     <xsl:template name="renderFooter">
         <div class="fixed-bottom bg-white border-top">
@@ -98,6 +95,17 @@
                             </a>
                         </li>
                     </xsl:if>
+                    <xsl:if test="jms">
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="concat('#jms-messages',$storyIndex)"/>
+                                </xsl:attribute>
+                                <i class="fa fa-exchange" aria-hidden="true"></i>
+                                JMS messages
+                            </a>
+                        </li>
+                    </xsl:if>
                     <xsl:if test="sql">
                         <li class="nav-item">
                             <a class="nav-link">
@@ -171,6 +179,9 @@
                     <xsl:with-param name="storyIndex" select="$storyIndex"/>
                 </xsl:apply-templates>
                 <xsl:apply-templates select="rest">
+                    <xsl:with-param name="storyIndex" select="$storyIndex"/>
+                </xsl:apply-templates>
+                <xsl:apply-templates select="jms">
                     <xsl:with-param name="storyIndex" select="$storyIndex"/>
                 </xsl:apply-templates>
                 <xsl:apply-templates select="sql">

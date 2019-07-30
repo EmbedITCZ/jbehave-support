@@ -8,10 +8,12 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jbehavesupport.core.TestContext;
 
 import lombok.RequiredArgsConstructor;
 import org.jbehave.core.model.ExamplesTable;
+import org.jbehavesupport.core.report.extension.JmsXmlReporterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -29,6 +31,7 @@ import org.springframework.jms.support.destination.DestinationResolver;
  * see <a href="https://docs.oracle.com/cd/E19798-01/821-1841/bnces/index.html">https://docs.oracle.com/cd/E19798-01/821-1841/bnces/index.html</a>
  * <p>
  */
+@Slf4j
 @RequiredArgsConstructor(access = PROTECTED)
 public abstract class JmsHandler {
 
@@ -47,6 +50,9 @@ public abstract class JmsHandler {
     @Autowired
     protected TestContext testContext;
 
+    @Autowired(required = false)
+    private JmsXmlReporterExtension jmsXMLReporterExtension;
+
     private final JmsTemplate jmsTemplate;
 
     final void setMessageData(String typeAlias, ExamplesTable data) {
@@ -55,10 +61,18 @@ public abstract class JmsHandler {
     }
 
     void sendMessage(String destinationName, String typeAlias) {
-        jmsTemplate.send(destinationName, messageCreatorFor(typeAlias));
+        jmsTemplate.send(destinationName, getMessageCreator(messageCreatorFor(typeAlias)));
     }
 
     protected abstract MessageCreator messageCreatorFor(String typeAlias);
+
+    private MessageCreator getMessageCreator(MessageCreator messageCreator) {
+        if (jmsXMLReporterExtension != null) {
+            return new InterceptedMessageCreator(messageCreator, jmsXMLReporterExtension);
+        } else {
+            return messageCreator;
+        }
+    }
 
     void handleJmsHeaders(String typeAlias, Session session, Message message) throws JMSException {
         DestinationResolver destinationResolver = jmsTemplate.getDestinationResolver();

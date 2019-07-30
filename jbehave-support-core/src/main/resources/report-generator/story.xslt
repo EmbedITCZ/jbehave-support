@@ -2,9 +2,6 @@
 
     <xsl:variable name="totalStories" select="count(//story)"/>
 
-    <xsl:template match="/">
-    </xsl:template>
-
     <!--scenario -->
     <xsl:template match="scenario">
         <xsl:param name="storyIndex"/>

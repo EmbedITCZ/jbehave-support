@@ -9,14 +9,9 @@
     <xsl:import href="report-generator/serverLogXmlRep.xslt"/>
     <xsl:import href="report-generator/failScreenshotReport.xslt"/>
     <xsl:import href="report-generator/screenshotReport.xslt"/>
+    <xsl:import href="report-generator/jmsXmlReport.xslt"/>
 
     <xsl:output method="html" indent="yes"/>
-
-    <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'"/>
-    <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
-
-    <xsl:variable name="index-source" select="document('index.xml')"/>
-    <xsl:variable name="totalStories" select="count(//story)"/>
 
     <xsl:template name="textColor">
         <xsl:param name="outcome"/>
@@ -102,6 +97,7 @@
                 <xsl:apply-imports/>
                 <xsl:apply-templates select="//story"/>
                 <xsl:call-template name="renderFooter"/>
+                <xsl:apply-templates select="jms"/>
             </body>
         </html>
     </xsl:template>
@@ -169,7 +165,7 @@
             <xsl:choose>
                 <xsl:when test="parameter/parameters">
                     <div id="step-details-{position()}" class="collapse">
-                        <xsl:apply-templates select="parameter/parameters" mode="scenario" />
+                        <xsl:apply-templates select="parameter/parameters" mode="scenario"/>
                     </div>
                 </xsl:when>
             </xsl:choose>
@@ -182,7 +178,9 @@
             <thead>
                 <tr>
                     <xsl:for-each select="columns/column">
-                        <th><xsl:value-of select="."/></th>
+                        <th>
+                            <xsl:value-of select="."/>
+                        </th>
                     </xsl:for-each>
                 </tr>
             </thead>
@@ -190,7 +188,9 @@
                 <xsl:for-each select="rows/row">
                     <tr>
                         <xsl:for-each select="value">
-                            <td><xsl:value-of select="."/></td>
+                            <td>
+                                <xsl:value-of select="."/>
+                            </td>
                         </xsl:for-each>
                     </tr>
                 </xsl:for-each>

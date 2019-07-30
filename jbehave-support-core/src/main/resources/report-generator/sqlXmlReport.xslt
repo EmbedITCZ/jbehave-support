@@ -1,8 +1,5 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:template match="/">
-    </xsl:template>
-
     <!-- SQL -->
     <xsl:template match="sql">
         <xsl:param name="storyIndex"/>
@@ -82,8 +79,12 @@
             <tbody>
                 <xsl:for-each select="parameter">
                     <tr>
-                        <td><xsl:value-of select="name"/></td>
-                        <td><xsl:value-of select="value"/></td>
+                        <td>
+                            <xsl:value-of select="name"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="value"/>
+                        </td>
                     </tr>
                 </xsl:for-each>
             </tbody>

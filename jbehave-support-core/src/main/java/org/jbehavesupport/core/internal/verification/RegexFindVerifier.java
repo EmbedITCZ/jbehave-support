@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import static org.jbehavesupport.core.internal.verification.VerifierNames.REGEX_FIND;
+import static org.jbehavesupport.core.verification.VerifierNames.REGEX_FIND;
 
 @Component
 public class RegexFindVerifier extends AbstractVerifier {

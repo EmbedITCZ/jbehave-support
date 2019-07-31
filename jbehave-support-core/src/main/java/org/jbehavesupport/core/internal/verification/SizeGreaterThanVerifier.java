@@ -1,6 +1,6 @@
 package org.jbehavesupport.core.internal.verification;
 
-import static org.jbehavesupport.core.internal.verification.VerifierNames.SIZE_GT;
+import static org.jbehavesupport.core.verification.VerifierNames.SIZE_GT;
 
 import java.util.Collection;
 

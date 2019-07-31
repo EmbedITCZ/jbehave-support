@@ -1,10 +1,23 @@
 package org.jbehavesupport.core.ssh;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
-import static org.jbehavesupport.core.internal.ExamplesTableUtil.convertTable;
-import static org.springframework.util.Assert.isTrue;
-import static org.springframework.util.Assert.notNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.SoftAssertions;
+import org.jbehave.core.annotations.BeforeScenario;
+import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.Then;
+import org.jbehave.core.model.ExamplesTable;
+import org.jbehavesupport.core.TestContext;
+import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
+import org.jbehavesupport.core.internal.verification.ContainsVerifier;
+import org.jbehavesupport.core.internal.verification.NotContainsVerifier;
+import org.jbehavesupport.core.verification.Verifier;
+import org.jbehavesupport.core.verification.VerifierResolver;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
@@ -13,24 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.SoftAssertions;
-import org.codehaus.plexus.util.StringUtils;
-import org.jbehave.core.annotations.BeforeScenario;
-import org.jbehave.core.annotations.Given;
-import org.jbehave.core.annotations.Then;
-import org.jbehave.core.model.ExamplesTable;
-import org.jbehavesupport.core.TestContext;
-import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
-import org.jbehavesupport.core.internal.verification.VerifierNames;
-import org.jbehavesupport.core.verification.Verifier;
-import org.jbehavesupport.core.verification.VerifierResolver;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.stereotype.Component;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
+import static org.jbehavesupport.core.internal.ExamplesTableUtil.convertTable;
+import static org.springframework.util.Assert.isTrue;
+import static org.springframework.util.Assert.notNull;
 
 @Slf4j
 @Component
@@ -44,6 +44,10 @@ public final class SshSteps {
     private final ExamplesEvaluationTableConverter tableConverter;
 
     private final VerifierResolver verifierResolver;
+
+    private final ContainsVerifier containsVerifier;
+
+    private final NotContainsVerifier notContainsVerifier;
 
     @Value("${ssh.max.assert.count:10}")
     private int maxSoftAssertCount;
@@ -77,17 +81,17 @@ public final class SshSteps {
 
     @Then("the following data are present in [$systemQualifier] log:$presentData")
     public void logContainsData(String systemQualifier, String stringTable) {
-        checkDataPresence(systemQualifier, scenarioStart, stringTable, verifierResolver.getVerifierByName(VerifierNames.CONTAINS));
+        checkDataPresence(systemQualifier, scenarioStart, stringTable, containsVerifier);
     }
 
     @Then("the following data are present in [$systemQualifier] log since [$startTimeAlias]:$presentData")
     public void logContainsData(String systemQualifier, String startTimeAlias, String stringTable) {
-        checkDataPresence(systemQualifier, testContext.get(startTimeAlias), stringTable, verifierResolver.getVerifierByName(VerifierNames.CONTAINS));
+        checkDataPresence(systemQualifier, testContext.get(startTimeAlias), stringTable, containsVerifier);
     }
 
     @Then("the following data are not present in [$systemQualifier] log:$missingData")
     public void dataNotInLog(String systemQualifier, String stringTable) {
-        checkDataPresence(systemQualifier, scenarioStart, stringTable, verifierResolver.getVerifierByName(VerifierNames.NOT_CONTAINS));
+        checkDataPresence(systemQualifier, scenarioStart, stringTable, notContainsVerifier);
     }
 
     private void checkDataPresence(String systemQualifier, ZonedDateTime startTime, String stringTable, Verifier verifier) {
@@ -111,7 +115,7 @@ public final class SshSteps {
             }
 
             softly.assertThatCode(() -> {
-                Verifier resolvedVerifier = resolveVerifier(row.get(VERIFIER), verifier);
+                Verifier resolvedVerifier = verifierResolver.getVerifierByName(row.get(VERIFIER), verifier);
                 resolvedVerifier.verify(logData, row.get(searchColumn));
             }).doesNotThrowAnyException();
         }
@@ -134,10 +138,6 @@ public final class SshSteps {
         }
 
         return sshTemplates;
-    }
-
-    private Verifier resolveVerifier(String verifierName, Verifier defaultVerifier) {
-        return (StringUtils.isNotEmpty(verifierName)) ? verifierResolver.getVerifierByName(verifierName) : defaultVerifier;
     }
 
     private String getSearchColumnName(ExamplesTable searchData) {

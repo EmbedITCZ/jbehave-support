@@ -1,6 +1,6 @@
 package org.jbehavesupport.core.internal.verification;
 
-import static org.jbehavesupport.core.internal.verification.VerifierNames.NOT_NULL;
+import static org.jbehavesupport.core.verification.VerifierNames.NOT_NULL;
 
 import org.springframework.stereotype.Component;
 

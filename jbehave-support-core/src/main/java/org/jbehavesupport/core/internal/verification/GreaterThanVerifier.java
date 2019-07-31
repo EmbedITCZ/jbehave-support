@@ -1,6 +1,6 @@
 package org.jbehavesupport.core.internal.verification;
 
-import static org.jbehavesupport.core.internal.verification.VerifierNames.GT;
+import static org.jbehavesupport.core.verification.VerifierNames.GT;
 import static org.springframework.util.Assert.isInstanceOf;
 import static org.springframework.util.Assert.isTrue;
 

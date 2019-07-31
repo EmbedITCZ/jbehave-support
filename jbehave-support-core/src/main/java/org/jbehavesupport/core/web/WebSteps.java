@@ -15,7 +15,7 @@ import java.util.Set;
 import org.assertj.core.api.Assertions;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
-import org.jbehavesupport.core.internal.verification.VerifierNames;
+import org.jbehavesupport.core.verification.VerifierNames;
 import org.jbehavesupport.core.internal.web.GivenStoryHelper;
 import org.jbehavesupport.core.internal.web.WebScreenshotCreator;
 import org.jbehavesupport.core.verification.Verifier;

@@ -13,6 +13,7 @@ import org.jbehavesupport.core.TestContext;
 
 import lombok.RequiredArgsConstructor;
 import org.jbehave.core.model.ExamplesTable;
+import org.jbehavesupport.core.internal.jms.InterceptedMessageCreator;
 import org.jbehavesupport.core.report.extension.JmsXmlReporterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;

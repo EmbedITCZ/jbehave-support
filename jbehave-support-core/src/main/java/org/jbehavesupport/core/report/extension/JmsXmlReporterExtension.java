@@ -41,7 +41,7 @@ public class JmsXmlReporterExtension extends AbstractXmlReporterExtension {
         messages.clear();
     }
 
-    public void printJmsMessage(Writer writer, Message message) {
+    private void printJmsMessage(Writer writer, Message message) {
         try {
             printBegin(writer, MESSAGE_TAG);
             printBegin(writer, CID_TAG);
@@ -55,13 +55,15 @@ public class JmsXmlReporterExtension extends AbstractXmlReporterExtension {
                 printCData(writer, header);
                 printEnd(writer, COLUMN_TAG);
 
+                printBegin(writer, COLUMN_TAG);
                 try {
-                    printBegin(writer, COLUMN_TAG);
                     printCData(writer, message.getStringProperty(header));
-                    printEnd(writer, COLUMN_TAG);
                 } catch (JMSException e) {
-                    log.error("Unable to get the property: {}", header);
+                    log.error("Unable to get the property: {}", header, e);
+                    printCData(writer, "Unable to get property: " + header);
                 }
+                printEnd(writer, COLUMN_TAG);
+
                 printEnd(writer, ROW_TAG);
             });
 
@@ -77,7 +79,7 @@ public class JmsXmlReporterExtension extends AbstractXmlReporterExtension {
             printEnd(writer, ANSWERS_TAG);
             printEnd(writer, MESSAGE_TAG);
         } catch (JMSException e) {
-            log.error("Unable to print jms message!");
+            log.error("Unable to print jms message!", e);
         }
     }
 }

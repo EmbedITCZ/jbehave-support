@@ -9,8 +9,7 @@
                 </xsl:attribute>
                 <div class="card-header">
                     <i class="fa fa-exchange" aria-hidden="true"></i>
-                    Step screen shots (<a href="#step-screen-shots" id="expand-all-step-screenshots">Toggle all
-                    screenshots</a>)
+                    Step screen shots (<a href="#step-screen-shots" id="expand-all-step-screenshots">Toggle all screenshots</a>)
                     <a href="#step-screen-shots" data-toggle="collapse" class="float-right">Collapse</a>
                 </div>
                 <div id="step-screen-shots" class="card-body collapse show">

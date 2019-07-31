@@ -67,8 +67,7 @@
             </table>
 
             <div class="btn-group form-group align-self-center">
-                <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide log
-                    contents
+                <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide log contents
                 </a>
                 <button type="button" class="btn btn-sm btn-outline-info btn-copy-clipboard"
                         data-selector="#sshlog-{$logNum}" title="Copy to clipboard">

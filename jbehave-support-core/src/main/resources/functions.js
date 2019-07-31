@@ -20,7 +20,7 @@ function reportReady() {
 
     $('#expand-all-jms-messages').click(function () {
             showHideAllInElement('#jms-messages-body');
-        });
+    });
 
     $('#expand-all-sql-queries').click(function () {
         showHideAllInElement('#sql-queries-body');
@@ -28,7 +28,7 @@ function reportReady() {
 
     $('#expand-all-step-screenshots').click(function () {
             showHideAllInElement('#step-screen-shots');
-        });
+    });
 
     $('#expand-all-shell-logs').click(function () {
         showHideAllInElement('#shell-logs-body');

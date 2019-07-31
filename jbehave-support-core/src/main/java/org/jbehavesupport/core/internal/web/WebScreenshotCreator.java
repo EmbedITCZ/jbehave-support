@@ -1,5 +1,17 @@
 package org.jbehavesupport.core.internal.web;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.codehaus.plexus.util.FileUtils;
+import org.jbehavesupport.core.TestContext;
+import org.jbehavesupport.core.internal.FileNameResolver;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -7,18 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.jbehavesupport.core.AbstractSpringStories;
-import org.jbehavesupport.core.TestContext;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.codehaus.plexus.util.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * All types except FAILED are in development, so it's not recommended to use them.
@@ -47,8 +47,8 @@ public class WebScreenshotCreator {
     private static final String FILE_NAME_PATTERN = "%s_%s.png";
 
     /**
-    * All types except FAILED are in development, so it's not recommended to use them.
-    */
+     * All types except FAILED are in development, so it's not recommended to use them.
+     */
     @Value("${web.screenshot.reporting.mode:MANUAL}")
     private Type desiredMode;
 
@@ -57,8 +57,9 @@ public class WebScreenshotCreator {
 
     private final WebDriver driver;
     private final TestContext testContext;
+    private final FileNameResolver fileNameResolver;
 
-    public  void createScreenshot(Type screenShotType) {
+    public void createScreenshot(Type screenShotType) {
         if (desiredMode.getHierarchy() >= screenShotType.getHierarchy()) {
             try {
                 if (ExpectedConditions.alertIsPresent().apply(driver) != null) {
@@ -101,17 +102,7 @@ public class WebScreenshotCreator {
     }
 
     private File getDestinationFile(Type screenShotType) {
-        if (testContext.contains(AbstractSpringStories.JBEHAVE_SCENARIO)) {
-            String storyName = testContext.get(AbstractSpringStories.JBEHAVE_SCENARIO, String.class).split("#")[0];
-            File destinationFile = new File(screenshotDirectory, String.format(FILE_NAME_PATTERN, screenShotType, storyName));
-            int i = 1;
-            while (destinationFile.exists()) {
-                destinationFile = new File(screenshotDirectory, String.format(FILE_NAME_PATTERN, screenShotType, storyName + "-" + i++));
-            }
-            return destinationFile;
-        } else {
-            return new File("screenshot-" + System.currentTimeMillis() + ".png");
-        }
+        return fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, screenshotDirectory, screenShotType.toString()).toFile();
     }
 
     private void storeInTestContext(final String destFile, String screenshotKey) {

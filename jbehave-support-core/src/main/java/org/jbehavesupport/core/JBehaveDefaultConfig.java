@@ -134,10 +134,9 @@ public class JBehaveDefaultConfig {
 
     @Bean
     public WebDriver webDriver(WebDriverFactoryResolver webDriverFactoryResolver) {
-        WebDriverFactory webDriverFactory = webDriverFactoryResolver.resolveWebDriverFactory();
-        ProxyFactory proxyFactory = new ProxyFactory(WebDriver.class, new WebDriverDelegatingInterceptor(webDriverFactory));
+        ProxyFactory proxyFactory = new ProxyFactory(WebDriver.class, new WebDriverDelegatingInterceptor(webDriverFactoryResolver));
         proxyFactory.setProxyTargetClass(true);
-        proxyFactory.setTargetClass(webDriverFactory.getProxyClass());
+        proxyFactory.setTargetClass(webDriverFactoryResolver.resolveWebDriverFactory().getProxyClass());
         return (WebDriver) proxyFactory.getProxy();
     }
 

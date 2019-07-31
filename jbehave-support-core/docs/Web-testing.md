@@ -172,6 +172,13 @@ When current tab is closed
 Given browser is closed
 ```
 
+To switch to another browser (midstory, this will close the current browser automatically)
+```
+When browser is changed to [$browserName]
+```
+```
+Given browser is changed to [$browserName]
+```
 #### Performing an action on HTML elements
 
 To perform an action on a page use the following step.

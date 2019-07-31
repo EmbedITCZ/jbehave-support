@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jbehavesupport</groupId>
     <artifactId>jbehave-support-core-test</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.8</version>
     <packaging>pom</packaging>
 
     <name>jbehave-support-core-test</name>
@@ -115,5 +115,9 @@
             </plugins>
         </pluginManagement>
     </build>
+
+  <scm>
+    <tag>jbehave-support-1.0.8</tag>
+  </scm>
 </project>
 

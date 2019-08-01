@@ -46,7 +46,7 @@ custom `RemoteWebDriver` implementation can be used by registering a bean implem
 After that you need to set the property `web.browser` to the name you specified in your implementation of `WebDriverFactory`.
 Note: If you use your custom `WebDriverFactory` then the properties [above](#optional-configuration-properties) (with the exception of `web.browser`) will not influence anything.
 
-TODO: screenshot info, timeouts
+TODO: screenshot info
 
 ### Mapping files
 

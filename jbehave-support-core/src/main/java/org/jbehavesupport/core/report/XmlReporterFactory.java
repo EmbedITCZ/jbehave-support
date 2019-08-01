@@ -3,6 +3,7 @@ package org.jbehavesupport.core.report;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -169,24 +170,19 @@ public class XmlReporterFactory extends Format {
                 copyResourceFromFile(resource, targetFile);
             }
         } catch (IOException e) {
-            log.error("Cannot copy resource file to target", e);
+            throw new UncheckedIOException(e);
         }
     }
 
-    private void copyResourceFromFile(Resource resource, File targetFile) {
-        try {
-            if (resource.isFile() && resource.getFile().isDirectory()) {
-                FileUtils.copyDirectory(resource.getFile(), targetFile);
-            } else {
-                FileUtils.copyInputStreamToFile(resource.getInputStream(), targetFile);
-            }
-        }catch (IOException e){
-            log.error("{} is not a file!", resource.getFilename());
+    private void copyResourceFromFile(Resource resource, File targetFile) throws IOException {
+        if (resource.isFile() && resource.getFile().isDirectory()) {
+            FileUtils.copyDirectory(resource.getFile(), targetFile);
+        } else {
+            FileUtils.copyInputStreamToFile(resource.getInputStream(), targetFile);
         }
     }
 
-    private void copyResourceFromJar(Resource resource, String targetFilePath, File targetFile, File jarFile) {
-    try{
+    private void copyResourceFromJar(Resource resource, String targetFilePath, File targetFile, File jarFile) throws IOException {
         try (JarFile jar = new JarFile(jarFile)) {
             JarEntry entry = jar.getJarEntry(resource.getFilename());
             if (entry.isDirectory()) {
@@ -199,19 +195,14 @@ public class XmlReporterFactory extends Format {
                             FileUtils.copyInputStreamToFile(jar.getInputStream(file), newFile);
                         } catch (IOException e) {
                             log.error("Unable to get input stream for this file {}", targetFilePath + File.separator + fileName);
+                            throw new UncheckedIOException(e);
                         }
                     });
             } else {
-                log.warn("File name: {}", entry.getName());
-
                 FileUtils.copyInputStreamToFile(jar.getInputStream(entry), targetFile);
             }
         }
-    } catch (IOException e) {
-            log.error("{} is not a jar file!", jarFile.getName());
-        }
     }
-
 
     private IndexItem parseFile(File file) {
         try {

@@ -10,10 +10,6 @@ import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.internal.web.WebScreenshotCreator;
 import org.jbehavesupport.core.report.ReportContext;
 
-/**
- * This extension is in development, so it's not recommended to use it.
- */
-
 @RequiredArgsConstructor
 public class ScreenshotReporterExtension extends AbstractXmlReporterExtension {
 

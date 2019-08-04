@@ -271,4 +271,28 @@ Then on [home] page wait until [@title] has text Google
 ```
 For more examples see [WebWaitCondition.story](../src/test/groovy/org/jbehavesupport/test/sample/WebWaitCondition.story)
 
+#### Taking screenshot
+
+To take screenshot 
+```
+Then screenshot is taken
+When screenshot is taken
+```
+
+If you want to take screenshot from your custom web steps inject `ApplicationEventPublisher` and publish `WebScreenshotEvent`
+```
+import org.jbehavesupport.core.web.WebScreenshotType;
+
+@Autowired
+ApplicationEventPublisher applicationEventPublisher;
+
+public void myMethod(){
+    ...
+    applicationEventPublisher.publishEvent(new WebScreenshotEvent(this, WebScreenshotType.MANUAL));
+    ...
+}
+```
+
+If you want to see screenshots in report register `ScreenshotReporterExtension`
+* WebScreenshotType has to be `MANUAL` or correspond with chosen mode (see property `web.screenshot.reporting.mode` in [Reporting](Reporting.md)), otherwise screenshot won't be taken 
 TODO: add explanation of table steps

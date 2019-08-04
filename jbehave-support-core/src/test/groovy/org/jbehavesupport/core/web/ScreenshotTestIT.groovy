@@ -20,7 +20,7 @@ class ScreenshotTestIT extends Specification {
         when:
 
         driver.get("https://google.com")
-        webScreenshotCreator.createScreenshot(WebScreenshotCreator.Type.MANUAL)
+        webScreenshotCreator.createScreenshot(WebScreenshotType.MANUAL)
 
         then:
         File screenshotDirectory = new File("./target/reports")

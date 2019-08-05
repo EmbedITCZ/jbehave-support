@@ -30,7 +30,7 @@ public class VerificationSteps {
     public void compareRows(ExamplesTable examplesTable) {
         isTrue(examplesTable.getHeaders().contains(DATA) &&
             examplesTable.getHeaders().contains(EXPECTED_VALUE),
-            "example table must contains data and expectedValue columns");
+            "example table must contain columns data and expectedValue");
         SoftAssertions softly = new SoftAssertions();
         examplesTable.getRows().forEach(e -> verifyRow(e, softly));
         softly.assertAll();

@@ -21,8 +21,10 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.util.Assert.isTrue;
@@ -53,10 +55,12 @@ import static org.springframework.util.Assert.state;
  * }
  * </pre>
  */
+
 public abstract class WebServiceHandler {
 
     private static final String CONTEXT_SEPARATOR = ".";
     private static final String REQUEST_POSTFIX = "Request";
+    public static final String BRACKET_REGEX = "(.*)\\[(\\d+)\\](\\.)(.*)";
 
     @Autowired
     protected TestContext testContext;
@@ -91,12 +95,27 @@ public abstract class WebServiceHandler {
 
     public final void setRequestData(String request, ExamplesTable data) {
         testContext.clear(key -> key.startsWith(request));
-        overrideRequestData(request, data);
+        ExamplesTable checkedData = checkCollectionNotation(data);
+        overrideRequestData(request, checkedData);
     }
 
     public final void overrideRequestData(String request, ExamplesTable data) {
         endpointRegistry.validateRequest(request);
         TestContextUtil.putDataIntoContext(testContext, data, request);
+    }
+
+    private ExamplesTable checkCollectionNotation(ExamplesTable data) {
+        List<Map<String, String>> newMapList = data.getRows().stream()
+            .map(map -> {
+                String name = map.get(ExampleTableConstraints.NAME);
+                if (name.matches(BRACKET_REGEX)) {
+                    String newName = name.replace("[", ".").replace("]", "");
+                    map.put(ExampleTableConstraints.NAME, newName);
+                }
+                return map;
+            })
+            .collect(Collectors.toList());
+        return data.withRows(newMapList);
     }
 
     public final void requestIsSent(String request) {

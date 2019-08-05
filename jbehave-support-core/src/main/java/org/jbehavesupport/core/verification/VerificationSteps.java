@@ -13,6 +13,7 @@ import java.util.Map;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
+import static org.springframework.util.Assert.isTrue;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +28,9 @@ public class VerificationSteps {
 
     @Then("following data are compared: $examplesTable")
     public void compareRows(ExamplesTable examplesTable) {
+        isTrue(examplesTable.getHeaders().contains(DATA) &&
+            examplesTable.getHeaders().contains(EXPECTED_VALUE),
+            "example table must contains data and expectedValue columns");
         SoftAssertions softly = new SoftAssertions();
         examplesTable.getRows().forEach(e -> verifyRow(e, softly));
         softly.assertAll();

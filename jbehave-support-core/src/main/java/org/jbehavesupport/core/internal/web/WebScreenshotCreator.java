@@ -83,7 +83,7 @@ public class WebScreenshotCreator {
         if (screenshot == null && screenShotType != Type.FAILED) {
             throw new IllegalStateException("Creation of screenshot failed");
         } else if (screenshot != null) {
-            File destinationFile = getDestinationFile(screenShotType);
+            File destinationFile = fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, screenshotDirectory, screenShotType.toString()).toFile();
             FileUtils.copyFile(screenshot, destinationFile);
 
             if (screenShotType == Type.FAILED) {
@@ -99,10 +99,6 @@ public class WebScreenshotCreator {
             Files.createDirectory(Paths.get(screenshotDirectory));
             testContext.put("screenshotDirectory", screenshotDirectory);
         }
-    }
-
-    private File getDestinationFile(Type screenShotType) {
-        return fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, screenshotDirectory, screenShotType.toString()).toFile();
     }
 
     private void storeInTestContext(final String destFile, String screenshotKey) {

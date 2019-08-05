@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.internal.FileNameResolver;
@@ -30,7 +29,6 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.MimeType;
 
-@Slf4j
 @RequiredArgsConstructor
 public class RestXmlReporterExtension extends AbstractXmlReporterExtension implements ClientHttpRequestInterceptor {
 
@@ -163,13 +161,8 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     }
 
     private String handleMultipart(String body) throws IOException {
-        Path destinationPath = getBodyDestinationPath();
+        Path destinationPath = fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, restDirectory);
         Files.write(destinationPath, body.getBytes());
         return "multipart/form-data: " + destinationPath;
     }
-
-    private Path getBodyDestinationPath() {
-        return fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, restDirectory);
-    }
-
 }

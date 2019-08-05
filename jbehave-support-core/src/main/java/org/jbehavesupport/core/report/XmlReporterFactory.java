@@ -158,23 +158,23 @@ public class XmlReporterFactory extends Format {
     }
 
     private void copyResourceToReportDirectory(Resource resource, String targetFilePath) {
-        File targetFile = new File(targetFilePath);
         try {
             String resourcePath = String.valueOf(resource.getURI());
             String jarPath = resourcePath.replace(("!/" + resource.getFilename()), "").replace("jar:file:", "");
             File jarFile = new File(jarPath);
 
             if (jarFile.isFile()) {
-                copyResourceFromJar(resource, targetFilePath, targetFile, jarFile);
+                copyResourceFromJar(resource, targetFilePath, jarFile);
             } else {
-                copyResourceFromFile(resource, targetFile);
+                copyResourceFromFile(resource, targetFilePath);
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    private void copyResourceFromFile(Resource resource, File targetFile) throws IOException {
+    private void copyResourceFromFile(Resource resource, String targetFilePath) throws IOException {
+        File targetFile = new File(targetFilePath);
         if (resource.isFile() && resource.getFile().isDirectory()) {
             FileUtils.copyDirectory(resource.getFile(), targetFile);
         } else {
@@ -182,7 +182,7 @@ public class XmlReporterFactory extends Format {
         }
     }
 
-    private void copyResourceFromJar(Resource resource, String targetFilePath, File targetFile, File jarFile) throws IOException {
+    private void copyResourceFromJar(Resource resource, String targetFilePath, File jarFile) throws IOException {
         try (JarFile jar = new JarFile(jarFile)) {
             JarEntry entry = jar.getJarEntry(resource.getFilename());
             if (entry.isDirectory()) {
@@ -199,6 +199,7 @@ public class XmlReporterFactory extends Format {
                         }
                     });
             } else {
+                File targetFile = new File(targetFilePath);
                 FileUtils.copyInputStreamToFile(jar.getInputStream(entry), targetFile);
             }
         }

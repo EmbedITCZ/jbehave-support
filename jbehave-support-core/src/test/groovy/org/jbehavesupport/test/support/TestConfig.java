@@ -16,6 +16,7 @@ import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
+import org.jbehavesupport.core.internal.FileNameResolver;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
 import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
@@ -92,8 +93,8 @@ public class TestConfig {
     }
 
     @Bean
-    public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext) {
-        return new RestXmlReporterExtension(testContext);
+    public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext, FileNameResolver fileNameResolver) {
+        return new RestXmlReporterExtension(testContext, fileNameResolver);
     }
 
     @Bean
@@ -185,7 +186,7 @@ public class TestConfig {
         SshTemplate passwordTemplate = new SshTemplate(passwordSetting, timestampFormat, rollingLogResolver);
         SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver);
 
-        return new SshTemplate[]{ passwordTemplate, keyTemplate };
+        return new SshTemplate[]{passwordTemplate, keyTemplate};
     }
 
     @Bean
@@ -202,7 +203,7 @@ public class TestConfig {
     @Bean
     @Qualifier("TEST")
     public JmsJaxbHandler jmsJaxbHandler() {
-        Class[] classesToBeBound = { NameRequest.class };
+        Class[] classesToBeBound = {NameRequest.class};
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         return new JmsJaxbHandler(jmsTemplate, classesToBeBound);
     }

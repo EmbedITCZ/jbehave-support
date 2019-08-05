@@ -7,7 +7,6 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -18,8 +17,8 @@ import java.util.Set;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.jbehavesupport.core.AbstractSpringStories;
 import org.jbehavesupport.core.TestContext;
+import org.jbehavesupport.core.internal.FileNameResolver;
 import org.jbehavesupport.core.report.ReportContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +36,8 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     private String restDirectory;
 
     private final TestContext testContext;
+
+    private final FileNameResolver fileNameResolver;
 
     private static final String REST_XML_REPORTER_EXTENSION = "rest";
     private static final String REQUEST_RESPONSE_TAG = "requestResponse";
@@ -160,23 +161,8 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     }
 
     private String handleMultipart(String body) throws IOException {
-        Path destinationPath = getBodyDestinationPath();
+        Path destinationPath = fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, restDirectory);
         Files.write(destinationPath, body.getBytes());
         return "multipart/form-data: " + destinationPath;
     }
-
-    private Path getBodyDestinationPath() {
-        if (testContext.contains(AbstractSpringStories.JBEHAVE_SCENARIO)) {
-            final String storyName = testContext.get(AbstractSpringStories.JBEHAVE_SCENARIO, String.class).split("#")[0];
-            Path destinationPath = Paths.get(restDirectory, String.format(FILE_NAME_PATTERN, storyName));
-            int i = 1;
-            while (destinationPath.toFile().exists()) {
-                destinationPath = Paths.get(restDirectory, String.format(FILE_NAME_PATTERN, storyName + "-" + i++));
-            }
-            return destinationPath;
-        } else {
-            return Paths.get(restDirectory, "multipart-" + System.currentTimeMillis() + ".log");
-        }
-    }
-
 }

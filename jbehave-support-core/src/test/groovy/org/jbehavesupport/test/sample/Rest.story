@@ -86,23 +86,51 @@ Then response from [TEST] REST API has status [200] and values match:
 
 Scenario: json with collections
 When [POST] request to [TEST]/[user/] is sent with data:
-| name                 | data           | contextAlias      |
-| firstName            | Pedro          | FIRST_NAME        |
-| lastName             | Salgado        | LAST_NAME         |
-| addresses[0].country | Brazil         | ADDRESS_0_COUNTRY |
-| addresses[0].city    | Rio de Janeiro | ADDRESS_0_CITY    |
-| addresses[1].country | Austria        | ADDRESS_1_COUNTRY |
-| addresses[1].city    | Graz           | ADDRESS_1_CITY    |
+| name                    | data           | contextAlias        |
+| firstName               | Pedro          | FIRST_NAME          |
+| lastName                | Salgado        | LAST_NAME           |
+| addresses[0].country    | Brazil         | ADDRESS_0_COUNTRY   |
+| addresses[0].city       | Rio de Janeiro | ADDRESS_0_CITY      |
+| addresses[0].details[0] | details 0 0    | ADDRESS_0_DETAILS_0 |
+| addresses[0].details[1] | details 0 1    | ADDRESS_0_DETAILS_1 |
+| addresses[1].country    | Austria        | ADDRESS_1_COUNTRY   |
+| addresses[1].city       | Graz           | ADDRESS_1_CITY      |
 Then response from [TEST] REST API has status [200] and values match:
-| name                 | expectedValue          | verifier |
-| @header.Content-Type | application/json       | CONTAINS |
-| id                   |                        | NOT_NULL |
-| firstName            | {CP:FIRST_NAME}        |          |
-| lastName             | {CP:LAST_NAME}         |          |
-| addresses[0].country | {CP:ADDRESS_0_COUNTRY} |          |
-| addresses[0].city    | {CP:ADDRESS_0_CITY}    |          |
-| addresses[1].country | {CP:ADDRESS_1_COUNTRY} |          |
-| addresses[1].city    | {CP:ADDRESS_1_CITY}    |          |
+| name                    | expectedValue            | verifier |
+| @header.Content-Type    | application/json         | CONTAINS |
+| id                      |                          | NOT_NULL |
+| firstName               | {CP:FIRST_NAME}          |          |
+| lastName                | {CP:LAST_NAME}           |          |
+| addresses[0].country    | {CP:ADDRESS_0_COUNTRY}   |          |
+| addresses[0].city       | {CP:ADDRESS_0_CITY}      |          |
+| addresses[0].details[0] | {CP:ADDRESS_0_DETAILS_0} |          |
+| addresses[0].details[1] | {CP:ADDRESS_0_DETAILS_1} |          |
+| addresses[1].country    | {CP:ADDRESS_1_COUNTRY}   |          |
+| addresses[1].city       | {CP:ADDRESS_1_CITY}      |          |
+
+Scenario: collections with alternative notations
+When [POST] request to [TEST]/[user/] is sent with data:
+| name                  | data           | contextAlias        |
+| firstName             | Pedro          | FIRST_NAME          |
+| lastName              | Salgado        | LAST_NAME           |
+| addresses.0.country   | Brazil         | ADDRESS_0_COUNTRY   |
+| addresses.0.city      | Rio de Janeiro | ADDRESS_0_CITY      |
+| addresses.0.details.0 | details 0 0    | ADDRESS_0_DETAILS_0 |
+| addresses.0.details.1 | details 0 1    | ADDRESS_0_DETAILS_1 |
+| addresses.1.country   | Austria        | ADDRESS_1_COUNTRY   |
+| addresses.1.city      | Graz           | ADDRESS_1_CITY      |
+Then response from [TEST] REST API has status [200] and values match:
+| name                    | expectedValue            | verifier |
+| @header.Content-Type    | application/json         | CONTAINS |
+| id                      |                          | NOT_NULL |
+| firstName               | {CP:FIRST_NAME}          |          |
+| lastName                | {CP:LAST_NAME}           |          |
+| addresses[0].country    | {CP:ADDRESS_0_COUNTRY}   |          |
+| addresses[0].city       | {CP:ADDRESS_0_CITY}      |          |
+| addresses[0].details[0] | {CP:ADDRESS_0_DETAILS_0} |          |
+| addresses[0].details[1] | {CP:ADDRESS_0_DETAILS_1} |          |
+| addresses[1].country    | {CP:ADDRESS_1_COUNTRY}   |          |
+| addresses[1].city       | {CP:ADDRESS_1_CITY}      |          |
 
 
 Scenario: double-digit indexed collections

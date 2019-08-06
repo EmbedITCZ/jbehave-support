@@ -95,8 +95,8 @@ public abstract class WebServiceHandler {
 
     public final void setRequestData(String request, ExamplesTable data) {
         testContext.clear(key -> key.startsWith(request));
-        ExamplesTable checkedData = checkCollectionNotation(data);
-        overrideRequestData(request, checkedData);
+        ExamplesTable convertedData = convertCollectionNotation(data);
+        overrideRequestData(request, convertedData);
     }
 
     public final void overrideRequestData(String request, ExamplesTable data) {
@@ -104,7 +104,7 @@ public abstract class WebServiceHandler {
         TestContextUtil.putDataIntoContext(testContext, data, request);
     }
 
-    private ExamplesTable checkCollectionNotation(ExamplesTable data) {
+    private ExamplesTable convertCollectionNotation(ExamplesTable data) {
         List<Map<String, String>> newMapList = data.getRows().stream()
             .map(map -> {
                 String name = map.get(ExampleTableConstraints.NAME);
@@ -168,7 +168,8 @@ public abstract class WebServiceHandler {
 
     public final void responseValuesMatch(String response, ExamplesTable expectedValues) {
         endpointRegistry.validateResponse(response);
-        verifyProperties(testContext.get(response), expectedValues);
+        ExamplesTable convertedValues = convertCollectionNotation(expectedValues);
+        verifyProperties(testContext.get(response), convertedValues);
     }
 
     public final void storeDataInContext(String requestOrResponse, ExamplesTable mapping) {

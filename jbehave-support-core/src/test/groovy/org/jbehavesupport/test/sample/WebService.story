@@ -83,7 +83,12 @@ Given [NameRequest] data for [TEST]:
 | addressList.addressInfo.1.city | Brno  |
 | addressList.addressInfo.1.zip  | 60200 |
 When [NameRequest] is sent to [TEST] with success
-
+Then [NameResponse] values from [TEST] match:
+| name                 | expectedValue |
+| relatives.0.name     | Sarah         |
+| relatives.0.relation | Daughter      |
+| relatives.1.name     | Kamil         |
+| relatives.1.relation | Son           |
 Given [NameRequest] data for [TEST]:
 | name                            | data  |
 | name                            | test  |
@@ -92,6 +97,12 @@ Given [NameRequest] data for [TEST]:
 | addressList.addressInfo[1].city | Brno  |
 | addressList.addressInfo[1].zip  | 60200 |
 When [NameRequest] is sent to [TEST] with success
+Then [NameResponse] values from [TEST] match:
+| name                  | expectedValue |
+| relatives[0].name     | Sarah         |
+| relatives[0].relation | Daughter      |
+| relatives[1].name     | Kamil         |
+| relatives[1].relation | Son           |
 
 Scenario: jaxbElement
 Given [NameRequest] data for [TEST]:

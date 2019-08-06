@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -186,9 +187,10 @@ public class XmlReporterFactory extends Format {
         try (JarFile jar = new JarFile(jarFile)) {
             JarEntry entry = jar.getJarEntry(resource.getFilename());
             if (entry.isDirectory()) {
-                jar.stream()
-                    .filter(file -> file.getName().startsWith(entry.getName()) && file.getName().endsWith(".xslt"))
-                    .forEach(file -> {
+                Enumeration<JarEntry> entryEnumeration = jar.entries();
+                while (entryEnumeration.hasMoreElements()) {
+                    JarEntry file = entryEnumeration.nextElement();
+                    if (file.getName().startsWith(entry.getName()) && file.getName().endsWith(".xslt")) {
                         String fileName = file.getName().replace(entry.getName(), "");
                         File newFile = new File(targetFilePath + File.separator + fileName);
                         try {
@@ -197,7 +199,8 @@ public class XmlReporterFactory extends Format {
                             log.error("Unable to get input stream for this file {}", targetFilePath + File.separator + fileName);
                             throw new UncheckedIOException(e);
                         }
-                    });
+                    }
+                }
             } else {
                 File targetFile = new File(targetFilePath);
                 FileUtils.copyInputStreamToFile(jar.getInputStream(entry), targetFile);

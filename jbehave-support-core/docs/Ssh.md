@@ -65,15 +65,15 @@ Note that only verifiers applicable for String make sense in this case - usage o
 Ssh steps mentioned above by default fetch the log from whole run of the test story.  
 Their behaviour can be modified by setting timestamps (it's highly recommended to set both timestamps for performance reasons/caching!)
 ```
-Given log read start timestamp is set to now
-Given log read end timestamp is set to now
+Given log start timestamp is set to current time
+Given log end timestamp is set to current time
 ```
 Or saving timestamps to context and setting them later (if you want to check more separate parts of logs at the end of story)
 ```
-Given log timestamp is saved as [NCAKO_1]
-Given log timestamp is saved as [NCAKO_2]
+Given current time is saved as log timestamp [NCAKO_1]
+Given current time is saved as log timestamp [NCAKO_2]
 
-Given log read start timestamp is set to saved value [NCAKO_1]
-Given log read end timestamp is set to saved value [NCAKO_2]
+Given log start timestamp is set to [NCAKO_1]
+Given log end timestamp is set to [NCAKO_2]
 ```
 Afterwards the same principle of searching the logs as described above applies

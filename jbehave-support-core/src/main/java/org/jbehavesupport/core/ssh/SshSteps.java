@@ -57,20 +57,17 @@ public final class SshSteps {
     private int maxSoftAssertCount;
 
     private ZonedDateTime scenarioStart;
-    private ZonedDateTime logReadStartTime = null;
-    private ZonedDateTime logReadEndTime = null;
+    private ZonedDateTime logStartTime;
+    private ZonedDateTime logEndTime;
 
     private MultiKeyMap<MultiKey, String> logCache = MultiKeyMap.multiKeyMap(new LRUMap());
 
     @BeforeScenario
     public void init() {
         scenarioStart = ZonedDateTime.now();
-    }
-
-    //Backwards compatibility
-    @Deprecated
-    private String readLog(String systemQualifier, ZonedDateTime startTime) {
-        return readLog(systemQualifier,startTime, ZonedDateTime.now());
+        logStartTime = null;
+        logEndTime = null;
+        logCache.clear();
     }
 
     private String readLog(String systemQualifier, ZonedDateTime startTime, ZonedDateTime endTime) {
@@ -92,29 +89,29 @@ public final class SshSteps {
         return fetchedLog.toString();
     }
 
-    @Given("log timestamp is saved as [$startTimeAlias]")
-    public void markStartTime(String startTimeAlias) {
-        testContext.put(startTimeAlias, ZonedDateTime.now());
+    @Given("current time is saved as log timestamp [$logTimeAlias]")
+    public void markLogTime(String logTimeAlias) {
+        testContext.put(logTimeAlias, ZonedDateTime.now());
     }
 
-    @Given("log read start timestamp is set to now")
-    public void saveLogReadStartTime(){
-        logReadStartTime = ZonedDateTime.now();
+    @Given("log start timestamp is set to current time")
+    public void saveLogStartTime(){
+        logStartTime = ZonedDateTime.now();
     }
 
-    @Given("log read end timestamp is set to now")
-    public void saveLogReadEndTime(){
-        logReadEndTime = ZonedDateTime.now().plusSeconds(1);
+    @Given("log end timestamp is set to current time")
+    public void saveLogEndTime(){
+        logEndTime = ZonedDateTime.now().plusSeconds(1);
     }
 
-    @Given("log read start timestamp is set to saved value [$contextAlias]")
-    public void setScenarioStartOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
-        logReadStartTime = ZonedDateTime.parse(contextAlias.getValue());
+    @Given("log start timestamp is set to [$contextAlias]")
+    public void saveLogStartTimeOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
+        logStartTime = ZonedDateTime.parse(contextAlias.getValue());
     }
 
-    @Given("log read end timestamp is set to saved value [$contextAlias]")
-    public void setScenarioEndOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
-        logReadEndTime = ZonedDateTime.parse(contextAlias.getValue());
+    @Given("log end timestamp is set to [$contextAlias]")
+    public void setLogEndTimeOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
+        logEndTime = ZonedDateTime.parse(contextAlias.getValue()).plusSeconds(1);
     }
 
     @Then("the following data are present in [$systemQualifier] log:$presentData")
@@ -122,6 +119,9 @@ public final class SshSteps {
         checkDataPresence(systemQualifier, scenarioStart, stringTable, containsVerifier);
     }
 
+    /** use logContainsData(String systemQualifier, String stringTable) instead
+     * If you set timestamps via separate steps, log reading is more accurate and use cache
+     */
     @Deprecated
     @Then("the following data are present in [$systemQualifier] log since [$startTimeAlias]:$presentData")
     public void logContainsData(String systemQualifier, String startTimeAlias, String stringTable) {
@@ -140,8 +140,8 @@ public final class SshSteps {
                 (searchData.getHeaders().size() == 2 && searchData.getHeaders().contains(VERIFIER)),
             "searchData must have only one search data column (or one search data column and a verifier)");
         String logData = readLog(systemQualifier,
-            logReadStartTime != null ? logReadStartTime : startTime,
-            logReadEndTime != null ? logReadEndTime : ZonedDateTime.now());
+            logStartTime != null ? logStartTime : startTime,
+            logEndTime != null ? logEndTime : ZonedDateTime.now().plusSeconds(1));
         assertThat(logData)
             .as("log not found in " + systemQualifier + " log")
             .isNotEmpty();

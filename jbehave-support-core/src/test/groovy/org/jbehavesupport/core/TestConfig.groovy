@@ -8,6 +8,7 @@ import org.jbehavesupport.core.internal.verification.RegexVerifier
 import org.jbehavesupport.core.internal.web.by.XpathByFactory
 import org.jbehavesupport.core.ssh.RollingLogResolver
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver
+import org.jbehavesupport.core.ssh.SshLog
 import org.jbehavesupport.core.ssh.SshSetting
 import org.jbehavesupport.core.ssh.SshTemplate
 import org.jbehavesupport.core.support.YamlPropertiesConfigurer
@@ -25,6 +26,12 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
+
+import static org.mockito.Mockito.when
+
+import java.time.ZonedDateTime
+import static org.mockito.Mockito.mock
+import static org.mockito.ArgumentMatchers.any
 
 import javax.annotation.PostConstruct
 import java.util.concurrent.RejectedExecutionException
@@ -100,6 +107,16 @@ class TestConfig {
 
         RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver();
         return new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver)
+    }
+
+    @Bean
+    @Qualifier("MOCK_TEMPLATE")
+    SshTemplate mockSshTemplate() throws IOException {
+        def sshLogOne = new SshLog("Log is from cache", null)
+        def sshLogTwo = new SshLog("New log without cache", null)
+        SshTemplate sshTemplate = mock(SshTemplate.class)
+        when(sshTemplate.copyLog(any(ZonedDateTime.class), any(ZonedDateTime.class))).thenReturn(sshLogOne, sshLogTwo)
+        return sshTemplate
     }
 
     @Bean

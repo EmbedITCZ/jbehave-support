@@ -63,7 +63,7 @@ Note that only verifiers applicable for String make sense in this case - usage o
 
 #### Search in specific log part:
 Ssh steps mentioned above by default fetch the log from whole run of the test story.  
-Theirs behaviour can be modified by setting timestamps (it's highly recommended to set both timestamps!)
+Their behaviour can be modified by setting timestamps (it's highly recommended to set both timestamps for performance reasons/caching!)
 ```
 Given log read start timestamp is set to now
 Given log read end timestamp is set to now

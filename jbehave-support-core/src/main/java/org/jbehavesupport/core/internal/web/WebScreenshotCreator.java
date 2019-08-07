@@ -3,12 +3,12 @@ package org.jbehavesupport.core.internal.web;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.codehaus.plexus.util.FileUtils;
+import org.openqa.selenium.NoAlertPresentException;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.internal.FileNameResolver;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -61,16 +61,29 @@ public class WebScreenshotCreator {
 
     public void createScreenshot(Type screenShotType) {
         if (desiredMode.getHierarchy() >= screenShotType.getHierarchy()) {
-            try {
-                if (ExpectedConditions.alertIsPresent().apply(driver) != null) {
-                    log.info("Can't take screenshot (alert is present)");
-                } else if (driver instanceof TakesScreenshot) {
+            if (isAlertPresent()) {
+                log.info("Can't take screenshot (alert is present)");
+            } else {
+                try {
                     takesScreenshot(screenShotType);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
                 }
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
             }
         }
+
+    }
+
+    private boolean isAlertPresent() {
+        boolean alertPresent = false;
+        try {
+            if (driver.switchTo() != null) {
+                driver.switchTo().alert();
+                alertPresent = true;
+            }
+        } catch (NoAlertPresentException x) {
+        }
+        return alertPresent;
     }
 
     private void takesScreenshot(Type screenShotType) throws IOException {

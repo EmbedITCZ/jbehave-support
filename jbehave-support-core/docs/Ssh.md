@@ -68,7 +68,7 @@ Their behaviour can be modified by setting timestamps (it's highly recommended t
 Given log read start timestamp is set to now
 Given log read end timestamp is set to now
 ```
-Or saving timestamps to context and settings them later (if you want to check more separate parts of logs at the end of story)
+Or saving timestamps to context and setting them later (if you want to check more separate parts of logs at the end of story)
 ```
 Given log timestamp is saved as [NCAKO_1]
 Given log timestamp is saved as [NCAKO_2]

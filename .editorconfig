@@ -10,6 +10,11 @@ root = true
 indent_style = space
 indent_size = 4
 
+[*.java]
+ij_java_class_count_to_use_import_on_demand = 100
+ij_java_names_count_to_use_import_on_demand = 100
+ij_java_use_single_class_imports = true
+
 # We recommend you to keep these unchanged
 end_of_line = lf
 charset = utf-8

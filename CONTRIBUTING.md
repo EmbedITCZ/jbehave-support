@@ -31,7 +31,7 @@ To build this project use the standard `mvn clean install`. We have 3 building p
 1. development
     * Build for contributors;
 2. integration-test
-    * Build for integration tests; Builds the app with all tests and runs them against test application backend (launched as part of the profile). 
+    * Build for integration tests; Builds the app with all tests and runs them against test application backend (launched as part of the profile). [Learn more](docs/IntegrationTest.md)
 3. release
     * Used for new version releases
     
@@ -44,3 +44,7 @@ If you find a bug or have a question, feel free to create a new GitHub issue. Or
 We write tests primarily in groovy (with the exception of Sample stories mentioned below). The tests are running against a mock aplication located in the `jbehave-support-core-test` folder. To start it run the `jbehave-support-core-test/jbehave-support-core-test-app/src/main/java/org/jbehavesupport/core/test/app/JbehaveSupportCoreTestApplication.class`.
 
 Sample stories (`jbehave-support-core/src/test/groovy/org/jbehavesupport/test/sample`) are samples for users and tests at the same time.
+
+>
+> The release process is done by maven and for the setup, you should follow [the release document](docs/Release.md)
+> 

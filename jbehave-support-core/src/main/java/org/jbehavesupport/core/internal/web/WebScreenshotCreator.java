@@ -65,7 +65,9 @@ public class WebScreenshotCreator {
                 log.info("Can't take screenshot (alert is present)");
             } else {
                 try {
-                    takesScreenshot(screenShotType);
+                    if (driver instanceof TakesScreenshot) {
+                        takesScreenshot(screenShotType);
+                    }
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -82,6 +84,7 @@ public class WebScreenshotCreator {
                 alertPresent = true;
             }
         } catch (NoAlertPresentException x) {
+            // no op
         }
         return alertPresent;
     }

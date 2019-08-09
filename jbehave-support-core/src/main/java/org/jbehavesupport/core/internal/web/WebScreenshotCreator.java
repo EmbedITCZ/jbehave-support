@@ -62,7 +62,7 @@ public class WebScreenshotCreator {
     public void createScreenshot(Type screenShotType) {
         if (desiredMode.getHierarchy() >= screenShotType.getHierarchy()) {
             if (isAlertPresent()) {
-                log.info("Can't take screenshot (alert is present)");
+                log.warn("Can't take screenshot (alert is present)");
             } else {
                 try {
                     if (driver instanceof TakesScreenshot) {
@@ -77,16 +77,15 @@ public class WebScreenshotCreator {
     }
 
     private boolean isAlertPresent() {
-        boolean alertPresent = false;
         try {
             if (driver.switchTo() != null) {
                 driver.switchTo().alert();
-                alertPresent = true;
+                return true;
             }
         } catch (NoAlertPresentException x) {
             // no op
         }
-        return alertPresent;
+        return false;
     }
 
     private void takesScreenshot(Type screenShotType) throws IOException {

@@ -10,6 +10,7 @@ This project is written in Java 8, however we are aiming for Java 11 compatibili
 * GMavenPlus IntelliJ Plugin
 * JBehave support
 * Lombok
+* Pipe Table Formatter
 
 ## Code
 ### Coding guidelines
@@ -19,6 +20,7 @@ This project is written in Java 8, however we are aiming for Java 11 compatibili
     * Do not use for optional dependencies `@Autowired(required = false)`
 3. If possible, write [tests](#testing) for Your code.
 4. Use SonarLint to prevent issues (delete unused imports etc.)
+5. When writing xsl transformations, call templates according to name, not match, in case the user wanted to use their own reporter with their own tags.
     
 ### Formatting
 Please keep the coding style uniform. (In IntelliJ IDEA select the text You want to format and press `Ctrl+Alt+L` (Windows) or `Cmd+Alt+L` (Mac).)
@@ -45,6 +47,7 @@ We write tests primarily in groovy (with the exception of Sample stories mention
 
 Sample stories (`jbehave-support-core/src/test/groovy/org/jbehavesupport/test/sample`) are samples for users and tests at the same time.
 
+## Release
 >
 > The release process is done by maven and for the setup, you should follow [the release document](docs/Release.md)
 > 

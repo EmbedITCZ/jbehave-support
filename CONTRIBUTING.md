@@ -17,7 +17,7 @@ This project is written in Java 8, however we are aiming for Java 11 compatibili
 2. If possible, use Lombok constructor injection
     * Do not use in groovy tests
     * Do not use for optional dependencies `@Autowired(required = false)`
-    * In components which the user is expected to extend (e.g. `WebServiceHandler`/`RestServiceHandler`), to allow for simple constructor injection by users on their subclasses.
+    * Do not use in components which the user is expected to extend (e.g. `WebServiceHandler`/`RestServiceHandler`), to allow for simple constructor injection by users on their subclasses.
 3. If possible, write [tests](#testing) for Your code.
 4. Use SonarLint to prevent issues (delete unused imports etc.)
     

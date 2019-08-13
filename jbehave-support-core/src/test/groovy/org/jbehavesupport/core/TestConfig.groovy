@@ -17,6 +17,7 @@ import org.jbehavesupport.core.verification.Verifier
 import org.jbehavesupport.core.web.ByFactory
 import org.jbehavesupport.core.ws.WebServiceEndpointRegistry
 import org.jbehavesupport.core.ws.WebServiceHandler
+import org.jbehavesupport.test.support.TestWebServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
@@ -98,14 +99,14 @@ class TestConfig {
             .logPath(env.getProperty("ssh.logPath"))
             .build()
 
-        RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver();
+        RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver()
         return new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver)
     }
 
     @Bean
     @Qualifier("TEST")
     WebServiceHandler requestFactoryTestHandler() {
-        return new WebServiceHandler() {
+        return new TestWebServiceHandler(env) {
             @Override
             protected void initEndpoints(WebServiceEndpointRegistry endpointRegistry) {
                 endpointRegistry.register(RequestFactoryTest.Foo.class, RequestFactoryTest.Foo.class)

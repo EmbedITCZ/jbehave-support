@@ -76,12 +76,16 @@ When [NameRequest] is sent to [TEST] with success
 
 Scenario: nested list
 Given [NameRequest] data for [TEST]:
-| name                           | data  |
-| name                           | test  |
-| addressList.addressInfo.0.city | Praha |
-| addressList.addressInfo.0.zip  | 11000 |
-| addressList.addressInfo.1.city | Brno  |
-| addressList.addressInfo.1.zip  | 60200 |
+| name                                | data  |
+| name                                | test  |
+| addressList.addressInfo.0.city      | Praha |
+| addressList.addressInfo.0.zip       | 11000 |
+| addressList.addressInfo.0.details.0 | 00    |
+| addressList.addressInfo.0.details.1 | 01    |
+| addressList.addressInfo.1.city      | Brno  |
+| addressList.addressInfo.1.zip       | 60200 |
+| addressList.addressInfo.1.details.0 | 10    |
+| addressList.addressInfo.1.details.1 | 11    |
 When [NameRequest] is sent to [TEST] with success
 Then [NameResponse] values from [TEST] match:
 | name                 | expectedValue |
@@ -90,12 +94,16 @@ Then [NameResponse] values from [TEST] match:
 | relatives.1.name     | Kamil         |
 | relatives.1.relation | Son           |
 Given [NameRequest] data for [TEST]:
-| name                            | data  |
-| name                            | test  |
-| addressList.addressInfo[0].city | Praha |
-| addressList.addressInfo[0].zip  | 11000 |
-| addressList.addressInfo[1].city | Brno  |
-| addressList.addressInfo[1].zip  | 60200 |
+| name                                  | data  |
+| name                                  | test  |
+| addressList.addressInfo[0].city       | Praha |
+| addressList.addressInfo[0].zip        | 11000 |
+| addressList.addressInfo[0].details[0] | 00    |
+| addressList.addressInfo[0].details[1] | 01    |
+| addressList.addressInfo[1].city       | Brno  |
+| addressList.addressInfo[1].zip        | 60200 |
+| addressList.addressInfo[1].details[0] | 10    |
+| addressList.addressInfo[1].details[1] | 11    |
 When [NameRequest] is sent to [TEST] with success
 Then [NameResponse] values from [TEST] match:
 | name                  | expectedValue |

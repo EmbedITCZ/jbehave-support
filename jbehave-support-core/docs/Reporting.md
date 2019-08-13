@@ -31,7 +31,6 @@ There are several extensions already prepared and ready to use:
  - `RestXmlReporterExtension` (copies REST requests/responses from [RestServiceSteps](Rest-api.md))
  - `WsXmlReporterExtension` (copies SOAP requests/responses from [WebServiceSteps](Web-service.md))
  - `TestContextXmlReporterExtension` (copies contents of [TestContext](Test-context.md))
- - `ServerLogXmlReporterExtension` (copies server log(s) for each system with configured [SshTemplate](Ssh.md))
  - `FailScreenshotsReporterExtension` (prints out error screenshots from [Web testing](Web-testing.md) - if any were generated)
  - `SqlXmlReporterExtension` (copies SQL statements/results from [SqlSteps](Sql-steps.md))
  - `JmsXmlReporterExtension` (copies [JMS](Jms.md) message headers, prints out the message if it is `javax.jms.TextMessage`)
@@ -41,7 +40,14 @@ There are several extensions already prepared and ready to use:
      - WAIT: screenshots after every web wait
      - STEP: screenshots after every web step
      - DEBUG: screenshots after every web step and action
-
+ - `ServerLogXmlReporterExtension` (copies server logs or their parts used by [SshSteps](Ssh.md))
+   - Content can be controlled by property: ssh.reporting.mode 
+     - FULL: copies server log(s) for each system with configured [SshTemplate](Ssh.md)
+     - TEMPLATE: copies server log(s) for each system with configured SshTemplate with attribute reportable = true
+     - CACHE: copies caches server log(s) used within scenario execution
+   - Extensions contains fail mode, which act like TEMPLATE mode if test fails
+     - it can be turned on by using property: ssh.reporting.logOnFailure with value "true"
+     
 To use these extensions simply register the wanted extension as a bean, e.g.:
 ```
 @Bean

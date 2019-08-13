@@ -42,44 +42,65 @@ public class JmsXmlReporterExtension extends AbstractXmlReporterExtension {
     }
 
     private void printJmsMessage(Writer writer, Message message) {
+        printBegin(writer, MESSAGE_TAG);
+
+        String cid;
         try {
-            printBegin(writer, MESSAGE_TAG);
-            printBegin(writer, CID_TAG);
-            printCData(writer, message.getJMSCorrelationID());
-            printEnd(writer, CID_TAG);
-
-            printBegin(writer, ANSWERS_TAG);
-            Arrays.stream(headers).forEach(header -> {
-                printBegin(writer, ROW_TAG);
-                printBegin(writer, COLUMN_TAG);
-                printCData(writer, header);
-                printEnd(writer, COLUMN_TAG);
-
-                printBegin(writer, COLUMN_TAG);
-                try {
-                    printCData(writer, message.getStringProperty(header));
-                } catch (JMSException e) {
-                    log.error("Unable to get the property: {}", header, e);
-                    printCData(writer, "Unable to get property: " + header);
-                }
-                printEnd(writer, COLUMN_TAG);
-
-                printEnd(writer, ROW_TAG);
-            });
-
-            printBegin(writer, STRING_TAG);
-            if (message instanceof TextMessage) {
-                TextMessage textMessage = (TextMessage) message;
-                printCData(writer, textMessage.getText());
-            } else {
-                printCData(writer, "Not a TextMessage");
-            }
-            printEnd(writer, STRING_TAG);
-
-            printEnd(writer, ANSWERS_TAG);
-            printEnd(writer, MESSAGE_TAG);
+            cid = message.getJMSCorrelationID();
         } catch (JMSException e) {
-            log.error("Unable to print jms message!", e);
+            cid = "00000";
+            log.error("Unable to get Correlation ID", e);
         }
+        printCID(writer, cid);
+
+        printBegin(writer, ANSWERS_TAG);
+        printAnswers(writer, message);
+
+        printBegin(writer, STRING_TAG);
+        printTextMessage(writer, message);
+        printEnd(writer, STRING_TAG);
+
+        printEnd(writer, ANSWERS_TAG);
+        printEnd(writer, MESSAGE_TAG);
+    }
+
+    private void printTextMessage(Writer writer, Message message) {
+        if (message instanceof TextMessage) {
+            TextMessage textMessage = (TextMessage) message;
+            try {
+                printCData(writer, textMessage.getText());
+            } catch (JMSException e) {
+                log.error("Unable to print TextMessage", e);
+                printCData(writer, "Unable to print TextMessage");
+            }
+        } else {
+            printCData(writer, "Not a TextMessage");
+        }
+    }
+
+    private void printAnswers(Writer writer, Message message) {
+        Arrays.stream(headers).forEach(header -> {
+            printBegin(writer, ROW_TAG);
+            printBegin(writer, COLUMN_TAG);
+            printCData(writer, header);
+            printEnd(writer, COLUMN_TAG);
+
+            printBegin(writer, COLUMN_TAG);
+            try {
+                printCData(writer, message.getStringProperty(header));
+            } catch (JMSException e) {
+                log.error("Unable to get the property: {}", header, e);
+                printCData(writer, "Unable to get property: " + header);
+            }
+            printEnd(writer, COLUMN_TAG);
+
+            printEnd(writer, ROW_TAG);
+        });
+    }
+
+    private void printCID(Writer writer, String jmsCorrelationID) {
+        printBegin(writer, CID_TAG);
+        printCData(writer, jmsCorrelationID);
+        printEnd(writer, CID_TAG);
     }
 }

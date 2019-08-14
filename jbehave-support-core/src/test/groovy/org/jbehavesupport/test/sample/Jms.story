@@ -14,7 +14,7 @@ Given [NameRequest] data for JMS broker [TEST]:
 | @header.JMSPriority      | {RANDOM_NUMBER:1}     |
 | @header.JMSMessageID     | {RANDOM_STRING:5}     |
 | @header.JMSTimestamp     | {RANDOM_NUMBER:10}    |
-| @header.JMSCorrelationID | correlate accordingly |
+| @header.JMSCorrelationID | CID:{RANDOM_STRING:5} |
 | @header.JMSReplyTo       | reply back            |
 | @header.JMSType          | not my type           |
 | @header.JMSRedelivered   | false                 |

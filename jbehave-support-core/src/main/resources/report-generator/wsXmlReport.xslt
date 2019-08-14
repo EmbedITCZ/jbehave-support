@@ -1,8 +1,5 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:template match="/">
-    </xsl:template>
-
     <!-- ws -->
     <xsl:template match="ws">
         <xsl:param name="storyIndex"/>
@@ -35,7 +32,8 @@
 
         <div>
             <a href="#soap-call-{$callNum}" data-toggle="collapse" class="pointerCursor">
-                <xsl:value-of select="current()/request/@type"/> ↔ <xsl:value-of select="current()/response/@type"/>
+                <xsl:value-of select="current()/request/@type"/> ↔
+                <xsl:value-of select="current()/response/@type"/>
             </a>
             <div id="soap-call-{$callNum}" class="collapse">
                 <ul class="list-group list-group-flush">
@@ -54,7 +52,8 @@
             </strong>
             <xsl:value-of select="concat(' ', @type)"/>
             <xsl:if test=".">
-                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre"
+                        title="Copy to clipboard">
                     <i class="fa fa-copy" aria-hidden="true"></i>
                 </button>
                 <pre class="mb-0">
@@ -73,7 +72,8 @@
             </strong>
             <xsl:value-of select="concat(' ', @type)"/>
             <xsl:if test=".">
-                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre"
+                        title="Copy to clipboard">
                     <i class="fa fa-copy" aria-hidden="true"></i>
                 </button>
                 <pre class="mb-0">

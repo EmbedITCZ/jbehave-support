@@ -20,6 +20,7 @@ import org.jbehavesupport.core.internal.FileNameResolver;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
 import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
+import org.jbehavesupport.core.report.extension.JmsXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.SqlXmlReporterExtension;
@@ -95,6 +96,11 @@ public class TestConfig {
     @Bean
     public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext, FileNameResolver fileNameResolver) {
         return new RestXmlReporterExtension(testContext, fileNameResolver);
+    }
+
+    @Bean
+    public JmsXmlReporterExtension jmsXmlReporterExtension() {
+        return new JmsXmlReporterExtension();
     }
 
     @Bean

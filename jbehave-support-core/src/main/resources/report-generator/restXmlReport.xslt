@@ -1,8 +1,5 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:template match="/">
-    </xsl:template>
-
     <!-- REST -->
     <xsl:template match="rest">
         <xsl:param name="storyIndex"/>
@@ -57,7 +54,8 @@
                 </span>
             </strong>
             <xsl:if test="body">
-                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre"
+                        title="Copy to clipboard">
                     <i class="fa fa-copy" aria-hidden="true"></i>
                 </button>
             </xsl:if>
@@ -81,7 +79,8 @@
             <xsl:value-of select="@status"/>
 
             <xsl:if test="body">
-                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre" title="Copy to clipboard">
+                <button type="button" class="btn btn-sm btn-link btn-copy-clipboard" data-selector="~ pre"
+                        title="Copy to clipboard">
                     <i class="fa fa-copy" aria-hidden="true"></i>
                 </button>
                 <pre class="json-message">

@@ -1,8 +1,5 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:template match="/">
-    </xsl:template>
-
     <!-- ssh -->
     <xsl:template match="serverLog">
         <xsl:param name="storyIndex"/>
@@ -70,8 +67,10 @@
             </table>
 
             <div class="btn-group form-group align-self-center">
-                <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide log contents</a>
-                <button type="button" class="btn btn-sm btn-outline-info btn-copy-clipboard" data-selector="#sshlog-{$logNum}" title="Copy to clipboard">
+                <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide log contents
+                </a>
+                <button type="button" class="btn btn-sm btn-outline-info btn-copy-clipboard"
+                        data-selector="#sshlog-{$logNum}" title="Copy to clipboard">
                     <i class="fa fa-copy" aria-hidden="true"></i>
                 </button>
             </div>

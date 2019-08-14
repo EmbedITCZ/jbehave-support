@@ -44,14 +44,12 @@ public class JmsXmlReporterExtension extends AbstractXmlReporterExtension {
     private void printJmsMessage(Writer writer, Message message) {
         printBegin(writer, MESSAGE_TAG);
 
-        String cid;
         try {
-            cid = message.getJMSCorrelationID();
+            printCID(writer, message.getJMSCorrelationID());
         } catch (JMSException e) {
-            cid = "00000";
+            printCID(writer, "Error: unknown CID");
             log.error("Unable to get Correlation ID", e);
         }
-        printCID(writer, cid);
 
         printBegin(writer, ANSWERS_TAG);
         printAnswers(writer, message);

@@ -21,7 +21,6 @@ import org.jbehavesupport.core.internal.MetadataUtil;
 @UtilityClass
 public class TestContextUtil {
     private static final String CONTEXT_DELIMITER = ".";
-    private static final String COLUMN_TYPE = "type";
 
     /**
      * Put all data from example table to test context.
@@ -37,7 +36,7 @@ public class TestContextUtil {
             String name = row.valueAs(ExampleTableConstraints.NAME, String.class);
             String key = (!Strings.isNullOrEmpty(prefix)) ? String.join(CONTEXT_DELIMITER, prefix, name) : name;
             String value = row.valueAs(ExampleTableConstraints.DATA, String.class);
-            String type = row.values().containsKey(COLUMN_TYPE) ? row.valueAs(COLUMN_TYPE, String.class) : null;
+            String type = row.values().containsKey(ExampleTableConstraints.TYPE) ? row.valueAs(ExampleTableConstraints.TYPE, String.class) : null;
 
             if (isNoneEmpty(type)) {
                 testContext.put(key, null, MetadataUtil.type(type));

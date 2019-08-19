@@ -3,6 +3,7 @@ package org.jbehavesupport.core.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -75,6 +76,7 @@ import static org.springframework.util.Assert.state;
  *
  * }
  */
+@Slf4j
 public class RestServiceHandler {
 
     private static final String REST_RESPONSE_CODE = "rest_response_code";
@@ -161,7 +163,7 @@ public class RestServiceHandler {
         if (data == null) { //return dummy
             return new HttpEntity<>("", null);
         }
-        List<Triple<String, String, String>> requestDataList = ExamplesTableUtil.convertTriple(data, NAME, DATA, ALIAS);
+        List<Triple<String, Object, String>> requestDataList = ExamplesTableUtil.convertTriple(data, NAME, DATA, ALIAS);
         HttpHeaders headers = createHeaders(requestDataList);
 
         boolean isRaw = ExamplesTableUtil.tableContains(data, NAME, RAW_BODY_KEY::equals);
@@ -175,12 +177,12 @@ public class RestServiceHandler {
         return createJsonRequestEntity(requestDataList, headers);
     }
 
-    private HttpHeaders createHeaders(List<Triple<String, String, String>> requestDataList) {
+    private HttpHeaders createHeaders(List<Triple<String, Object, String>> requestDataList) {
         HttpHeaders headers = new HttpHeaders();
-        for (Iterator<Triple<String, String, String>> iterator = requestDataList.iterator(); iterator.hasNext(); ) {
-            Triple<String, String, String> line = iterator.next();
+        for (Iterator<Triple<String, Object, String>> iterator = requestDataList.iterator(); iterator.hasNext(); ) {
+            Triple<String, Object, String> line = iterator.next();
             String key = line.getLeft();
-            String value = line.getMiddle();
+            String value = String.valueOf(line.getMiddle());
             handleContextAlias(line.getRight(), value);
 
             if (key.startsWith(HEADER_START)) {
@@ -192,9 +194,9 @@ public class RestServiceHandler {
         return headers;
     }
 
-    private HttpEntity<String> createRawBodyRequestEntity(final List<Triple<String, String, String>> requestDataList, HttpHeaders headers) {
-        Triple<String, String, String> line = requestDataList.remove(0);
-        String rawBody = line.getMiddle();
+    private HttpEntity<String> createRawBodyRequestEntity(final List<Triple<String, Object, String>> requestDataList, HttpHeaders headers) {
+        Triple<String, Object, String> line = requestDataList.remove(0);
+        String rawBody = String.valueOf(line.getMiddle());
         handleContextAlias(line.getRight(), rawBody);
         if (!requestDataList.isEmpty()) {
             throw new IllegalStateException("If " + RAW_BODY_KEY + " is present, no other keys except headers are allowed.");
@@ -202,12 +204,13 @@ public class RestServiceHandler {
         return new HttpEntity<>(rawBody, headers);
     }
 
-    private HttpEntity<MultiValueMap<String, Object>> createMultipartRequestEntity(final List<Triple<String, String, String>> requestDataList, HttpHeaders headers) {
+    private HttpEntity<MultiValueMap<String, Object>> createMultipartRequestEntity(final List<Triple<String, Object, String>> requestDataList,
+                                                                                   HttpHeaders headers) {
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
 
-        for (Iterator<Triple<String, String, String>> iterator = requestDataList.iterator(); iterator.hasNext(); ) {
-            Triple<String, String, String> line = iterator.next();
-            String value = line.getMiddle();
+        for (Iterator<Triple<String, Object, String>> iterator = requestDataList.iterator(); iterator.hasNext(); ) {
+            Triple<String, Object, String> line = iterator.next();
+            String value = String.valueOf(line.getMiddle());
             handleContextAlias(line.getRight(), value);
             if (testContext.isReferenceKey(value)) {
                 Object data = testContext.get(value);
@@ -224,21 +227,22 @@ public class RestServiceHandler {
         return new HttpEntity<>(multipartRequest, headers);
     }
 
-    private HttpEntity<String> createJsonRequestEntity(final List<Triple<String, String, String>> requestDataList, HttpHeaders headers) throws IOException {
-        Map<String, String> requestEntityMap = new HashMap<>();
+    private HttpEntity<String> createJsonRequestEntity(final List<Triple<String, Object, String>> requestDataList, HttpHeaders headers) throws IOException {
+        Map<String, Object> requestEntityMap = new HashMap<>();
 
-        for (Triple<String, String, String> line : requestDataList) {
-            String value = line.getMiddle();
-            if (testContext.isReferenceKey(value)) {
-                Object data = testContext.get(value);
+        for (Triple<String, Object, String> line : requestDataList) {
+            Object value = line.getMiddle();
+            String stringValue = String.valueOf(value);
+            if (testContext.isReferenceKey(stringValue)) {
+                Object data = testContext.get(stringValue);
                 if (data instanceof Resource) {
                     byte[] bytes = IOUtils.toByteArray(((Resource) data).getInputStream());
-                    value = new String(bytes);
+                    stringValue = new String(bytes);
                 } else if (data instanceof byte[]) {
-                    value = new String((byte[]) data);
+                    stringValue = new String((byte[]) data);
                 }
             }
-            handleContextAlias(line.getRight(), value);
+            handleContextAlias(line.getRight(), stringValue);
             requestEntityMap.put(line.getLeft(), value);
         }
         return new HttpEntity<>(createJsonRequest(requestEntityMap), headers);
@@ -256,13 +260,13 @@ public class RestServiceHandler {
         }
     }
 
-    private String createJsonRequest(Map<String, String> data) throws IOException {
+    private String createJsonRequest(Map<String, Object> data) throws IOException {
         List<Map<String, Object>> requestListOfMaps = new ArrayList<>();
         boolean isCollection = false;
         List<String> orderedKeys = data.keySet().stream().sorted(new IndexedKeyComparator()).collect(Collectors.toList());
         for (String key : orderedKeys) {
             Integer index = 0;
-            String stringValue = data.get(key);
+            Object value = data.get(key);
             Matcher matcher = indexedKeyPattern2.matcher(key);
             if (matcher.matches()) {
                 isCollection = true;
@@ -278,7 +282,7 @@ public class RestServiceHandler {
                 requestListOfMaps.add(index, requestMap);
             }
 
-            addEntryToMap(requestMap, key, stringValue);
+            addEntryToMap(requestMap, key, value);
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -288,7 +292,6 @@ public class RestServiceHandler {
         } else if (requestListOfMaps.size() == 1) {
             json = mapper.writeValueAsString(requestListOfMaps.get(0));
         }
-
         return json;
     }
 
@@ -321,7 +324,7 @@ public class RestServiceHandler {
         }
     }
 
-    private void addEntryToMap(Map<String, Object> requestMap, String key, String value) {
+    private void addEntryToMap(Map<String, Object> requestMap, String key, Object value) {
         requestMap.keySet().forEach(k -> requestMap.put(k, requestMap.get(k)));
         if (key.contains(".")) { // nested element
             String k1 = key.substring(0, key.indexOf('.'));
@@ -418,8 +421,8 @@ public class RestServiceHandler {
 
     private void verifyResponseHeaders(HttpHeaders actualHeaders, ExamplesTable data, String actualResponseMessage) {
         String usedOperator = data.getHeaders().contains(ExampleTableConstraints.VERIFIER) ? ExampleTableConstraints.VERIFIER : ExampleTableConstraints.OPERATOR;
-        List<Triple<String, String, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, usedOperator);
-        for (Triple<String, String, String> triple : expectedData) {
+        List<Triple<String, Object, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, usedOperator);
+        for (Triple<String, Object, String> triple : expectedData) {
             String key = triple.getLeft();
             if (key.startsWith(HEADER_START) && !key.equals(STATUS_HEADER)) {
                 String headerKey = key.substring(HEADER_START.length());
@@ -434,7 +437,7 @@ public class RestServiceHandler {
 
     private void verifyResponseJson(String response, ExamplesTable expectedDataTable, String actualResponseMessage) {
         String usedOperator = expectedDataTable.getHeaders().contains(ExampleTableConstraints.VERIFIER) ? ExampleTableConstraints.VERIFIER : ExampleTableConstraints.OPERATOR;
-        List<Triple<String, String, String>> expectedData =
+        List<Triple<String, Object, String>> expectedData =
             ExamplesTableUtil.convertTriple(expectedDataTable, NAME, EXPECTED_VALUE, usedOperator)
                 .stream()
                 .filter(i -> !i.getLeft().startsWith(HEADER_START))
@@ -511,12 +514,12 @@ public class RestServiceHandler {
         return message;
     }
 
-    private void verifyJson(String json, List<Triple<String, String, String>> expectedData, String actualResponseMessage) {
+    private void verifyJson(String json, List<Triple<String, Object, String>> expectedData, String actualResponseMessage) {
         assertThat(json).as(actualResponseMessage).isNotEmpty();
         DocumentContext jsonContext = JsonPath.parse(json);
-        for (Triple<String, String, String> data : expectedData) {
+        for (Triple<String, Object, String> data : expectedData) {
             String propertyName = data.getLeft();
-            String expectedValue = data.getMiddle();
+            Object expectedValue = data.getMiddle();
 
             Object actualValue = jsonContext.read("$." + propertyName);
             verifierResolver.getVerifierByName(data.getRight(), equalsVerifier)

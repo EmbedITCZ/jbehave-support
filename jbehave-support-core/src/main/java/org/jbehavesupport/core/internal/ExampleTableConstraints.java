@@ -10,6 +10,7 @@ public final class ExampleTableConstraints {
     public static final String ALIAS = "contextAlias";
     public static final String EXPECTED_VALUE = "expectedValue";
     public static final String VERIFIER = "verifier";
+    public static final String TYPE = "type";
     /**
      * @deprecated use {@link #VERIFIER} instead
      */

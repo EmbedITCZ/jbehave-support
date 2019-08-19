@@ -317,4 +317,16 @@ Then response from [TEST] REST API is successful and values match:
 | name       | expectedValue |
 | payload[1] | astronaut     |
 
+Scenario: json with different value types than String
+When [POST] request to [TEST]/[user/] is sent with data:
+| name        | data     | type    |
+| firstName   | Mario    | string  |
+| age         | 24       | number  |
+| height      | 1.56     | number  |
+| plumber     | true     | boolean |
+| brother     | Luigi    |         |
+| princess    | {NULL}   |         |
+| powerups[0] | fireball | string  |
+| powerups[1] | {NULL}   | string  |
 
+Then response from [TEST] REST API has status [200]

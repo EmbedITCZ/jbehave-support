@@ -13,6 +13,12 @@
 
     <xsl:output method="html" indent="yes"/>
 
+    <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'"/>
+    <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+
+    <xsl:variable name="index-source" select="document('index.xml')"/>
+    <xsl:variable name="totalStories" select="count(//story)"/>
+
     <xsl:template name="textColor">
         <xsl:param name="outcome"/>
         <xsl:param name="iconize" select="false()"/>

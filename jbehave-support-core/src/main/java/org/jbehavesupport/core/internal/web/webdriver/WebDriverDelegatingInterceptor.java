@@ -45,7 +45,7 @@ public class WebDriverDelegatingInterceptor extends IntroductionInfoSupport
 
     @Override
     public Object invoke(MethodInvocation mi) throws Throwable {
-        if (isTakeScreenShotMethod(mi) || isQuitMethod(mi) || isCloseMethod(mi)) {
+        if (isTakeScreenShotMethod(mi) || isQuitMethod(mi) || isCloseMethod(mi) || isSwitchToMethod(mi)) {
             if (driver == null) {
                 return null;
             }
@@ -107,6 +107,10 @@ public class WebDriverDelegatingInterceptor extends IntroductionInfoSupport
 
     private boolean isTakeScreenShotMethod(MethodInvocation mi) {
         return mi.getMethod().getName().equals("getScreenshotAs");
+    }
+
+    private boolean isSwitchToMethod(MethodInvocation mi) {
+        return isSpecificMethod(mi, "switchTo", WebDriver.TargetLocator.class);
     }
 
     private boolean isToStringMethod(MethodInvocation mi) {

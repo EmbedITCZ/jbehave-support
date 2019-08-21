@@ -94,10 +94,8 @@
                 </title>
             </head>
             <body data-spy="scroll">
-                <xsl:apply-imports/>
                 <xsl:apply-templates select="//story"/>
                 <xsl:call-template name="renderFooter"/>
-                <xsl:apply-templates select="jms"/>
             </body>
         </html>
     </xsl:template>

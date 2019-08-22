@@ -13,6 +13,8 @@
 
     <xsl:output method="html" indent="yes"/>
 
+    <xsl:variable name="totalStories" select="count(//story)"/>
+
     <xsl:template name="textColor">
         <xsl:param name="outcome"/>
         <xsl:param name="iconize" select="false()"/>

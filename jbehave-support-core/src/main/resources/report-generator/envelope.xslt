@@ -1,7 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:variable name="totalStories" select="count(//story)"/>
-    <xsl:variable name="index-source" select="document('index.xml')"/>
+    <xsl:variable name="index-source" select="document('../index.xml')"/>
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'"/>
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 

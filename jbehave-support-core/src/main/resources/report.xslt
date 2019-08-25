@@ -11,7 +11,7 @@
     <xsl:import href="report-generator/screenshotReport.xslt"/>
     <xsl:import href="report-generator/jmsXmlReport.xslt"/>
 
-    <xsl:output method="html" indent="yes"/>
+    <xsl:output method="html" doctype-system="about:legacy-compat"/>
 
     <xsl:variable name="totalStories" select="count(//story)"/>
 
@@ -37,7 +37,6 @@
     </xsl:template>
 
     <xsl:template match="/">
-        <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
         <html>
             <head>
                 <meta charset="utf-8"/>

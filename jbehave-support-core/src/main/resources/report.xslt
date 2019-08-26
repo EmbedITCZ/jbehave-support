@@ -115,6 +115,7 @@
     </xsl:template>
 
     <xsl:template match="step">
+        <xsl:variable name="scenarioIndex" select="count(../preceding-sibling::scenario)+1"/>
         <div>
             <xsl:attribute name="class">
                 <xsl:if test="not(parameter/parameters)">parameterlessStep</xsl:if>
@@ -133,7 +134,7 @@
 
                 <xsl:if test="parameter/parameters">
                     <xsl:attribute name="href">
-                        #step-details-<xsl:value-of select="position()"/>
+                        #step-details-<xsl:value-of select="$scenarioIndex"/>-<xsl:value-of select="position()"/>
                     </xsl:attribute>
                     <i class="fa fa-plus-circle" aria-hidden="true"/>
                 </xsl:if>
@@ -145,7 +146,6 @@
                     </xsl:for-each>
                 </span>
                 <xsl:if test="@outcome='failed'">
-                    <xsl:variable name="scenarioIndex" select="count(../preceding-sibling::scenario)+1"/>
 
                     <xsl:call-template name="renderStacktraceModal">
                         <xsl:with-param name="scenarioIndex" select="$scenarioIndex"/>
@@ -163,7 +163,7 @@
 
             <xsl:choose>
                 <xsl:when test="parameter/parameters">
-                    <div id="step-details-{position()}" class="collapse">
+                    <div id="step-details-{$scenarioIndex}-{position()}" class="collapse">
                         <xsl:apply-templates select="parameter/parameters" mode="scenario"/>
                     </div>
                 </xsl:when>

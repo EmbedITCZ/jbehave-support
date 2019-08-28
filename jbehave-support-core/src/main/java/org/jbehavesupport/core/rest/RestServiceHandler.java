@@ -1,12 +1,11 @@
 package org.jbehavesupport.core.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Row;
 import org.jbehavesupport.core.TestContext;
@@ -76,7 +75,6 @@ import static org.springframework.util.Assert.state;
  *
  * }
  */
-@Slf4j
 public class RestServiceHandler {
 
     private static final String REST_RESPONSE_CODE = "rest_response_code";
@@ -87,6 +85,7 @@ public class RestServiceHandler {
     private static final String STATUS_HEADER = HEADER_START + "Status";
     private static Pattern indexedKeyPattern = Pattern.compile("(.*)\\[(\\d+)\\]");
     private static Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)\\]\\.(.*)");
+    private static final String PERIOD_REGEX = "\\.(\\d+)(\\.)?";
 
     private String url;
 
@@ -127,7 +126,7 @@ public class RestServiceHandler {
     @SuppressWarnings("squid:S1166")
     public void sendRequest(String urlPath, HttpMethod requestMethod, ExamplesTable data) throws IOException {
         URL apiUrl = new URL(this.url + urlPath);
-        HttpEntity requestEntity = createRequestEntity(data);
+        HttpEntity requestEntity = createRequestEntity(convertCollectionNotation(data));
         try {
             ResponseEntity<String> responseEntity = template.exchange(apiUrl.toString(), requestMethod, requestEntity, String.class);
             storeResponse(responseEntity);
@@ -138,7 +137,8 @@ public class RestServiceHandler {
 
     /**
      * Each response that is meant to be successful must match data
-     * @return ExamplesTable that will be comparaed against response in same format
+     *
+     * @return ExamplesTable that will be compared against response in same format
      * as {@link RestServiceSteps#verifyResponse(java.lang.String, java.lang.String, org.jbehave.core.model.ExamplesTable)}
      */
     public ExamplesTable getSuccessResult() {
@@ -197,13 +197,12 @@ public class RestServiceHandler {
         String rawBody = line.getMiddle();
         handleContextAlias(line.getRight(), rawBody);
         if (!requestDataList.isEmpty()) {
-            throw new IllegalStateException("If " + RAW_BODY_KEY + " is present, no other keys except headers is allowed.");
+            throw new IllegalStateException("If " + RAW_BODY_KEY + " is present, no other keys except headers are allowed.");
         }
         return new HttpEntity<>(rawBody, headers);
     }
 
-    private HttpEntity<MultiValueMap<String, Object>> createMultipartRequestEntity(final List<Triple<String, String, String>> requestDataList,
-        HttpHeaders headers) {
+    private HttpEntity<MultiValueMap<String, Object>> createMultipartRequestEntity(final List<Triple<String, String, String>> requestDataList, HttpHeaders headers) {
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
 
         for (Iterator<Triple<String, String, String>> iterator = requestDataList.iterator(); iterator.hasNext(); ) {
@@ -453,6 +452,7 @@ public class RestServiceHandler {
     }
 
     public void verifyResponse(String expectedStatus, ExamplesTable data) {
+        ExamplesTable convertedData = convertCollectionNotation(data);
         HttpStatus actualResponseStatus = HttpStatus.valueOf((Integer) testContext.get(REST_RESPONSE_CODE));
         HttpHeaders actualHeaders = testContext.get(REST_RESPONSE_HEADERS);
         String actualResponseBody = testContext.get(REST_RESPONSE_JSON).toString();
@@ -461,12 +461,30 @@ public class RestServiceHandler {
         if (!StringUtils.isEmpty(expectedStatus)) {
             verifyResponseStatus(actualResponseStatus, parseHttpStatus(expectedStatus), actualResponseMessage);
         }
-        if (ExamplesTableUtil.tableContains(data, NAME, STATUS_HEADER::equals)) {
-            verifyResponseStatus(actualResponseStatus, parseHttpStatus(getValue(data, NAME, STATUS_HEADER, EXPECTED_VALUE)), actualResponseMessage);
+        if (ExamplesTableUtil.tableContains(convertedData, NAME, STATUS_HEADER::equals)) {
+            verifyResponseStatus(actualResponseStatus, parseHttpStatus(getValue(convertedData, NAME, STATUS_HEADER, EXPECTED_VALUE)), actualResponseMessage);
         }
 
-        verifyResponseHeaders(actualHeaders, data, actualResponseMessage);
-        verifyResponseJson(actualResponseBody, data, actualResponseMessage);
+        verifyResponseHeaders(actualHeaders, convertedData, actualResponseMessage);
+        verifyResponseJson(actualResponseBody, convertedData, actualResponseMessage);
+    }
+
+    private ExamplesTable convertCollectionNotation(ExamplesTable data) {
+        if (data != null && !data.getRows().isEmpty()) {
+            List<Map<String, String>> newMapList = data.getRows().stream()
+                .map(this::convertIfNeeded)
+                .collect(Collectors.toList());
+            return data.withRows(newMapList);
+        } else {
+            return data;
+        }
+    }
+
+    private Map<String, String> convertIfNeeded(Map<String, String> map) {
+        String name = map.get(ExampleTableConstraints.NAME);
+        String newName = name.replaceAll(PERIOD_REGEX, "\\[$1\\]$2");
+        map.put(ExampleTableConstraints.NAME, newName);
+        return map;
     }
 
     private HttpStatus parseHttpStatus(final String status) {

@@ -6,6 +6,7 @@ import org.jbehavesupport.core.healthcheck.HealthCheckSteps
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter
 import org.jbehavesupport.core.internal.verification.RegexVerifier
 import org.jbehavesupport.core.internal.web.by.XpathByFactory
+import org.jbehavesupport.core.rest.RestServiceHandler
 import org.jbehavesupport.core.ssh.RollingLogResolver
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver
 import org.jbehavesupport.core.ssh.SshSetting
@@ -116,5 +117,10 @@ class TestConfig {
                 endpointRegistry.register(UnsupportedClass.class, UnsupportedClass.class)
             }
         }
+    }
+
+    @Bean
+    RestServiceHandler testRestServiceHandler() {
+        return new RestServiceHandler(env.getProperty("rest.url"))
     }
 }

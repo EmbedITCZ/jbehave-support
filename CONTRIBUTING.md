@@ -10,6 +10,7 @@ This project is written in Java 8, however we are aiming for Java 11 compatibili
 * GMavenPlus IntelliJ Plugin
 * JBehave support
 * Lombok
+* Pipe Table Formatter
 
 ## Code
 ### Coding guidelines
@@ -20,6 +21,7 @@ This project is written in Java 8, however we are aiming for Java 11 compatibili
     * Do not use in components which the user is expected to extend (e.g. `WebServiceHandler`/`RestServiceHandler`), to allow for simple constructor injection by users on their subclasses.
 3. If possible, write [tests](#testing) for Your code.
 4. Use SonarLint to prevent issues (delete unused imports etc.)
+5. When writing xsl transformations, call templates according to name, not match, in case the user wanted to use their own reporter with their own tags.
     
 ### Formatting
 Please keep the coding style uniform. (In IntelliJ IDEA select the text You want to format and press `Ctrl+Alt+L` (Windows) or `Cmd+Alt+L` (Mac).)
@@ -32,7 +34,7 @@ To build this project use the standard `mvn clean install`. We have 3 building p
 1. development
     * Build for contributors;
 2. integration-test
-    * Build for integration tests; Builds the app with all tests and runs them against test application backend (launched as part of the profile). 
+    * Build for integration tests; Builds the app with all tests and runs them against test application backend (launched as part of the profile). [Learn more](docs/IntegrationTest.md)
 3. release
     * Used for new version releases
     
@@ -45,3 +47,8 @@ If you find a bug or have a question, feel free to create a new GitHub issue. Or
 We write tests primarily in groovy (with the exception of Sample stories mentioned below). The tests are running against a mock aplication located in the `jbehave-support-core-test` folder. To start it run the `jbehave-support-core-test/jbehave-support-core-test-app/src/main/java/org/jbehavesupport/core/test/app/JbehaveSupportCoreTestApplication.class`.
 
 Sample stories (`jbehave-support-core/src/test/groovy/org/jbehavesupport/test/sample`) are samples for users and tests at the same time.
+
+## Release
+>
+> The release process is done by maven and for the setup, you should follow [the release document](docs/Release.md)
+> 

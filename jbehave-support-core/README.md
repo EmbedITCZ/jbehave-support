@@ -1,6 +1,5 @@
 # jBehave core support
-Core jBehave support. 
-- [Integration test](docs/IntegrationTest.md)  
+Core jBehave support.  
 - [Test context](docs/Test-context.md)  
 - [Expression commands](docs/Expression-commands.md) 
 - [Web service steps](docs/Web-service.md)

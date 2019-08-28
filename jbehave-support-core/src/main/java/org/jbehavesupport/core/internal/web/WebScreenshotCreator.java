@@ -45,6 +45,7 @@ public class WebScreenshotCreator {
     public static final String FAILED_SCREENSHOTS_KEY = "error_screenshots";
     public static final String REPORT_SCREENSHOTS_KEY = "report_screenshots";
     private static final String FILE_NAME_PATTERN = "%s_%s.png";
+    public static final String SCREENSHOTS_DIRECTORY_KEY = "screenshotDirectory";
 
     /**
      * All types except FAILED are in development, so it's not recommended to use them.
@@ -110,9 +111,9 @@ public class WebScreenshotCreator {
     }
 
     private void prepareDirectory() throws IOException {
+        testContext.put(SCREENSHOTS_DIRECTORY_KEY, screenshotDirectory);
         if (!Paths.get(screenshotDirectory).toFile().exists()) {
             Files.createDirectory(Paths.get(screenshotDirectory));
-            testContext.put("screenshotDirectory", screenshotDirectory);
         }
     }
 

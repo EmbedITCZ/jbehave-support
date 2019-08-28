@@ -1,6 +1,8 @@
 package org.jbehavesupport.core.report.extension;
 
 import java.io.Writer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ public class FailScreenshotsReporterExtension extends AbstractXmlReporterExtensi
 
     private static final String FAIL_SCREENSHOTS_REPORTER_EXTENSION = "errorScreenshots";
     private static final String SCREENSHOT_TAG = "<screenshot>%s</screenshot>";
+    private static final String RELATIVE_PATH_ADJUSTER = "../../";
 
     private final TestContext testContext;
 
@@ -37,8 +40,11 @@ public class FailScreenshotsReporterExtension extends AbstractXmlReporterExtensi
     public void print(final Writer writer, final ReportContext reportContext) {
         if (testContext.contains(WebScreenshotCreator.FAILED_SCREENSHOTS_KEY)) {
             Set<String> screenshots = testContext.get(WebScreenshotCreator.FAILED_SCREENSHOTS_KEY, Set.class);
+            String screenshotDirectory = testContext.get(WebScreenshotCreator.SCREENSHOTS_DIRECTORY_KEY, String.class);
             for (String screenshotName : screenshots) {
-                printScreenshotEntry(writer, screenshotName);
+                Path path = Paths.get(screenshotDirectory, screenshotName);
+                String pathString = path.isAbsolute() ? path.toString() : RELATIVE_PATH_ADJUSTER + path.toString();
+                printScreenshotEntry(writer, pathString);
             }
         }
     }

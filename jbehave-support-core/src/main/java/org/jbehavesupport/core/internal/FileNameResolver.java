@@ -1,7 +1,6 @@
 package org.jbehavesupport.core.internal;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jbehavesupport.core.AbstractSpringStories;
 import org.jbehavesupport.core.TestContext;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FileNameResolver {
@@ -27,7 +25,7 @@ public class FileNameResolver {
             }
             return destinationPath;
         } else {
-            return Paths.get(directory, String.format(fileNamePattern, ArrayUtils.add(patternArguments, System.currentTimeMillis())));
+            return Paths.get(directory, String.format(fileNamePattern, ArrayUtils.add(patternArguments, String.valueOf(System.currentTimeMillis()))));
         }
     }
 }

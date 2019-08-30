@@ -2,12 +2,16 @@ package org.jbehavesupport.core.ssh;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.keyvalue.MultiKey;
+import org.apache.commons.collections4.map.LRUMap;
+import org.apache.commons.collections4.map.MultiKeyMap;
 import org.assertj.core.api.SoftAssertions;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.TestContext;
+import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
 import org.jbehavesupport.core.internal.verification.ContainsVerifier;
 import org.jbehavesupport.core.internal.verification.NotContainsVerifier;
@@ -53,30 +57,61 @@ public final class SshSteps {
     private int maxSoftAssertCount;
 
     private ZonedDateTime scenarioStart;
+    private ZonedDateTime logStartTime;
+    private ZonedDateTime logEndTime;
+
+    private MultiKeyMap<MultiKey, String> logCache = MultiKeyMap.multiKeyMap(new LRUMap());
 
     @BeforeScenario
     public void init() {
         scenarioStart = ZonedDateTime.now();
+        logStartTime = null;
+        logEndTime = null;
+        logCache.clear();
     }
 
-    private String readLog(String systemQualifier, ZonedDateTime startTime) {
+    private String readLog(String systemQualifier, ZonedDateTime startTime, ZonedDateTime endTime) {
+        if (logCache.containsKey(startTime, endTime, systemQualifier)) {
+            log.info("Log found in cache.");
+            return logCache.get(startTime, endTime, systemQualifier);
+        }
         StringBuilder fetchedLog = new StringBuilder();
         List<SshTemplate> sshTemplates = resolveSshTemplates(systemQualifier);
         for (SshTemplate sshTemplate : sshTemplates) {
             try {
-                SshLog sshLog = sshTemplate.copyLog(startTime, ZonedDateTime.now());
+                SshLog sshLog = sshTemplate.copyLog(startTime, endTime);
                 fetchedLog.append(sshLog.getLogContents());
             } catch (IOException ex) {
                 log.error("error fetching {}({}) log: {}", systemQualifier, sshTemplate.getSshSetting(), ex);
             }
         }
-
+        logCache.put(new MultiKey(startTime, endTime, systemQualifier), fetchedLog.toString());
         return fetchedLog.toString();
     }
 
-    @Given("log timestamp is saved as [$startTimeAlias]")
-    public void markStartTime(String startTimeAlias) {
-        testContext.put(startTimeAlias, ZonedDateTime.now());
+    @Given("current time is saved as log timestamp [$logTimeAlias]")
+    public void markLogTime(String logTimeAlias) {
+        testContext.put(logTimeAlias, ZonedDateTime.now());
+    }
+
+    @Given("log start timestamp is set to current time")
+    public void saveLogStartTime(){
+        logStartTime = ZonedDateTime.now();
+    }
+
+    @Given("log end timestamp is set to current time")
+    public void saveLogEndTime(){
+        logEndTime = ZonedDateTime.now().plusSeconds(1);
+    }
+
+    @Given("log start timestamp is set to [$contextAlias]")
+    public void saveLogStartTimeOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
+        logStartTime = ZonedDateTime.parse(contextAlias.getValue());
+    }
+
+    @Given("log end timestamp is set to [$contextAlias]")
+    public void setLogEndTimeOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
+        logEndTime = ZonedDateTime.parse(contextAlias.getValue()).plusSeconds(1);
     }
 
     @Then("the following data are present in [$systemQualifier] log:$presentData")
@@ -84,6 +119,10 @@ public final class SshSteps {
         checkDataPresence(systemQualifier, scenarioStart, stringTable, containsVerifier);
     }
 
+    /** use logContainsData(String systemQualifier, String stringTable) instead
+     * If you set timestamps via separate steps, log reading is more accurate and use cache
+     */
+    @Deprecated
     @Then("the following data are present in [$systemQualifier] log since [$startTimeAlias]:$presentData")
     public void logContainsData(String systemQualifier, String startTimeAlias, String stringTable) {
         checkDataPresence(systemQualifier, testContext.get(startTimeAlias), stringTable, containsVerifier);
@@ -100,7 +139,9 @@ public final class SshSteps {
         isTrue((searchData.getHeaders().size() == 1) ||
                 (searchData.getHeaders().size() == 2 && searchData.getHeaders().contains(VERIFIER)),
             "searchData must have only one search data column (or one search data column and a verifier)");
-        String logData = readLog(systemQualifier, startTime);
+        String logData = readLog(systemQualifier,
+            logStartTime != null ? logStartTime : startTime,
+            logEndTime != null ? logEndTime : ZonedDateTime.now().plusSeconds(1));
         assertThat(logData)
             .as("log not found in " + systemQualifier + " log")
             .isNotEmpty();

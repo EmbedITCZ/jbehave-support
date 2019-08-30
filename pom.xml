@@ -93,6 +93,7 @@
         <version.moxy>2.7.4</version.moxy>
         <version.saaj-impl>1.5.1</version.saaj-impl>
         <version.javax-activation>1.2.0</version.javax-activation>
+        <version.bytebuddy>1.9.10</version.bytebuddy>
 
         <plugin.version.maven-javadoc-plugin>3.1.0</plugin.version.maven-javadoc-plugin>
         <plugin.version.maven-failsafe-plugin>2.22.1</plugin.version.maven-failsafe-plugin>
@@ -327,6 +328,13 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${version.mockito-core}</version>
+                <scope>test</scope>
+            </dependency>
+            <!--mockito depends on bytebuddy but doesn't contain this dependency-->
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${version.bytebuddy}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

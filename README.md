@@ -17,11 +17,11 @@ Light extension to [JBehave](https://jbehave.org).
     5. [Write your story class](#write-your-story-class)
 2. [Modules](#modules)
     
-## Simple use case
+## Simple use case - Web testing
 
 To show you how to set up a project using the jbehave-support library, I am going to make a test that Google searches `EmbedITCZ jbehave-support` and checks the result. To learn more about this example check out [Web-testing.md](jbehave-support-core/docs/Web-testing.md).
 
-Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/Web-service.md), [REST](jbehave-support-core/docs/Rest-api.md), [JMS](jbehave-support-core/docs/Jms.md)) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
+Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/examples/Web-service.md), [REST](jbehave-support-core/docs/examples/Rest.md), [JMS](jbehave-support-core/docs/Jms.md)) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
 
 ### Add to Java project as a Maven dependency
 
@@ -126,6 +126,7 @@ public class GoogleStory extends AbstractSpringStories {
 **This class is runnable. When you run it, it runs your story.**
 
 ## Modules
+- [Examples](jbehave-support-core/docs/examples/Examples.md) - more example projects like the [simple use case](#simple-use-case---web-testing)
 - [core](jbehave-support-core/README.md) - details about integration and usage 
 
 

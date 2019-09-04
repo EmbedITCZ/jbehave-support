@@ -144,3 +144,28 @@ When [POST] request to [TEST]/[user/] is sent with data:
 | @header.Content-Type | application/json;charset=utf-8 |
 | @body                | Anything you want to send.     |
 ```
+
+#### Handling JSON data types
+All JSON data will be send as a string, unless specified otherwise. To specify a data type, use optional `type` column in your data table. These data types are supported:
+ + `string`
+ + `boolean`
+ + `number`
+
+If you leave the column blank, the data will be send as a string. The `{NULL}` command will send `null` no matter what is written in the type column.
+
+Ex.:
+```
+| name        | data     | type    |
+| firstName   | Mario    | string  |
+| age         | 24       | number  |
+| height      | 1.56     | number  |
+| plumber     | true     | boolean |
+| brother     | Luigi    |         |
+| princess    | {NULL}   |         |
+| powerups[0] | fireball | string  |
+| powerups[1] | {NULL}   | string  |
+```
+This table will generate this JSON:
+```
+{"firstName":"Mario","plumber":true,"princess":null,"brother":"Luigi","age":24,"height":1.56,"powerups":["fireball",null]}
+```

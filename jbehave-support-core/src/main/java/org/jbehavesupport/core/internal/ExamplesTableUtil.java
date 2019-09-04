@@ -1,8 +1,11 @@
 package org.jbehavesupport.core.internal;
 
+import java.lang.reflect.Type;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -10,13 +13,17 @@ import java.util.stream.Collectors;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Parameters;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 @UtilityClass
+@Slf4j
 public class ExamplesTableUtil {
 
     /**
@@ -38,16 +45,45 @@ public class ExamplesTableUtil {
         return result;
     }
 
-    public static List<Triple<String, String, String>> convertTriple(ExamplesTable table, String column1Header, String column2Header, String column3Header) {
-        List<Triple<String, String, String>> result = new ArrayList<>();
+    public static List<Triple<String, Object, String>> convertTriple(ExamplesTable table, String column1Header, String column2Header, String column3Header) {
+        List<Triple<String, Object, String>> result = new ArrayList<>();
         List<Parameters> rows = table.getRowsAsParameters();
         rows.forEach(item -> {
             String column1 = item.valueAs(column1Header, String.class);
-            String column2 = item.valueAs(column2Header, String.class);
+            Object column2 = null;
+            Type dataType = getValueType(item, item.valueAs(column2Header, String.class));
+            if (dataType != null) {
+                column2 = item.valueAs(column2Header, dataType);
+            }
             String column3 = item.values().containsKey(column3Header) ? item.valueAs(column3Header, String.class) : null;
             result.add(new ImmutableTriple<>(column1, column2, column3));
         });
         return result;
+    }
+
+    private static Type getValueType(Parameters item, String data) {
+        if (item.values().containsKey(ExampleTableConstraints.TYPE)) {
+            String typeName = item.valueAs(ExampleTableConstraints.TYPE, String.class);
+            if (StringUtils.hasText(typeName)) {
+                return chooseType(typeName, data);
+            }
+        }
+        return String.class;
+    }
+
+    private static Type chooseType(String typeName, String data) {
+        typeName = typeName.toLowerCase();
+        switch (typeName) {
+            case "boolean":
+                return boolean.class;
+            case "number":
+                DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols(Locale.getDefault());
+                return data.contains(Character.toString(formatSymbols.getDecimalSeparator())) ? double.class : int.class;
+            case "string":
+                return String.class;
+            default:
+                throw new IllegalArgumentException("Provided class not found: " + typeName);
+        }
     }
 
     /**
@@ -86,9 +122,10 @@ public class ExamplesTableUtil {
 
     /**
      * Retrieves value from specified column based on key present in different column.
-     * @param table table to retrieve data from
-     * @param keyColumn header name to seek in for key
-     * @param key search key
+     *
+     * @param table       table to retrieve data from
+     * @param keyColumn   header name to seek in for key
+     * @param key         search key
      * @param valueColumn column to get the value from
      * @return
      */

@@ -35,6 +35,12 @@ There are several extensions already prepared and ready to use:
  - `FailScreenshotsReporterExtension` (prints out error screenshots from [Web testing](Web-testing.md) - if any were generated)
  - `SqlXmlReporterExtension` (copies SQL statements/results from [SqlSteps](Sql-steps.md))
  - `JmsXmlReporterExtension` (copies [JMS](Jms.md) message headers, prints out the message if it is `javax.jms.TextMessage`)
+ - `ScreenshotReporterExtension` (prints out screenshots (except error) from [Web testing](Web-testing.md) - if any were generated)
+   - Frequency of screenshot taking can be controlled by property: 'web.screenshot.reporting.mode'
+     - MANUAL: screenshots from manual step only
+     - WAIT: screenshots after every web wait
+     - STEP: screenshots after every web step
+     - DEBUG: screenshots after every web step and action
 
 To use these extensions simply register the wanted extension as a bean, e.g.:
 ```

@@ -89,6 +89,16 @@ public final class SshSteps {
         return fetchedLog.toString();
     }
 
+    /**
+     * @deprecated
+     * use markLogTime(String logTimeAlias) instead
+     */
+    @Deprecated
+    @Given("log timestamp is saved as [$startTimeAlias]")
+    public void markStartTime(String startTimeAlias) {
+        markLogTime(startTimeAlias);
+    }
+
     @Given("current time is saved as log timestamp [$logTimeAlias]")
     public void markLogTime(String logTimeAlias) {
         testContext.put(logTimeAlias, ZonedDateTime.now());

@@ -70,7 +70,7 @@ public final class SshSteps {
         logCache.clear();
     }
 
-    private String readLog(String systemQualifier, ZonedDateTime startTime, ZonedDateTime endTime) {
+    public String readLog(String systemQualifier, ZonedDateTime startTime, ZonedDateTime endTime) {
         if (logCache.containsKey(startTime, endTime, systemQualifier)) {
             log.info("Log found in cache.");
             return logCache.get(startTime, endTime, systemQualifier);

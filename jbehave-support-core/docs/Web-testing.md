@@ -207,6 +207,7 @@ There are the following actions available at the moment:
 - CLEAR - for clearing text value of input/textarea
 - PRESS - for pressing special keys from the org.openqa.selenium.Keys enum
 - SELECT - for selecting a value in an HTML select and checkbox input
+- SCROLL_ON - for scrolling on element
 
 For building examples table with actions programmatically is possible to use `WebActionBuilder`.
 
@@ -226,6 +227,7 @@ There are the following element properties available:
 - ENABLED
 - SELECTED
 - DISPLAYED
+- DISPLAYED_ON_SCREEN (visible inside of bounds of the screen, works only with javascript browsers)
 - TEXT
 - VALUE
 - ROW_COUNT

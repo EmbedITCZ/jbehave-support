@@ -1,16 +1,22 @@
 package org.jbehavesupport.core.internal.web.property;
 
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.web.WebPropertyContext;
 import org.jbehavesupport.core.web.WebProperty;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@RequiredArgsConstructor
 @Configuration
 public class DefaultWebProperties {
+
+    private final WebDriver driver;
 
     @Bean
     public WebProperty<Boolean> enabledWebProperty() {
@@ -83,4 +89,40 @@ public class DefaultWebProperties {
         };
     }
 
+    @Bean
+    public WebProperty<Boolean> displayedOnScreenWebProperty() {
+        return new AbstractWebProperty<Boolean>() {
+            @Override
+            public String name() {
+                return "DISPLAYED_ON_SCREEN";
+            }
+
+            @Override
+            public Boolean value(WebPropertyContext ctx) {
+                try {
+                    WebElement element = findElement(ctx);
+                    boolean isDisplayed = element.isDisplayed();
+                    if (driver instanceof JavascriptExecutor) {
+                        boolean displayedOnScreen = (Boolean) ((JavascriptExecutor) driver).executeScript(
+                            "var elem = arguments[0],                 " +
+                                "  box = elem.getBoundingClientRect(),    " +
+                                "  cx = box.left + box.width / 2,         " +
+                                "  cy = box.top + box.height / 2,         " +
+                                "  e = document.elementFromPoint(cx, cy); " +
+                                "for (; e; e = e.parentElement) {         " +
+                                "  if (e === elem)                        " +
+                                "    return true;                         " +
+                                "}                                        " +
+                                "return false;                            "
+                            , element);
+                        return (isDisplayed && displayedOnScreen);
+                    } else {
+                        throw new AssertionError("web driver is not instance of JavascriptExecutor");
+                    }
+                } catch (NoSuchElementException e) {
+                    return false;
+                }
+            }
+        };
+    }
 }

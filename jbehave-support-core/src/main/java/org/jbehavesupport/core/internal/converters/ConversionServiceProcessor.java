@@ -20,6 +20,7 @@ public class ConversionServiceProcessor {
         conversionService.addConverter(new LocalDateTimeConverter());
         conversionService.addConverter(new ZonedDateTimeConverter());
         conversionService.addConverter(new XmlGregorianCalendarConverter());
+        conversionService.addConverterFactory(new StringToXmlEnumConverterFactory());
     }
 
 }

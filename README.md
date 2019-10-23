@@ -5,11 +5,23 @@
 
 # jbehave-support
 
-Light extension to [JBehave](https://jbehave.org).
+Light extension to [JBehave](https://jbehave.org) using Spring framework.
+
+Provides several base steps for working with 
+[REST](jbehave-support-core/docs/Rest-api.md), 
+[SOAP](jbehave-support-core/docs/Web-service.md), 
+[JMS](jbehave-support-core/docs/Jms.md), 
+[SQL](jbehave-support-core/docs/Sql-steps.md), 
+[SSH](jbehave-support-core/docs/Ssh.md), 
+[(Selenium based) web testing](jbehave-support-core/docs/Web-testing.md), 
+[health checks](jbehave-support-core/docs/Health-checks.md) 
+along with support for [verification](jbehave-support-core/docs/General.md#verification), 
+[expression commands](jbehave-support-core/docs/Expression-commands.md) and 
+basic [reporting](jbehave-support-core/docs/Reporting.md).
 
 ## Contents
 
-1. [Simple use case](#simple-use-case)
+1. [Simple use case](#simple-use-case---web-testing)
     1. [Add to Java project as a Maven dependency](#add-to-java-project-as-a-maven-dependency)
     2. [Create a TestConfig configuration file](#create-a-testconfig-configuration-file)
     3. [Create a ui-mapping file](#create-a-ui-mapping-file)

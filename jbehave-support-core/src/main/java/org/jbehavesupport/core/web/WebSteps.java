@@ -11,6 +11,7 @@ import static org.jbehavesupport.core.web.WebScreenshotType.STEP;
 import static org.jbehavesupport.core.web.WebScreenshotType.WAIT;
 import static org.jbehavesupport.core.web.WebScreenshotType.MANUAL;
 import static org.jbehavesupport.core.web.WebScreenshotType.FAILED;
+import static org.jbehavesupport.core.internal.ExamplesTableUtil.assertMandatoryColumns;
 
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -130,6 +131,7 @@ public final class WebSteps {
 
     @When("on [$page] page these actions are performed:$actionTable")
     public void performActions(String page, ExamplesTable actionTable) {
+        assertMandatoryColumns(actionTable, ELEMENT, ACTION);
         for (Row actionRow : actionTable.getRowsAsParameters()) {
             Map<String, String> actionValues = actionRow.values();
 
@@ -151,6 +153,8 @@ public final class WebSteps {
     @Given("on [$page] page these values are saved:$table")
     @Then("on [$page] page these values are saved:$table")
     public void storePropertiesInContext(String page, ExamplesTable table) {
+        assertMandatoryColumns(table, ELEMENT, PROPERTY, ExampleTableConstraints.ALIAS);
+
         for (Row row : table.getRowsAsParameters()) {
             Map<String, String> values = row.values();
             Object value = resolvePropertyValue(page, values);
@@ -161,6 +165,8 @@ public final class WebSteps {
 
     @Then("on [$page] page these conditions are verified:$table")
     public void verifyProperties(String page, ExamplesTable table) {
+        assertMandatoryColumns(table, ELEMENT, PROPERTY, ExampleTableConstraints.DATA);
+
         for (Row row : table.getRowsAsParameters()) {
             Map<String, String> values = row.values();
 
@@ -349,5 +355,4 @@ public final class WebSteps {
         assertThat(handles).as("no opened windows").isNotEmpty();
         return handles.stream().skip(handles.size() - 1).findFirst().get();
     }
-
 }

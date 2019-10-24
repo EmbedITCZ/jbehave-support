@@ -3,6 +3,7 @@ package org.jbehavesupport.core.internal;
 import java.lang.reflect.Type;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +18,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
+import org.assertj.core.api.SoftAssertions;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Parameters;
 import org.springframework.util.Assert;
@@ -140,6 +142,24 @@ public class ExamplesTableUtil {
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("Record not found in examples table under key: " + keyColumn))
             .get(valueColumn);
+    }
+
+    /**
+     * Checks whether examplesTable has all mandatory columns
+     *
+     * @param examplesTable     table to be checked
+     * @param expectedColumns   list of mandatory columns
+     *
+     * @throws org.assertj.core.api.SoftAssertionError   for every column missing in table
+     */
+    public static void assertMandatoryColumns(ExamplesTable examplesTable, String ... expectedColumns) {
+        SoftAssertions softly = new SoftAssertions();
+        Arrays.stream(expectedColumns).forEach(key -> {
+            if (examplesTable.getHeaders().stream().noneMatch(column -> column.equals(key))) {
+                softly.fail("Examples table must contains column '" + key + "'");
+            }
+        });
+        softly.assertAll();
     }
 
     private static List<Map<String, String>> convertTable(ExamplesTable table, boolean caseSensitiveMap) {

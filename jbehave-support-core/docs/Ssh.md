@@ -47,13 +47,6 @@ Then the following data are present in [TEST] log:
 ! n|salesPoint.numApprovedPOS|{CP:BSL_APPROVED_POS} !
 ```
 
-Absence of values from log can also be checked in a similar fashion:
-```
-Then the following data are not present in [TEST] log:
-| missingData               |
-| salesPoint.numApprovedPOS |
-```
-
 Alternatively the steps above can also be used with specified verifier for each row (useful for matching by regular expressions):
 ```
 Then the following data are present in [TEST] log:

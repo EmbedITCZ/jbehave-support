@@ -60,9 +60,9 @@ import static org.springframework.util.Assert.notNull;
 @RequiredArgsConstructor
 public class SshHandler {
     private final TestContext testContext;
-    private final  ConfigurableListableBeanFactory beanFactory;
-    private final  ExamplesEvaluationTableConverter tableConverter;
-    private final  VerifierResolver verifierResolver;
+    private final ConfigurableListableBeanFactory beanFactory;
+    private final ExamplesEvaluationTableConverter tableConverter;
+    private final VerifierResolver verifierResolver;
 
 
     @Value("${ssh.max.assert.count:10}")
@@ -86,15 +86,15 @@ public class SshHandler {
         testContext.put(logTimeAlias, ZonedDateTime.now());
     }
 
-    public void saveLogStartTime(){
+    public void saveLogStartTime() {
         logStartTime = ZonedDateTime.now();
     }
 
-    public void saveLogEndTime(){
+    public void saveLogEndTime() {
         logEndTime = ZonedDateTime.now().plusSeconds(1);
     }
 
-    public void saveLogStartTimeOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
+    public void setLogStartTimeOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
         logStartTime = ZonedDateTime.parse(contextAlias.getValue());
     }
 
@@ -107,8 +107,7 @@ public class SshHandler {
     }
 
     /**
-     * @deprecated
-     * use logContainsData(String systemQualifier, String stringTable) instead
+     * @deprecated use logContainsData(String systemQualifier, String stringTable) instead
      * If you set timestamps via separate steps, log reading is more accurate and use cache
      */
     public void checkLogDataPresence(String systemQualifier, String startTimeAlias, String stringTable, Verifier verifier) {
@@ -119,8 +118,8 @@ public class SshHandler {
      * By overriding this method you can change how log is read.
      *
      * @param systemQualifier SshTemplate qualifier
-     * @param startTime log start search timestamp
-     * @param endTime log search end timestamp
+     * @param startTime       log start search timestamp
+     * @param endTime         log search end timestamp
      */
     protected String readLog(String systemQualifier, ZonedDateTime startTime, ZonedDateTime endTime) {
         if (logCache.containsKey(startTime, endTime, systemQualifier)) {
@@ -159,9 +158,9 @@ public class SshHandler {
     /**
      * By overriding this method you can change how rows are verified.
      *
-     * @param verifier verifier to be used
+     * @param verifier   verifier to be used
      * @param searchData exampleTable to be verified
-     * @param logData log content
+     * @param logData    log content
      */
     protected void verifyRows(Verifier verifier, ExamplesTable searchData, String logData) {
         List<Map<String, String>> convertedTable = convertTable(searchData);
@@ -211,7 +210,7 @@ public class SshHandler {
             .stream()
             .filter(e -> !VERIFIER.equals(e))
             .findAny();
-        if (searchColumnName.isPresent()){
+        if (searchColumnName.isPresent()) {
             return searchColumnName.get();
         } else {
             throw new IllegalArgumentException("No search column found in example table");

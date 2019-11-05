@@ -45,7 +45,7 @@ public final class SshSteps {
 
     @Given("log start timestamp is set to [$contextAlias]")
     public void saveLogStartTimeOnSaved(ExpressionEvaluatingParameter<String> contextAlias) {
-        sshHandler.saveLogStartTimeOnSaved(contextAlias);
+        sshHandler.setLogStartTimeOnSaved(contextAlias);
     }
 
     @Given("log end timestamp is set to [$contextAlias]")

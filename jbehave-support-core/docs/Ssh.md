@@ -21,7 +21,7 @@ If you have more specific needs not covered by this helper, feel free to combine
 Supported authentication methods are username with password or public key (optionally also with passphrase).
 In case that both password and public key are set then the public key gets precedence and password is ignored.
 
-Customization is allowed by overriding SshHandler and register custom handler as a bean.
+Customization is allowed by overriding SshHandler and registering custom handler as a bean.
 
 #### Limiting error count in logs
 

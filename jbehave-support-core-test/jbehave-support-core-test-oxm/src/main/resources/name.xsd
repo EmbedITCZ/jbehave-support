@@ -14,6 +14,7 @@
                 <xs:element name="passDate" type="xs:dateTime" nillable="true" minOccurs="0"/>
                 <xs:element name="photoInfo" type="tns:PhotoInfo" minOccurs="0"/>
                 <xs:element name="maxResults" type="xs:long"/>
+                <xs:element name="car" type="tns:CarName" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -95,5 +96,12 @@
             <xs:element name="Relation" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
+
+    <xs:simpleType name="CarName">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Audi"/>
+            <xs:enumeration value="Porsche"/>
+        </xs:restriction>
+    </xs:simpleType>
 
 </xs:schema>

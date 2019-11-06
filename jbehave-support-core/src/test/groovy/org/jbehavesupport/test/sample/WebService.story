@@ -13,6 +13,7 @@ Given [NameRequest] data for [TEST]:
 | address.0  | {RANDOM_EMAIL}    |
 | passDate   | {RANDOM_DATE}     |
 | maxResults | {RANDOM_NUMBER:9} |
+| car        | Porsche           |
 When [NameRequest] is sent to [TEST] with success
 Then [NameResponse] values from [TEST] match:
 | name      | expectedValue | verifier |

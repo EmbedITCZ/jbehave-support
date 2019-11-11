@@ -1,12 +1,16 @@
 # Test application
 This module contains test application for core integration tests.
 
-Module contains two submodules:
+Module contains three submodules:
 - jbehave-support-core-test-oxm
 - jbehave-support-core-test-app
+- jbehave-support-core-test-app-domain
 
 ## oxm
 Module contains jaxb for ws in app module.
+
+## app-domain
+Module contains data classes for REST controller.
 
 ## app
 Module contains very simple spring boot application.

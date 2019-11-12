@@ -56,7 +56,7 @@ Current date command returns text form of current date.
 The CurrentDateCommand can be used in JBehave's tables in three ways:
 * ```{CURRENT_DATE}``` without parameter, is evaluated to the current date
 * ```{CURRENT_DATE:<number>}``` with numeric parameter, is evaluated to the current date shifted about given number of days
-* ```{CURRENT_DATE:<period>}``` with period parameter, is evaluated to the current day shifted about given period of time, see {@link Period#parse}
+* ```{CURRENT_DATE:<period>}``` with period parameter, is evaluated to the current day shifted about given period of time, see {@link java.time.Period#parse}
 
 #### CURRENT_DATE_TIME
 Current datetime command returns text form of current datetime. 
@@ -64,7 +64,7 @@ Current datetime command returns text form of current datetime.
 The CurrentDateTimeCommand can be used in JBehave's tables in three ways:
 * ```{CURRENT_DATE_TIME}``` without parameter, is evaluated to the current datetime
 * ```{CURRENT_DATE_TIME:<number>}``` with numeric parameter, is evaluated to the current datetime shifted about given number of seconds
-* ```{CURRENT_DATE_TIME:<period>}``` with period parameter, is evaluated to the current datetime shifted about given period of time, see {@link Period#parse}
+* ```{CURRENT_DATE_TIME:<period>}``` with period parameter, is evaluated to the current datetime shifted about given period of time, see {@link java.time.Period#parse}
 
 #### DATE_PARSE
 Command for parsing date.

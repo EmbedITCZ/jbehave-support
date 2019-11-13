@@ -21,6 +21,8 @@ If you have more specific needs not covered by this helper, feel free to combine
 Supported authentication methods are username with password or public key (optionally also with passphrase).
 In case that both password and public key are set then the public key gets precedence and password is ignored.
 
+Customization is allowed by overriding SshHandler and registering custom handler as a bean.
+
 #### Limiting error count in logs
 
 Ssh steps use soft assertions to report errors - by default only first 10 comparison errors are reported (to avoid out of memory problems with long logs).  
@@ -43,13 +45,6 @@ Then the following data are present in [TEST] log:
 {headerSeparator=!,valueSeparator=!}
 ! presentData                                       !
 ! n|salesPoint.numApprovedPOS|{CP:BSL_APPROVED_POS} !
-```
-
-Absence of values from log can also be checked in a similar fashion:
-```
-Then the following data are not present in [TEST] log:
-| missingData               |
-| salesPoint.numApprovedPOS |
 ```
 
 Alternatively the steps above can also be used with specified verifier for each row (useful for matching by regular expressions):

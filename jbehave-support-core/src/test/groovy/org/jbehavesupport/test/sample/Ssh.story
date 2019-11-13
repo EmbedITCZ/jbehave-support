@@ -5,9 +5,9 @@ Then the following data are present in [TEST] log:
 | unexpected |
 
 Scenario: Test data are not present in log
-Then the following data are not present in [TEST] log:
-| header |
-| fubar  |
+Then the following data are present in [TEST] log:
+| header | verifier     |
+| fubar  | NOT_CONTAINS |
 
 Scenario: Test verifier support when searching from log
 Then the following data are present in [TEST] log:

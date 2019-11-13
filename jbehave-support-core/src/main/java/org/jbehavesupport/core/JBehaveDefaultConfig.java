@@ -16,6 +16,7 @@ import org.jbehavesupport.core.internal.web.property.WebPropertyResolverImpl;
 import org.jbehavesupport.core.internal.web.waitcondition.WebWaitConditionResolverImpl;
 import org.jbehavesupport.core.internal.web.webdriver.WebDriverDelegatingInterceptor;
 import org.jbehavesupport.core.internal.web.webdriver.WebDriverFactoryResolverImpl;
+import org.jbehavesupport.core.ssh.SshHandler;
 import org.jbehavesupport.core.support.TimeFacade;
 
 import org.jbehavesupport.core.verification.Verifier;
@@ -35,6 +36,7 @@ import org.jbehavesupport.core.web.WebWaitCondition;
 import org.jbehavesupport.core.web.WebWaitConditionResolver;
 import org.openqa.selenium.WebDriver;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -106,6 +108,13 @@ public class JBehaveDefaultConfig {
     @ConditionalOnMissingBean(WebDriverFactoryResolver.class)
     public WebDriverFactoryResolver webDriverFactoryResolver(List<WebDriverFactory> webDriverFactories) {
         return new WebDriverFactoryResolverImpl(webDriverFactories);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(SshHandler.class)
+    public SshHandler testSshHandler(TestContext testContext, ConfigurableListableBeanFactory beanFactory,
+                                     ExamplesEvaluationTableConverter tableConverter, VerifierResolver verifierResolver) {
+        return new SshHandler(testContext, beanFactory, tableConverter, verifierResolver);
     }
 
     @Bean

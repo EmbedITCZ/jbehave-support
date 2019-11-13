@@ -156,7 +156,7 @@ public class ExamplesTableUtil {
         SoftAssertions softly = new SoftAssertions();
         Arrays.stream(expectedColumns).forEach(key -> {
             if (examplesTable.getHeaders().stream().noneMatch(column -> column.equals(key))) {
-                softly.fail("Examples table must contains column '" + key + "'");
+                softly.fail("Examples table must contain column '" + key + "'");
             }
         });
         softly.assertAll();

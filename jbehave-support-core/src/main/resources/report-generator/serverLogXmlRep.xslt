@@ -15,7 +15,12 @@
                         <a href="#shell-logs-body" data-toggle="collapse" class="float-right">Collapse</a>
                     </div>
                     <div id="shell-logs-body" class="card-body collapse show">
-                        <xsl:call-template name="system"/>
+                        <xsl:choose>
+                            <xsl:when test="system">
+                                <xsl:call-template name="system"/>
+                            </xsl:when>
+                            <xsl:otherwise>No logs available</xsl:otherwise>
+                        </xsl:choose>
                     </div>
                 </div>
             </p>
@@ -26,7 +31,7 @@
         <xsl:for-each select="system">
             <div>
                 <a href="#sshLogsDetails-{position()}" data-toggle="collapse">
-                    +<xsl:value-of select="@id"/>
+                    +<xsl:value-of select="@system"/>
                 </a>
                 <div id="sshLogsDetails-{position()}" class="collapse">
                     <xsl:call-template name="log"/>
@@ -41,36 +46,58 @@
                 <xsl:number level="any"/>
             </xsl:variable>
 
-            <div>
-                <table width="100%" class="sshLog">
-                    <tbody>
-                        <tr>
-                            <td width="15%" class="label">Start log:</td>
-                            <td width="85%" class="time-string-millis">
-                                <xsl:value-of select="@startDate"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label">End log:</td>
-                            <td class="time-string-millis">
-                                <xsl:value-of select="@endDate"/>
-                            </td>
-                        </tr>
+            <table width="100%" class="sshLog">
+                <tbody>
+                    <tr>
+                        <td width="15%" class="label">Start log:</td>
+                        <td width="85%" class="time-string-millis">
+                            <xsl:value-of select="@startDate"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">End log:</td>
+                        <td class="time-string-millis">
+                            <xsl:value-of select="@endDate"/>
+                        </td>
+                    </tr>
+                    <xsl:if test="not(@host = 'N/A')">
                         <tr>
                             <td class="label">Host:</td>
                             <td>
                                 <xsl:value-of select="@host"/>
                             </td>
                         </tr>
+                    </xsl:if>
+                    <xsl:if test="not(@logPath = 'N/A')">
                         <tr>
                             <td class="label">Log path:</td>
                             <td>
                                 <xsl:value-of select="@logPath"/>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                    </xsl:if>
+                </tbody>
+            </table>
 
+            <xsl:call-template name="text"/>
+            <xsl:call-template name="file"/>
+            <xsl:call-template name="fail"/>
+
+            <div id="sshlog-{$logNum}" class="collapse">
+                <p>
+                    <pre>
+                        <xsl:value-of select="."/>
+                    </pre>
+                </p>
+            </div>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template name="text">
+        <xsl:for-each select="text">
+                <xsl:variable name="logNum">
+                    <xsl:number level="any"/>
+                </xsl:variable>
                 <div class="btn-group form-group align-self-center">
                     <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide
                         log
@@ -81,23 +108,50 @@
                         <i class="fa fa-copy" aria-hidden="true"></i>
                     </button>
                 </div>
-
-                <div id="sshlog-{$logNum}" class="collapse">
-                    <p>
-                        <xsl:if test="fail">
-                            No log available
-                            <br/>
-                        </xsl:if>
-
-                        <pre>
-                            <xsl:if test="fail">
-                                <xsl:attribute name="class">failed</xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="."/>
-                        </pre>
-                    </p>
-                </div>
-            </div>
         </xsl:for-each>
     </xsl:template>
+
+    <xsl:template name="file">
+        <xsl:for-each select="file">
+            <xsl:variable name="logNum">
+                <xsl:number level="any"/>
+            </xsl:variable>
+            <xsl:if test="not(fail)">
+                <div>
+                    <label>
+                        <i>
+                            Log content was to long to be printed, it was saved to the
+                        </i>
+                    </label>
+                    <a target="_blank">
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="."/>
+                        </xsl:attribute>
+                        file.
+                    </a>
+                </div>
+            </xsl:if>
+            <xsl:call-template name="fail"/>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template name="fail">
+        <xsl:for-each select="fail">
+            <xsl:variable name="logNum">
+                <xsl:number level="any"/>
+            </xsl:variable>
+            <p>
+                <label>
+                    <i>
+                        No log available
+                    </i>
+                </label>
+                <br/>
+                <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide
+                    stacktrace
+                </a>
+            </p>
+        </xsl:for-each>
+    </xsl:template>
+
 </xsl:stylesheet>

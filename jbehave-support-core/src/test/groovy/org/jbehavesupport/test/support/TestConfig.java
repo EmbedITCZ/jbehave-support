@@ -3,8 +3,12 @@ package org.jbehavesupport.test.support;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonMap;
 import static org.jbehavesupport.core.ssh.SshSetting.builder;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
@@ -12,6 +16,7 @@ import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
@@ -30,6 +35,7 @@ import org.jbehavesupport.core.rest.RestServiceHandler;
 import org.jbehavesupport.core.rest.RestTemplateConfigurer;
 import org.jbehavesupport.core.ssh.RollingLogResolver;
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
+import org.jbehavesupport.core.ssh.SshLog;
 import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
 import org.jbehavesupport.core.support.YamlPropertiesConfigurer;
@@ -114,8 +120,8 @@ public class TestConfig {
     }
 
     @Bean
-    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory) {
-        return new ServerLogXmlReporterExtension(beanFactory);
+    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, TestContext testContext, FileNameResolver fileNameResolver) {
+        return new ServerLogXmlReporterExtension(testContext, fileNameResolver);
     }
 
     @Bean
@@ -193,6 +199,24 @@ public class TestConfig {
         SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver);
 
         return new SshTemplate[]{passwordTemplate, keyTemplate};
+    }
+
+    @Bean
+    @Qualifier("LONG_REPORTABLE")
+    SshTemplate mockSshTemplate() throws IOException {
+        SshSetting sshSetting = builder()
+            .hostname("fake hostname")
+            .user("fake user")
+            .password("asdf5684Daa")
+            .port(0)
+            .logPath("fake/log/api.log")
+            .build();
+        SshLog sshLog = new SshLog("Random really long string: " + RandomStringUtils.random(10001, true, true), sshSetting);
+        SshTemplate sshTemplate = mock(SshTemplate.class);
+        when(sshTemplate.copyLog(any(ZonedDateTime.class), any(ZonedDateTime.class))).thenReturn(sshLog);
+        when(sshTemplate.isReportable()).thenReturn(true);
+        when(sshTemplate.getSshSetting()).thenReturn(sshSetting);
+        return sshTemplate;
     }
 
     @Bean

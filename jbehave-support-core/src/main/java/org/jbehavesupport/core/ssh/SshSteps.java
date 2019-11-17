@@ -79,4 +79,9 @@ public final class SshSteps {
     public void dataNotInLog(String systemQualifier, String stringTable) {
         sshHandler.checkLogDataPresence(systemQualifier, stringTable, notContainsVerifier);
     }
+
+    @Given("ssh reporter mode is set to [$mode]")
+    public void setSshReporterMode(ExpressionEvaluatingParameter<String> mode) {
+        sshHandler.setSshReporterMode( mode);
+    }
 }

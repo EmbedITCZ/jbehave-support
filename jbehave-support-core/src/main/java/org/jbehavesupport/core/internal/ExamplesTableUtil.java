@@ -154,13 +154,11 @@ public class ExamplesTableUtil {
      * @throws java.lang.IllegalArgumentException        when expectedColumns is missing
      */
     public static void assertMandatoryColumns(ExamplesTable examplesTable, String ... expectedColumns) {
-        if (expectedColumns.length < 1){
-            throw new IllegalArgumentException("expectedColumns must not be empty");
-        }
+        Assert.notEmpty(expectedColumns, "expectedColumns must not be empty");
         SoftAssertions softly = new SoftAssertions();
         Arrays.stream(expectedColumns).forEach(key -> {
             if (examplesTable.getHeaders().stream().noneMatch(column -> column.equals(key))) {
-                softly.fail("Examples table must contains column '" + key + "'");
+                softly.fail("Examples table must contain column '" + key + "'");
             }
         });
         softly.assertAll();

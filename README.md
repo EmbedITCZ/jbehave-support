@@ -142,4 +142,10 @@ public class GoogleStory extends AbstractSpringStories {
 - [Examples](jbehave-support-core/docs/examples/Examples.md) - more example projects like the [simple use case](#simple-use-case---web-testing)
 - [core](jbehave-support-core/README.md) - details about integration and usage 
 
+## Thanks
+### Jetbrains
+For providing us open source licenses to IntelliJ IDEA.
 
+### [![Browserstack](docs/browserstack.png)](https://browserstack.com) 
+for providing us with a free license for our project.
+We use BrowserStack in our build pipeline to make sure that our selenium based testing components are working correctly across multiple browsers.

@@ -58,4 +58,11 @@ public WsXmlReporterExtension wsXmlReporterExtension() {
 }
 ```
 
+#### Report steps
+Following step allows setting specific server log report extension mode
+Step throws AssertionError when ServerLogXmlReporterExtension isn't registered.
+```
+Given ssh reporter mode is set to [TEMPLATE]
+```
+
 ---

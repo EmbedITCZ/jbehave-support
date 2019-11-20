@@ -1,5 +1,6 @@
 package org.jbehavesupport.core.ssh;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.keyvalue.MultiKey;
@@ -7,34 +8,25 @@ import org.apache.commons.collections4.map.LRUMap;
 import org.apache.commons.collections4.map.MultiKeyMap;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.assertj.core.api.SoftAssertions;
-import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.BeforeScenario;
-import org.jbehave.core.annotations.ScenarioType;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
-import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
 import org.jbehavesupport.core.verification.Verifier;
 import org.jbehavesupport.core.verification.VerifierResolver;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
@@ -74,62 +66,22 @@ public class SshHandler {
     private final ExamplesEvaluationTableConverter tableConverter;
     private final VerifierResolver verifierResolver;
 
-    @Autowired(required = false)
-    ServerLogXmlReporterExtension serverLogXmlReporterExtension;
-
-    @Value("${ssh.reporting.mode:CACHE}")
-    SshReportType defaultReportType;
-
     @Value("${ssh.max.assert.count:10}")
     private int maxSoftAssertCount;
 
     private ZonedDateTime scenarioStart;
-    private ZonedDateTime scenarioEnd;
     private ZonedDateTime logStartTime;
     private ZonedDateTime logEndTime;
 
+    @Getter
     private MultiKeyMap<MultiKey, String> logCache = MultiKeyMap.multiKeyMap(new LRUMap());
 
     @BeforeScenario
     public void init() {
         scenarioStart = ZonedDateTime.now();
-        scenarioEnd = null;
         logStartTime = null;
         logEndTime = null;
         logCache.clear();
-        if (serverLogXmlReporterExtension != null) {
-            serverLogXmlReporterExtension.setSshReportType(defaultReportType);
-        }
-    }
-
-    @AfterScenario
-    public void after() {
-        scenarioEnd = ZonedDateTime.now();
-        if (serverLogXmlReporterExtension != null) {
-            if (serverLogXmlReporterExtension.getSshReportType() == SshReportType.CACHE) {
-                logCache.entrySet().stream().forEach(entry -> {
-                    MultiKey newKey = new MultiKey(entry.getKey().getKey(0), entry.getKey().getKey(1), entry.getKey().getKey(2), "N/A", "N/A");
-                    storeInExtension(newKey, (entry.getValue()));
-                });
-            } else if (serverLogXmlReporterExtension.getSshReportType() == SshReportType.FULL) {
-                storeTemplatesLogs(getSshTemplates());
-            } else if (serverLogXmlReporterExtension.getSshReportType() == SshReportType.TEMPLATE) {
-                storeTemplatesLogs(getReportableSshTemplates(getSshTemplates()));
-            }
-        }
-    }
-
-    @AfterScenario(uponType = ScenarioType.ANY, uponOutcome = AfterScenario.Outcome.FAILURE)
-    public void afterFailedScenario() {
-        if (serverLogXmlReporterExtension != null) {
-            if (serverLogXmlReporterExtension.getSshReportType() != SshReportType.TEMPLATE &&
-                serverLogXmlReporterExtension.isLoggingOnFailure()) {
-                if (scenarioEnd == null) {
-                    scenarioEnd = ZonedDateTime.now();
-                }
-                storeTemplatesLogs(getReportableSshTemplates(getSshTemplates()));
-            }
-        }
     }
 
     public void markLogTime(String logTimeAlias) {
@@ -156,18 +108,11 @@ public class SshHandler {
         checkDataPresence(systemQualifier, scenarioStart, stringTable, verifier);
     }
 
-    public void setSshReporterMode(ExpressionEvaluatingParameter<String> mode) {
-        if (serverLogXmlReporterExtension != null) {
-            serverLogXmlReporterExtension.setSshReportType(SshReportType.valueOf(mode.getValue()));
-        } else {
-            log.warn("ServerLogXmlReportExtension is not registered, no logs will be present in report.");
-        }
-    }
-
     /**
      * @deprecated use logContainsData(String systemQualifier, String stringTable) instead
      * If you set timestamps via separate steps, log reading is more accurate and use cache
      */
+    @Deprecated
     public void checkLogDataPresence(String systemQualifier, String startTimeAlias, String stringTable, Verifier verifier) {
         checkDataPresence(systemQualifier, testContext.get(startTimeAlias), stringTable, verifier);
     }
@@ -275,78 +220,24 @@ public class SshHandler {
         }
     }
 
-    private void storeInExtension(MultiKey key, String logContent) {
-        if (serverLogXmlReporterExtension != null) {
-            serverLogXmlReporterExtension.registerLogContent(key, logContent);
-        } else {
-            log.warn("ServerLogXmlReportExtension is not registered, no logs will be present in report.");
-        }
-    }
-
-    private void storeTemplatesLogs(Map<String, List<SshTemplate>> sshTemplates) {
-        sshTemplates.entrySet().stream().forEach(entry ->
-            entry.getValue().stream().forEach(sshTemplate -> {
-                MultiKey multiKey = new MultiKey(entry.getKey(),
-                    scenarioStart.toString(),
-                    scenarioEnd.toString(),
+    public MultiKeyMap<String, String> getTemplateLogs(Map<String, List<SshTemplate>> sshTemplates){
+        ZonedDateTime scenarioEnd = ZonedDateTime.now();
+        MultiKeyMap<String, String> templateLogs = MultiKeyMap.multiKeyMap(new LRUMap());
+        sshTemplates.entrySet().forEach(entry ->
+            entry.getValue().forEach(sshTemplate -> {
+                MultiKey<String> multiKey = new MultiKey(entry.getKey(),
+                    scenarioStart,//.toString(),
+                    scenarioEnd,//.toString(),
                     sshTemplate.getSshSetting().getHostname() + ":" + sshTemplate.getSshSetting().getPort(),
                     sshTemplate.getSshSetting().getLogPath());
                 try {
                     String sshLog = sshTemplate.copyLog(scenarioStart, scenarioEnd).getLogContents();
-                    storeInExtension(multiKey, sshLog);
+                    templateLogs.put(multiKey, sshLog);
                 } catch (Exception e) {
-                    storeInExtension(multiKey, ExceptionUtils.getStackTrace(e));
+                    templateLogs.put(multiKey, ExceptionUtils.getStackTrace(e));
                 }
             })
         );
-    }
-
-    private <T> Map<String, List<T>> getSshTemplatesForType(Class<T> clazz) {
-        Map<String, List<T>> sshTemplates = new HashMap<>();
-        String[] beanNames = beanFactory.getBeanNamesForType(clazz);
-        for (String beanName : beanNames) {
-            BeanDefinition bd = beanFactory.getMergedBeanDefinition(beanName);
-            if (bd instanceof RootBeanDefinition) {
-                Qualifier qualifier = ((RootBeanDefinition) bd).getResolvedFactoryMethod().getAnnotation(Qualifier.class);
-                if (sshTemplates.get(qualifier.value()) == null) {
-                    sshTemplates.put(qualifier.value(), new ArrayList<>());
-                }
-                sshTemplates.get(qualifier.value()).add((T) beanFactory.getBean(beanName));
-            }
-        }
-        return sshTemplates;
-    }
-
-    private Map<String, List<SshTemplate>> getSshTemplates() {
-        Map<String, List<SshTemplate[]>> sshTemplatesArray = getSshTemplatesForType(SshTemplate[].class);
-        Map<String, List<SshTemplate>> sshTemplates = getSshTemplatesForType(SshTemplate.class);
-
-        //merge both maps together to simple Map<String, List<SshTemplate>>
-        sshTemplatesArray.entrySet()
-            .stream()
-            .forEach(entry -> {
-                List<SshTemplate> flattenedSshTemplatesArray = entry.getValue()
-                    .stream()
-                    .flatMap(Arrays::stream)
-                    .collect(Collectors.toList());
-                if (sshTemplates.get(entry.getKey()) != null) {
-                    sshTemplates.get(entry.getKey()).addAll(flattenedSshTemplatesArray);
-                } else {
-                    sshTemplates.put(entry.getKey(), flattenedSshTemplatesArray);
-                }
-            });
-
-        return sshTemplates;
-    }
-
-    private Map<String, List<SshTemplate>> getReportableSshTemplates(Map<String, List<SshTemplate>> sshTemplates) {
-        Map<String, List<SshTemplate>> reportableSshTemplates = new HashMap<>();
-        sshTemplates.entrySet().stream().forEach(entry -> {
-            List<SshTemplate> result = entry.getValue().stream().filter(template -> template.isReportable()).collect(Collectors.toList());
-            if (!result.isEmpty()) {
-                reportableSshTemplates.put(entry.getKey(), result);
-            }
-        });
-        return reportableSshTemplates;
+        return templateLogs;
     }
 }

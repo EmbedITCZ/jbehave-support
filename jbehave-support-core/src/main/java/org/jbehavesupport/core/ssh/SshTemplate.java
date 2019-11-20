@@ -45,6 +45,11 @@ public class SshTemplate {
         static final String CMD_DELIMITER = "; ";
     }
 
+    /**
+     * @deprecated
+     * use {@link #SshTemplate(SshSetting, String, RollingLogResolver, boolean)}instead
+     */
+    @Deprecated
     public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver) {
         this(sshSetting, timestampFormat, rollingLogResolver, false);
     }

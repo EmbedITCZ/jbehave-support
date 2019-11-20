@@ -21,14 +21,25 @@ along with support for [verification](jbehave-support-core/docs/General.md#verif
 basic [reporting](jbehave-support-core/docs/Reporting.md).
 
 ## Contents
-
+1. [Modules](#modules)
+1. [Contributors guide](#contributors-guide)
+1. [Examples](#examples)
 1. [Simple use case](#simple-use-case---web-testing)
     1. [Add to Java project as a Maven dependency](#add-to-java-project-as-a-maven-dependency)
     2. [Create a TestConfig configuration file](#create-a-testconfig-configuration-file)
     3. [Create a ui-mapping file](#create-a-ui-mapping-file)
     4. [Write your story](#write-your-story)
     5. [Write your story class](#write-your-story-class)
-2. [Modules](#modules)
+
+## Modules
+- [core](jbehave-support-core/README.md) - details about integration and usage
+- [core-test](jbehave-support-core-test/README.md) - contains details about the simple application used for integration tests
+    
+## Contributors guide
+Contributors guide can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## Examples
+- [examples](jbehave-support-core/docs/examples/Examples.md) - more example projects like the [simple use case](#simple-use-case---web-testing) shown below.
     
 ## Simple use case - Web testing
 
@@ -137,9 +148,4 @@ public class GoogleStory extends AbstractSpringStories {
 }
 ```
 **This class is runnable. When you run it, it runs your story.**
-
-## Modules
-- [Examples](jbehave-support-core/docs/examples/Examples.md) - more example projects like the [simple use case](#simple-use-case---web-testing)
-- [core](jbehave-support-core/README.md) - details about integration and usage 
-
 

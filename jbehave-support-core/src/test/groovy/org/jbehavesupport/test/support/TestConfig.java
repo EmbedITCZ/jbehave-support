@@ -35,6 +35,7 @@ import org.jbehavesupport.core.rest.RestServiceHandler;
 import org.jbehavesupport.core.rest.RestTemplateConfigurer;
 import org.jbehavesupport.core.ssh.RollingLogResolver;
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
+import org.jbehavesupport.core.ssh.SshHandler;
 import org.jbehavesupport.core.ssh.SshLog;
 import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
@@ -120,8 +121,8 @@ public class TestConfig {
     }
 
     @Bean
-    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, TestContext testContext, FileNameResolver fileNameResolver) {
-        return new ServerLogXmlReporterExtension(testContext, fileNameResolver);
+    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, SshHandler sshHandler,TestContext testContext, FileNameResolver fileNameResolver) {
+        return new ServerLogXmlReporterExtension(testContext, fileNameResolver, sshHandler, beanFactory);
     }
 
     @Bean

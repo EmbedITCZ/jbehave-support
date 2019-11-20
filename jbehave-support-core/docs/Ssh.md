@@ -72,10 +72,3 @@ Given log start timestamp is set to [NCAKO_1]
 Given log end timestamp is set to [NCAKO_2]
 ```
 Afterwards the same principle of searching the logs as described above applies
-
-#### Ssh reporter mode
-Following step allows setting specific server log report extension mode
-```
-Given ssh reporter mode is set to [TEMPLATE]
-```
-

@@ -79,9 +79,15 @@
                 </tbody>
             </table>
 
-            <xsl:call-template name="text"/>
-            <xsl:call-template name="file"/>
-            <xsl:call-template name="fail"/>
+            <xsl:call-template name="text">
+                <xsl:with-param name="logNum" select="$logNum"/>
+            </xsl:call-template>
+            <xsl:call-template name="file">
+                <xsl:with-param name="logNum" select="$logNum"/>
+            </xsl:call-template>
+            <xsl:call-template name="fail">
+                <xsl:with-param name="logNum" select="$logNum"/>
+            </xsl:call-template>
 
             <div id="sshlog-{$logNum}" class="collapse">
                 <p>
@@ -94,10 +100,8 @@
     </xsl:template>
 
     <xsl:template name="text">
+        <xsl:param name="logNum"/>
         <xsl:for-each select="text">
-                <xsl:variable name="logNum">
-                    <xsl:number level="any"/>
-                </xsl:variable>
                 <div class="btn-group form-group align-self-center">
                     <a href="#sshlog-{$logNum}" data-toggle="collapse" class="btn btn-sm btn-outline-primary">Show/hide
                         log
@@ -112,10 +116,8 @@
     </xsl:template>
 
     <xsl:template name="file">
+        <xsl:param name="logNum"/>
         <xsl:for-each select="file">
-            <xsl:variable name="logNum">
-                <xsl:number level="any"/>
-            </xsl:variable>
             <xsl:if test="not(fail)">
                 <div>
                     <label>
@@ -131,15 +133,15 @@
                     </a>
                 </div>
             </xsl:if>
-            <xsl:call-template name="fail"/>
+            <xsl:call-template name="fail">
+                <xsl:with-param name="logNum" select="$logNum"/>
+            </xsl:call-template>
         </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="fail">
+        <xsl:param name="logNum"/>
         <xsl:for-each select="fail">
-            <xsl:variable name="logNum">
-                <xsl:number level="any"/>
-            </xsl:variable>
             <p>
                 <label>
                     <i>

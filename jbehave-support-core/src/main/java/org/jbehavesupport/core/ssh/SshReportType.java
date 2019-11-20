@@ -1,7 +1,7 @@
 package org.jbehavesupport.core.ssh;
 
 /**
- *Modes for ServerLogXmlReporterExtension
+ * Modes for ServerLogXmlReporterExtension
  */
 public enum SshReportType {
     FULL,

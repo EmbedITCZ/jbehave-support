@@ -30,6 +30,7 @@ basic [reporting](jbehave-support-core/docs/Reporting.md).
     3. [Create a ui-mapping file](#create-a-ui-mapping-file)
     4. [Write your story](#write-your-story)
     5. [Write your story class](#write-your-story-class)
+1. [Thanks](#thanks)
 
 ## Modules
 - [core](jbehave-support-core/README.md) - details about integration and usage
@@ -149,3 +150,10 @@ public class GoogleStory extends AbstractSpringStories {
 ```
 **This class is runnable. When you run it, it runs your story.**
 
+## Thanks
+### Jetbrains
+For providing us open source licenses to IntelliJ IDEA.
+
+### [![Browserstack](docs/browserstack.png)](https://browserstack.com) 
+for providing us with a free license for our project.
+We use BrowserStack in our build pipeline to make sure that our selenium based testing components are working correctly across multiple browsers.

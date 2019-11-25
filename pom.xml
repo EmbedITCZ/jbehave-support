@@ -63,7 +63,7 @@
         <version.java.target>1.8</version.java.target>
         <version.java.release>1.8</version.java.release>
 
-        <version.jbehave>4.3.5</version.jbehave>
+        <version.jbehave>4.6.1</version.jbehave>
         <version.lombok>1.18.10</version.lombok>
         <version.jbehave-junit-support>4.3.5</version.jbehave-junit-support>
         <version.groovy>2.5.8</version.groovy>

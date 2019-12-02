@@ -93,7 +93,7 @@
         <version.moxy>2.7.5</version.moxy>
         <version.saaj-impl>1.5.1</version.saaj-impl>
         <version.javax-activation>1.2.0</version.javax-activation>
-        <version.bytebuddy>1.10.3</version.bytebuddy>
+        <version.bytebuddy>1.10.4</version.bytebuddy>
 
         <plugin.version.maven-javadoc-plugin>3.1.1</plugin.version.maven-javadoc-plugin>
         <plugin.version.maven-failsafe-plugin>2.22.2</plugin.version.maven-failsafe-plugin>

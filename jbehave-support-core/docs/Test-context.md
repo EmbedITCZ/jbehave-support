@@ -15,18 +15,8 @@ Given [ClientRequest] data for [MYAPP]:
 ```
 
 There is also a step used just for storing values in the test context.
-After this step is executed the test context will contain two key-value pairs - CONSTANTS.FIRST_NAME, CONSTANTS.LAST_NAME.
-The prefix CONSTANTS can be replaced by any arbitrary string.
-
-```
-Given the following test constants with prefix CONSTANTS and values:
-| name                  | data               |
-| FIRST_NAME            | {RANDOM_STRING:10} |
-| LAST_NAME             | {RANDOM_STRING:15} |
-```
-
-There's also a variant of the above step without a prefix.
 After this step is executed the test context will contain two key-value pairs - FIRST_NAME, LAST_NAME.
+Data stored by this step will always have UserDefined() metadata.
 
 ```
 Given the following values are saved:

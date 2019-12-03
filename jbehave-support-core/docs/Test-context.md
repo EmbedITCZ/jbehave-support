@@ -16,7 +16,7 @@ Given [ClientRequest] data for [MYAPP]:
 
 There is also a step used just for storing values in the test context.
 After this step is executed the test context will contain two key-value pairs - FIRST_NAME, LAST_NAME.
-Data stored by this step will always have UserDefined() metadata.
+Data stored by this step will always have `userDefined()` metadata.
 
 ```
 Given the following values are saved:

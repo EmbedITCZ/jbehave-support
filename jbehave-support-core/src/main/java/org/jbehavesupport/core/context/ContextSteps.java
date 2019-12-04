@@ -1,7 +1,9 @@
 package org.jbehavesupport.core.context;
 
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
 import static org.jbehavesupport.core.internal.MetadataUtil.userDefined;
-import static org.jbehavesupport.core.support.TestContextUtil.putDataIntoContext;
+import static org.jbehavesupport.core.internal.ExamplesTableUtil.assertMandatoryColumns;
 
 import java.util.Properties;
 
@@ -50,6 +52,9 @@ public final class ContextSteps {
 
     @Given("the following values are saved:$values")
     public void prepareApplicationData(ExamplesTable values) {
-        putDataIntoContext(testContext, values, null);
+        assertMandatoryColumns(values, NAME, DATA);
+        values.getRowsAsParameters().forEach(row ->
+                testContext.put(row.valueAs(NAME, String.class), row.valueAs(DATA, String.class), userDefined())
+        );
     }
 }

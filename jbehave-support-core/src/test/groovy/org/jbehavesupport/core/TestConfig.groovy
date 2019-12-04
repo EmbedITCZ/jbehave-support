@@ -21,11 +21,14 @@ import org.jbehavesupport.core.test.app.oxm.NameRequest
 import org.jbehavesupport.core.test.app.oxm.NameResponse
 import org.jbehavesupport.core.verification.Verifier
 import org.jbehavesupport.core.web.ByFactory
+import org.jbehavesupport.core.web.WebDriverFactory
 import org.jbehavesupport.core.web.WebDriverFactoryResolver
 import org.jbehavesupport.core.ws.WebServiceEndpointRegistry
 import org.jbehavesupport.core.ws.WebServiceHandler
 import org.jbehavesupport.test.support.TestWebServiceHandler
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.springframework.aop.framework.ProxyFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -48,6 +51,9 @@ import java.util.concurrent.RejectedExecutionException
 @Configuration
 @ComponentScan
 class TestConfig {
+
+    public static final FIREFOX_BROWSERSTACK = "firefox-browserstack"
+    public static final SAFARI_BROWSERSTACK = "safari-browserstack"
 
     @Autowired
     private Environment env
@@ -165,4 +171,51 @@ class TestConfig {
     RestServiceHandler testRestServiceHandler() {
         return new RestServiceHandler(env.getProperty("rest.url"))
     }
+
+
+    @Bean
+    WebDriverFactory safariBrowserStackDriverFactory() {
+        return new WebDriverFactory() {
+            @Override
+            RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities()
+                caps.setCapability("os", "OS X")
+                caps.setCapability("browser", "Safari")
+                return getBrowserStackWebDriver(caps)
+            }
+
+            @Override
+            String getName() {
+                return SAFARI_BROWSERSTACK
+            }
+        }
+    }
+
+    @Bean
+    WebDriverFactory firefoxBrowserStackDriverFactory() {
+        new WebDriverFactory() {
+            @Override
+            RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities()
+                caps.setCapability("browser", "Firefox")
+                getBrowserStackWebDriver(caps)
+            }
+
+            @Override
+            String getName() {
+                FIREFOX_BROWSERSTACK
+            }
+        }
+    }
+
+    private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
+        try {
+            RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities)
+            driver.manage().window().maximize()
+            driver
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e)
+        }
+    }
+
 }

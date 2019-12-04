@@ -28,3 +28,8 @@ ssh:
 
 jms:
   brokerUrl: vm://localhost?broker.persistent=false
+
+browser-stack:
+  username: browser-stack-username
+  key: browser-stack-key
+  url: https://${browser-stack.username}:${browser-stack.key}@hub-cloud.browserstack.com/wd/hub

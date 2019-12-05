@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jbehave.core.annotations.Given;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
+import org.jbehavesupport.core.ssh.SshReportType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static org.junit.Assert.assertNotNull;
@@ -17,6 +18,7 @@ public class ReportSteps {
 
     @Given("ssh reporter mode is set to [$mode]")
     public void setSshReporterMode(ExpressionEvaluatingParameter<String> mode) {
-        assertNotNull("serverLogXmlReporterExtension is not registered", serverLogXmlReporterExtension);
+        assertNotNull("ServerLogXmlReporterExtension is not registered", serverLogXmlReporterExtension);
+        serverLogXmlReporterExtension.setSshReportMode(SshReportType.valueOf(mode.getValue()));
     }
 }

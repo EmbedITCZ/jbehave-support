@@ -45,8 +45,8 @@ There are several extensions already prepared and ready to use:
     - Content can be controlled by property: ssh.reporting.mode 
       - FULL: copies server log(s) for each system with configured [SshTemplate](Ssh.md)
       - TEMPLATE: copies server log(s) for each system with configured SshTemplate with an attribute reportable = true
-      - CACHE: copies caches server log(s) used within scenario execution
-    - Extension contain fail mode, which act like TEMPLATE mode if test fails
+      - CACHE: copies cached server log(s) used within scenario execution
+    - Extension contains fail mode, which acts like TEMPLATE mode if test fails
       - it can be turned on by using property: ssh.reporting.logOnFailure with value "true"
 
 

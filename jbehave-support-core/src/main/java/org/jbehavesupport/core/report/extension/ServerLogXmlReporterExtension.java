@@ -128,10 +128,10 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
         logContents.clear();
     }
 
-    private void printContent(final Writer writer) {
+    private void printContent(Writer writer) {
         logContents.entrySet().forEach(
             entry -> {
-                final MultiKey key = entry.getKey();
+                MultiKey key = entry.getKey();
                 printBegin(writer, SYSTEM, getSshQualifierAttributes(key.getKey(0).toString()));
                 printBegin(writer, LOG, getSshAttributesFromKey(key));
                 printLogContent(writer, key.getKey(0).toString(), entry.getValue());
@@ -151,8 +151,8 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
         }
     }
 
-    private void printLogFile(final Writer writer, String logContent, String qualifier) {
-        File logFile = new File(LocalTime.now() + ".txt");
+    private void printLogFile(Writer writer, String logContent, String qualifier) {
+        File logFile = new File(LocalTime.now().toNanoOfDay() + ".txt");
         try {
             prepareDirectory();
             FileUtils.writeStringToFile(logFile, logContent, (String) null);

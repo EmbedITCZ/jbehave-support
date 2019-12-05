@@ -226,8 +226,8 @@ public class SshHandler {
         sshTemplates.entrySet().forEach(entry ->
             entry.getValue().forEach(sshTemplate -> {
                 MultiKey<String> multiKey = new MultiKey(entry.getKey(),
-                    scenarioStart,//.toString(),
-                    scenarioEnd,//.toString(),
+                    scenarioStart,
+                    scenarioEnd,
                     sshTemplate.getSshSetting().getHostname() + ":" + sshTemplate.getSshSetting().getPort(),
                     sshTemplate.getSshSetting().getLogPath());
                 try {

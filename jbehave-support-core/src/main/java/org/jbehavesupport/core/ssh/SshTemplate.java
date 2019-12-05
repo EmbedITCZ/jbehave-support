@@ -47,7 +47,7 @@ public class SshTemplate {
 
     /**
      * @deprecated
-     * use {@link #SshTemplate(SshSetting, String, RollingLogResolver, boolean)}instead
+     * use {@link #SshTemplate(SshSetting, String, RollingLogResolver, boolean)} instead
      */
     @Deprecated
     public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver) {

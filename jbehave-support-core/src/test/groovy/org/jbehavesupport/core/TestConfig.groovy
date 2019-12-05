@@ -52,9 +52,6 @@ import java.util.concurrent.RejectedExecutionException
 @ComponentScan
 class TestConfig {
 
-    public static final FIREFOX_BROWSERSTACK = "firefox-browserstack"
-    public static final SAFARI_BROWSERSTACK = "safari-browserstack"
-
     @Autowired
     private Environment env
 
@@ -171,51 +168,4 @@ class TestConfig {
     RestServiceHandler testRestServiceHandler() {
         return new RestServiceHandler(env.getProperty("rest.url"))
     }
-
-
-    @Bean
-    WebDriverFactory safariBrowserStackDriverFactory() {
-        return new WebDriverFactory() {
-            @Override
-            RemoteWebDriver createWebDriver() {
-                DesiredCapabilities caps = new DesiredCapabilities()
-                caps.setCapability("os", "OS X")
-                caps.setCapability("browser", "Safari")
-                return getBrowserStackWebDriver(caps)
-            }
-
-            @Override
-            String getName() {
-                return SAFARI_BROWSERSTACK
-            }
-        }
-    }
-
-    @Bean
-    WebDriverFactory firefoxBrowserStackDriverFactory() {
-        new WebDriverFactory() {
-            @Override
-            RemoteWebDriver createWebDriver() {
-                DesiredCapabilities caps = new DesiredCapabilities()
-                caps.setCapability("browser", "Firefox")
-                getBrowserStackWebDriver(caps)
-            }
-
-            @Override
-            String getName() {
-                FIREFOX_BROWSERSTACK
-            }
-        }
-    }
-
-    private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
-        try {
-            RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities)
-            driver.manage().window().maximize()
-            driver
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e)
-        }
-    }
-
 }

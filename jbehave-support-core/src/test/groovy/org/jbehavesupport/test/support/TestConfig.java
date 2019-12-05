@@ -5,6 +5,8 @@ import static java.util.Collections.singletonMap;
 import static org.jbehavesupport.core.ssh.SshSetting.builder;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
@@ -34,8 +36,11 @@ import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
 import org.jbehavesupport.core.support.YamlPropertiesConfigurer;
 import org.jbehavesupport.core.test.app.oxm.NameRequest;
+import org.jbehavesupport.core.web.WebDriverFactory;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -52,7 +57,11 @@ import org.springframework.jms.core.JmsTemplate;
 @RequiredArgsConstructor
 public class TestConfig {
 
+
     private final Environment env;
+    public static final String FIREFOX_BROWSERSTACK = "firefox-browserstack";
+    public static final String SAFARI_BROWSERSTACK = "safari-browserstack";
+    public static final String CHROME_BROWSERSTACK = "chrome-browserstack";
 
     final ResourceLoader resourceLoader;
 
@@ -212,5 +221,84 @@ public class TestConfig {
         Class[] classesToBeBound = {NameRequest.class};
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         return new JmsJaxbHandler(jmsTemplate, classesToBeBound);
+    }
+
+    @Bean
+    public WebDriverFactory safariBrowserStackDriverFactory() {
+        return new WebDriverFactory() {
+            @Override
+            public RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities();
+                caps.setCapability("os", "OS X");
+                caps.setCapability("os_version", "Catalina");
+                caps.setCapability("browser", "Safari");
+                caps.setCapability("browser_version", "13.0");
+                caps.setCapability("acceptSslCerts", true);
+                caps.setCapability("resolution", "1920x1080");
+                caps.setCapability("browserstack.local", "true");
+                return getBrowserStackWebDriver(caps);
+            }
+
+            @Override
+            public String getName() {
+                return SAFARI_BROWSERSTACK;
+            }
+        };
+    }
+
+    @Bean
+    public WebDriverFactory firefoxBrowserStackDriverFactory() {
+        return new WebDriverFactory() {
+            @Override
+            public RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities();
+                caps.setCapability("browserstack.local", "true");
+                caps.setCapability("os", "Windows");
+                caps.setCapability("os_version", "10");
+                caps.setCapability("browser", "Firefox");
+                caps.setCapability("browser_version", "70.0");
+                caps.setCapability("resolution", "1920x1080");
+                return getBrowserStackWebDriver(caps);
+            }
+
+            @Override
+            public String getName() {
+                return FIREFOX_BROWSERSTACK;
+            }
+        };
+    }
+
+    @Bean
+    public WebDriverFactory chromeBrowserStackDriverFactory() {
+        return new WebDriverFactory() {
+            @Override
+            public RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities();
+                caps.setCapability("os", "Windows");
+                caps.setCapability("os_version", "10");
+                caps.setCapability("browser", "Chrome");
+                caps.setCapability("browser_version", "75.0");
+                caps.setCapability("resolution", "1920x1080");
+                caps.setCapability("browserstack.local", "false");
+                caps.setCapability("browserstack.geoLocation", "US");
+
+                return getBrowserStackWebDriver(caps);
+            }
+
+            @Override
+            public String getName() {
+                return CHROME_BROWSERSTACK;
+            }
+        };
+    }
+
+    private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
+        try {
+            RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
+            driver.manage().window().maximize();
+            return driver;
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

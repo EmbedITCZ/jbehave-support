@@ -228,7 +228,7 @@ public final class SqlSteps {
         compareExampleTableVersusListOfMaps(presentData, false);
     }
 
-    private void compareExampleTableVersusListOfMaps(ExamplesTable compareData, Boolean strictMatch) {
+    private void compareExampleTableVersusListOfMaps(ExamplesTable compareData, boolean strictMatch) {
         notNull(compareData, "matching data can't be null");
 
         ArrayList<Map<String, Object>> queryResultsToMatch = new ArrayList<>();
@@ -279,7 +279,7 @@ public final class SqlSteps {
         }
     }
 
-    private void compareExampleTableVersusListOfMaps(String query, ExamplesTable expectations, List<Map<String, Object>> actualData, Boolean strictMatch) {
+    private void compareExampleTableVersusListOfMaps(String query, ExamplesTable expectations, List<Map<String, Object>> actualData, boolean strictMatch) {
         if (strictMatch) {
             assertThat(actualData.size()).as("actual result size does not match expected result size (%d) for query %s", expectations.getRows().size(), query)
                 .isEqualTo(expectations.getRows().size());
@@ -287,7 +287,7 @@ public final class SqlSteps {
         compareExpectedRows(expectations, actualData, strictMatch);
     }
 
-    private void compareExpectedRows(ExamplesTable expectations, List<Map<String, Object>> actualData, Boolean strictMatch) {
+    private void compareExpectedRows(ExamplesTable expectations, List<Map<String, Object>> actualData, boolean strictMatch) {
         if (strictMatch) {
             List<Map<String, String>> expectedData = ExamplesTableUtil.convertTableWithUpperCaseKeys(expectations);
             SoftAssertions softly = new SoftAssertions();
@@ -327,17 +327,21 @@ public final class SqlSteps {
     private StringBuilder getExpectedDataBuilder(List<Map<String, String>> expectedData, List<Map<String, String>> notExpectedData) {
         StringBuilder expectedDataBuilder = new StringBuilder("\nExpected:\n");
         if (!expectedData.isEmpty()) {
+            List<String> sortedHeaders = expectedData.get(0).keySet().stream()
+                .sorted()
+                .collect(Collectors.toList());
+
             expectedDataBuilder.append("| ");
-            for (String header : expectedData.get(0).keySet()) {
+            for (String header : sortedHeaders) {
                 expectedDataBuilder
                     .append(header)
                     .append(" | ");
             }
             for (Map<String, String> row : expectedData) {
                 expectedDataBuilder.append("\n| ");
-                for (Object value : row.values()) {
+                for (String header : sortedHeaders) {
                     expectedDataBuilder
-                        .append(String.valueOf(value))
+                        .append(row.get(header))
                         .append(" | ");
                 }
                 int index = notExpectedData.indexOf(row);
@@ -352,17 +356,21 @@ public final class SqlSteps {
     private StringBuilder getFoundInDatabaseBuilder(List<Map<String, Object>> actualData) {
         StringBuilder foundInDbDataBuilder = new StringBuilder("\nFound in database:\n");
         if (!actualData.isEmpty()) {
+            List<String> sortedHeaders = actualData.get(0).keySet().stream()
+                .sorted()
+                .collect(Collectors.toList());
+
             foundInDbDataBuilder.append("| ");
-            for (String header : actualData.get(0).keySet()) {
+            for (String header : sortedHeaders) {
                 foundInDbDataBuilder
                     .append(header)
                     .append(" | ");
             }
             for (Map<String, Object> row : actualData) {
                 foundInDbDataBuilder.append("\n| ");
-                for (Object value : row.values()) {
+                for (String header : sortedHeaders) {
                     foundInDbDataBuilder
-                        .append(String.valueOf(value))
+                        .append(row.get(header))
                         .append(" | ");
                 }
             }

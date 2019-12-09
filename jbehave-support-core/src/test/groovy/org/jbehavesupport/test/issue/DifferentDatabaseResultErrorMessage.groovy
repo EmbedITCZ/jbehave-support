@@ -16,14 +16,14 @@ class DifferentDatabaseResultErrorMessage extends Specification implements TestS
 
         then:
         result.failures.stream().anyMatch({ e -> e.exception.message.contains("Result set does not contain expected data") })
-        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 2018-06-18 | Doe | JANE | 29 | <-- not found in database") })
-        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 2018-06-18 | doe | Jane | 29 | <-- not found in database") })
-        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 2018-06-18 | Doe | john | 31 | <-- not found in database") })
-        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 2018-06-17 | Doe | John | 31 | <-- not found in database") })
-        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 18/06/2018 | Doe | John | 31 | <-- not found in database") })
-        result.failures.stream().noneMatch({ e -> e.exception.message.contains("| 2018-06-18 | Doe | John | 31 | <-- not found in database") })
-        result.failures.stream().noneMatch({ e -> e.exception.message.contains("| 2018-06-18 | Doe | Jane | 29 | <-- not found in database") })
-        result.failures.stream().noneMatch({ e -> e.exception.message.contains("| null | Doe | Michael | null | <-- not found in database") })
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 29 | JANE | 2018-06-18 | Doe | <-- not found in database") })
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 29 | Jane | 2018-06-18 | doe | <-- not found in database") })
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 31 | john | 2018-06-18 | Doe | <-- not found in database") })
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 31 | John | 2018-06-17 | Doe | <-- not found in database") })
+        result.failures.stream().anyMatch({ e -> e.exception.message.contains("| 31 | John | 18/06/2018 | Doe | <-- not found in database") })
+        result.failures.stream().noneMatch({ e -> e.exception.message.contains("| 31 | John | 2018-06-18 | Doe | <-- not found in database") })
+        result.failures.stream().noneMatch({ e -> e.exception.message.contains("| 29 | Jane | 2018-06-18 | Doe | <-- not found in database") })
+        result.failures.stream().noneMatch({ e -> e.exception.message.contains("| null | Michael | null | Doe | <-- not found in database") })
 
     }
 

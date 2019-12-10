@@ -51,12 +51,8 @@ Sample stories (`jbehave-support-core/src/test/groovy/org/jbehavesupport/test/sa
 ## Multi-browser testing
 We test our code against Chrome, Safari and Firefox browsers. Tests are not running in a pipeline before PR but after it in master branch.
 
-To be able to run test in your local branch please fill your BrowserStack credentials in test.yml, but don't commit them. 
-```  
-browser-stack:
-  username: browser-stack-username
-  key: browser-stack-key
-```  
+To be able to run test in your local branch please fill your BrowserStack credentials into environment variables: `BROWSER-STACK_USERNAME`, `BROWSER-STACK_KEY` (overwrites properties in test.yml).
+
 
 ## Release
 >

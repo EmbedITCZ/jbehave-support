@@ -21,14 +21,11 @@ import org.jbehavesupport.core.test.app.oxm.NameRequest
 import org.jbehavesupport.core.test.app.oxm.NameResponse
 import org.jbehavesupport.core.verification.Verifier
 import org.jbehavesupport.core.web.ByFactory
-import org.jbehavesupport.core.web.WebDriverFactory
 import org.jbehavesupport.core.web.WebDriverFactoryResolver
 import org.jbehavesupport.core.ws.WebServiceEndpointRegistry
 import org.jbehavesupport.core.ws.WebServiceHandler
 import org.jbehavesupport.test.support.TestWebServiceHandler
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.remote.DesiredCapabilities
-import org.openqa.selenium.remote.RemoteWebDriver
 import org.springframework.aop.framework.ProxyFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

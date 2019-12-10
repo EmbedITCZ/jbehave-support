@@ -12,6 +12,7 @@ import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jbehave.core.model.ExamplesTable;
@@ -234,8 +235,7 @@ public class TestConfig {
                 caps.setCapability("browser", "Safari");
                 caps.setCapability("browser_version", "13.0");
                 caps.setCapability("acceptSslCerts", true);
-                caps.setCapability("resolution", "1920x1080");
-                caps.setCapability("browserstack.local", "true");
+
                 return getBrowserStackWebDriver(caps);
             }
 
@@ -252,12 +252,11 @@ public class TestConfig {
             @Override
             public RemoteWebDriver createWebDriver() {
                 DesiredCapabilities caps = new DesiredCapabilities();
-                caps.setCapability("browserstack.local", "true");
                 caps.setCapability("os", "Windows");
                 caps.setCapability("os_version", "10");
                 caps.setCapability("browser", "Firefox");
                 caps.setCapability("browser_version", "70.0");
-                caps.setCapability("resolution", "1920x1080");
+
                 return getBrowserStackWebDriver(caps);
             }
 
@@ -278,9 +277,6 @@ public class TestConfig {
                 caps.setCapability("os_version", "10");
                 caps.setCapability("browser", "Chrome");
                 caps.setCapability("browser_version", "75.0");
-                caps.setCapability("resolution", "1920x1080");
-                caps.setCapability("browserstack.local", "false");
-                caps.setCapability("browserstack.geoLocation", "US");
 
                 return getBrowserStackWebDriver(caps);
             }
@@ -292,13 +288,13 @@ public class TestConfig {
         };
     }
 
+    @SneakyThrows(MalformedURLException.class)
     private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
-        try {
-            RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
-            driver.manage().window().maximize();
-            return driver;
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        }
+        capabilities.setCapability("resolution", "1920x1080");
+        capabilities.setCapability("browserstack.local", "true");
+
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
+        driver.manage().window().maximize();
+        return driver;
     }
 }

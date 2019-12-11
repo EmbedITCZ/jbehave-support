@@ -48,6 +48,12 @@ We write tests primarily in groovy (except for Sample stories mentioned below). 
 
 Sample stories (`jbehave-support-core/src/test/groovy/org/jbehavesupport/test/sample`) are samples for users and tests at the same time.
 
+## Multi-browser testing
+We test our code against Chrome, Safari and Firefox browsers. Tests are not running in a pipeline before PR but after it in master branch.
+
+To be able to run test in your local branch please fill your BrowserStack credentials into environment variables: `BROWSER-STACK_USERNAME`, `BROWSER-STACK_KEY` (overwrites properties in test.yml).
+
+
 ## Release
 >
 > The release process is done by maven and for the setup, you should follow [the release document](docs/Release.md)

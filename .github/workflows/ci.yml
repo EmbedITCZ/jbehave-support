@@ -1,0 +1,84 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  CODACY_PROJECT_TOKEN: 31481295ac48414e8701b1015cfdf819
+
+jobs:
+  build:
+    name: Build on Java ${{ matrix.java }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 8, 11 ]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Build with Java ${{ matrix.java }}
+        run: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+  test:
+    needs: build
+    name: Test on Java ${{ matrix.java }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 8, 11 ]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Test with Java ${{ matrix.java }}
+        run: |
+          mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -B -V
+          curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
+          java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco/jacoco.xml --partial
+
+  system-test:
+    name: System test on Java ${{ matrix.java }}
+    needs: [ build, test ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 8, 11 ]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: System test with Java ${{ matrix.java }}
+        run: |
+          xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -Dit.test=\!**/BrowserStackIT -Pintegration-test -B -V
+          curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
+          java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco-it/jacoco.xml --partial
+          java -jar jbehave-support-core/target/codacy-reporter-latest.jar final
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: reports
+          path: jbehave-support-core/target/reports

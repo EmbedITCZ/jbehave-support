@@ -12,7 +12,7 @@ public final class ExampleTableConstraints {
     public static final String VERIFIER = "verifier";
     public static final String TYPE = "type";
     /**
-     * @deprecated use {@link #VERIFIER} instead
+     * @deprecated(since = "1.0.0", forRemoval = true) use {@link #VERIFIER} instead
      */
     @Deprecated
     public static final String OPERATOR = "operator";

@@ -77,9 +77,9 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
     @AfterScenario
     public void after() {
         if (sshReportMode == SshReportType.CACHE) {
-            sshHandler.getLogCache().entrySet().forEach(entry -> {
-                MultiKey newKey = new MultiKey(entry.getKey().getKey(0), entry.getKey().getKey(1), entry.getKey().getKey(2), "N/A", "N/A");
-                registerLogContent(newKey, (entry.getValue()));
+            sshHandler.getLogCache().forEach((key, value) -> {
+                MultiKey newKey = new MultiKey(key.getKey(0), key.getKey(1), key.getKey(2), "N/A", "N/A");
+                registerLogContent(newKey, value);
             });
         } else if (sshReportMode == SshReportType.FULL) {
             registerLogContent(sshHandler.getTemplateLogs(getSshTemplates()));
@@ -101,7 +101,7 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
     }
 
     public void registerLogContent(MultiKeyMap<String, String> logContents) {
-        logContents.entrySet().forEach(entry -> registerLogContent(entry.getKey(), entry.getValue()));
+        logContents.forEach(this::registerLogContent);
     }
 
     public void registerLogContent(MultiKey multiKey, String logContent) {
@@ -129,16 +129,13 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
     }
 
     private void printContent(Writer writer) {
-        logContents.entrySet().forEach(
-            entry -> {
-                MultiKey key = entry.getKey();
-                printBegin(writer, SYSTEM, getSshQualifierAttributes(key.getKey(0).toString()));
-                printBegin(writer, LOG, getSshAttributesFromKey(key));
-                printLogContent(writer, key.getKey(0).toString(), entry.getValue());
-                printEnd(writer, LOG);
-                printEnd(writer, SYSTEM);
-            }
-        );
+        logContents.forEach((key, value) -> {
+            printBegin(writer, SYSTEM, getSshQualifierAttributes(key.getKey(0)));
+            printBegin(writer, LOG, getSshAttributesFromKey(key));
+            printLogContent(writer, key.getKey(0), value);
+            printEnd(writer, LOG);
+            printEnd(writer, SYSTEM);
+        });
     }
 
     private void printLogContent(Writer writer, String qualifier, String sshLog) {
@@ -212,12 +209,17 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
         Map<String, List<SshTemplate>> sshTemplates = getSshTemplatesForType(SshTemplate.class);
 
         //merge both maps together to simple Map<String, List<SshTemplate>>
-        sshTemplatesArray.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().stream().flatMap(Arrays::stream).collect(Collectors.toList())))
-            .forEach((k, v) -> sshTemplates.merge(k, v, (v1, v2) -> {
-                v2.addAll(v1);
-                return v2;
-            }));
+        //sshTemplatesArray.
+        sshTemplatesArray.forEach((qualifier, listOfArrays) -> {
+            List<SshTemplate> flattenedSshTemplatesArray = listOfArrays.stream()
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+
+            sshTemplates.merge(qualifier, flattenedSshTemplatesArray, (firstList, secondList) -> {
+                secondList.addAll(firstList);
+                return secondList;
+            });
+        });
 
         return sshTemplates;
     }

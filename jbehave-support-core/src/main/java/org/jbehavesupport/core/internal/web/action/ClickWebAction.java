@@ -18,7 +18,7 @@ public class ClickWebAction extends AbstractWebAction {
     public void perform(WebActionContext ctx) {
         WebElement element = findElement(ctx);
 
-        scrollIntoView(ctx, element);
+        scrollIntoView(element);
 
         new Actions(driver)
             .click(element)

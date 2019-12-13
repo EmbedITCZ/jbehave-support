@@ -26,7 +26,7 @@ public abstract class AbstractWebAction implements WebAction {
         return elementLocator.findClickableElement(ctx.getPage(), ctx.getElement());
     }
 
-    protected final void scrollIntoView(WebActionContext ctx, WebElement element) {
+    protected final void scrollIntoView(WebElement element) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         jse.executeScript("arguments[0].scrollIntoView(false);", element);
     }

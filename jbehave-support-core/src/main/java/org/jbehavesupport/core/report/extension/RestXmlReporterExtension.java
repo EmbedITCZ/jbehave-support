@@ -4,7 +4,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -87,7 +87,7 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
             }
 
             clientHttpResponse = clientHttpRequestExecution.execute(httpRequest, bytes);
-            String responseBodyAsString = IOUtils.toString(clientHttpResponse.getBody(), Charset.forName("UTF-8"));
+            String responseBodyAsString = IOUtils.toString(clientHttpResponse.getBody(), StandardCharsets.UTF_8);
             restMessageContextBuilder
                 .responseTimeStamp(LocalDateTime.now())
                 .responseStatus(clientHttpResponse.getStatusCode())

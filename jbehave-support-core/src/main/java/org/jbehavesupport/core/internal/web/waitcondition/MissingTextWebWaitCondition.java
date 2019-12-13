@@ -21,7 +21,7 @@ public class MissingTextWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
-        wait(ctx).until((ExpectedCondition<WebElement>) driver -> {
+        fluentWait().until((ExpectedCondition<WebElement>) driver -> {
             WebElement element = findElement(ctx);
             String text = element.getText();
             if (isNotEmpty(ctx.getValue())) {

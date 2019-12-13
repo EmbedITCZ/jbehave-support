@@ -16,7 +16,7 @@ public class IsPresentWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
-        wait(ctx).until(presenceOfElementLocated(getLocator(ctx)));
+        fluentWait().until(presenceOfElementLocated(getLocator(ctx)));
     }
 
 }

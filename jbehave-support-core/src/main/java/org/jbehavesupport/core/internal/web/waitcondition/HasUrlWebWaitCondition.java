@@ -17,7 +17,7 @@ public class HasUrlWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
-        wait(ctx).until(urlContains(ctx.getValue()));
+        fluentWait().until(urlContains(ctx.getValue()));
     }
 
 }

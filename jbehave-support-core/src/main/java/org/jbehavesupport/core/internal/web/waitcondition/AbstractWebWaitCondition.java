@@ -23,7 +23,7 @@ public abstract class AbstractWebWaitCondition implements WebWaitCondition {
     @Value("${web.timeout:10}")
     private Long timeout;
 
-    protected final FluentWait<WebDriver> wait(WebWaitConditionContext ctx) {
+    protected final FluentWait<WebDriver> fluentWait() {
         return new FluentWait<>(driver)
             .pollingEvery(Duration.ofSeconds(1))
             .withTimeout(Duration.ofSeconds(timeout))

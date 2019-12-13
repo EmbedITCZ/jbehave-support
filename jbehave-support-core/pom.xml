@@ -366,5 +366,10 @@
             <artifactId>byte-buddy</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.browserstack</groupId>
+            <artifactId>browserstack-local-java</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

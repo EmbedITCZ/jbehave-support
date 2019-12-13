@@ -18,7 +18,7 @@ This project is written in Java 8, however we are aiming for Java 11 compatibili
 2. If possible, use Lombok constructor injection
     * Do not use in groovy tests
     * Do not use for optional dependencies `@Autowired(required = false)`
-    * Do not use in components which the user is expected to extend (e.g. `WebServiceHandler`/`RestServiceHandler`), to allow for simple constructor injection by users on their subclasses.
+    * Do not use in components, which the user is expected to extend (e.g. `WebServiceHandler`/`RestServiceHandler`), to allow for simple constructor injection by users on their subclasses.
 3. If possible, write [tests](#testing) for Your code.
 4. Use SonarLint to prevent issues (delete unused imports etc.)
 5. When writing xsl transformations, call templates according to name, not match, in case the user wanted to use their own reporter with their own tags.
@@ -27,7 +27,7 @@ This project is written in Java 8, however we are aiming for Java 11 compatibili
 Please keep the coding style uniform. (In IntelliJ IDEA select the text You want to format and press `Ctrl+Alt+L` (Windows) or `Cmd+Alt+L` (Mac).)
 
 ## Documentation
-For documentation we use .md files stored in `jbehave-support-core/docs` and public APIs are documented with JavaDoc. Sometimes, it is best to just show examples, as is the case with sample stories.
+For the documentation, we use .md files stored in `jbehave-support-core/docs` and public APIs are documented with JavaDoc. Sometimes, it is best to just show examples, as is the case with sample stories.
 
 ## Building the project with Maven
 To build this project use the standard `mvn clean install`. We have 3 building profiles:
@@ -44,9 +44,15 @@ If you find a bug or have a question, feel free to create a new GitHub issue. Or
 [![Gitter](https://badges.gitter.im/jbehave-support/community.svg)](https://gitter.im/jbehave-support/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Testing
-We write tests primarily in groovy (with the exception of Sample stories mentioned below). The tests are running against a mock aplication located in the `jbehave-support-core-test` folder. To start it run the `jbehave-support-core-test/jbehave-support-core-test-app/src/main/java/org/jbehavesupport/core/test/app/JbehaveSupportCoreTestApplication.class`.
+We write tests primarily in groovy (except for Sample stories mentioned below). The tests are running against a mock application located in the `jbehave-support-core-test` folder. To start it run the `jbehave-support-core-test/jbehave-support-core-test-app/src/main/java/org/jbehavesupport/core/test/app/JbehaveSupportCoreTestApplication.class`.
 
 Sample stories (`jbehave-support-core/src/test/groovy/org/jbehavesupport/test/sample`) are samples for users and tests at the same time.
+
+## Multi-browser testing
+We test our code against Chrome, Safari and Firefox browsers. Tests are not running in a pipeline before PR but after it in master branch.
+
+To be able to run test in your local branch please fill your BrowserStack credentials into environment variables: `BROWSER-STACK_USERNAME`, `BROWSER-STACK_KEY` (overwrites properties in test.yml).
+
 
 ## Release
 >

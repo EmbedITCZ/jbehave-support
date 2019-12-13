@@ -8,6 +8,13 @@ cache:
   directories:
   - '$HOME/.m2'
 
+stages:
+  - build
+  - test
+  - system-test
+  - name: browserstack
+    if: branch = master AND type = push AND fork = false
+
 matrix:
   include:
     - stage: build
@@ -42,6 +49,12 @@ matrix:
         - xvfb
       env: CI_SCRIPT=ci/system-test.sh
 
+    - stage: browserstack
+      jdk: openjdk8
+      branches:
+        only:
+          - master
+      env: CI_SCRIPT=ci/browserstack.sh
 script:
   - "chmod -R +x ci"
   - "$CI_SCRIPT"

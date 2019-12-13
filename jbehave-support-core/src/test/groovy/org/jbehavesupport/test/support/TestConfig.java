@@ -8,12 +8,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.ZonedDateTime;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -41,8 +44,11 @@ import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
 import org.jbehavesupport.core.support.YamlPropertiesConfigurer;
 import org.jbehavesupport.core.test.app.oxm.NameRequest;
+import org.jbehavesupport.core.web.WebDriverFactory;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +64,10 @@ import org.springframework.jms.core.JmsTemplate;
 @ComponentScan
 @RequiredArgsConstructor
 public class TestConfig {
+
+    public static final String FIREFOX_BROWSERSTACK = "firefox-browserstack";
+    public static final String SAFARI_BROWSERSTACK = "safari-browserstack";
+    public static final String CHROME_BROWSERSTACK = "chrome-browserstack";
 
     private final Environment env;
 
@@ -237,5 +247,79 @@ public class TestConfig {
         Class[] classesToBeBound = {NameRequest.class};
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         return new JmsJaxbHandler(jmsTemplate, classesToBeBound);
+    }
+
+    @Bean
+    public WebDriverFactory safariBrowserStackDriverFactory() {
+        return new WebDriverFactory() {
+            @Override
+            public RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities();
+                caps.setCapability("os", "OS X");
+                caps.setCapability("os_version", "Catalina");
+                caps.setCapability("browser", "Safari");
+                caps.setCapability("browser_version", "13.0");
+                caps.setCapability("acceptSslCerts", true);
+
+                return getBrowserStackWebDriver(caps);
+            }
+
+            @Override
+            public String getName() {
+                return SAFARI_BROWSERSTACK;
+            }
+        };
+    }
+
+    @Bean
+    public WebDriverFactory firefoxBrowserStackDriverFactory() {
+        return new WebDriverFactory() {
+            @Override
+            public RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities();
+                caps.setCapability("os", "Windows");
+                caps.setCapability("os_version", "10");
+                caps.setCapability("browser", "Firefox");
+                caps.setCapability("browser_version", "70.0");
+
+                return getBrowserStackWebDriver(caps);
+            }
+
+            @Override
+            public String getName() {
+                return FIREFOX_BROWSERSTACK;
+            }
+        };
+    }
+
+    @Bean
+    public WebDriverFactory chromeBrowserStackDriverFactory() {
+        return new WebDriverFactory() {
+            @Override
+            public RemoteWebDriver createWebDriver() {
+                DesiredCapabilities caps = new DesiredCapabilities();
+                caps.setCapability("os", "Windows");
+                caps.setCapability("os_version", "10");
+                caps.setCapability("browser", "Chrome");
+                caps.setCapability("browser_version", "75.0");
+
+                return getBrowserStackWebDriver(caps);
+            }
+
+            @Override
+            public String getName() {
+                return CHROME_BROWSERSTACK;
+            }
+        };
+    }
+
+    @SneakyThrows(MalformedURLException.class)
+    private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
+        capabilities.setCapability("resolution", "1920x1080");
+        capabilities.setCapability("browserstack.local", "true");
+
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
+        driver.manage().window().maximize();
+        return driver;
     }
 }

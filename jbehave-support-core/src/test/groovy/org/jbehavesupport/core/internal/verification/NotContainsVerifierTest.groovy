@@ -14,7 +14,7 @@ class NotContainsVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        notContainsVerifier.name().equals("NOT_CONTAINS")
+        notContainsVerifier.name() == "NOT_CONTAINS"
     }
 
     @Unroll

@@ -31,7 +31,7 @@ class CurrentDateCommandTest extends Specification {
         [99]       || LocalDate.now().plusDays(99)
         ["-20"]    || LocalDate.now().minusDays(20)
         [-20]      || LocalDate.now().minusDays(20)
-        ["P2M3D"]  || LocalDate.now().plus(Period.parse("P2M3D"))
+        ["P2M3D"]  || LocalDate.now() + Period.parse("P2M3D")
     }
 
     def "test execute with #expression throws #exception"() {

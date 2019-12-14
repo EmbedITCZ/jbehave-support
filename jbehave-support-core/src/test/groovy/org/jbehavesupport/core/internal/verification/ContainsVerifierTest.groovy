@@ -14,7 +14,7 @@ class ContainsVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        containsVerifier.name().equals("CONTAINS")
+        containsVerifier.name() == "CONTAINS"
     }
 
     @Unroll

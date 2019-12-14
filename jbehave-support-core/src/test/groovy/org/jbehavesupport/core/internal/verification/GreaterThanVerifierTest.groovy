@@ -17,7 +17,7 @@ class GreaterThanVerifierTest extends Specification {
     def "Name"() {
 
         expect:
-        greaterThanVerifier.name().equals("GT")
+        greaterThanVerifier.name() == "GT"
     }
 
     @Unroll

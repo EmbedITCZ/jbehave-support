@@ -14,7 +14,7 @@ class SizeGreaterThanVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        sizeGreaterThanVerifier.name().equals("SIZE_GT")
+        sizeGreaterThanVerifier.name() == "SIZE_GT"
     }
 
     @Unroll

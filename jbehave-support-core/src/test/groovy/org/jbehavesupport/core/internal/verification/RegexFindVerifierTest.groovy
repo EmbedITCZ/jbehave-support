@@ -10,11 +10,11 @@ import spock.lang.Unroll
 class RegexFindVerifierTest extends Specification {
 
     @Autowired
-    RegexFindVerifier regexFindVerifier;
+    RegexFindVerifier regexFindVerifier
 
     def "Name"() {
         expect:
-        regexFindVerifier.name().equals("REGEX_FIND")
+        regexFindVerifier.name() == "REGEX_FIND"
     }
 
     @Unroll

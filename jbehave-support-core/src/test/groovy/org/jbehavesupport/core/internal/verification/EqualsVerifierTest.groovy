@@ -16,7 +16,7 @@ class EqualsVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        equalsVerifier.name().equals("EQ")
+        equalsVerifier.name() == "EQ"
     }
 
     @Unroll

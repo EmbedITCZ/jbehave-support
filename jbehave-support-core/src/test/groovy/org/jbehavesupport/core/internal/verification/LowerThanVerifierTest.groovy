@@ -16,7 +16,7 @@ class LowerThanVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        lowerThanVerifier.name().equals("LT")
+        lowerThanVerifier.name() == "LT"
     }
 
     @Unroll

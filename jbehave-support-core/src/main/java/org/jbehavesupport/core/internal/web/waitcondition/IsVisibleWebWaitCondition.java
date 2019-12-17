@@ -16,7 +16,7 @@ public class IsVisibleWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
-        wait(ctx).until(visibilityOfElementLocated(getLocator(ctx)));
+        fluentWait().until(visibilityOfElementLocated(getLocator(ctx)));
     }
 
 }

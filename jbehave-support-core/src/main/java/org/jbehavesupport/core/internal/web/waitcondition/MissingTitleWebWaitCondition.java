@@ -18,7 +18,7 @@ public class MissingTitleWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
-        wait(ctx).until(not(titleContains(ctx.getValue())));
+        fluentWait().until(not(titleContains(ctx.getValue())));
     }
 
 }

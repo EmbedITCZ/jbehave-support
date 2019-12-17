@@ -16,7 +16,7 @@ public class IsClickableWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
-        wait(ctx).until(elementToBeClickable(getLocator(ctx)));
+        fluentWait().until(elementToBeClickable(getLocator(ctx)));
     }
 
 }

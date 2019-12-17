@@ -11,12 +11,12 @@ public class GivenStoryHelper extends NullStoryReporter {
 
     @Override
     public void beforeStory(Story story, boolean givenStory) {
-        nestedLevel = ++nestedLevel;
+        ++nestedLevel;
     }
 
     @Override
     public void afterStory(boolean givenStory) {
-        nestedLevel = --nestedLevel;
+        --nestedLevel;
     }
 
     public boolean isInGivenStory() {

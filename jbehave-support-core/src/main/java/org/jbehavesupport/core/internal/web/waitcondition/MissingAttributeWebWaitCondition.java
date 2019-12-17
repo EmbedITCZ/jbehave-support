@@ -23,7 +23,7 @@ public class MissingAttributeWebWaitCondition extends AbstractWebWaitCondition {
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
         String attributeName = parseAttributeName(ctx);
-        wait(ctx).until((ExpectedCondition<WebElement>) driver -> {
+        fluentWait().until((ExpectedCondition<WebElement>) driver -> {
             WebElement element = findElement(ctx);
             String attributeValue = element.getAttribute(attributeName);
 

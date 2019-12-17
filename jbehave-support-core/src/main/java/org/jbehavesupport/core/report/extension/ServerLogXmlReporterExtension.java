@@ -1,20 +1,36 @@
 package org.jbehavesupport.core.report.extension;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
-import org.jbehavesupport.core.report.ReportContext;
-import org.jbehavesupport.core.ssh.SshLog;
-import org.jbehavesupport.core.ssh.SshTemplate;
-
+import lombok.Setter;
+import org.apache.commons.collections4.keyvalue.MultiKey;
+import org.apache.commons.collections4.map.LRUMap;
+import org.apache.commons.collections4.map.MultiKeyMap;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.io.FileUtils;
+import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.BeforeScenario;
+import org.jbehave.core.annotations.ScenarioType;
+import org.jbehavesupport.core.TestContext;
+import org.jbehavesupport.core.report.ReportContext;
+import org.jbehavesupport.core.internal.FileNameResolver;
+import org.jbehavesupport.core.report.ReportRenderingPhase;
+import org.jbehavesupport.core.ssh.SshHandler;
+import org.jbehavesupport.core.ssh.SshReportType;
+import org.jbehavesupport.core.ssh.SshTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -22,12 +38,78 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 @RequiredArgsConstructor
 public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension {
 
+    private final TestContext testContext;
+    private final FileNameResolver fileNameResolver;
+    private final SshHandler sshHandler;
+    private final ConfigurableListableBeanFactory beanFactory;
+
     private static final String SSH_XML_REPORTER_EXTENSION = "serverLog";
     private static final String LOG = "log";
+    private static final String FILE = "file";
+    private static final String TEXT = "text";
     private static final String SYSTEM = "system";
     private static final String FAIL = "fail";
+    private static final String FILE_NAME_PATTERN = "LOG_%s_%s.txt";
 
-    private final ConfigurableListableBeanFactory beanFactory;
+    private MultiKeyMap<String, String> logContents = MultiKeyMap.multiKeyMap(new LRUMap());
+
+    @Value("${ssh.reporting.maxLogLength:10000}")
+    private Long maxLength;
+
+    @Setter
+    private SshReportType sshReportMode;
+
+    @Value("${ssh.reporting.logOnFailure:false}")
+
+    private boolean loggingOnFailure;
+
+    @Value("${web.reporting.directory:./target/reports}")
+    private String logFileDirectory;
+
+    @Value("${ssh.reporting.mode:CACHE}")
+    SshReportType defaultReportType;
+
+    @BeforeScenario
+    public void init() {
+        sshReportMode = defaultReportType;
+    }
+
+    @AfterScenario
+    public void after() {
+        if (sshReportMode == SshReportType.CACHE) {
+            sshHandler.getLogCache().forEach((key, value) -> {
+                MultiKey newKey = new MultiKey(key.getKey(0), key.getKey(1), key.getKey(2), "N/A", "N/A");
+                registerLogContent(newKey, value);
+            });
+        } else if (sshReportMode == SshReportType.FULL) {
+            registerLogContent(sshHandler.getTemplateLogs(getSshTemplates()));
+        } else if (sshReportMode == SshReportType.TEMPLATE) {
+            registerLogContent(sshHandler.getTemplateLogs(getReportableSshTemplates(getSshTemplates())));
+        }
+    }
+
+    @AfterScenario(uponType = ScenarioType.ANY, uponOutcome = AfterScenario.Outcome.FAILURE)
+    public void afterFailedScenario() {
+        if (sshReportMode != SshReportType.TEMPLATE && loggingOnFailure) {
+            registerLogContent(sshHandler.getTemplateLogs(getReportableSshTemplates(getSshTemplates())));
+        }
+    }
+
+    @Override
+    public ReportRenderingPhase getReportRenderingPhase() {
+        return ReportRenderingPhase.AFTER_STORY;
+    }
+
+    public void registerLogContent(MultiKeyMap<String, String> logContents) {
+        logContents.forEach(this::registerLogContent);
+    }
+
+    public void registerLogContent(MultiKey multiKey, String logContent) {
+        if (logContents.containsKey(multiKey)) {
+            logContent += logContents.get(multiKey);
+        }
+        logContents.put(multiKey, logContent);
+    }
 
     @Override
     public String getName() {
@@ -42,38 +124,68 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
 
     @Override
     public void print(final Writer writer, final ReportContext reportContext) {
-        Map<String, List<SshTemplate>> sshTemplates = getSshTemplates();
-        for (String qualifier : sshTemplates.keySet()) {
-            printBegin(writer, SYSTEM, getSshQualifierAttributes(qualifier));
-            for (SshTemplate sshTemplate : sshTemplates.get(qualifier)) {
-                printBegin(writer, LOG, getSshTemplateAttributes(reportContext, sshTemplate));
-                try {
-                    SshLog sshLog = sshTemplate.copyLog(reportContext.startExecutionZoned(), reportContext.endExecutionZoned());
-                    printCData(writer, sshLog.getLogContents());
-                } catch (Exception e) {
-                    printBegin(writer, FAIL);
-                    printCData(writer, ExceptionUtils.getStackTrace(e));
-                    printEnd(writer, FAIL);
-                }
-                printEnd(writer, LOG);
-            }
+        printContent(writer);
+        logContents.clear();
+    }
+
+    private void printContent(Writer writer) {
+        logContents.forEach((key, value) -> {
+            printBegin(writer, SYSTEM, getSshQualifierAttributes(key.getKey(0)));
+            printBegin(writer, LOG, getSshAttributesFromKey(key));
+            printLogContent(writer, key.getKey(0), value);
+            printEnd(writer, LOG);
             printEnd(writer, SYSTEM);
+        });
+    }
+
+    private void printLogContent(Writer writer, String qualifier, String sshLog) {
+        if (sshLog.length() > maxLength) {
+            printLogFile(writer, sshLog, qualifier);
+        } else {
+            printBegin(writer, TEXT);
+            printCData(writer, sshLog);
+            printEnd(writer, TEXT);
+        }
+    }
+
+    private void printLogFile(Writer writer, String logContent, String qualifier) {
+        File logFile = new File(LocalTime.now().toNanoOfDay() + ".txt");
+        try {
+            prepareDirectory();
+            FileUtils.writeStringToFile(logFile, logContent, (String) null);
+            File destinationFile = fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, logFileDirectory, qualifier).toFile();
+            FileUtils.copyFile(logFile, destinationFile);
+            printBegin(writer, FILE);
+            printString(writer, destinationFile.getName());
+            printEnd(writer, FILE);
+        } catch (IOException e) {
+            printBegin(writer, FAIL);
+            printCData(writer, ExceptionUtils.getStackTrace(e));
+            printEnd(writer, FAIL);
+        }
+        logFile.delete();
+    }
+
+    private void prepareDirectory() throws IOException {
+        if (!Paths.get(logFileDirectory).toFile().exists()) {
+            Files.createDirectory(Paths.get(logFileDirectory));
+            testContext.put("logFileDirectory", logFileDirectory);
         }
     }
 
     private Map<String, String> getSshQualifierAttributes(String qualifier) {
         Map<String, String> sshQualifierAttributes = new HashMap<>();
-        sshQualifierAttributes.put("id", qualifier);
+        sshQualifierAttributes.put(SYSTEM, qualifier);
         return sshQualifierAttributes;
     }
 
-    private Map<String, String> getSshTemplateAttributes(ReportContext reportContext, SshTemplate sshTemplate) {
-        Map<String, String> sshTemplateAttributes = new HashMap<>();
-        sshTemplateAttributes.put("startDate", reportContext.startExecutionZoned().toString());
-        sshTemplateAttributes.put("endDate", reportContext.endExecutionZoned().toString());
-        sshTemplateAttributes.put("host", sshTemplate.getSshSetting().getHostname() + ":" + sshTemplate.getSshSetting().getPort());
-        sshTemplateAttributes.put("logPath", sshTemplate.getSshSetting().getLogPath());
-        return sshTemplateAttributes;
+    private Map<String, String> getSshAttributesFromKey(MultiKey key) {
+        Map<String, String> sshContextAttributes = new HashMap<>();
+        sshContextAttributes.put("startDate", key.getKey(1).toString());
+        sshContextAttributes.put("endDate", key.getKey(2).toString());
+        sshContextAttributes.put("host", key.getKey(3).toString());
+        sshContextAttributes.put("logPath", key.getKey(4).toString());
+        return sshContextAttributes;
     }
 
     private <T> Map<String, List<T>> getSshTemplatesForType(Class<T> clazz) {
@@ -97,20 +209,26 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
         Map<String, List<SshTemplate>> sshTemplates = getSshTemplatesForType(SshTemplate.class);
 
         //merge both maps together to simple Map<String, List<SshTemplate>>
-        sshTemplatesArray.entrySet()
-            .stream()
-            .forEach(entry -> {
-                List<SshTemplate> flattenedSshTemplatesArray = entry.getValue()
-                    .stream()
-                    .flatMap(Arrays::stream)
-                    .collect(Collectors.toList());
-                if (sshTemplates.get(entry.getKey()) != null) {
-                    sshTemplates.get(entry.getKey()).addAll(flattenedSshTemplatesArray);
-                } else {
-                    sshTemplates.put(entry.getKey(), flattenedSshTemplatesArray);
-                }
+        //sshTemplatesArray.
+        sshTemplatesArray.forEach((qualifier, listOfArrays) -> {
+            List<SshTemplate> flattenedSshTemplatesArray = listOfArrays.stream()
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+
+            sshTemplates.merge(qualifier, flattenedSshTemplatesArray, (firstList, secondList) -> {
+                secondList.addAll(firstList);
+                return secondList;
             });
+        });
 
         return sshTemplates;
+    }
+
+    private Map<String, List<SshTemplate>> getReportableSshTemplates(Map<String, List<SshTemplate>> sshTemplates) {
+        return sshTemplates.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey,
+                e -> e.getValue().stream()
+                    .filter(SshTemplate::isReportable)
+                    .collect(Collectors.toList())));
     }
 }

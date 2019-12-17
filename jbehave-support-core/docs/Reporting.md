@@ -37,10 +37,18 @@ There are several extensions already prepared and ready to use:
  - `JmsXmlReporterExtension` (copies [JMS](Jms.md) message headers, prints out the message if it is `javax.jms.TextMessage`)
  - `ScreenshotReporterExtension` (prints out screenshots (except error) from [Web testing](Web-testing.md) - if any were generated)
    - Frequency of screenshot taking can be controlled by property: 'web.screenshot.reporting.mode'
-     - MANUAL: screenshots from manual step only
+     - MANUAL: screenshots from a manual step only
      - WAIT: screenshots after every web wait
      - STEP: screenshots after every web step
      - DEBUG: screenshots after every web step and action
+  - `ServerLogXmlReporterExtension` (copies server logs, or their parts used by [SshSteps](Ssh.md))
+    - Content can be controlled by property: ssh.reporting.mode 
+      - FULL: copies server log(s) for each system with configured [SshTemplate](Ssh.md)
+      - TEMPLATE: copies server log(s) for each system with configured SshTemplate with an attribute reportable = true
+      - CACHE: copies cached server log(s) used within scenario execution
+    - Extension contains fail mode, which acts like TEMPLATE mode if test fails
+      - it can be turned on by using property: ssh.reporting.logOnFailure with value "true"
+
 
 To use these extensions simply register the wanted extension as a bean, e.g.:
 ```
@@ -48,6 +56,13 @@ To use these extensions simply register the wanted extension as a bean, e.g.:
 public WsXmlReporterExtension wsXmlReporterExtension() {
     return new WsXmlReporterExtension();
 }
+```
+
+#### Report steps
+Following step allows setting specific server log report extension mode
+Step throws AssertionError when ServerLogXmlReporterExtension isn't registered.
+```
+Given ssh reporter mode is set to [TEMPLATE]
 ```
 
 ---

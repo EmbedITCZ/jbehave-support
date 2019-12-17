@@ -1,10 +1,12 @@
 package org.jbehavesupport.core.ssh;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.apache.commons.collections4.map.LRUMap;
 import org.apache.commons.collections4.map.MultiKeyMap;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.assertj.core.api.SoftAssertions;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.model.ExamplesTable;
@@ -64,7 +66,6 @@ public class SshHandler {
     private final ExamplesEvaluationTableConverter tableConverter;
     private final VerifierResolver verifierResolver;
 
-
     @Value("${ssh.max.assert.count:10}")
     private int maxSoftAssertCount;
 
@@ -72,6 +73,7 @@ public class SshHandler {
     private ZonedDateTime logStartTime;
     private ZonedDateTime logEndTime;
 
+    @Getter
     private MultiKeyMap<MultiKey, String> logCache = MultiKeyMap.multiKeyMap(new LRUMap());
 
     @BeforeScenario
@@ -123,9 +125,9 @@ public class SshHandler {
      * @param endTime         log search end timestamp
      */
     protected String readLog(String systemQualifier, ZonedDateTime startTime, ZonedDateTime endTime) {
-        if (logCache.containsKey(startTime, endTime, systemQualifier)) {
+        if (logCache.containsKey(systemQualifier, startTime, endTime)) {
             log.info("Log found in cache.");
-            return logCache.get(startTime, endTime, systemQualifier);
+            return logCache.get(systemQualifier, startTime, endTime);
         }
         StringBuilder fetchedLog = new StringBuilder();
         List<SshTemplate> sshTemplates = resolveSshTemplates(systemQualifier);
@@ -137,7 +139,7 @@ public class SshHandler {
                 log.error("error fetching {}({}) log: {}", systemQualifier, sshTemplate.getSshSetting(), ex);
             }
         }
-        logCache.put(new MultiKey(startTime, endTime, systemQualifier), fetchedLog.toString());
+        logCache.put(new MultiKey(systemQualifier, startTime, endTime), fetchedLog.toString());
         return fetchedLog.toString();
     }
 
@@ -216,5 +218,26 @@ public class SshHandler {
         } else {
             throw new IllegalArgumentException("No search column found in example table");
         }
+    }
+
+    public MultiKeyMap<String, String> getTemplateLogs(Map<String, List<SshTemplate>> sshTemplates){
+        ZonedDateTime scenarioEnd = ZonedDateTime.now();
+        MultiKeyMap<String, String> templateLogs = MultiKeyMap.multiKeyMap(new LRUMap());
+        sshTemplates.entrySet().forEach(entry ->
+            entry.getValue().forEach(sshTemplate -> {
+                MultiKey<String> multiKey = new MultiKey(entry.getKey(),
+                    scenarioStart,
+                    scenarioEnd,
+                    sshTemplate.getSshSetting().getHostname() + ":" + sshTemplate.getSshSetting().getPort(),
+                    sshTemplate.getSshSetting().getLogPath());
+                try {
+                    String sshLog = sshTemplate.copyLog(scenarioStart, scenarioEnd).getLogContents();
+                    templateLogs.put(multiKey, sshLog);
+                } catch (Exception e) {
+                    templateLogs.put(multiKey, ExceptionUtils.getStackTrace(e));
+                }
+            })
+        );
+        return templateLogs;
     }
 }

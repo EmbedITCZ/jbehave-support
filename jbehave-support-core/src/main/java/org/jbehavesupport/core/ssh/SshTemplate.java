@@ -20,6 +20,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import lombok.Getter;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
@@ -31,6 +32,8 @@ public class SshTemplate {
     private final String timestampFormat;
     private final String getLogBetweenTimestampsCommand;
     private final RollingLogResolver rollingLogResolver;
+    @Getter
+    private final boolean reportable;
     private SSHClient sshClient;
 
     private abstract static class Commands {
@@ -42,13 +45,23 @@ public class SshTemplate {
         static final String CMD_DELIMITER = "; ";
     }
 
+    /**
+     * @deprecated
+     * use {@link #SshTemplate(SshSetting, String, RollingLogResolver, boolean)} instead
+     */
+    @Deprecated
     public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver) {
+        this(sshSetting, timestampFormat, rollingLogResolver, false);
+    }
+
+    public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver, boolean reportable) {
         isTrue(!isEmpty(sshSetting.getLogPath()), "log path must not be null or empty");
         isTrue(!isEmpty(timestampFormat), "timestamp format must not be null or empty");
 
         this.sshSetting = sshSetting;
         this.timestampFormat = timestampFormat;
         this.rollingLogResolver = rollingLogResolver;
+        this.reportable = reportable;
         try {
             InputStream logCommandStream = new ClassPathResource("get-log-between-timestamps-template.awk").getInputStream();
             this.getLogBetweenTimestampsCommand = copyToString(logCommandStream, defaultCharset()).trim();

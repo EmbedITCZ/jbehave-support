@@ -8,7 +8,6 @@ import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -299,29 +298,36 @@ public final class SqlSteps {
             softly.assertAll();
         } else {
             List<Map<String, String>> expectedData = ExamplesTableUtil.convertTable(expectations);
-            if (!actualData.containsAll(expectedData)) {
-                List<Map<String, String>> notExpectedData = new ArrayList<>(expectedData);
-                List<Map<String, String>> convertedActualData = new ArrayList<>();
+            List<Map<String, String>> foundData = new ArrayList<>();
+            expectedData.forEach(expectedRow ->
+                actualData.stream().filter(actualRow ->
+                    verifyRowsEquality(foundData, expectedRow, actualRow)).findFirst()
+            );
 
-                actualData.forEach(map -> {
-                    Map<String, String> convertedMap = new HashMap<>();
-                    map.forEach((key, value) -> {
-                        String convertedValue = value == null ? null : String.valueOf(value);
-                        convertedMap.put(key, convertedValue);
-                    });
-                    convertedActualData.add(convertedMap);
-                });
+            List<Map<String, String>> notFoundData = new ArrayList<>(expectedData);
+            notFoundData.removeAll(foundData);
 
-                notExpectedData.removeAll(convertedActualData);
-
-                StringBuilder foundInDbDataBuilder = getFoundInDatabaseBuilder(actualData);
-                StringBuilder expectedDataBuilder = getExpectedDataBuilder(expectedData, notExpectedData);
+            if(!notFoundData.isEmpty()){
+                StringBuilder foundInDbDataBuilder = getFoundInDatabaseBuilder(foundData);
+                StringBuilder expectedDataBuilder = getExpectedDataBuilder(expectedData, notFoundData);
 
                 throw new AssertionFailedError("Result set does not contain expected data"
                     + foundInDbDataBuilder.toString()
                     + expectedDataBuilder.toString());
             }
         }
+    }
+
+    private boolean verifyRowsEquality(List<Map<String, String>> foundData, Map<String, String> expectedRow, Map<String, Object> actualRow) {
+        try {
+            expectedRow.entrySet().forEach(entry ->
+                equalsVerifier.verify(actualRow.get(entry.getKey()), entry.getValue())
+            );
+        } catch (AssertionError | IllegalArgumentException e) {
+            return false;
+        }
+        foundData.add(expectedRow);
+        return true;
     }
 
     private StringBuilder getExpectedDataBuilder(List<Map<String, String>> expectedData, List<Map<String, String>> notExpectedData) {
@@ -353,7 +359,7 @@ public final class SqlSteps {
         return expectedDataBuilder;
     }
 
-    private StringBuilder getFoundInDatabaseBuilder(List<Map<String, Object>> actualData) {
+    private StringBuilder getFoundInDatabaseBuilder(List<Map<String, String>> actualData) {
         StringBuilder foundInDbDataBuilder = new StringBuilder("\nFound in database:\n");
         if (!actualData.isEmpty()) {
             List<String> sortedHeaders = actualData.get(0).keySet().stream()
@@ -366,7 +372,7 @@ public final class SqlSteps {
                     .append(header)
                     .append(" | ");
             }
-            for (Map<String, Object> row : actualData) {
+            for (Map<String, String> row : actualData) {
                 foundInDbDataBuilder.append("\n| ");
                 for (String header : sortedHeaders) {
                     foundInDbDataBuilder

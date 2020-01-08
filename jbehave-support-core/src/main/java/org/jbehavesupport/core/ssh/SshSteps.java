@@ -19,7 +19,7 @@ public final class SshSteps {
     private final NotContainsVerifier notContainsVerifier;
 
     /**
-     * @deprecated
+     * @deprecated(since = "1.0.10", forRemoval = true)
      * use markLogTime(String logTimeAlias) instead
      */
     @Deprecated
@@ -59,7 +59,7 @@ public final class SshSteps {
     }
 
     /**
-     * @deprecated
+     * @deprecated(since = "1.0.9", forRemoval = true)
      * use logContainsData(String systemQualifier, String stringTable) instead
      * If you set timestamps via separate steps, log reading is more accurate and use cache
      */
@@ -70,7 +70,7 @@ public final class SshSteps {
     }
 
     /**
-     * @deprecated
+     * @deprecated(since = "1.0.10", forRemoval = true)
      * use logContainsData(String systemQualifier, String stringTable) instead
      * You can use NOT_CONTAINS verifier in examples table, instead of using this step
      */

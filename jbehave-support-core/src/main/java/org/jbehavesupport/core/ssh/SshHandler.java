@@ -109,7 +109,7 @@ public class SshHandler {
     }
 
     /**
-     * @deprecated use logContainsData(String systemQualifier, String stringTable) instead
+     * @deprecated(since = "1.0.10", forRemoval = true) use logContainsData(String systemQualifier, String stringTable) instead
      * If you set timestamps via separate steps, log reading is more accurate and use cache
      */
     @Deprecated

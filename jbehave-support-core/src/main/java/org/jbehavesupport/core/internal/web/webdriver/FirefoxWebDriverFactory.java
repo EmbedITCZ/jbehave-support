@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @deprecated kept for backwards compatibility only, should not be used otherwise
+ * @deprecated(since = "1.0.0", forRemoval = true) kept for backwards compatibility only, should not be used otherwise
  */
 @Component
 @Deprecated

@@ -211,9 +211,9 @@ public final class WebSteps {
     }
 
     /**
-     * @deprecated because it's not opening new tab, only focus tab opened by another action
-     *             getLastOpenedWindowHandler() may not work correctly on all browsers (https://developer.mozilla.org/en-US/docs/Web/WebDriver/Commands/GetWindowHandles)
-     *             findTabWithUrlOrTitle() should be used instead
+     * @deprecated(since = "1.0.7", forRemoval = true) because it's not opening new tab, only focus tab opened by another action
+     *  getLastOpenedWindowHandler() may not work correctly on all browsers (https://developer.mozilla.org/en-US/docs/Web/WebDriver/Commands/GetWindowHandles)
+     *  findTabWithUrlOrTitle() should be used instead
      */
     @Deprecated
     @Then("new tab is opened and focused")

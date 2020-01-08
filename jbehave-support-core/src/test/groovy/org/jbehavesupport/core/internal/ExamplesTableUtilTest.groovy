@@ -15,7 +15,7 @@ class ExamplesTableUtilTest extends Specification {
                                         "| test2 | value3 |")
 
         when:
-        def result = ExamplesTableUtil.tableContains(table, column, { s -> value.equals(s) })
+        def result = ExamplesTableUtil.tableContains(table, column, { s -> (value == s) })
 
         then:
         result == expected

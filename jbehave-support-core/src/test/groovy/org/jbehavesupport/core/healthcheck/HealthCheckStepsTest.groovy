@@ -51,6 +51,6 @@ class HealthCheckStepsTest extends Specification {
         }
 
         then:
-        fail.getMessage().equals("HealthCheckSteps requires single HealthCheck bean with qualifier [MISS]")
+        fail.getMessage() == "HealthCheckSteps requires single HealthCheck bean with qualifier [MISS]"
     }
 }

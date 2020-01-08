@@ -26,7 +26,7 @@ class NextMonthCommandTest extends Specification {
         expression || expected
         []         || LocalDate.now().plusMonths(1).withDayOfMonth(1)
         ["11"]     || LocalDate.now().plusMonths(1).withDayOfMonth(11)
-        ["P2M3D"]  || LocalDate.now().plusMonths(1).withDayOfMonth(1).plus(Period.parse("P2M3D"))
+        ["P2M3D"]  || LocalDate.now().plusMonths(1).withDayOfMonth(1) + Period.parse("P2M3D")
     }
 
     def "test execute with #expression throws #exception"() {

@@ -14,7 +14,7 @@ class SizeEqualsVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        sizeEqualsVerifier.name().equals("SIZE_EQ")
+        sizeEqualsVerifier.name() == "SIZE_EQ"
     }
 
     @Unroll

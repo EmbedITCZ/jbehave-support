@@ -14,7 +14,7 @@ class RegexVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        regexVerifier.name().equals("REGEX_MATCH")
+        regexVerifier.name() == "REGEX_MATCH"
     }
 
     @Unroll

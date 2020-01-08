@@ -16,7 +16,7 @@ class NotEqualsVerifierTest extends Specification {
 
     def "Name"() {
         expect:
-        notEgualsVerifier.name().equals("NE")
+        notEgualsVerifier.name() == "NE"
     }
 
     @Unroll

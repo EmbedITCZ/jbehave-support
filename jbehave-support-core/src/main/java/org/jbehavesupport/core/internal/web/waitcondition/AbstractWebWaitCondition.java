@@ -38,7 +38,7 @@ public abstract class AbstractWebWaitCondition implements WebWaitCondition {
     }
 
     protected final WebElement findElement(WebWaitConditionContext ctx) {
-        if (ctx.getElement().equals("@url")||ctx.getElement().equals("@title")){
+        if (ctx.getElement().equals("@url") | ctx.getElement().equals("@title")) {
             return webElementLocatorImpl.findElement(null, ctx.getElement());
         }
         return driver.findElement(getLocator(ctx));

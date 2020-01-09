@@ -51,6 +51,8 @@ TODO: screenshot info
 ### Mapping files
 
 JBehave-support uses web element mapping files to provide comprehensible names for css or xpath mapping.
+Element has to be defined under a page in a [configuration yaml file](#mapping-files).
+
 Here is an example of a mapping yaml file:
 ```
 home:
@@ -67,6 +69,8 @@ home:
 The top-most element "home" is used as a page name in the UI steps while the middle level elements such "contractNumber.input" are used as comprehensible element names.
 The lowest level elements (css or xpath) are used to determine which type of selector is used. The value after the colon (:) then is the selector itself.
 The top element has to be unique per tested application. The middle level element names have to be unique per "page".
+
+Special elements (can't be defined) are `@url` and `@title`. Those elements don't support performing actions on them and have only text and value properties.
 
 #### Implicit mapping by ID
 
@@ -253,8 +257,6 @@ Then on [home] page these values are saved:
 
 #### Waiting until a condition is met
 If you want to wait on a certain page, until a specified condition is met, use the `Then on [page] page wait until [element] [condition]` step.
-
-Element has to be defined under a page in a [configuration yaml file](#mapping-files). Special elements (need not to be defined) are `@url` and `@title`.
 
 Supported conditions are:
 * `is present`

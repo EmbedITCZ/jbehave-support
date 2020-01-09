@@ -28,6 +28,11 @@ public class WebElementLocatorImpl implements WebElementLocator {
 
     @Override
     public WebElement findElement(String pageName, String elementName) {
+        if (elementName.equals("@url")){
+            return new DummyWebElement(driver.getCurrentUrl());
+        } else if (elementName.equals("@title")){
+            return new DummyWebElement(driver.getTitle());
+        }
         By locator = elementRegistry.getLocator(pageName, elementName);
         return waiting().until(presenceOfElementLocated(locator));
     }

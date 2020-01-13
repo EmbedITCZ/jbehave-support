@@ -140,7 +140,7 @@ class SshSettingTest extends Specification {
         }.getMessage()
 
         then:
-        causeMsg.equals(message)
+        causeMsg == message
 
         where:
         hostnames | ports | users  | logPaths | passwords | keyPaths | keyPassphrases || message
@@ -178,7 +178,7 @@ class SshSettingTest extends Specification {
         }.getMessage()
 
         then:
-        causeMsg.equals(message)
+        causeMsg == message
 
         where:
         ports        | users              | logPaths           | passwords    || message

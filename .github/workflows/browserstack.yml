@@ -1,0 +1,31 @@
+name: BrowserStack
+
+on:
+  push:
+    branches: master
+
+env:
+  BROWSERSTACK_USER: paveljandejsek2
+  BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
+
+jobs:
+  browserstack:
+    name: BrowserStack on Java ${{ matrix.java }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 8 ]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: BrowserStackIT on Java ${{ matrix.java }}
+        run: xvfb-run mvn verify -DskipUnitTests=true -Djbehave.report.level=STORY -Dbrowser-stack.username=${BROWSERSTACK_USER} -Dbrowser-stack.key=${BROWSERSTACK_KEY} -Dit.test=**/BrowserStackIT -Pintegration-test -B -V

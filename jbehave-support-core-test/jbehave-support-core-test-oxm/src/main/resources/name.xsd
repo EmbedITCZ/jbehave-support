@@ -1,5 +1,4 @@
 <xs:schema xmlns:tns="http://jbehavesupport.org/definitions" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           attributeFormDefault="unqualified"
            elementFormDefault="qualified" targetNamespace="http://jbehavesupport.org/definitions">
     <xs:element name="NameRequest">
         <xs:complexType>

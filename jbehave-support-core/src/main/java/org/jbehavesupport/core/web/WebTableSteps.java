@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @deprecated support for general usable table steps will be added in future version and it is not guarantee that it will be backward compatible
+ * @deprecated(since = "1.0.0", forRemoval = true) support for general usable table steps may be added in a future version and it is not guaranteed that it will be backwards compatible
  */
 @Slf4j
 @Component

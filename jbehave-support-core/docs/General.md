@@ -1,11 +1,18 @@
 [Contents](../README.md)
 
+## Base step conventions
+Most of our steps use three basic columns: `name`, `data`, `contextAlias`.
+The basic logic behind them is:
+* `name` - Marks a __technical__ parameter name, path in request, etc. User should not rely on the value of the `name` parameter to be present in the context. 
+* `data` - Data to be used.
+* `contextAlias` - Test context alias to save the value from `data` to. This value is shown in the generated [report](Reporting.md) and can be further used by the user in other steps.  
+
 ## Escaping special characters
 
-Characters `:`, `'`, `{` and `}` are treated as special characters they are used to mark an [expression command](Expression-commands.md) (`{` and `}`), delimit parameters (`:`) or to force ignoring of the `:` delimiter (using `'`) in an expression command.
+Characters `:`, `'`, `{` and `}` are treated as special characters that are used to mark an [expression command](Expression-commands.md) (`{` and `}`), delimit parameters (`:`) or to force ignoring of the `:` delimiter (using `'`) in an expression command.
 When JBehave-support tries to parse the string `{x:y}` as an expression command it will return an error.
 If you need use such a string you have to use `\` as an escape character for each special character individually. The string above should be typed as `\{x\:y\}`.   
-You can also use the `'` character to escape whole sequences with delimiter, so for string `11:22:33` you could just type `'11:22:33'` instead of escaping each `:`.  
+You can also use the `'` character to escape whole sequences with the delimiter, so for string `11:22:33` you could just type `'11:22:33'` instead of escaping each `:`. 
 This behaviour is documented in [ExpressionEvaluatorTest](../src/test/groovy/org/jbehavesupport/core/expression/ExpressionEvaluatorTest.groovy)
 and in [EscapingInContext story](../src/test/groovy/org/jbehavesupport/test/sample/EscapingInContext.story).
 

@@ -11,10 +11,10 @@ class date {
     @Usage("Dummy date command returning current unix timestamp for +%s and -0600 for +%z")
     @Command
     def main(@Required @Argument String argument) {
-        if (argument.equals("+%s")) {
+        if (argument == "+%s") {
             return ZonedDateTime.now().toEpochSecond()
         }
-        if (argument.equals("+%z")) {
+        if (argument == "+%z") {
             return "-0600"
         }
     }

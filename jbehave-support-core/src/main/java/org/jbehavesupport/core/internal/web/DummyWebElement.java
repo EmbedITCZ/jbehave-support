@@ -1,5 +1,6 @@
 package org.jbehavesupport.core.internal.web;
 
+import lombok.AllArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
@@ -7,44 +8,46 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * DummyWebElements is used as WebElement representation of url and title of page
  * It allows web steps to work with @url and @title default elements
+ * Only text and value properties are allowed.
  */
+@AllArgsConstructor
 public class DummyWebElement implements WebElement {
 
-    DummyWebElement(String text){
-        this.text = text;
-    }
+    public static final String URL = "@url";
+    public static final String TITLE = "@title";
+    private static final String UNSUPPORTED_ACTION = "This action is not supported on default elements.";
+    private static final String UNSUPPORTED_PROPERTY = "This property is not supported on default elements.";
 
     private String text;
 
     @Override
     public void click() {
-        //noop
+        throw new UnsupportedOperationException(UNSUPPORTED_ACTION);
     }
 
     @Override
     public void submit() {
-        //noop
+        throw new UnsupportedOperationException(UNSUPPORTED_ACTION);
     }
 
     @Override
     public void sendKeys(CharSequence... keysToSend) {
-        //noop
+        throw new UnsupportedOperationException(UNSUPPORTED_ACTION);
     }
 
     @Override
     public void clear() {
-        //noop
+        throw new UnsupportedOperationException(UNSUPPORTED_ACTION);
     }
 
     @Override
     public String getTagName() {
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
@@ -52,17 +55,17 @@ public class DummyWebElement implements WebElement {
         if(name.equalsIgnoreCase("value") || name.equalsIgnoreCase("text")){
             return text;
         }
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
     public boolean isSelected() {
-        return false;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
@@ -72,41 +75,41 @@ public class DummyWebElement implements WebElement {
 
     @Override
     public List<WebElement> findElements(By by) {
-        return new ArrayList<>();
+        throw new UnsupportedOperationException(UNSUPPORTED_ACTION);
     }
 
     @Override
     public WebElement findElement(By by) {
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_ACTION);
     }
 
     @Override
     public boolean isDisplayed() {
-        return true;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
     public Point getLocation() {
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
     public Dimension getSize() {
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
     public Rectangle getRect() {
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
     public String getCssValue(String propertyName) {
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);
     }
 
     @Override
     public <X> X getScreenshotAs(OutputType<X> target) {
-        return null;
+        throw new UnsupportedOperationException(UNSUPPORTED_ACTION);
     }
 }

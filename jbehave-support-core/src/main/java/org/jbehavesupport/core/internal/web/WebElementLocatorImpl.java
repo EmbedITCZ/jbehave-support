@@ -2,6 +2,8 @@ package org.jbehavesupport.core.internal.web;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
+import static org.jbehavesupport.core.internal.web.DummyWebElement.URL;
+import static org.jbehavesupport.core.internal.web.DummyWebElement.TITLE;
 
 import java.time.Duration;
 import java.util.function.Consumer;
@@ -28,9 +30,9 @@ public class WebElementLocatorImpl implements WebElementLocator {
 
     @Override
     public WebElement findElement(String pageName, String elementName) {
-        if (elementName.equals("@url")) {
+        if (elementName.equals(URL)) {
             return new DummyWebElement(driver.getCurrentUrl());
-        } else if (elementName.equals("@title")) {
+        } else if (elementName.equals(TITLE)) {
             return new DummyWebElement(driver.getTitle());
         }
         By locator = elementRegistry.getLocator(pageName, elementName);

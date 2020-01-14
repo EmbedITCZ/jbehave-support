@@ -1,8 +1,11 @@
 package org.jbehavesupport.core.internal.web.waitcondition;
 
+import static org.jbehavesupport.core.internal.web.DummyWebElement.URL;
+import static org.jbehavesupport.core.internal.web.DummyWebElement.TITLE;
+
 import java.time.Duration;
 
-import org.jbehavesupport.core.internal.web.WebElementLocatorImpl;
+import org.jbehavesupport.core.web.WebElementLocator;
 import org.jbehavesupport.core.web.WebElementRegistry;
 import org.jbehavesupport.core.web.WebWaitCondition;
 import org.jbehavesupport.core.web.WebWaitConditionContext;
@@ -21,7 +24,7 @@ public abstract class AbstractWebWaitCondition implements WebWaitCondition {
     @Autowired
     private WebElementRegistry elementRegistry;
     @Autowired
-    private WebElementLocatorImpl webElementLocatorImpl;
+    private WebElementLocator webElementLocator;
 
     @Value("${web.timeout:10}")
     private Long timeout;
@@ -38,8 +41,8 @@ public abstract class AbstractWebWaitCondition implements WebWaitCondition {
     }
 
     protected final WebElement findElement(WebWaitConditionContext ctx) {
-        if (ctx.getElement().equals("@url") | ctx.getElement().equals("@title")) {
-            return webElementLocatorImpl.findElement(null, ctx.getElement());
+        if (ctx.getElement().equals(URL) || ctx.getElement().equals(TITLE)) {
+            return webElementLocator.findElement(null, ctx.getElement());
         }
         return driver.findElement(getLocator(ctx));
     }

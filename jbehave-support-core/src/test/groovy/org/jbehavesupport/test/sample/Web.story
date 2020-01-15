@@ -62,3 +62,18 @@ When on [unknown-page] page these actions are performed:
 Then on [home] page these conditions are verified:
 | element | property | data  |
 | id      | VALUE    | 85    |
+
+Scenario: Implemetation of default elements
+
+Given [https://google.com] url is open
+
+Then on [unknown-page] page wait until [@url] has text www.google.com
+
+Then on [unknown-page] page wait until [@title] has text Google
+
+Then on [unknown-page] page these conditions are verified:
+| element | property | data                    | verifier     |
+| @url    | TEXT     | https://www.google.com/ | EQ           |
+| @title  | VALUE    | Google                  | EQ           |
+| @url    | TEXT     | dummy                   | NOT_CONTAINS |
+| @title  | VALUE    | dummy                   | NOT_CONTAINS |

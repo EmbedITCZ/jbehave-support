@@ -15,7 +15,7 @@ public class HasTextWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public boolean match(WebWaitConditionContext ctx) {
-        return startsWith(ctx.getCondition(), "has text ") && !startsWith(ctx.getElement(), "@");
+        return startsWith(ctx.getCondition(), "has text ");
     }
 
     @Override

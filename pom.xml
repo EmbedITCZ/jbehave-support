@@ -109,6 +109,7 @@
         <plugin.version.nexus-staging-maven-plugin>1.6.8</plugin.version.nexus-staging-maven-plugin>
         <plugin.version.maven-gpg-plugin>1.6</plugin.version.maven-gpg-plugin>
         <plugin.version.maven-enforcer-plugin>1.4.1</plugin.version.maven-enforcer-plugin>
+        <plugin.version.sonar-maven-plugin>3.6.0.1398</plugin.version.sonar-maven-plugin>
     </properties>
 
     <modules>
@@ -189,7 +190,7 @@
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>3.7.0.1746</version>
+                    <version>${plugin.version.sonar-maven-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

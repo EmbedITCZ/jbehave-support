@@ -51,6 +51,11 @@ jobs:
           mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -B -V
           curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
           java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco/jacoco.xml --partial
+      - name: Upload math result for tests
+        uses: actions/upload-artifact@v1
+        with:
+          name: jacoco
+          path: jbehave-support-core/target/jacoco.exec
 
   system-test:
     name: System test on Java ${{ matrix.java }}
@@ -82,3 +87,33 @@ jobs:
         with:
           name: reports
           path: jbehave-support-core/target/reports
+      - name: Upload math result for integration tests
+        uses: actions/upload-artifact@v1
+        with:
+          name: jacoco-it
+          path: jbehave-support-core/target/jacoco-it.exec
+
+  sonar:
+    name: Sonar integration
+    needs: [ build, test, system-test ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download math result for test execution
+        uses: actions/download-artifact@v1
+        with:
+          name: jacoco
+      - name: Download math result for integration test execution
+        uses: actions/download-artifact@v1
+        with:
+          name: jacoco-it
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Run Maven
+        run: mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=xsmrcek_jbehave-support -Dsonar.organization=xsmrcek -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.jacoco.reportPaths=jacoco/jacoco.exec,jacoco-it/jacoco-it.exec
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

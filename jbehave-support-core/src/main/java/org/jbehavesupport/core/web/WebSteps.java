@@ -344,6 +344,13 @@ public final class WebSteps {
         return operator;
     }
 
+    private String prasecina(Object prasecina){
+        if (prasecina.equals("prasecina")) {
+            prasecina = null;
+        }
+        return prasecina.toString();
+    }
+
     private String resolveHomePageUrl(String application) {
         WebSetting webSetting = qualifiedBeanOfType(beanFactory, WebSetting.class, application);
         CURRENT_SETTING.set(webSetting);

@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   CODACY_PROJECT_TOKEN: 31481295ac48414e8701b1015cfdf819
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -51,7 +52,7 @@ jobs:
           mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -B -V
           curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
           java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco/jacoco.xml --partial
-      - name: Upload math result for tests
+      - name: Upload test coverage for unit tests
         uses: actions/upload-artifact@v1
         with:
           name: jacoco
@@ -87,7 +88,7 @@ jobs:
         with:
           name: reports
           path: jbehave-support-core/target/reports
-      - name: Upload test result for integration tests
+      - name: Upload test coverage for integration tests
         uses: actions/upload-artifact@v1
         with:
           name: jacoco-it
@@ -103,7 +104,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: jacoco
-      - name: Download result for integration test execution
+      - name: Download test coverage result for integration and system test execution
         uses: actions/download-artifact@v1
         with:
           name: jacoco-it
@@ -114,6 +115,4 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Run Maven
-        run: mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=EmbedITCZ_jbehave-support -Dsonar.organization=embeditcz -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=/home/runner/work/jbehave-support/jbehave-support/jacoco/jacoco.xml,/home/runner/work/jbehave-support/jbehave-support/jacoco-it/jacoco.xml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn package -DskipTests org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=EmbedITCZ_jbehave-support -Dsonar.organization=embeditcz -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=/home/runner/work/jbehave-support/jbehave-support/jacoco/jacoco.xml,/home/runner/work/jbehave-support/jbehave-support/jacoco-it/jacoco.xml -e -X

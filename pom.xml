@@ -110,6 +110,7 @@
         <plugin.version.maven-gpg-plugin>1.6</plugin.version.maven-gpg-plugin>
         <plugin.version.maven-enforcer-plugin>1.4.1</plugin.version.maven-enforcer-plugin>
         <plugin.version.sonar-maven-plugin>3.7.0.1746</plugin.version.sonar-maven-plugin>
+        <plugin.version.sonar-jacoco-plugin>3.2.1</plugin.version.sonar-jacoco-plugin>
     </properties>
 
     <modules>
@@ -193,24 +194,9 @@
                     <version>${plugin.version.sonar-maven-plugin}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.5</version>
-                    <executions>
-                        <execution>
-                            <id>default-prepare-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>default-report</id>
-                            <phase>prepare-package</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <groupId>org.codehaus.sonar.plugins</groupId>
+                    <artifactId>sonar-jacoco-plugin</artifactId>
+                    <version>${plugin.version.sonar-jacoco-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -444,11 +430,6 @@
                 <groupId>com.browserstack</groupId>
                 <artifactId>browserstack-local-java</artifactId>
                 <version>${version.browserstack-local-java}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.sonar.plugins</groupId>
-                <artifactId>sonar-jacoco-plugin</artifactId>
-                <version>3.2.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

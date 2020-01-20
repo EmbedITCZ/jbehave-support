@@ -114,6 +114,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Run Maven
-        run: mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=xsmrcek_jbehave-support -Dsonar.organization=xsmrcek -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=/home/runner/work/jbehave-support/jbehave-support/jacoco/jacoco.xml,/home/runner/work/jbehave-support/jbehave-support/jacoco-it/jacoco.xml
+        run: mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=EmbedITCZ_jbehave-support -Dsonar.organization=embeditcz -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=/home/runner/work/jbehave-support/jbehave-support/jacoco/jacoco.xml,/home/runner/work/jbehave-support/jbehave-support/jacoco-it/jacoco.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

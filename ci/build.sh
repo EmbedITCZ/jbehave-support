@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-echo $SONAR_TOKEN
+TRAVIS_SECURE_ENV_VARS=false
+echo "ba $SONAR_TOKEN aaa" && \
+env

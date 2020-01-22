@@ -308,7 +308,7 @@ public final class SqlSteps {
             notFoundData.removeAll(foundData);
 
             if(!notFoundData.isEmpty()){
-                StringBuilder foundInDbDataBuilder = getFoundInDatabaseBuilder(foundData);
+                StringBuilder foundInDbDataBuilder = getFoundInDatabaseBuilder(actualData);
                 StringBuilder expectedDataBuilder = getExpectedDataBuilder(expectedData, notFoundData);
 
                 throw new AssertionFailedError("Result set does not contain expected data"
@@ -359,7 +359,7 @@ public final class SqlSteps {
         return expectedDataBuilder;
     }
 
-    private StringBuilder getFoundInDatabaseBuilder(List<Map<String, String>> actualData) {
+    private StringBuilder getFoundInDatabaseBuilder(List<Map<String, Object>> actualData) {
         StringBuilder foundInDbDataBuilder = new StringBuilder("\nFound in database:\n");
         if (!actualData.isEmpty()) {
             List<String> sortedHeaders = actualData.get(0).keySet().stream()
@@ -372,7 +372,7 @@ public final class SqlSteps {
                     .append(header)
                     .append(" | ");
             }
-            for (Map<String, String> row : actualData) {
+            for (Map<String, Object> row : actualData) {
                 foundInDbDataBuilder.append("\n| ");
                 for (String header : sortedHeaders) {
                     foundInDbDataBuilder

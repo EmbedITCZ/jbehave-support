@@ -24,6 +24,11 @@ class DifferentDatabaseResultErrorMessage extends Specification implements TestS
         result.failures.stream().noneMatch({ e -> e.exception.message.contains("| 31 | John | 2018-06-18 | Doe | <-- not found in database") })
         result.failures.stream().noneMatch({ e -> e.exception.message.contains("| 29 | Jane | 2018-06-18 | Doe | <-- not found in database") })
         result.failures.stream().noneMatch({ e -> e.exception.message.contains("| null | Michael | null | Doe | <-- not found in database") })
+        result.failures.stream().anyMatch({e -> e.exception.message.contains("Found in database:")})
+        result.failures.stream().anyMatch({e -> e.exception.message.contains("| AGE | FN | LAST_UPDATE | LN | \n")})
+        result.failures.stream().anyMatch({e -> e.exception.message.contains("| 31 | John | 2018-06-18 | Doe | \n")})
+        result.failures.stream().anyMatch({e -> e.exception.message.contains("| 29 | Jane | 2018-06-18 | Doe | \n")})
+        result.failures.stream().anyMatch({e -> e.exception.message.contains("| null | Michael | null | Doe | \n")})
 
     }
 

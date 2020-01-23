@@ -1,4 +1,4 @@
-package org.jbehavesupport.test.issue
+package org.jbehavesupport.core.report
 
 import org.jbehavesupport.core.report.XmlReporterFactory
 import org.jbehavesupport.test.support.TestSupport
@@ -35,7 +35,7 @@ class XmlReportIT extends Specification implements TestSupport {
         xmlReporterFactory."$reportsDirectoryField" = reportDir
 
         when:
-        def resultSampleContext = runner.run(runWith("issue/SampleContext.story"))
+        def resultSampleContext = runner.run(runWith("report/SampleContext.story"))
         def resultContext = runner.run(runWith("context/Context.story"))
 
         xmlReporterFactory.destroy()

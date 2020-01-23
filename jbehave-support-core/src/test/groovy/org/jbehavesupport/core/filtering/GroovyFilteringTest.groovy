@@ -13,7 +13,7 @@ import org.springframework.core.io.ClassPathResource
  * Test of extended groovy filter and story parser
  */
 class GroovyFilteringTest {
-    private static final String STORY = new ClassPathResource("org/jbehavesupport/test/filtering/GroovyMetafilter.story")
+    private static final String STORY = new ClassPathResource("org/jbehavesupport/core/filtering/GroovyMetafilter.story")
         .getInputStream().withCloseable { t -> IOUtils.toString(t, "UTF-8") }
 
     @Test

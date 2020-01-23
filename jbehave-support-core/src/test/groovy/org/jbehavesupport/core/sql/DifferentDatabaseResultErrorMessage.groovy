@@ -1,4 +1,4 @@
-package org.jbehavesupport.test.issue
+package org.jbehavesupport.core.sql
 
 import org.jbehavesupport.test.support.TestSupport
 import org.junit.runner.JUnitCore
@@ -12,7 +12,7 @@ class DifferentDatabaseResultErrorMessage extends Specification implements TestS
 
     def "differentDatabaseResult"() {
         when:
-        def result = runner.run(runWith("issue/DifferentDatabaseResult.story"))
+        def result = runner.run(runWith("sql/DifferentDatabaseResult.story"))
 
         then:
         result.failures.stream().anyMatch({ e -> e.exception.message.contains("Result set does not contain expected data") })

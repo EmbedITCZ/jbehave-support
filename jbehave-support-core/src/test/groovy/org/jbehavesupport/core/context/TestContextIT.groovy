@@ -1,4 +1,4 @@
-package org.jbehavesupport.test.context
+package org.jbehavesupport.core.context
 
 import org.junit.runner.JUnitCore
 import spock.lang.Shared

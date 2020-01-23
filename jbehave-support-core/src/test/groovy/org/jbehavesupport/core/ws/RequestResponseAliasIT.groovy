@@ -1,4 +1,4 @@
-package org.jbehavesupport.test.issue
+package org.jbehavesupport.core.ws
 
 import org.jbehavesupport.test.support.TestSupport
 import org.junit.runner.JUnitCore
@@ -6,14 +6,14 @@ import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
-class SimpleListIT extends Specification implements TestSupport {
+class RequestResponseAliasIT extends Specification implements TestSupport {
 
     @Shared
         runner = new JUnitCore()
 
-    def "Test simple string list"() {
+    def "Test us request response aliases"() {
         when:
-        def result = runner.run(runWith("issue/SimpleList.story"))
+        def result = runner.run(runWith("ws/RequestResponseAlias.story"))
 
         then:
         result.failures.isEmpty()

@@ -1,4 +1,4 @@
-package org.jbehavesupport.test.issue
+package org.jbehavesupport.core.rest
 
 import org.jbehavesupport.test.support.TestSupport
 import org.junit.runner.JUnitCore
@@ -12,7 +12,7 @@ class NegativeRestScenariosIT extends Specification implements TestSupport {
 
     def "Should validate REST response via success handlers"() {
         when:
-        def result = runner.run(runWith("issue/NegativeRestHandling.story"))
+        def result = runner.run(runWith("rest/NegativeRestHandling.story"))
 
         then:
         true

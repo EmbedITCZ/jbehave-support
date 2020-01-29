@@ -96,7 +96,7 @@ jobs:
 
   sonar:
     name: Sonar integration
-    if: github.ref == 'master'
+    if: github.ref == 'refs/heads/master'
     needs: [ build, test, system-test ]
     runs-on: ubuntu-latest
     steps:

@@ -1,4 +1,6 @@
-package org.jbehavesupport.test.issue
+package org.jbehavesupport.core
+
+import org.jbehavesupport.test.support.TestSupportBrowserStack
 
 import static org.jbehavesupport.test.support.TestConfig.CHROME_BROWSERSTACK
 import static org.jbehavesupport.test.support.TestConfig.SAFARI_BROWSERSTACK
@@ -6,7 +8,6 @@ import static org.jbehavesupport.test.support.TestConfig.FIREFOX_BROWSERSTACK
 
 import com.browserstack.local.Local
 import org.jbehavesupport.core.TestConfig
-import org.jbehavesupport.test.support.TestSupport
 import org.junit.runner.JUnitCore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
@@ -20,7 +21,7 @@ import spock.lang.Unroll
  * Web and WebAction stories aren't working yet.
  */
 @ContextConfiguration(classes = TestConfig.class)
-class BrowserStackIT extends Specification implements TestSupport {
+class BrowserStackIT extends Specification implements TestSupportBrowserStack {
 
     @Autowired
     private Environment env

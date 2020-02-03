@@ -110,7 +110,7 @@
         <plugin.version.maven-gpg-plugin>1.6</plugin.version.maven-gpg-plugin>
         <plugin.version.maven-enforcer-plugin>1.4.1</plugin.version.maven-enforcer-plugin>
         <plugin.version.sonar-maven-plugin>3.7.0.1746</plugin.version.sonar-maven-plugin>
-        <plugin.version.sonar-jacoco-plugin>3.2.1</plugin.version.sonar-jacoco-plugin>
+        <plugin.version.sonar-jacoco-plugin>3.3.2</plugin.version.sonar-jacoco-plugin>
     </properties>
 
     <modules>

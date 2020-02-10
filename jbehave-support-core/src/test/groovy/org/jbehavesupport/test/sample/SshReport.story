@@ -1,6 +1,8 @@
 Narrative:
-This scenario is sample story for ServerLogXmlReporterExteson
-In output we can se:
+In order to explain how ServerLogReportExtension work
+As a development team
+I want to use different report modes in 3 stories
+So you can se in output:
 2X LONG_REPORTABLE (file) created from TEMPLATE and FULL mode
 2X TEST created from CACHE and FULL mode
 

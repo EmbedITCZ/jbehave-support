@@ -11,6 +11,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.jbehave.core.model.Narrative;
 
 @Getter
 @Setter
@@ -25,6 +26,7 @@ public class ReportContext {
     private Long endExecution;
     private Status status = Status.SUCCESSFUL;
     private Map<String, String> metaInfo = new HashMap<>();
+    private Narrative narrative;
 
     public Long duration() {
         Long result;

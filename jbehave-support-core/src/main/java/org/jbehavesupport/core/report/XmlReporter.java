@@ -26,6 +26,7 @@ public class XmlReporter extends XmlOutput {
     private static final String EXECUTION_STATUS = "status";
     private static final String DEFAULT_PATTERN = "{0}\n";
     private static final String SCENARIO_REPORT = "scenarioReportExtensions";
+    private static final String NARRATIVE = "narrative";
 
     public static final String TAG_BEGIN = "<%s>";
     public static final String TAG_END = "</%s>";
@@ -60,6 +61,7 @@ public class XmlReporter extends XmlOutput {
                 println(String.format(XML_STYLESHEET_HEADER, templateName));
             }
         }
+        reportContext.narrative(story.getNarrative());
         super.beforeStory(story, givenStory);
     }
 
@@ -93,6 +95,17 @@ public class XmlReporter extends XmlOutput {
         println(format(EXECUTION_END, DEFAULT_PATTERN, reportContext.endExecutionZoned()));
         println(format(EXECUTION_DURATION, DEFAULT_PATTERN, reportContext.duration()));
         println(format(EXECUTION_STATUS, DEFAULT_PATTERN, reportContext.status().name()));
+        if (reportContext.narrative() != null) {
+            printNarrative();
+        }
+    }
+
+    private void printNarrative(){
+        printTag(TAG_BEGIN, NARRATIVE);
+        println(format(EXECUTION_START, DEFAULT_PATTERN, reportContext.narrative().inOrderTo()));
+        println(format(EXECUTION_START, DEFAULT_PATTERN, reportContext.narrative().asA()));
+        println(format(EXECUTION_START, DEFAULT_PATTERN, reportContext.narrative().iWantTo()));
+        printTag(TAG_END, NARRATIVE);
     }
 
     private void writeExtensions(Predicate<? super XmlReporterExtension> filter) {

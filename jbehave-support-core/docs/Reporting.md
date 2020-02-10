@@ -14,6 +14,7 @@ public XmlReporterFactory xmlReporterFactory() {
 Plus at least one [reporter extension](#reporter-extensions) (bean implementing a XmlReporterExtension interface).
 
 The default generated XML report contains only information about:
+ - story narrative
  - story start time
  - story end time
  - story duration
@@ -21,6 +22,14 @@ The default generated XML report contains only information about:
  - story steps
 
 Rest of the information available in the report depends on the extensions used/registered.
+
+In case you want to have narrative in report you have to follow JBehave narrative format:
+```
+In order to explain how to use narrative
+As a development team
+I want to show you how to do it
+```
+All three fixed part of narrative must be present in given order: `In order to`, `As a` and `I want to`
 
 ### Reporter extensions
 The default report can be extended with other info by registering beans implementing the interface XmlReporterExtension 

@@ -290,21 +290,27 @@
                                         <td colspan="2">Narrative:</td>
                                     </tr>
                                     <tr>
-                                        <td>- In order to:</td>
-                                        <td>
-                                            <xsl:value-of select="narrative/inOrderTo"/>
+                                        <td class="align-baseline">- In order to:</td>
+                                        <td class="align-baseline">
+                                            <xsl:call-template name="break">
+                                                <xsl:with-param name="text" select="narrative/inOrderTo" />
+                                            </xsl:call-template>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>- As a:</td>
-                                        <td>
-                                            <xsl:value-of select="narrative/asA"/>
+                                        <td class="align-baseline">- As a:</td>
+                                        <td class="align-baseline">
+                                            <xsl:call-template name="break">
+                                                <xsl:with-param name="text" select="narrative/asA" />
+                                            </xsl:call-template>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>- I want to:</td>
-                                        <td>
-                                            <xsl:value-of select="narrative/iWantTo"/>
+                                        <td class="align-baseline">- I want to:</td>
+                                        <td class="align-baseline">
+                                            <xsl:call-template name="break">
+                                                <xsl:with-param name="text" select="narrative/iWantTo" />
+                                            </xsl:call-template>
                                         </td>
                                     </tr>
                                 </xsl:if>
@@ -385,6 +391,25 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="break">
+        <xsl:param name="text" select="string(.)"/>
+        <xsl:choose>
+            <xsl:when test="contains($text, '&#xa;')">
+                <xsl:value-of select="substring-before($text, '&#xa;')"/>
+                <br/>
+                <xsl:call-template name="break">
+                    <xsl:with-param
+                        name="text"
+                        select="substring-after($text, '&#xa;')"
+                    />
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$text"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 </xsl:stylesheet>

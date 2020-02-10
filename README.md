@@ -1,7 +1,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jbehavesupport/jbehave-support-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jbehavesupport/jbehave-support-core)
 [![Build Status](https://travis-ci.org/EmbedITCZ/jbehave-support.svg?branch=master)](https://travis-ci.org/EmbedITCZ/jbehave-support)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=EmbedITCZ/jbehave-support)](https://dependabot.com)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1e5c39dfaa6240b8b448d0df114c0d8e)](https://www.codacy.com/app/jbehavesupport/jbehave-support?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EmbedITCZ/jbehave-support&amp;utm_campaign=Badge_Grade)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=EmbedITCZ_jbehave-support&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=EmbedITCZ_jbehave-support)
 [![Gitter](https://badges.gitter.im/jbehave-support/community.svg)](https://gitter.im/jbehave-support/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # jbehave-support

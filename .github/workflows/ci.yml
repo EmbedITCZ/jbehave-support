@@ -3,7 +3,6 @@ name: CI
 on: [push, pull_request]
 
 env:
-  CODACY_PROJECT_TOKEN: 31481295ac48414e8701b1015cfdf819
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -50,8 +49,6 @@ jobs:
       - name: Test with Java ${{ matrix.java }}
         run: |
           mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -B -V
-          curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
-          java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco/jacoco.xml --partial
       - name: Upload test coverage for unit tests
         uses: actions/upload-artifact@v1
         with:
@@ -80,9 +77,6 @@ jobs:
       - name: System test with Java ${{ matrix.java }}
         run: |
           xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -Dit.test=\!**/BrowserStackIT -Pintegration-test -B -V
-          curl --silent -o jbehave-support-core/target/codacy-reporter-latest.jar -L https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
-          java -jar jbehave-support-core/target/codacy-reporter-latest.jar report -l Java -r jbehave-support-core/target/site/jacoco-it/jacoco.xml --partial
-          java -jar jbehave-support-core/target/codacy-reporter-latest.jar final
       - uses: actions/upload-artifact@v1
         if: always()
         with:

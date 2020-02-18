@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -162,6 +163,50 @@ public class ExamplesTableUtil {
             }
         });
         softly.assertAll();
+    }
+
+    /**
+     * Checks whether examplesTable column contains any duplicity
+     *
+     * @param examplesTable     table to be checked
+     * @param columns   list of mandatory columns
+     *
+     * @throws org.assertj.core.api.SoftAssertionError   for every column missing in table
+     * @throws java.lang.IllegalArgumentException        when columns is missing
+     */
+    public static void assertDuplicatesInColumns(ExamplesTable examplesTable, String... columns) {
+        Assert.notEmpty(columns, "columns must not be empty");
+        SoftAssertions softly = new SoftAssertions();
+        Arrays.stream(columns).forEach(column -> {
+            if(!examplesTable.getHeaders().contains(column)){
+                softly.fail("Examples table doesn't contain column: " + column);
+            } else {
+                LinkedHashSet<Integer> duplicates = new LinkedHashSet<>();
+                for (int row = 0; row < examplesTable.getRowCount(); row++) {
+                    if (duplicates.contains(row)) {
+                        continue;
+                    }
+                    checkColumnForDuplicates(row, softly, duplicates, examplesTable, column);
+                }
+            }
+        });
+        softly.assertAll();
+    }
+
+    private static void checkColumnForDuplicates(int originalRowNum, SoftAssertions softly, LinkedHashSet<Integer> allDuplicates, ExamplesTable examplesTable, String column) {
+        LinkedHashSet<Integer> duplicates = new LinkedHashSet<>();
+        String originalRowValue = examplesTable.getRow(originalRowNum).get(column);
+        for (int rowToCheckNum = originalRowNum + 1; rowToCheckNum < examplesTable.getRowCount(); rowToCheckNum++) {
+            if (originalRowValue.equals(examplesTable.getRow(rowToCheckNum).get(column))) {
+                duplicates.add(originalRowNum);
+                duplicates.add(rowToCheckNum);
+            }
+        }
+        if (!duplicates.isEmpty()) {
+            allDuplicates.addAll(duplicates);
+            softly.fail("Examples table contains duplicate value: [" + originalRowValue + "] in a column ["
+                + column + "] in rows: " + duplicates.toString());
+        }
     }
 
     private static List<Map<String, String>> convertTable(ExamplesTable table, boolean caseSensitiveMap) {

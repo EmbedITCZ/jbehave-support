@@ -64,7 +64,7 @@ public final class RestServiceSteps {
     @Given("[$method] request to [$application]/[$url] is sent with data: $data")
     @When("[$method] request to [$application]/[$url] is sent with data: $data")
     public void sendRequest(String method, String application, ExpressionEvaluatingParameter<String> url, ExamplesTable data) throws IOException {
-        resolveHandler(application).sendRequest(url.getValue(), HttpMethod.valueOf(method), data);
+        resolveHandler(application).sendCheckedRequest(url.getValue(), HttpMethod.valueOf(method), data);
     }
 
     @When("response from [$application] REST API has status [$status]")

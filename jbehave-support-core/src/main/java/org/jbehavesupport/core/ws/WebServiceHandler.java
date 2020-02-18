@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
+import static org.jbehavesupport.core.internal.ExamplesTableUtil.assertDuplicatesInColumns;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.state;
@@ -96,6 +98,7 @@ public abstract class WebServiceHandler {
     public final void setRequestData(String request, ExamplesTable data) {
         testContext.clear(key -> key.startsWith(request));
         ExamplesTable convertedData = convertCollectionNotation(data);
+        assertDuplicatesInColumns(data, NAME);
         overrideRequestData(request, convertedData);
     }
 

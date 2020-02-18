@@ -164,6 +164,48 @@ public class ExamplesTableUtil {
         softly.assertAll();
     }
 
+    /**
+     * Checks whether examplesTable column contains any duplicity
+     *
+     * @param examplesTable     table to be checked
+     * @param columns   list of mandatory columns
+     *
+     * @throws org.assertj.core.api.SoftAssertionError   for every column missing in table
+     * @throws java.lang.IllegalArgumentException        when columns is missing
+     */
+    public static void assertDuplicatesInColumns(ExamplesTable examplesTable, String... columns) {
+        Assert.notEmpty(columns, "columns must not be empty");
+        SoftAssertions softly = new SoftAssertions();
+        Arrays.stream(columns).forEach(column -> {
+            List<Integer> duplicates = new ArrayList<>();
+            for (int row = 0; row < examplesTable.getRowCount(); row++) {
+                if (duplicates.contains(row)) {
+                    continue;
+                }
+                checkColumnForDuplicates(row, softly, duplicates, examplesTable, column);
+            }
+        });
+        softly.assertAll();
+    }
+
+    private static void checkColumnForDuplicates(int originalRowNum, SoftAssertions softly, List<Integer> duplicates, ExamplesTable examplesTable, String column) {
+        List<Integer> actualDuplicates = new ArrayList<>();
+        String originalRowValue = examplesTable.getRow(originalRowNum).get(column);
+        for (int rowToCheckNum = originalRowNum + 1; rowToCheckNum < examplesTable.getRowCount(); rowToCheckNum++) {
+            if (originalRowValue.equals(examplesTable.getRow(rowToCheckNum).get(column))) {
+                if (!actualDuplicates.contains(originalRowNum)) {
+                    actualDuplicates.add(originalRowNum);
+                }
+                actualDuplicates.add(rowToCheckNum);
+            }
+        }
+        if (!actualDuplicates.isEmpty()) {
+            duplicates.addAll(actualDuplicates);
+            softly.fail("Examples table contains duplicate value: [" + originalRowValue + "] in a column ["
+                + column + "] in rows: " + actualDuplicates.toString());
+        }
+    }
+
     private static List<Map<String, String>> convertTable(ExamplesTable table, boolean caseSensitiveMap) {
         List<String> headers = table.getHeaders();
         return table.getRowsAsParameters()

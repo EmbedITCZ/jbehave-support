@@ -99,4 +99,63 @@ class ExamplesTableUtilTest extends Specification {
         def exception = thrown(IllegalArgumentException)
         exception.getMessage().contains("expectedColumns must not be empty")
     }
+
+    def "should not spot duplicity in column"() {
+
+        setup:
+        def table = new ExamplesTable(
+            "| name  | data   |\n" +
+            "| test  | value1 |\n" +
+            "| test1 | value2 |\n" +
+            "| test2 | value1 |")
+
+        when:
+        ExamplesTableUtil.assertDuplicatesInColumns(table, "name")
+
+        then:
+        notThrown(Error)
+    }
+
+    def "should spot multiple duplicates in column"() {
+
+        setup:
+        def table = new ExamplesTable(
+             "| name  | data   |\n" +
+             "| test1 | value1 |\n" +
+             "| test  | value2 |\n" +
+             "| test1 | value2 |\n" +
+             "| test3 | value2 |\n" +
+             "| test2 | value2 |\n" +
+             "| test1 | value1 |")
+
+        when:
+        ExamplesTableUtil.assertDuplicatesInColumns(table, "name")
+
+        then:
+        def error = thrown(Error)
+        error.getMessage().contains("Examples table contains duplicate value: [test1] in a column [name] in rows: [0, 2, 5]")
+    }
+
+    def "should spot multiple duplicates in multiple columns"() {
+
+        setup:
+        def table = new ExamplesTable(
+             "| name  | data   |\n" +
+             "| test1 | value1 |\n" +
+             "| test  | value2 |\n" +
+             "| test1 | value2 |\n" +
+             "| test2 | value2 |\n" +
+             "| test2 | value2 |\n" +
+             "| test1 | value1 |")
+
+        when:
+        ExamplesTableUtil.assertDuplicatesInColumns(table, "name", "data")
+
+        then:
+        def error = thrown(Error)
+        error.getMessage().contains("Examples table contains duplicate value: [test1] in a column [name] in rows: [0, 2, 5]")
+        error.getMessage().contains("Examples table contains duplicate value: [test2] in a column [name] in rows: [3, 4]")
+        error.getMessage().contains("Examples table contains duplicate value: [value1] in a column [data] in rows: [0, 5]")
+        error.getMessage().contains("Examples table contains duplicate value: [value2] in a column [data] in rows: [1, 2, 3, 4]")
+    }
 }

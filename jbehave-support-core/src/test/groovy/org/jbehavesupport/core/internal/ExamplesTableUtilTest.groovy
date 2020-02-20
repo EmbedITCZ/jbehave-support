@@ -158,4 +158,15 @@ class ExamplesTableUtilTest extends Specification {
         error.getMessage().contains("Examples table contains duplicate value: [value1] in a column [data] in rows: [0, 5]")
         error.getMessage().contains("Examples table contains duplicate value: [value2] in a column [data] in rows: [1, 2, 3, 4]")
     }
+
+    def "should reject columns not present in examples table"() {
+        setup:
+        def table = new ExamplesTable("| name | data |")
+
+        when:
+        ExamplesTableUtil.assertDuplicatesInColumns(table, "void")
+
+        then:
+        thrown(Error)
+    }
 }

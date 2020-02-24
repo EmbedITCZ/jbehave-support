@@ -66,7 +66,7 @@
         <version.jbehave>4.3.5</version.jbehave>
         <version.lombok>1.18.12</version.lombok>
         <version.jbehave-junit-support>4.3.5</version.jbehave-junit-support>
-        <version.groovy>2.5.9</version.groovy>
+        <version.groovy>3.0.1</version.groovy>
         <version.junit>4.13</version.junit>
         <version.spockframework>1.3-groovy-2.5</version.spockframework>
         <version.assertj>3.15.0</version.assertj>

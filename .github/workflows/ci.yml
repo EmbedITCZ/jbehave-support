@@ -50,6 +50,7 @@ jobs:
         run: |
           mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -B -V
       - name: Upload test coverage for unit tests
+        if: matrix.java == 8
         uses: actions/upload-artifact@v1
         with:
           name: jacoco
@@ -77,12 +78,14 @@ jobs:
       - name: System test with Java ${{ matrix.java }}
         run: |
           xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -Dit.test=\!**/BrowserStackIT -Pintegration-test -B -V
-      - uses: actions/upload-artifact@v1
+      - name: Upload reports on Java ${{ matrix.java }}
+        uses: actions/upload-artifact@v1
         if: always()
         with:
-          name: reports
+          name: reports-java-${{ matrix.java }}
           path: jbehave-support-core/target/reports
       - name: Upload test coverage for integration tests
+        if: matrix.java == 8
         uses: actions/upload-artifact@v1
         with:
           name: jacoco-it

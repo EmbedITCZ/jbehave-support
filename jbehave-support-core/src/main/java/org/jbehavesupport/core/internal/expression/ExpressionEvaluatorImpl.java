@@ -58,7 +58,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
                     returnValue = valObj;
                 }
             } else {
-                returnValue = null;
+                returnValue = "";
             }
             m = EXPRESSION.matcher(returnValue.toString());
         }

@@ -30,7 +30,7 @@
         <version.crash>1.3.2</version.crash>
         <version.jakarta.xml.bind-api>2.3.2</version.jakarta.xml.bind-api>
         <version.moxy>2.7.6</version.moxy>
-        <version.mail-api>1.6.2</version.mail-api>
+        <version.jakarta.mail-api>1.6.4</version.jakarta.mail-api>
         <version.jakarta.activation>1.2.2</version.jakarta.activation>
         <version.jakarta.xml.soap-api>1.4.1</version.jakarta.xml.soap-api>
         <version.saaj-impl>1.5.1</version.saaj-impl>
@@ -93,9 +93,9 @@
                 <version>${version.moxy}</version>
             </dependency>
             <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>javax.mail-api</artifactId>
-                <version>${version.mail-api}</version>
+                <groupId>jakarta.mail</groupId>
+                <artifactId>jakarta.mail-api</artifactId>
+                <version>${version.jakarta.mail-api}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.activation</groupId>

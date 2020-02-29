@@ -31,7 +31,7 @@
         <version.jakarta.xml.bind-api>2.3.2</version.jakarta.xml.bind-api>
         <version.moxy>2.7.6</version.moxy>
         <version.mail-api>1.6.2</version.mail-api>
-        <version.jakarta.activation>1.2.1</version.jakarta.activation>
+        <version.jakarta.activation>1.2.2</version.jakarta.activation>
         <version.jakarta.xml.soap-api>1.4.1</version.jakarta.xml.soap-api>
         <version.saaj-impl>1.5.1</version.saaj-impl>
         <plugin.version.maven-jaxb2-plugin>0.14.0</plugin.version.maven-jaxb2-plugin>

@@ -28,7 +28,7 @@
         <version.commons-lang3>3.9</version.commons-lang3>
         <version.commons-io>2.6</version.commons-io>
         <version.crash>1.3.2</version.crash>
-        <version.jakarta.xml.bind-api>2.3.2</version.jakarta.xml.bind-api>
+        <version.jakarta.xml.bind-api>2.3.3</version.jakarta.xml.bind-api>
         <version.moxy>2.7.6</version.moxy>
         <version.mail-api>1.6.2</version.mail-api>
         <version.jakarta.activation>1.2.2</version.jakarta.activation>

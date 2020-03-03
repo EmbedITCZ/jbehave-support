@@ -218,7 +218,6 @@
                             </td>
                             <td>
                                 <xsl:call-template name="break">
-                                    <!--xsl:value-of select="value"/-->
                                     <xsl:with-param name="text" select="value"/>
                                 </xsl:call-template>
                             </td>

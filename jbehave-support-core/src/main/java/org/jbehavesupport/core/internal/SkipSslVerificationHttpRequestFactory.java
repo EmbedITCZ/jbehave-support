@@ -9,6 +9,7 @@ import javax.net.ssl.SSLContext;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustStrategy;
@@ -23,7 +24,7 @@ public class SkipSslVerificationHttpRequestFactory extends HttpComponentsClientH
         TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
         try {
             SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
-            SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+            SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
             return HttpClients.custom().setSSLSocketFactory(csf).build();
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             log.error(e.getMessage(), e);

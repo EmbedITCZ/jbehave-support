@@ -1,5 +1,14 @@
+Narrative:
+In order to explain how web testing works
+As a development team
+I want to show you basic usage of web actions
+
+Scenario: Web actions
+
+!-- Open web browser on page from a configuration with suffix
 Given [TEST]/[action-test.html] url is open
 
+!-- Perform all web actions
 When on [home] page these actions are performed:
 | element               | action       | data  |
 | #click-btn            | CLICK        |       |
@@ -16,6 +25,7 @@ When on [home] page these actions are performed:
 | #checkbox-input-true  | SELECT       |       |
 | #checkbox-input-false | SELECT       | false |
 
+!-- Verify actions result
 Then on [home] page these conditions are verified:
 | element               | property      | data           |
 | #click-result         | TEXT          | OK             |

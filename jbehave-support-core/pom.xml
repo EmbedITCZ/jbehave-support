@@ -183,9 +183,9 @@
                             <additionalparam>-Xdoclint:none</additionalparam>
                             <additionnalDependencies>
                                 <additionalDependency>
-                                    <groupId>javax.interceptor</groupId>
-                                    <artifactId>javax.interceptor-api</artifactId>
-                                    <version>1.2</version>
+                                    <groupId>jakarta.interceptor</groupId>
+                                    <artifactId>jakarta.interceptor-api</artifactId>
+                                    <version>1.2.5</version>
                                 </additionalDependency>
                             </additionnalDependencies>
                         </configuration>

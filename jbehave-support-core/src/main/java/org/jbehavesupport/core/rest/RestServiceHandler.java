@@ -479,7 +479,7 @@ public class RestServiceHandler {
                 .collect(Collectors.toList());
             return data.withRows(newMapList);
         } else {
-            return data;
+            return ExamplesTable.EMPTY;
         }
     }
 

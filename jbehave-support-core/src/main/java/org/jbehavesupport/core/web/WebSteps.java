@@ -353,6 +353,6 @@ public final class WebSteps {
     private String getLastOpenedWindowHandler() {
         Set<String> handles = driver.getWindowHandles();
         assertThat(handles).as("no opened windows").isNotEmpty();
-        return handles.stream().skip(handles.size() - 1).findFirst().get();
+        return handles.stream().skip(handles.size() - 1L).findFirst().get();
     }
 }

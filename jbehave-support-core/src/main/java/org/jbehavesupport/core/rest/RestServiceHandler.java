@@ -55,6 +55,7 @@ import static org.jbehavesupport.core.internal.ExampleTableConstraints.ALIAS;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
+import static org.jbehavesupport.core.internal.ExamplesTableUtil.assertDuplicatesInColumns;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.getValue;
 import static org.springframework.util.Assert.state;
 
@@ -123,6 +124,13 @@ public class RestServiceHandler {
         if (restXmlReporterExtension != null) {
             template.getInterceptors().add(restXmlReporterExtension);
         }
+    }
+
+    public void sendCheckedRequest(String urlPath, HttpMethod requestMethod, ExamplesTable data) throws IOException{
+        if (data != null){
+            assertDuplicatesInColumns(data, NAME);
+        }
+        sendRequest(urlPath, requestMethod, data);
     }
 
     @SuppressWarnings("squid:S1166")

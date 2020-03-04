@@ -4,25 +4,31 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.assertj.core.api.SoftAssertions;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Parameters;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 @UtilityClass
 @Slf4j
@@ -147,13 +153,12 @@ public class ExamplesTableUtil {
     /**
      * Checks whether examplesTable has all mandatory columns
      *
-     * @param examplesTable     table to be checked
-     * @param expectedColumns   list of mandatory columns
-     *
-     * @throws org.assertj.core.api.SoftAssertionError   for every column missing in table
-     * @throws java.lang.IllegalArgumentException        when expectedColumns is missing
+     * @param examplesTable   table to be checked
+     * @param expectedColumns list of mandatory columns
+     * @throws org.assertj.core.api.SoftAssertionError for every column missing in table
+     * @throws java.lang.IllegalArgumentException      when expectedColumns is missing
      */
-    public static void assertMandatoryColumns(ExamplesTable examplesTable, String ... expectedColumns) {
+    public static void assertMandatoryColumns(ExamplesTable examplesTable, String... expectedColumns) {
         Assert.notEmpty(expectedColumns, "expectedColumns must not be empty");
         SoftAssertions softly = new SoftAssertions();
         Arrays.stream(expectedColumns).forEach(key -> {
@@ -162,6 +167,51 @@ public class ExamplesTableUtil {
             }
         });
         softly.assertAll();
+    }
+
+    /**
+     * Checks whether examplesTable column contains any duplicity
+     *
+     * @param examplesTable  table to be checked
+     * @param checkedColumns list of mandatory columns
+     * @throws org.assertj.core.api.SoftAssertionError for every column missing in table
+     * @throws java.lang.IllegalArgumentException      when columns is missing
+     */
+    public static void assertDuplicatesInColumns(ExamplesTable examplesTable, String... checkedColumns) {
+        List<String> applicableColumns = getApplicableColumns(examplesTable.getHeaders(), checkedColumns);
+        SoftAssertions softly = new SoftAssertions();
+        examplesTable.getRows().stream()
+            .flatMap(row -> row.entrySet().stream())
+            .filter(e -> applicableColumns.contains(e.getKey()))
+            .collect(groupingBy(Map.Entry::getKey, mapping(Map.Entry::getValue, toList())))
+            .forEach((columnName, columnValues) -> evaluateColumnDuplicates(softly, columnName, columnValues));
+        softly.assertAll();
+    }
+
+    private static void evaluateColumnDuplicates(SoftAssertions softly, String columnName, List<String> columnValues) {
+        Map<String, List<Integer>> occurrences = new HashMap<>();
+        for (int index = 0; index < columnValues.size(); index++) {
+            occurrences.computeIfAbsent(columnValues.get(index), c -> new ArrayList<>()).add(index);
+        }
+        occurrences.forEach((duplicateLiteral, frequency) -> softly.assertThat(frequency)
+            .as("Examples table contains duplicate value: [%s] in a column [%s] in rows: %s",
+                duplicateLiteral, columnName, frequency.toString())
+            .hasSizeLessThanOrEqualTo(1));
+    }
+
+    private static List<String> getApplicableColumns(List<String> headers, String[] checkedColumns) {
+        if (ObjectUtils.isEmpty(checkedColumns)) {
+            return headers;
+        }
+        List<String> applicableColumns = Arrays.asList(checkedColumns);
+        SoftAssertions softly = new SoftAssertions();
+        for (String checkedColumn : checkedColumns) {
+            softly.assertThat(checkedColumn)
+                .as("Column %s is not present in examples table", checkedColumn)
+                .isIn(headers);
+        }
+        softly.assertAll();
+        return applicableColumns;
     }
 
     private static List<Map<String, String>> convertTable(ExamplesTable table, boolean caseSensitiveMap) {
@@ -173,7 +223,7 @@ public class ExamplesTableUtil {
                 headers.forEach(header -> row.put(header, p.valueAs(header, String.class)));
                 return row;
             })
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private static Map<String, String> getHashMap(final boolean caseSensitive) {

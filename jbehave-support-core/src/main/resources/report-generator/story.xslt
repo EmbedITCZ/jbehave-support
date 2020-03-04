@@ -217,7 +217,9 @@
                                 <xsl:value-of select="key"/>
                             </td>
                             <td>
-                                <xsl:value-of select="value"/>
+                                <xsl:call-template name="break">
+                                    <xsl:with-param name="text" select="value"/>
+                                </xsl:call-template>
                             </td>
                         </tr>
                     </xsl:for-each>

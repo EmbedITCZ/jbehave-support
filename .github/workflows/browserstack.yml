@@ -11,6 +11,7 @@ env:
 jobs:
   browserstack:
     name: BrowserStack on Java ${{ matrix.java }}
+    if: github.repository == 'EmbedITCZ/jbehave-support'
     runs-on: ubuntu-latest
     strategy:
       matrix:

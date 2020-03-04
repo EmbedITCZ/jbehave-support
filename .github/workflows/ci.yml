@@ -93,7 +93,7 @@ jobs:
 
   sonar:
     name: Sonar integration
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && github.repository == 'EmbedITCZ/jbehave-support'
     needs: [ build, test, system-test ]
     runs-on: ubuntu-latest
     steps:

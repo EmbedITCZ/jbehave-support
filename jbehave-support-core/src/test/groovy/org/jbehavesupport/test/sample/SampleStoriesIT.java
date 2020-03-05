@@ -25,7 +25,6 @@ public class SampleStoriesIT extends AbstractSpringStories {
             "org/jbehavesupport/test/sample/WebAction.story",
             "org/jbehavesupport/test/sample/WebNavigation.story",
             "org/jbehavesupport/test/sample/Ssh.story",
-            "org/jbehavesupport/test/sample/SshReport.story",
             "org/jbehavesupport/test/sample/HealthCheck.story",
             "org/jbehavesupport/test/sample/Jms.story",
             "org/jbehavesupport/test/sample/Verification.story"

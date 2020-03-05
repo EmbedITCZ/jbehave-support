@@ -30,6 +30,7 @@ import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.JmsXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
+import org.jbehavesupport.core.report.extension.ScreenshotReporterExtension;
 import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.SqlXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.TestContextXmlReporterExtension;
@@ -138,6 +139,11 @@ public class TestConfig {
     @Bean
     public SqlXmlReporterExtension sqlXmlReporterExtension() {
         return new SqlXmlReporterExtension();
+    }
+
+    @Bean
+    public ScreenshotReporterExtension screenshotReporterExtension(TestContext testContext) {
+        return new ScreenshotReporterExtension(testContext);
     }
 
     @Bean

@@ -32,11 +32,3 @@ Then the following data are present in [TEST] log:
 | header     |
 | long       |
 | unexpected |
-
-Scenario: Save more values into context to demonstrate Test Context extension behaviou
-
-Given the value [any value] is saved as [ANY_VALUE]
-
-Given the value [first line{UNESCAPE:\n}second line{UNESCAPE:\n}another line] is saved as [MULTI_LINE_VALUE]
-
-Given the value [random string] is saved as [RANDOM_STRING]

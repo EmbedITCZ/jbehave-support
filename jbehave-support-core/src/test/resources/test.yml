@@ -1,3 +1,6 @@
+environmentInfo:
+  name: jbehave-support-test-environment
+
 ws:
   url: http://localhost:11110/services/
 

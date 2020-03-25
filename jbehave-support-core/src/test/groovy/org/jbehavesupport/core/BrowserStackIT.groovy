@@ -52,6 +52,7 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
         "sample/WebWaitCondition.story"         | _
         //"sample/WebAction.story"                | _
         "sample/WebNavigation.story"            | _
+        "sample/WebScrollAction.story"          | _
     }
 
     @Unroll
@@ -76,6 +77,7 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
         "sample/WebWaitCondition.story"         | _
         //"sample/WebAction.story"                | _
         "sample/WebNavigation.story"            | _
+        "sample/WebScrollAction.story"          | _
     }
 
     @Unroll
@@ -100,5 +102,6 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
         "sample/WebWaitCondition.story"         | _
         //"sample/WebAction.story"                | _
         "sample/WebNavigation.story"            | _
+        "sample/WebScrollAction.story"          | _
     }
 }

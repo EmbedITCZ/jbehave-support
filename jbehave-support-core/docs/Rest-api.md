@@ -53,6 +53,16 @@ When [POST] request to [TEST]/[user/] is sent with data:
 | addresses[2].city       | Graz 2           | ADDRESS_2_CITY      |
 ```
 
+It's possible to send an empty list by using empty brackets.
+In the following example, an empty list of documents will be sent:
+```
+When [POST] request to [TEST]/[user/] is sent with data:
+| name        | data   | contextAlias |
+| firstName   | Ricky  | FIRST_NAME   |
+| lastName    | Gruber | LAST_NAME    |
+| documents[] |        |              |
+```
+
 To send a list at the root level use the following syntax:
 
 ```

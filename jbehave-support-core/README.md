@@ -3,6 +3,7 @@ Core jBehave support.
 - [General info](docs/General.md)
 - [Expression commands](docs/Expression-commands.md)
 - [Test context](docs/Test-context.md)
+- [Best practices](docs/Best-practices.md)
 - Steps
     - [Web testing steps](docs/Web-testing.md)
     - [REST API steps](docs/Rest-api.md)  

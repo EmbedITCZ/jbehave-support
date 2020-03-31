@@ -44,7 +44,8 @@ If you find a bug or have a question, feel free to create a new GitHub issue. Or
 [![Gitter](https://badges.gitter.im/jbehave-support/community.svg)](https://gitter.im/jbehave-support/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Testing
-We write tests primarily in groovy (except for Sample stories mentioned below). The tests are running against a mock application located in the `jbehave-support-core-test` folder. To start it run the `jbehave-support-core-test/jbehave-support-core-test-app/src/main/java/org/jbehavesupport/core/test/app/JbehaveSupportCoreTestApplication.class`.
+We write tests primarily in groovy (even though Java can be used as well, plus we use Sample stories mentioned below for testing as well). 
+Integration tests are ran against a mock application located in the `jbehave-support-core-test` folder. To start it, run the `jbehave-support-core-test/jbehave-support-core-test-app/src/main/java/org/jbehavesupport/core/test/app/JbehaveSupportCoreTestApplication.class`.
 
 Sample stories (`jbehave-support-core/src/test/groovy/org/jbehavesupport/test/sample`) are samples for users and tests at the same time.
 

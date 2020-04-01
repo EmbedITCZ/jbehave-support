@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.xml.XMLConstants;
 import javax.xml.transform.TransformerFactory;
 
 import lombok.Getter;
@@ -81,8 +82,10 @@ public class WebServiceTemplateConfigurer {
             @Override
             public boolean handleRequest(MessageContext msg) {
                 try {
-                    TransformerFactory.newInstance()
-                        .newTransformer()
+                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                    transformerFactory.newTransformer()
                         .transform(new StringSource(headerProvider.get()), ((SoapMessage) msg.getRequest()).getSoapHeader().getResult());
                 } catch (Exception e) {
                     throw new RuntimeException(e);

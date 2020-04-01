@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -44,7 +45,10 @@ public class WsXmlReporterExtension extends AbstractXmlReporterExtension impleme
 
     public WsXmlReporterExtension() {
         try {
-            this.transformer = TransformerFactory.newInstance().newTransformer();
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            this.transformer = transformerFactory.newTransformer();
             this.transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             this.transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             this.transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");

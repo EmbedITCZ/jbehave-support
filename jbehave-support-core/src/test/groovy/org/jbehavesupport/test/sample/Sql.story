@@ -123,3 +123,29 @@ select first_name, last_name, age, last_update from person
 Then these rows are present in the query result:
 | first_name | last_name | age    | last_update |
 | Michael    | Doe       | {NULL} | {NULL}      |
+
+Scenario: Set back up update
+Given back up update with key [DELETE_LUCIFER] is saved for database [TEST]:
+delete from person where first_name = 'Lucifer'
+
+Given back up update with key [DELETE_LUCIFERA] is saved for database [TEST]:
+delete from person where first_name = 'Lucifera'
+
+Given back up update with key [DELETE_LUCIFERE] is saved for database [TEST]:
+delete from person where first_name = 'Lucifere'
+
+When this update is performed on [TEST]:
+insert into person (first_name,last_name) values ('Lucifer', 'Unwanted')
+
+When this update is performed on [TEST]:
+insert into person (first_name,last_name) values ('Lucifera', 'Unwanted')
+
+When this update is performed on [TEST]:
+insert into person (first_name,last_name) values ('Lucifere', 'Unwanted')
+
+Scenario: Varify back up update
+Given this query is performed on [TEST]:
+select * from person where first_name like 'Lucife%'
+
+Then the result set has 0 row(s)
+

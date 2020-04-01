@@ -132,4 +132,15 @@ Then query fails and error message contains: Table "PERSON_" not found
 If a step with delayed exception throwing is used using the above mentioned and there is another sql related test step run afterwards without first checking the exception, then the next step will fail with the original exception.
 (And if there is no such sql related step run then the exception will be thrown at the end of the scenario - in AfterScenario)
 
+
+#### Back up update
+
+Following step is used to make sure that update returning DB to original state will be executed even when story fails
+```
+Given back up update with key [REVERT_NAME] is saved for database [MYAPP]:
+update client set name = '{CP:ORIGINAL_VALUE}' where name like '{CP:CHANGED_VALUE}'
+```
+
+Update saved by this step will be executed after end of the story even when story fails. (Aborting story will prevent this update) 
+
 ---

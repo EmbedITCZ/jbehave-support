@@ -8,6 +8,7 @@ import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,7 +16,9 @@ import java.util.stream.IntStream;
 
 import javax.sql.DataSource;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.internal.sql.InterceptingNamedParameterJdbcTemplate;
@@ -41,6 +44,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public final class SqlSteps {
@@ -60,6 +64,8 @@ public final class SqlSteps {
 
     @Autowired(required = false)
     private SqlXmlReporterExtension sqlXmlReporterExtension;
+
+    private Map<String, Pair<String, ExpressionEvaluatingParameter<String>>> sqlContainer = new LinkedHashMap<>();
 
     enum ExceptionHandling {
         THROW_EXCEPTION,
@@ -192,7 +198,7 @@ public final class SqlSteps {
     }
 
     private void checkColumnPresentInResultSet(Map<String, Object> resultRow, Map<String, String> row) {
-        if (!resultRow.keySet().contains(row.get(ExampleTableConstraints.NAME).toUpperCase())) {
+        if (!resultRow.containsKey(row.get(ExampleTableConstraints.NAME).toUpperCase())) {
             throw new IllegalArgumentException("Column " + row.get(ExampleTableConstraints.NAME).toUpperCase() + " is not present in result set");
         }
     }
@@ -263,6 +269,14 @@ public final class SqlSteps {
         } else {
             throw new IllegalArgumentException("SQL query passed, error message wasn't caught.");
         }
+    }
+
+    @Given("back up update with key [$key] is saved for database [$databaseId]:$sqlStatement")
+    public void saveUpdate(ExpressionEvaluatingParameter<String> key, String databaseId, ExpressionEvaluatingParameter<String> sqlStatement) {
+        if (this.sqlContainer.containsKey(key.getValue())) {
+            throw new IllegalArgumentException("Key [" + key.getValue() + "] already exist.");
+        }
+        this.sqlContainer.put(key.getValue(), Pair.of(databaseId, sqlStatement));
     }
 
     private List<Map<String, Object>> getSqlResult() {
@@ -386,9 +400,9 @@ public final class SqlSteps {
 
     @SuppressWarnings("WMI_WRONG_MAP_ITERATOR")
     private void compareExpectedVersusActualMaps(Map<String, String> expectedRow, Map<String, Object> actualRow, SoftAssertions softly) {
-        for (String key : expectedRow.keySet()) {
+        for (Map.Entry<String, String> entry : expectedRow.entrySet()) {
             softly
-                .assertThatCode(() -> equalsVerifier.verify(actualRow.get(key), expectedRow.get(key)))
+                .assertThatCode(() -> equalsVerifier.verify(actualRow.get(entry.getKey()), expectedRow.get(entry.getKey())))
                 .doesNotThrowAnyException();
         }
     }
@@ -399,10 +413,35 @@ public final class SqlSteps {
         return row;
     }
 
-    @AfterScenario
+    private void executeBackUpUpdate(String databaseId, ExpressionEvaluatingParameter<String> sqlStatement, SoftAssertions softAssertions) {
+        try {
+            executeUpdate(databaseId, sqlStatement, new ExamplesTable(""), THROW_EXCEPTION);
+            log.info("Back up update on database [" + databaseId + "] success:" + sqlStatement);
+        } catch (DataAccessException e) {
+            testContext.remove(SQL_EXCEPTION_KEY);
+            String errorMessage = "Back up update on database [" + databaseId + "] failed:" + sqlStatement + "\n with exception: " + e;
+            log.error(errorMessage);
+            softAssertions.fail(errorMessage);
+        }
+    }
+
     public void checkSqlException() {
         if (testContext.contains(SQL_EXCEPTION_KEY)) {
             throw (DataAccessException) testContext.remove(SQL_EXCEPTION_KEY);
         }
+    }
+
+    @AfterScenario
+    public void executeBackUpUpdates() {
+        SoftAssertions softAssertions = new SoftAssertions();
+        if (testContext.contains(SQL_EXCEPTION_KEY)) {
+            softAssertions.fail(testContext.remove(SQL_EXCEPTION_KEY));
+        }
+        sqlContainer.forEach((key, value) -> {
+            Pair<String, ExpressionEvaluatingParameter<String>> sql = sqlContainer.get(key);
+            executeBackUpUpdate(sql.getKey(), sql.getValue(), softAssertions);
+        });
+        sqlContainer.clear();
+        softAssertions.assertAll();
     }
 }

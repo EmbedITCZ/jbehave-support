@@ -45,6 +45,9 @@ Contributors guide can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
 ## Examples
 - [examples](jbehave-support-core/docs/examples/Examples.md) - more example projects like the [simple use case](#simple-use-case---web-testing) shown below.
     
+## Best practices
+- [Best practices](jbehave-support-core/docs/Best-practices.md)
+    
 ## Simple use case - Web testing
 
 To show you how to set up a project using the jbehave-support library, I am going to make a test that Google searches `EmbedITCZ jbehave-support` and checks the result. To learn more about this example check out [Web-testing.md](jbehave-support-core/docs/Web-testing.md).

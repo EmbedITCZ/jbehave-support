@@ -1,6 +1,6 @@
 [Contents](../README.md)
 
-# Health checks
+## Health checks
 
 Health checks are used to check if the tested components are running properly - are healthy.
 

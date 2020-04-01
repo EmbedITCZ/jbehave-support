@@ -7,6 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TableParameterAligner {
+
+    private TableParameterAligner() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Aligns the table parameter in the specified string. The input string is expected to have only
      * one table, if more than one is present then the behavior is unpredictable.
@@ -38,13 +43,9 @@ public class TableParameterAligner {
         // work out the max column widths
         int[] maxColumnWidths = null;
         for (String line : tableLines) {
-            if (line.startsWith("|--")) {
-                // no need to do anything with a comment line
-                continue;
-            }
-
-            if (!line.startsWith("|")) {
-                // ignore non table lines to support functionality provided by alignTableInString()
+            if (line.startsWith("|--") || !line.startsWith("|")) {
+                // "|--" no need to do anything with a comment line
+                // "|" ignore non table lines to support functionality provided by alignTableInString()
                 continue;
             }
 
@@ -69,16 +70,14 @@ public class TableParameterAligner {
 
         }
 
-        // align lines
-        for (String line : tableLines) {
-            if (line.startsWith("|--")) {
-                // simply add comment line
-                alignedLines.add(line);
-                continue;
-            }
+        return alignLines(tableLines, alignedLines, maxColumnWidths);
+    }
 
-            if (!line.startsWith("|")) {
-                // simply add non table lines to support functionality provided by alignTableInString() method above
+    private static List<String> alignLines(List<String> tableLines, List<String> alignedLines, int[] maxColumnWidths) {
+        for (String line : tableLines) {
+            if (line.startsWith("|--") || !line.startsWith("|")) {
+                // "|--" simply add comment line
+                // "|" simply add non table lines to support functionality provided by alignTableInString() method above
                 alignedLines.add(line);
                 continue;
             }
@@ -93,7 +92,7 @@ public class TableParameterAligner {
 
             for (int i = 0; i < split.length; i++) {
                 String field = split[i].trim();
-                int maxFieldLength = maxColumnWidths[i];
+                int maxFieldLength = maxColumnWidths.length < i ? 0 : maxColumnWidths[i];
                 int dif = maxFieldLength - field.length();
                 if (dif > 0) {
                     char[] padChars = new char[dif];

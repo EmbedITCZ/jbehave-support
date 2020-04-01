@@ -330,3 +330,19 @@ When [POST] request to [TEST]/[user/] is sent with data:
 | powerups[1] | {NULL}   | string  |
 
 Then response from [TEST] REST API has status [200]
+
+Scenario: json with empty list
+When [POST] request to [TEST]/[user/] is sent with data:
+| name      | data   | type    |
+| firstName | Mario  | string  |
+| age       | 24     | number  |
+| height    | 1.56   | number  |
+| plumber   | true   | boolean |
+| brother   | Luigi  |         |
+| princess  | {NULL} |         |
+| weapons[] |        |         |
+| cats[]    | {NULL} |         |
+| hats[]    | {NULL} |         |
+| hats[0]   | topHat |         |
+
+Then response from [TEST] REST API has status [200]

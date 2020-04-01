@@ -88,6 +88,7 @@ public class RestServiceHandler {
     private static final String STATUS_HEADER = HEADER_START + "Status";
     private static Pattern indexedKeyPattern = Pattern.compile("(.*)\\[(\\d+)\\]");
     private static Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)\\]\\.(.*)");
+    private static Pattern indexedKeyPattern3 = Pattern.compile("(.*)\\[(\\d*)\\]");
     private static final String PERIOD_REGEX = "\\.(\\d+)(\\.)?";
 
     private String url;
@@ -320,8 +321,8 @@ public class RestServiceHandler {
                 if (result != 0) {
                     return result;
                 }
-                int o1Index = Integer.valueOf(o1Matcher.group(grpNumber + 1));
-                int o2Index = Integer.valueOf(o2Matcher.group(grpNumber + 1));
+                int o1Index = Integer.parseInt(o1Matcher.group(grpNumber + 1));
+                int o2Index = Integer.parseInt(o2Matcher.group(grpNumber + 1));
                 result = o1Index - o2Index;
                 if (result != 0) {
                     return result;
@@ -341,7 +342,7 @@ public class RestServiceHandler {
             Matcher matcher = indexedKeyPattern.matcher(k1);
             if (matcher.matches()) {
                 k1 = matcher.group(1);
-                index = Integer.valueOf(matcher.group(2));
+                index = Integer.parseInt(matcher.group(2));
             }
 
             Map<String, Object> map;
@@ -376,22 +377,24 @@ public class RestServiceHandler {
             } else {
                 requestMap.put(k1, map);
             }
-        } else if (key.matches(".*\\[\\d+\\].*")) { // not nested, collection element
-            Matcher matcher = indexedKeyPattern.matcher(key);
+        } else if (key.matches(".*\\[\\d*\\].*")) { // not nested, collection element
+            Matcher matcher = indexedKeyPattern3.matcher(key);
             if (matcher.matches()) {
                 String k1 = matcher.group(1);
-                int index = Integer.valueOf(matcher.group(2));
                 List list;
                 if (requestMap.containsKey(k1)) {
                     list = (List) requestMap.get(k1);
                 } else {
                     list = new ArrayList<>();
                 }
-                if (list.size() > index) {
-                    list.set(index, value);
-                } else {
-                    list.add(value);
-                }
+                if (!matcher.group(2).isEmpty()) {
+                    int index = Integer.parseInt(matcher.group(2));
+                    if (list.size() > index) {
+                        list.set(index, value);
+                    } else {
+                        list.add(value);
+                    }
+                } // else, puts empty list
                 requestMap.put(k1, list);
             }
         } else {

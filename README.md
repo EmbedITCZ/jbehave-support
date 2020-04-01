@@ -21,6 +21,8 @@ along with support for [verification](jbehave-support-core/docs/General.md#verif
 [expression commands](jbehave-support-core/docs/Expression-commands.md) and 
 basic [reporting](jbehave-support-core/docs/Reporting.md).
 
+Currently supported Java versions are 8, 11 (latest LTS) and 13 (support for 14 is WIP).
+
 ## Contents
 1. [Modules](#modules)
 1. [Contributors guide](#contributors-guide)

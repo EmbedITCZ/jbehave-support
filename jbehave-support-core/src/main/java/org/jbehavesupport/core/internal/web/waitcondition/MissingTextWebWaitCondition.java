@@ -8,7 +8,6 @@ import static org.apache.commons.lang3.StringUtils.startsWith;
 import org.jbehavesupport.core.web.WebWaitConditionContext;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,7 +20,7 @@ public class MissingTextWebWaitCondition extends AbstractWebWaitCondition {
 
     @Override
     public void evaluate(WebWaitConditionContext ctx) {
-        fluentWait().until((ExpectedCondition<WebElement>) driver -> {
+        fluentWait().until( driver -> {
             WebElement element = findElement(ctx);
             String text = element.getText();
             if (isNotEmpty(ctx.getValue())) {

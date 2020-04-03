@@ -13,3 +13,4 @@ Core jBehave support.
     - [Health check steps](docs/Health-checks.md)
 - [Reporting](docs/Reporting.md)
 - [Filtering](docs/Filtering.md)
+- [List of deprecated functionality](docs/Deprecated.md)

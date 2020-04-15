@@ -93,6 +93,11 @@ public final class WebSteps {
         }
     }
 
+    @AfterScenario(uponType = ScenarioType.ANY, uponOutcome = AfterScenario.Outcome.ANY)
+    public void afterScenario() {
+        CURRENT_SETTING.remove();
+    }
+
     @Given("[$url] url is open")
     @When("[$url] url is open")
     public void openUrl(ExpressionEvaluatingParameter<String> url) {

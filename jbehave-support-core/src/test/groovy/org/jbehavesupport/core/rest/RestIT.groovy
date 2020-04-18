@@ -2,6 +2,7 @@ package org.jbehavesupport.core.rest
 
 import org.jbehave.core.model.ExamplesTable
 import org.jbehavesupport.core.TestConfig
+import org.jbehavesupport.core.TestContext
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -15,6 +16,9 @@ class RestIT extends Specification {
 
     @Autowired
     private RestServiceHandler restServiceHandler
+
+    @Autowired
+    private TestContext testContext
 
     @Test
     void shouldRejectMultipleKeysWhenBody() {
@@ -65,6 +69,42 @@ class RestIT extends Specification {
     }
 
     @Test
+    void canSaveCollectionsWithDifferentNotations() {
+        given:
+        ExamplesTable requestTable = new ExamplesTable(
+            "| name                    | data           |\n" +
+            "| addresses.0.country     | Brazil         |\n" +
+            "| addresses[0].city       | Rio de Janeiro |\n" +
+            "| addresses.0.details.0   | details 0 0    |\n" +
+            "| addresses[0].details[1] | details 0 1    |\n" +
+            "| addresses[0].details.2  | details 0 2    |\n" +
+            "| addresses.0.details[3]  | details 0 3    |"
+        )
+
+        ExamplesTable saveTable = new ExamplesTable(
+            "| name                    | contextAlias        |\n" +
+            "| addresses.0.country     | ADDRESS_0_COUNTRY   |\n" +
+            "| addresses[0].city       | ADDRESS_0_CITY      |\n" +
+            "| addresses.0.details.0   | ADDRESS_0_DETAILS_0 |\n" +
+            "| addresses[0].details[1] | ADDRESS_0_DETAILS_1 |\n" +
+            "| addresses[0].details.2  | ADDRESS_0_DETAILS_2 |\n" +
+            "| addresses.0.details[3]  | ADDRESS_0_DETAILS_3 |"
+        )
+
+        when:
+        restServiceHandler.sendRequest("user/", HttpMethod.valueOf("POST"), requestTable)
+        restServiceHandler.saveResponse(saveTable)
+
+        then:
+        testContext.get("ADDRESS_0_COUNTRY") == "Brazil"
+        testContext.get("ADDRESS_0_CITY") == "Rio de Janeiro"
+        testContext.get("ADDRESS_0_DETAILS_0") == "details 0 0"
+        testContext.get("ADDRESS_0_DETAILS_1") == "details 0 1"
+        testContext.get("ADDRESS_0_DETAILS_2") == "details 0 2"
+        testContext.get("ADDRESS_0_DETAILS_3") == "details 0 3"
+    }
+
+    @Test
     void canRecieveCollectionsWithDifferentNotations() {
         given:
         ExamplesTable examplesTable = new ExamplesTable(
@@ -94,4 +134,5 @@ class RestIT extends Specification {
         )
         restServiceHandler.verifyResponse("200", resultsTable)
     }
+
 }

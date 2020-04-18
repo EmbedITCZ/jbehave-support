@@ -74,7 +74,7 @@ Special elements (can't be defined) are `@url` and `@title`. Those elements don'
 
 #### Implicit mapping by ID
 
-For simple mapping by element ID an explicit mapping does not need to be defined in the mapping file and it can be used directly in the story.
+For simple CSS mapping by element ID an explicit mapping does not need to be defined in the mapping file, and it can be used directly in the story.
 Such mapping needs to start with a `#` sign, e.g.
 ```
 When on [home] page these actions are performed:
@@ -194,8 +194,8 @@ When on [home] page these actions are performed:
 | search.button | CLICK  |                |
 ```
 
-This step will find the mapping for the home.search.input element and perform the FILL action with the USER_NAME value stored in test context on it.
-Similarly it will handle the search.button element and the CLICK action.
+This step will find the mapping for the `search.input` element and perform the `FILL` action with the `USER_NAME` value stored in test context on it.
+Similarly it will handle the `search.button` element and the `CLICK` action.
 
 There are the following actions available at the moment:
 - ACCEPT - for accepting alert dialog
@@ -209,7 +209,14 @@ There are the following actions available at the moment:
 - SELECT - for selecting a value in an HTML select and checkbox input
 - SCROLL_ON - for scrolling on element
 
-For building examples table with actions programmatically is possible to use `WebActionBuilder`.
+For building examples table with actions programmatically it is possible to use `WebActionBuilder`.
+
+##### Creating a custom WebAction
+
+We support using a custom implemented actions. To create your own custom action simply register a new bean implementing the interface `org.jbehavesupport.core.web.WebAction`.  
+
+String returned by the method `String name()` is the name of the action used in stories (e.g. `TRIPPLE_CLICK`) 
+and the method `void perform(WebActionContext ctx)` should contain your custom action logic itself. 
 
 #### Verifying HTML elements' properties
 

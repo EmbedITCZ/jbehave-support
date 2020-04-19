@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MissingAttributeWebWaitCondition extends AbstractAttributeWebWaitCondition {
 
-    public MissingAttributeWebWaitCondition(){
+    public MissingAttributeWebWaitCondition() {
         super(Pattern.compile("missing (?!text)([\\w\\-]+)(( .*)|$)"));
     }
 

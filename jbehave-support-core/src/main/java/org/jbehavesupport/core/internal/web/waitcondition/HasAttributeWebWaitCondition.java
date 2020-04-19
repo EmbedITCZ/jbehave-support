@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HasAttributeWebWaitCondition extends AbstractAttributeWebWaitCondition {
 
-    public HasAttributeWebWaitCondition(){
+    public HasAttributeWebWaitCondition() {
         super(Pattern.compile("has (?!text)([\\w\\-]+)(( .*)|$)"));
     }
 

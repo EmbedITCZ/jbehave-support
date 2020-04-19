@@ -290,7 +290,7 @@ import org.jbehavesupport.core.web.WebScreenshotType;
 @Autowired
 ApplicationEventPublisher applicationEventPublisher;
 
-public void myMethod(){
+public void myMethod() {
     ...
     applicationEventPublisher.publishEvent(new WebScreenshotEvent(this, WebScreenshotType.MANUAL));
     ...

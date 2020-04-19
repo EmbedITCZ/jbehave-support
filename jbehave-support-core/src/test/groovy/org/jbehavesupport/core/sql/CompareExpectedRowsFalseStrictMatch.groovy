@@ -14,7 +14,7 @@ class CompareExpectedRowsFalseStrictMatch extends Specification{
     @Autowired
     SqlSteps sqlSteps
 
-    def "various Object test"(){
+    def "various Object test"() {
         given:
         def expectations = new ExamplesTable("| INT | DOUBLE | DECIMAL | STRING | DATE                |\r\n"
                                            + "|   1 |   1.01 |   10.01 | fsa#df | 2010-10-10T10:10:10 |\r\n")

@@ -68,7 +68,7 @@ To handle your own conversion you need to:
 Code example of tutorial above can look like this:
 ```
 @Bean
-public ConversionService conversionService(){
+public ConversionService conversionService() {
     ConversionService conversionService = new DefaultConversionService();
     ((DefaultConversionService)conversionService).addConverter(new Converter<String, DateTime>() {
         @Override

@@ -52,7 +52,7 @@ public class DummyWebElement implements WebElement {
 
     @Override
     public String getAttribute(String name) {
-        if(name.equalsIgnoreCase("value") || name.equalsIgnoreCase("text")){
+        if(name.equalsIgnoreCase("value") || name.equalsIgnoreCase("text")) {
             return text;
         }
         throw new UnsupportedOperationException(UNSUPPORTED_PROPERTY);

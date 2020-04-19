@@ -34,12 +34,12 @@ public final class SshSteps {
     }
 
     @Given("log start timestamp is set to current time")
-    public void saveLogStartTime(){
+    public void saveLogStartTime() {
         sshHandler.saveLogStartTime();
     }
 
     @Given("log end timestamp is set to current time")
-        public void saveLogEndTime(){
+        public void saveLogEndTime() {
         sshHandler.saveLogEndTime();
     }
 

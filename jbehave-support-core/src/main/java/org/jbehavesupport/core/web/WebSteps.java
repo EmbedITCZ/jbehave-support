@@ -312,7 +312,7 @@ public final class WebSteps {
 
     @When("screenshot is taken")
     @Then("screenshot is taken")
-    public void takeScreenShot(){
+    public void takeScreenShot() {
         applicationEventPublisher.publishEvent(new WebScreenshotEvent(this, MANUAL));
     }
 

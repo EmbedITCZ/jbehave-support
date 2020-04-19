@@ -49,7 +49,7 @@ public class WebElementRegistryImpl implements WebElementRegistry {
         if (elementName.equals(URL) || elementName.equals(TITLE)) {
             throw new IllegalStateException("Element [" + elementName + "] is predefined and can't be defined manually.");
         }
-        if(elementRegistry.put(elementName, locator) != null){
+        if(elementRegistry.put(elementName, locator) != null) {
             throw new IllegalStateException("Web elements mapping contains duplicate key [" + elementName + "] for page [" + pageName + "].");
         }
     }

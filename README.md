@@ -96,7 +96,7 @@ Setting up the application you want to test largely depends on what do you want 
 ```
 @Bean
 @Qualifier("GOOGLE")
-public WebSetting google(){
+public WebSetting google() {
     return WebSetting.builder()
           .homePageUrl("https://www.google.com")
           .elementLocatorsSource("home.yaml")

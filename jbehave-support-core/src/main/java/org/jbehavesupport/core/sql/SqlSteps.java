@@ -187,12 +187,12 @@ public final class SqlSteps {
         }
     }
 
-    private String getTestContextAliasOrFieldName(final Map<String, String> row) {
+    private String getTestContextAliasOrFieldName(Map<String, String> row) {
         return row.containsKey(ExampleTableConstraints.ALIAS) ? row.get(ExampleTableConstraints.ALIAS) : row.get(ExampleTableConstraints.NAME);
     }
 
     private void checkColumnPresentInResultSet(Map<String, Object> resultRow, Map<String, String> row) {
-        if (!resultRow.keySet().contains(row.get(ExampleTableConstraints.NAME).toUpperCase())) {
+        if (!resultRow.containsKey(row.get(ExampleTableConstraints.NAME).toUpperCase())) {
             throw new IllegalArgumentException("Column " + row.get(ExampleTableConstraints.NAME).toUpperCase() + " is not present in result set");
         }
     }
@@ -307,7 +307,7 @@ public final class SqlSteps {
             List<Map<String, String>> notFoundData = new ArrayList<>(expectedData);
             notFoundData.removeAll(foundData);
 
-            if(!notFoundData.isEmpty()){
+            if (!notFoundData.isEmpty()) {
                 StringBuilder foundInDbDataBuilder = getFoundInDatabaseBuilder(actualData);
                 StringBuilder expectedDataBuilder = getExpectedDataBuilder(expectedData, notFoundData);
 

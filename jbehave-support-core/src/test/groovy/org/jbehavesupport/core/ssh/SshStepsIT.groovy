@@ -31,6 +31,6 @@ class SshStepsIT extends Specification {
 
         then:
         def throwable = thrown(AssertionError)
-        throwable.getMessage().contains("The following 2 assertions failed")
+        throwable.getMessage().contains("Multiple Failures (2 failures)")
     }
 }

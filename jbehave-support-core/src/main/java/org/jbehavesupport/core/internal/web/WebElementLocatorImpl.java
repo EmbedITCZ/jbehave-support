@@ -16,9 +16,13 @@ import org.jbehavesupport.core.web.WebSteps;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.springframework.beans.factory.annotation.Value;
 
+/**
+ * Wraps returned WebElements as {@link RefreshableWebElement}.
+ */
 @RequiredArgsConstructor
 public class WebElementLocatorImpl implements WebElementLocator {
 
@@ -36,13 +40,18 @@ public class WebElementLocatorImpl implements WebElementLocator {
             return new DummyWebElement(driver.getTitle());
         }
         By locator = elementRegistry.getLocator(pageName, elementName);
-        return waiting().until(presenceOfElementLocated(locator));
+        return new RefreshableWebElement(this, (RemoteWebElement)waiting().until(presenceOfElementLocated(locator)), elementName, pageName);
     }
 
     @Override
     public WebElement findClickableElement(String pageName, String elementName) {
         By locator = elementRegistry.getLocator(pageName, elementName);
-        return waiting().until(elementToBeClickable(locator));
+        return new RefreshableWebElement(this, (RemoteWebElement)waiting().until(elementToBeClickable(locator)), elementName, pageName);
+    }
+
+    public RemoteWebElement findPureElement(String pageName, String elementName){
+        By locator = elementRegistry.getLocator(pageName, elementName);
+        return (RemoteWebElement)waiting().until(presenceOfElementLocated(locator));
     }
 
     private FluentWait<WebDriver> waiting() {

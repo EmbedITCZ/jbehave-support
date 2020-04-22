@@ -56,6 +56,26 @@ When [ClientRequest] is sent to [MYAPP] with fault:
 ```
 Note the special `faultCode` and `faultReason` parameters that can be checked (either one of them or both can be checked).
 
+### Sending NIL values
+A special `NIL` command can be used for sending nil values:
+> ``` 
+> [$request] data for [$application]:  
+> | name        | data  |  
+> | Foo.validTo | {NIL} |
+> ```
+The above will result in something like `<Foo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><validTo xsi:nil="true"/></Foo>`.
+
+### Sending Empty values
+An empty node (`<node/>`) can be sent by se setting the required node using the `NULL` command:
+> ``` 
+> [$request] data for [$application]:  
+> | name        | data   |  
+> | Foo.validTo | {NULL} |
+> ```
+The above will result in something like `<Foo><validTo/></Foo>`.
+
+When using the `NULL` command the node gets sent with empty value, when not specifying any value at all (not specifying the key in the table) the node does not get sent at all.
+
 
 ---
 ### Custom type converters

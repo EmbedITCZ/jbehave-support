@@ -1,11 +1,13 @@
 package org.jbehavesupport.core.ws
 
+import org.jbehave.core.configuration.MostUsefulConfiguration
 import org.jbehave.core.model.ExamplesTable
+import org.jbehave.core.steps.ParameterConverters
 import org.jbehavesupport.core.TestConfig
-import org.jbehavesupport.core.test.app.domain.Address
+import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter
+import org.jbehavesupport.core.internal.parameterconverters.NullStringConverter
 import org.jbehavesupport.core.test.app.oxm.AddressInfo
 import org.jbehavesupport.core.test.app.oxm.NameRequest
-import org.jbehavesupport.core.test.app.oxm.NameResponse
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -16,6 +18,12 @@ class WebServiceTestIT extends Specification{
 
     @Autowired
     private WebServiceHandler webServiceHandler
+
+    @Autowired
+    private ExamplesEvaluationTableConverter converter
+
+    @Autowired
+    private NullStringConverter nullStringConverter
 
     private NameRequest request
 
@@ -50,4 +58,28 @@ class WebServiceTestIT extends Specification{
         addressInfoList[1].details[0] == "10"
         addressInfoList[1].details[1] == "11"
     }
+
+    @Test
+    void canFillEmptyElement() {
+        given:
+        def paramsConverters = new ParameterConverters().addConverters(nullStringConverter)
+        converter.setConfiguration(new MostUsefulConfiguration().useParameterConverters(paramsConverters))
+
+        def tableData =
+            "| name                           | data   |\n" +
+            "| addressList.addressInfo.0.city | Praha  |\n" +
+            "| cell                           | {NULL} |"
+        ExamplesTable data = converter.convertValue(tableData, ExamplesTable.class)
+
+        when:
+        webServiceHandler.setRequestData("NameRequest", data)
+        request = webServiceHandler.createRequest(NameRequest.class, null)
+
+        then:
+        noExceptionThrown()
+        request.addressList.addressInfo[0].city == "Praha"
+        request.cell != null
+        request.name == null
+    }
+
 }

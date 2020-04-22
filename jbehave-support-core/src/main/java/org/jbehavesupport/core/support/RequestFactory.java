@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.ClassUtils.isAssignable;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.util.StringUtils.isEmpty;
 
 import java.beans.PropertyDescriptor;
@@ -292,14 +293,14 @@ public class RequestFactory<REQUEST> {
         if (metaType != null) {
             return instantiateClass(metaType);
         }
-        if (value == null) {
-            value = null;
-        } else if (isAssignable(type, JAXBElement.class)) { //Very tricky to extract to converter
+        if (isAssignable(type, JAXBElement.class)) { //Very tricky to extract to converter
             value = resolveJaxbElement(testContext, key, value);
+        } else if (value == null) {
+            value = instantiateClass(type);
         } else if (conversionService.canConvert(value.getClass(), type)) {
             value = conversionService.convert(value, type);
         }
-        Assert.isTrue(!(value == null && isAbstract(type)), "Please specify type for " + key);
+        assertThat(value == null && isAbstract(type)).withFailMessage("Please specify type for " + key).isFalse();
         return value;
     }
 

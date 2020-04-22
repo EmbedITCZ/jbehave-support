@@ -1,23 +1,20 @@
 package org.jbehavesupport.core.report
 
-import org.jbehavesupport.core.report.XmlReporterFactory
-import org.jbehavesupport.test.support.TestSupport
 import org.apache.commons.io.FileUtils
+import org.jbehavesupport.core.report.XmlReporterFactory
 import org.jbehavesupport.test.GenericStory
+import org.jbehavesupport.test.support.TestSupport
 import org.junit.runner.JUnitCore
 import org.springframework.test.context.TestContextManager
-import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.util.environment.RestoreSystemProperties
 
 import java.nio.file.Files
 
 class XmlReportIT extends Specification implements TestSupport {
     @Shared runner = new JUnitCore()
 
-    @RestoreSystemProperties
-    def "Test failing context"() {
+    def "Test report index generation"() {
         setup:
         def reportDir = "reportTest"
         def reportDirectory = new File("./target/" + reportDir)
@@ -26,7 +23,10 @@ class XmlReportIT extends Specification implements TestSupport {
         } else {
             Files.createDirectory(reportDirectory.toPath())
         }
-        def xmlReporterFactory = new TestContextManager(GenericStory).getTestContext()
+        def testContextManager = new TestContextManager(GenericStory)
+        testContextManager.prepareTestInstance(runner)
+
+        def xmlReporterFactory = testContextManager.getTestContext()
             .applicationContext
             .autowireCapableBeanFactory
             .getBean(XmlReporterFactory)
@@ -59,6 +59,6 @@ class XmlReportIT extends Specification implements TestSupport {
 
         cleanup:
         xmlReporterFactory."$reportsDirectoryField" = "reports"
-
     }
+
 }

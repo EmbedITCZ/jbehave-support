@@ -220,7 +220,7 @@ public class SshHandler {
         }
     }
 
-    public MultiKeyMap<String, String> getTemplateLogs(Map<String, List<SshTemplate>> sshTemplates){
+    public MultiKeyMap<String, String> getTemplateLogs(Map<String, List<SshTemplate>> sshTemplates) {
         ZonedDateTime scenarioEnd = ZonedDateTime.now();
         MultiKeyMap<String, String> templateLogs = MultiKeyMap.multiKeyMap(new LRUMap());
         sshTemplates.entrySet().forEach(entry ->

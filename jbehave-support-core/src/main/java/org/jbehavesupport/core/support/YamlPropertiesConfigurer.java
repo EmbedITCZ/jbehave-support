@@ -5,13 +5,11 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
@@ -53,7 +51,7 @@ public class YamlPropertiesConfigurer implements BeanFactoryPostProcessor, Envir
     }
 
     @Override
-    public final void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+    public final void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
         requireNonNull(locations);
         requireNonNull(environment);
         requireNonNull(resourceLoader);
@@ -73,8 +71,7 @@ public class YamlPropertiesConfigurer implements BeanFactoryPostProcessor, Envir
 
     private Resource[] resolveResources() {
         return Stream.of(locations)
-            .map(this::resolveLocation)
-            .flatMap(Function.identity())
+            .flatMap(this::resolveLocation)
             .map(location -> resourceLoader.getResource(location))
             .toArray(Resource[]::new);
     }

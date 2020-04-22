@@ -17,7 +17,7 @@ public class WebScreenshotListener implements ApplicationListener<WebScreenshotE
 
     @Override
     public void onApplicationEvent(WebScreenshotEvent webScreenshotEvent) {
-        if (desiredMode.getHierarchy() >= webScreenshotEvent.getType().getHierarchy()){
+        if (desiredMode.getHierarchy() >= webScreenshotEvent.getType().getHierarchy()) {
             screenshotCreator.createScreenshot(webScreenshotEvent.getType());
         }
     }

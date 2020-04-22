@@ -128,7 +128,7 @@ public class RestServiceHandler {
     }
 
     public void sendCheckedRequest(String urlPath, HttpMethod requestMethod, ExamplesTable data) throws IOException{
-        if (data != null){
+        if (data != null) {
             assertDuplicatesInColumns(data, NAME);
         }
         sendRequest(urlPath, requestMethod, data);

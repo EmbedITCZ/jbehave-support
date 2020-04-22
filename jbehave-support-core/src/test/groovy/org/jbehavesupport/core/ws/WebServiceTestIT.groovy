@@ -20,7 +20,7 @@ class WebServiceTestIT extends Specification{
     private NameRequest request
 
     @Test
-    void canUseNestedListsWithDifferentNotations(){
+    void canUseNestedListsWithDifferentNotations() {
         given:
         ExamplesTable data = new ExamplesTable(
             "| name                                  | data  |\n" +

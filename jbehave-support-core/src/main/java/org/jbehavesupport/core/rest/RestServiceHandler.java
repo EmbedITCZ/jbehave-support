@@ -406,7 +406,7 @@ public class RestServiceHandler {
         String response = testContext.get(REST_RESPONSE_JSON).toString();
         HttpHeaders headers = testContext.get(REST_RESPONSE_HEADERS);
         DocumentContext jsonContext = JsonPath.parse(response);
-        Consumer<Map<String, String>> rowConsumer = (row) -> {
+        Consumer<Map<String, String>> rowConsumer = row -> {
             String propertyName = row.get(NAME);
             String alias = row.get(ALIAS);
             Object val;
@@ -418,7 +418,7 @@ public class RestServiceHandler {
             testContext.put(alias, val, MetadataUtil.userDefined());
         };
 
-        mapping.getRowsAsParameters()
+        convertCollectionNotation(mapping).getRowsAsParameters()
             .stream()
             .map(Row::values)
             .forEach(rowConsumer);

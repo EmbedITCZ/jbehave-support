@@ -47,6 +47,9 @@ Contributors guide can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
     
 ## Best practices
 - [Best practices](jbehave-support-core/docs/Best-practices.md)
+
+## Known issues
+- [Known issues](jbehave-support-core/docs/Known-issues.md)
     
 ## Simple use case - Web testing
 

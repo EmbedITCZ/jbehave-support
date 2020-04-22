@@ -46,7 +46,7 @@ public class SshTemplate {
     }
 
     /**
-     * @deprecated
+     * @deprecated(since = "1.1.0", forRemoval = true)
      * use {@link #SshTemplate(SshSetting, String, RollingLogResolver, boolean)} instead
      */
     @Deprecated

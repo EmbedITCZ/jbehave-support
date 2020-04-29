@@ -17,6 +17,7 @@ import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.annotation.PreDestroy;
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -210,9 +211,7 @@ public class XmlReporterFactory extends Format {
 
     private IndexItem parseFile(File file) {
         try {
-            DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = domFactory.newDocumentBuilder();
-            Document doc = builder.parse(file);
+            Document doc = getDocument(file);
 
             // XPath Query for showing all nodes value
             return IndexItem.builder()
@@ -227,11 +226,9 @@ public class XmlReporterFactory extends Format {
         return null;
     }
 
-    private void addContainerMetadata(IndexContainer indexContainer, final File file) {
+    private void addContainerMetadata(IndexContainer indexContainer, File file) {
         try {
-            DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = domFactory.newDocumentBuilder();
-            Document doc = builder.parse(file);
+            Document doc = getDocument(file);
 
             int i = 1;
             while (true) {
@@ -247,6 +244,14 @@ public class XmlReporterFactory extends Format {
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException e) {
             log.error("Error in parsing xml report", e);
         }
+    }
+
+    private Document getDocument(File file) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        domFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        domFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        DocumentBuilder builder = domFactory.newDocumentBuilder();
+        return builder.parse(file);
     }
 
     private String getValue(Document doc, String path) throws XPathExpressionException {

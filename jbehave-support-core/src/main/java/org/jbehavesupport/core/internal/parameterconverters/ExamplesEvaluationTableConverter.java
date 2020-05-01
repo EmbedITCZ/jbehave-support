@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExamplesEvaluationTableConverter implements ParameterConverters.ParameterConverter {
+public class ExamplesEvaluationTableConverter implements ParameterConverters.ParameterConverter<ExamplesTable> {
 
     private final ExpressionEvaluator expressionEvaluator;
 
@@ -35,7 +35,7 @@ public class ExamplesEvaluationTableConverter implements ParameterConverters.Par
     }
 
     @Override
-    public Object convertValue(final String value, final Type type) {
+    public ExamplesTable convertValue(final String value, final Type type) {
         ExamplesTable result = factory.createExamplesTable(value.trim());
         return result.withRows(evaluateRows(result.getRows()));
     }

@@ -7,14 +7,14 @@ import org.jbehave.core.steps.ParameterConverters;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LocalDateConverter implements ParameterConverters.ParameterConverter {
+public class LocalDateConverter implements ParameterConverters.ParameterConverter<LocalDate> {
     @Override
-    public boolean accept(final Type type) {
+    public boolean accept(Type type) {
         return type == LocalDate.class;
     }
 
     @Override
-    public Object convertValue(final String s, final Type type) {
+    public LocalDate convertValue(String s, Type type) {
         return LocalDate.parse(s);
     }
 }

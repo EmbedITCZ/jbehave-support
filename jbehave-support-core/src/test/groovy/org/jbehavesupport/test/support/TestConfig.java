@@ -323,6 +323,7 @@ public class TestConfig {
     private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
         capabilities.setCapability("resolution", "1920x1080");
         capabilities.setCapability("browserstack.local", "true");
+        capabilities.setCapability("name", env.getProperty("browser-stack.name"));
 
         RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
         driver.manage().window().maximize();

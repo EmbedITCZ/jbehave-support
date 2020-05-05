@@ -30,7 +30,7 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
     runner = new JUnitCore()
 
     @Unroll
-    def "Safari test"() {
+    def "Safari test #story"() {
         when:
         Local bsLocal = new Local()
         HashMap<String, String> bsLocalArgs = new HashMap<String, String>()
@@ -38,6 +38,7 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
         bsLocal.start(bsLocalArgs)
         System.setProperty("web.browser", SAFARI_BROWSERSTACK)
         System.setProperty("web.url", "http://bs-local.com:11110/")
+        System.setProperty("browser-stack.name", "Safari test " + story)
         def result = runner.run(runWith(story))
         bsLocal.stop()
 
@@ -56,13 +57,14 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
     }
 
     @Unroll
-    def "Firefox test"() {
+    def "Firefox test #story"() {
         when:
         Local bsLocal = new Local()
         HashMap<String, String> bsLocalArgs = new HashMap<String, String>()
         bsLocalArgs.put("key", env.getProperty("browser-stack.key"))
         bsLocal.start(bsLocalArgs)
         System.setProperty("web.browser", FIREFOX_BROWSERSTACK)
+        System.setProperty("browser-stack.name", "Firefox test " + story)
         def result = runner.run(runWith(story))
         bsLocal.stop()
 
@@ -71,23 +73,24 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
 
         where:
         story | _
-        //"sample/Web.story"                      | _
+        "sample/Web.story"                      | _
         "sample/WebGivenStoryUsage.story"       | _
         "sample/WebProperty.story"              | _
         "sample/WebWaitCondition.story"         | _
-        //"sample/WebAction.story"                | _
+        "sample/WebAction.story"                | _
         "sample/WebNavigation.story"            | _
         "sample/WebScrollAction.story"          | _
     }
 
     @Unroll
-    def "Chrome test"() {
+    def "Chrome test #story"() {
         when:
         Local bsLocal = new Local()
         HashMap<String, String> bsLocalArgs = new HashMap<String, String>()
         bsLocalArgs.put("key", env.getProperty("browser-stack.key"))
         bsLocal.start(bsLocalArgs)
         System.setProperty("web.browser", CHROME_BROWSERSTACK)
+        System.setProperty("browser-stack.name", "Chrome test " + story)
         def result = runner.run(runWith(story))
         bsLocal.stop()
 
@@ -96,11 +99,11 @@ class BrowserStackIT extends Specification implements TestSupportBrowserStack {
 
         where:
         story | _
-        //"sample/Web.story"                      | _
+        "sample/Web.story"                      | _
         "sample/WebGivenStoryUsage.story"       | _
         "sample/WebProperty.story"              | _
         "sample/WebWaitCondition.story"         | _
-        //"sample/WebAction.story"                | _
+        "sample/WebAction.story"                | _
         "sample/WebNavigation.story"            | _
         "sample/WebScrollAction.story"          | _
     }

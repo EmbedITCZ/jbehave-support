@@ -92,7 +92,7 @@
         <version.jakarta.annotation-api>1.3.5</version.jakarta.annotation-api>
         <version.jakarta.xml.bind-api>2.3.3</version.jakarta.xml.bind-api>
         <version.moxy>2.7.7</version.moxy>
-        <version.saaj-impl>1.5.1</version.saaj-impl>
+        <version.saaj-impl>1.5.2</version.saaj-impl>
         <version.jakarta.activation>1.2.2</version.jakarta.activation>
         <version.bytebuddy>1.10.10</version.bytebuddy>
         <version.browserstack-local-java>1.0.3</version.browserstack-local-java>

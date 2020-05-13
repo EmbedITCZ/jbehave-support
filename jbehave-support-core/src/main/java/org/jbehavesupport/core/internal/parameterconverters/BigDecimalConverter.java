@@ -7,14 +7,14 @@ import org.jbehave.core.steps.ParameterConverters;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JBehaveBigDecimalConverter implements ParameterConverters.ParameterConverter {
+public class BigDecimalConverter implements ParameterConverters.ParameterConverter<BigDecimal> {
     @Override
     public boolean accept(Type type) {
         return type == BigDecimal.class;
     }
 
     @Override
-    public Object convertValue(String s, Type type) {
+    public BigDecimal convertValue(String s, Type type) {
         return new BigDecimal(s);
     }
 }

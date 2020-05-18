@@ -77,7 +77,7 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: System test with Java ${{ matrix.java }}
         run: |
-          xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -Dit.test=\!**/BrowserStackIT -Pintegration-test -B -V
+          xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -Pintegration-test -B -V
       - name: Upload reports on Java ${{ matrix.java }}
         uses: actions/upload-artifact@v1
         if: always()

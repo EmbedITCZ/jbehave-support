@@ -57,7 +57,7 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
             } else {
                 WebDriverManager browserManager = WebDriverManager.chromedriver();
                 if (browserDriverVersion != null) {
-                    browserManager.version(browserDriverVersion);
+                    browserManager.driverVersion(browserDriverVersion);
                 }
                 browserManager.setup();
             }

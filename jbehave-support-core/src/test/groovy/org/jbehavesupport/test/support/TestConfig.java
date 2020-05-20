@@ -265,6 +265,8 @@ public class TestConfig {
                 caps.setCapability("os_version", "Catalina");
                 caps.setCapability("browser", "Safari");
                 caps.setCapability("browser_version", "13.0");
+                caps.setCapability("browserstack.safari.driver", "2.48");
+                caps.setCapability("browserstack.safari.enablePopups", "true");
                 caps.setCapability("acceptSslCerts", true);
 
                 return getBrowserStackWebDriver(caps);
@@ -286,7 +288,6 @@ public class TestConfig {
                 caps.setCapability("os", "Windows");
                 caps.setCapability("os_version", "10");
                 caps.setCapability("browser", "Firefox");
-                caps.setCapability("browser_version", "70.0");
 
                 return getBrowserStackWebDriver(caps);
             }
@@ -307,7 +308,6 @@ public class TestConfig {
                 caps.setCapability("os", "Windows");
                 caps.setCapability("os_version", "10");
                 caps.setCapability("browser", "Chrome");
-                caps.setCapability("browser_version", "75.0");
 
                 return getBrowserStackWebDriver(caps);
             }
@@ -323,6 +323,9 @@ public class TestConfig {
     private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
         capabilities.setCapability("resolution", "1920x1080");
         capabilities.setCapability("browserstack.local", "true");
+        capabilities.setCapability("browserstack.selenium_version", "3.141.59");
+        capabilities.setCapability("name", env.getProperty("browser-stack.name"));
+        capabilities.setCapability("build", env.getProperty("browser-stack.build"));
 
         RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
         driver.manage().window().maximize();

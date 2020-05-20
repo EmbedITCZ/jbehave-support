@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         java: [ 8 ]
+        browser: [ Chrome, Firefox, Safari ]
     steps:
       - uses: actions/checkout@v1
       - uses: actions/cache@v1
@@ -28,5 +29,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: BrowserStackIT on Java ${{ matrix.java }}
-        run: xvfb-run mvn verify -DskipUnitTests=true -Djbehave.report.level=STORY -Dbrowser-stack.username=${BROWSERSTACK_USER} -Dbrowser-stack.key=${BROWSERSTACK_KEY} -Dit.test=**/BrowserStackIT -Pintegration-test -B -V
+      - name: BrowserStack${{ matrix.browser }}T on Java ${{ matrix.java }}
+        run: |
+          xvfb-run mvn verify -DskipUnitTests=true -Djbehave.report.level=STORY -Dbrowser-stack.username=${BROWSERSTACK_USER} -Dbrowser-stack.key=${BROWSERSTACK_KEY} -Dit.test=**/BrowserStack${{ matrix.browser }}T -Pintegration-test -B -V

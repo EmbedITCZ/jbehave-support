@@ -52,7 +52,7 @@ public class FirefoxWebDriverFactory implements WebDriverFactory {
             if (browserDriverLocation != null) {
                 System.setProperty("webdriver.gecko.driver", browserDriverLocation);
             } else {
-                WebDriverManager.firefoxdriver().version("v0.8.0").setup();
+                WebDriverManager.firefoxdriver().driverVersion("v0.8.0").setup();
             }
             driverSetup = true;
         }

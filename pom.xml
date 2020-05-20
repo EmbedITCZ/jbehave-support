@@ -75,7 +75,7 @@
         <version.activemq-broker>5.15.12</version.activemq-broker>
         <version.sshj>0.29.0</version.sshj>
         <version.selenium>3.141.59</version.selenium>
-        <version.webdrivermanager>3.8.1</version.webdrivermanager>
+        <version.webdrivermanager>4.0.0</version.webdrivermanager>
         <version.snakeyaml>1.26</version.snakeyaml>
         <version.h2>1.4.200</version.h2>
         <version.json-path>2.4.0</version.json-path>

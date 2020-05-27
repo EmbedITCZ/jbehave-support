@@ -115,9 +115,13 @@ public class SqlXmlReporterExtension extends AbstractXmlReporterExtension {
         printString(writer, param.getKey());
         printEnd(writer, NAME_TAG);
 
-        printBegin(writer, VALUE_TAG);
-        printCData(writer, param.getValue().toString());
-        printEnd(writer, VALUE_TAG);
+        if (param.getValue() == null) {
+            printSelfClosed(writer, VALUE_TAG, null);
+        } else {
+            printBegin(writer, VALUE_TAG);
+            printCData(writer, param.getValue().toString());
+            printEnd(writer, VALUE_TAG);
+        }
 
         printEnd(writer, PARAMETER_TAG);
     }

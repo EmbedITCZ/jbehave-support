@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.verification.VerifierNames;
@@ -171,6 +172,7 @@ public final class WebSteps {
     @Then("on [$page] page these conditions are verified:$table")
     public void verifyProperties(String page, ExamplesTable table) {
         assertMandatoryColumns(table, ELEMENT, PROPERTY, ExampleTableConstraints.DATA);
+        SoftAssertions softly = new SoftAssertions();
 
         for (Row row : table.getRowsAsParameters()) {
             Map<String, String> values = row.values();
@@ -180,8 +182,11 @@ public final class WebSteps {
             String verifierName = resolveVerifierName(values);
 
             Verifier verifier = verifierResolver.getVerifierByName(verifierName);
-            verifier.verify(actual, expected);
+            softly.assertThatCode(() -> verifier.verify(actual, expected))
+                .as("element [" + values.get(ELEMENT) + "], property [" + values.get(PROPERTY) + "]")
+                .doesNotThrowAnyException();
         }
+        softly.assertAll();
         applicationEventPublisher.publishEvent(new WebScreenshotEvent(this, STEP));
     }
 

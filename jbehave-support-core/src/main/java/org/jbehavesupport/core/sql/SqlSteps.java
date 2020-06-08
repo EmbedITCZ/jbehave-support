@@ -292,7 +292,7 @@ public final class SqlSteps {
             SoftAssertions softly = new SoftAssertions();
             IntStream.range(0, expectations.getRows().size())
                 .forEach(i -> softly
-                    .assertThatCode(() -> compareExpectedVersusActualMaps(expectedData.get(i), actualData.get(i), softly))
+                    .assertThatCode(() -> compareExpectedVersusActualMaps(expectedData.get(i), actualData.get(i), softly, i))
                     .doesNotThrowAnyException()
                 );
             softly.assertAll();
@@ -385,10 +385,11 @@ public final class SqlSteps {
     }
 
     @SuppressWarnings("WMI_WRONG_MAP_ITERATOR")
-    private void compareExpectedVersusActualMaps(Map<String, String> expectedRow, Map<String, Object> actualRow, SoftAssertions softly) {
+    private void compareExpectedVersusActualMaps(Map<String, String> expectedRow, Map<String, Object> actualRow, SoftAssertions softly, int i) {
         for (String key : expectedRow.keySet()) {
             softly
                 .assertThatCode(() -> equalsVerifier.verify(actualRow.get(key), expectedRow.get(key)))
+                .as("row [" + i + "], column [" + key + "]")
                 .doesNotThrowAnyException();
         }
     }

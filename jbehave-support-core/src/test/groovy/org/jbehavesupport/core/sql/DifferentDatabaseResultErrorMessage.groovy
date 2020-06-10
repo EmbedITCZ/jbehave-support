@@ -10,9 +10,9 @@ class DifferentDatabaseResultErrorMessage extends Specification implements TestS
     @Shared
         runner = new JUnitCore()
 
-    def "differentDatabaseResult"() {
+    def "differentDatabaseResultPresent"() {
         when:
-        def result = runner.run(runWith("sql/DifferentDatabaseResult.story"))
+        def result = runner.run(runWith("sql/DifferentDatabaseResultPresent.story"))
 
         then:
         result.failures.stream().anyMatch({ e -> e.exception.message.contains("Result set does not contain expected data") })
@@ -29,6 +29,27 @@ class DifferentDatabaseResultErrorMessage extends Specification implements TestS
         result.failures.stream().anyMatch({e -> e.exception.message.contains("| 31 | John | 2018-06-18 | Doe | \n")})
         result.failures.stream().anyMatch({e -> e.exception.message.contains("| 29 | Jane | 2018-06-18 | Doe | \n")})
         result.failures.stream().anyMatch({e -> e.exception.message.contains("| null | Michael | null | Doe | \n")})
+
+    }
+
+    def "differentDatabaseResultMatch"() {
+        when:
+        def result = runner.run(runWith("sql/DifferentDatabaseResultMatch.story"))
+
+        then:
+        result.getFailureCount() == 1
+        result.getFailures().get(0).getMessage().contains("[row [0], column [AGE]]")
+        result.getFailures().get(0).getMessage().contains("value '31' is not equal to '1'")
+        result.getFailures().get(0).getMessage().contains("[row [0], column [FN]]")
+        result.getFailures().get(0).getMessage().contains("value 'John' is not equal to 'Dummy'")
+        result.getFailures().get(0).getMessage().contains("[row [0], column [LAST_UPDATE]]")
+        result.getFailures().get(0).getMessage().contains("value '2018-06-18' is not equal to '2001-06-18")
+        result.getFailures().get(0).getMessage().contains("[row [0], column [LN]]")
+        result.getFailures().get(0).getMessage().contains("value 'Doe' is not equal to 'Does't'")
+        result.getFailures().get(0).getMessage().contains("[row [2], column [FN]]")
+        result.getFailures().get(0).getMessage().contains("value 'Michael' is not equal to 'null'")
+        result.getFailures().get(0).getMessage().contains("[row [2], column [LN]]")
+        result.getFailures().get(0).getMessage().contains("value 'Doe' is not equal to 'null'")
 
     }
 

@@ -1,5 +1,6 @@
 package org.jbehavesupport.core.report
 
+import groovy.xml.XmlSlurper
 import org.apache.commons.io.FileUtils
 import org.jbehavesupport.core.report.XmlReporterFactory
 import org.jbehavesupport.test.GenericStory

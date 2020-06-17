@@ -130,7 +130,7 @@ The links and names should be written like this:
 home:
   search.button.css: "#tsf > div:nth-child(2) > div > div.FPdoLc > center > input[type='submit']:nth-child(1)"
   search.text.css: "input[type='text'][name='q']"
-  search.output.css: "#rso > div:nth-child(1) > div > div:nth-child(1) > div > div > div.r > a > h3"
+  search.output.css: "#rso > div:nth-child(1) > div > div.r > a > h3"
 ```
 The title `home:` is the name of the page these elements can be found on.
 

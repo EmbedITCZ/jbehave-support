@@ -8,7 +8,6 @@ import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTa
 import org.jbehavesupport.core.internal.parameterconverters.NullStringConverter
 import org.jbehavesupport.core.test.app.oxm.AddressInfo
 import org.jbehavesupport.core.test.app.oxm.NameRequest
-import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -27,7 +26,6 @@ class WebServiceTestIT extends Specification{
 
     private NameRequest request
 
-    @Test
     void canUseNestedListsWithDifferentNotations() {
         given:
         ExamplesTable data = new ExamplesTable(
@@ -59,7 +57,6 @@ class WebServiceTestIT extends Specification{
         addressInfoList[1].details[1] == "11"
     }
 
-    @Test
     void canFillEmptyElement() {
         given:
         def paramsConverters = new ParameterConverters().addConverters(nullStringConverter)

@@ -69,6 +69,7 @@
         <version.groovy>3.0.4</version.groovy>
         <version.junit>4.13</version.junit>
         <version.spockframework>2.0-M2-groovy-3.0</version.spockframework>
+        <version.junit-vintage>5.6.2</version.junit-vintage>
         <version.assertj>3.16.1</version.assertj>
         <version.spring>5.2.6.RELEASE</version.spring>
         <version.spring.ws-support>3.0.9.RELEASE</version.spring.ws-support>
@@ -240,6 +241,13 @@
                 <groupId>org.spockframework</groupId>
                 <artifactId>spock-spring</artifactId>
                 <version>${version.spockframework}</version>
+            </dependency>
+            <!-- Spock depends on JUnit 5, so we need to supply vintage for JUnit4 tests to run -->
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>${version.junit-vintage}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>

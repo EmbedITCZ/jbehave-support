@@ -3,13 +3,10 @@ package org.jbehavesupport.core.rest
 import org.jbehave.core.model.ExamplesTable
 import org.jbehavesupport.core.TestConfig
 import org.jbehavesupport.core.TestContext
-import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
-
-import static groovy.test.GroovyAssert.shouldFail
 
 @ContextConfiguration(classes = TestConfig)
 class RestIT extends Specification {
@@ -20,7 +17,6 @@ class RestIT extends Specification {
     @Autowired
     private TestContext testContext
 
-    @Test
     void shouldRejectMultipleKeysWhenBody() {
         given:
         ExamplesTable examplesTable = new ExamplesTable(
@@ -37,7 +33,6 @@ class RestIT extends Specification {
         throwable.getMessage().contains("If @body is present, no other keys except headers are allowed.")
     }
 
-    @Test
     void canSendCollectionsWithDifferentNotations() {
         given:
         ExamplesTable examplesTable = new ExamplesTable(
@@ -68,7 +63,6 @@ class RestIT extends Specification {
         restServiceHandler.verifyResponse("200", resultsTable)
     }
 
-    @Test
     void canSaveCollectionsWithDifferentNotations() {
         given:
         ExamplesTable requestTable = new ExamplesTable(
@@ -104,8 +98,7 @@ class RestIT extends Specification {
         testContext.get("ADDRESS_0_DETAILS_3") == "details 0 3"
     }
 
-    @Test
-    void canRecieveCollectionsWithDifferentNotations() {
+    void canReceiveCollectionsWithDifferentNotations() {
         given:
         ExamplesTable examplesTable = new ExamplesTable(
             "| name                    | data           |\n" +

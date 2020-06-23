@@ -346,3 +346,13 @@ When [POST] request to [TEST]/[user/] is sent with data:
 | hats[0]   | topHat |         |
 
 Then response from [TEST] REST API has status [200]
+
+Scenario: saving raw json
+When [POST] request to [TEST]/[user/] is sent with data:
+| name      | data    |
+| firstName | Pedro   |
+| lastName  | Salgado |
+Then response from [TEST] REST API has status [200]
+When response values from [TEST] REST API are saved:
+| name  | contextAlias |
+| @body | JSON_BODY    |

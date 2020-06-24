@@ -154,6 +154,7 @@ When [POST] request to [TEST]/[user/] is sent with data:
 | @header.Content-Type | application/json;charset=utf-8 |
 | @body                | Anything you want to send.     |
 ```
+(Saving and verifying raw body from response is done in the same way with the `@body` as well, except in these cases other keys can be present as well.)
 
 #### Handling JSON data types
 All JSON data will be send as a string, unless specified otherwise. To specify a data type, use optional `type` column in your data table. These data types are supported:

@@ -6,7 +6,7 @@ import spock.lang.Unroll
 class TableParameterAlignerTest extends Specification {
 
     @Unroll
-    def "output of table parameter aligner for #input is #output"() {
+    def "output of table parameter aligner for #input is #expected"() {
         when:
         def output = TableParameterAligner.alignTableInString(input)
 

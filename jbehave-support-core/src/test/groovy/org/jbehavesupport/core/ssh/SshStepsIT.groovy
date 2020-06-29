@@ -30,7 +30,7 @@ class SshStepsIT extends Specification {
         sshSteps.logContainsData("TEST", "START_TIME", table)
 
         then:
-        def throwable = thrown(AssertionError)
-        throwable.getMessage().contains("Multiple Failures (2 failures)")
+        def exception = thrown(AssertionError)
+        exception.getMessage().contains("Multiple Failures (2 failures)")
     }
 }

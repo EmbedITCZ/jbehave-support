@@ -68,7 +68,7 @@
         <version.jbehave-junit-support>4.6.1</version.jbehave-junit-support>
         <version.groovy>3.0.4</version.groovy>
         <version.junit>4.13</version.junit>
-        <version.spockframework>2.0-M2-groovy-3.0</version.spockframework>
+        <version.spockframework>2.0-M3-groovy-3.0</version.spockframework>
         <version.junit-vintage>5.6.2</version.junit-vintage>
         <version.assertj>3.16.1</version.assertj>
         <version.spring>5.2.7.RELEASE</version.spring>
@@ -230,6 +230,16 @@
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy</artifactId>
+                <version>${version.groovy}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-test</artifactId>
+                <version>${version.groovy}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-xml</artifactId>
                 <version>${version.groovy}</version>
             </dependency>
             <dependency>

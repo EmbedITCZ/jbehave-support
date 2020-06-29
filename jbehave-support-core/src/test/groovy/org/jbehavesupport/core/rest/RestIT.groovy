@@ -29,8 +29,8 @@ class RestIT extends Specification {
         restServiceHandler.sendRequest("test", null, examplesTable)
 
         then:
-        def throwable = thrown(IllegalStateException)
-        throwable.getMessage().contains("If @body is present, no other keys except headers are allowed.")
+        def exception = thrown(IllegalStateException)
+        exception.getMessage().contains("If @body is present, no other keys except headers are allowed.")
     }
 
     void canSendCollectionsWithDifferentNotations() {

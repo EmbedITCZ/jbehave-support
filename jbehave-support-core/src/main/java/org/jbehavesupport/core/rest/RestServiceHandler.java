@@ -409,12 +409,7 @@ public class RestServiceHandler {
         Consumer<Map<String, String>> rowConsumer = row -> {
             String propertyName = row.get(NAME);
             String alias = row.get(ALIAS);
-            Object val;
-            if (propertyName.startsWith(HEADER_START)) {
-                val = headers.get(propertyName.substring(HEADER_START.length())).get(0);
-            } else {
-                val = jsonContext.read("$." + propertyName);
-            }
+            Object val = getValueFromJson(propertyName, response, jsonContext, headers);
             testContext.put(alias, val, MetadataUtil.userDefined());
         };
 
@@ -532,10 +527,25 @@ public class RestServiceHandler {
             String propertyName = data.getLeft();
             Object expectedValue = data.getMiddle();
 
-            Object actualValue = jsonContext.read("$." + propertyName);
+            Object actualValue = getValueFromJson(propertyName, json, jsonContext, null);
             verifierResolver.getVerifierByName(data.getRight(), equalsVerifier)
                 .verify(actualValue, expectedValue);
         }
+    }
+
+    private Object getValueFromJson(String propertyName, String json, DocumentContext jsonContext, HttpHeaders headers) {
+        assertThat(propertyName).isNotNull();
+        assertThat(propertyName.startsWith(HEADER_START) && headers == null).isFalse()
+            .as("parameter name cannot be a header when headers are null");
+
+        if (propertyName.equals(RAW_BODY_KEY)) {
+            return json;
+        }
+        if (propertyName.startsWith(HEADER_START) && headers != null) {
+            return headers.get(propertyName.substring(HEADER_START.length())).get(0);
+        }
+
+        return jsonContext.read("$." + propertyName);
     }
 
     /**

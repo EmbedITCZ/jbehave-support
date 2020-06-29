@@ -116,7 +116,7 @@ The `elementLocatorsSource` methods sets the name of a [file](#create-a-ui-mappi
 
 ### Create a ui mapping file
 
-In this yaml file, we need to setup the links to web page elements we want to interact with. I has to be placed in the resources directory, which is on one level above your main code directory:
+In this yaml file, we need to setup the links to web page elements we want to interact with. It has to be placed in the resources directory, which is on one level above your main code directory:
 - Project
     - src
         - main
@@ -124,13 +124,20 @@ In this yaml file, we need to setup the links to web page elements we want to in
                 - your.main.code.directory
             - **resources**
                 - home.yaml
+        - test
+            - java
+                - your.test.code.directory
             
+At this point, `your.main.code.directory` should contain the TestConfig class created previously.  
+Note also the location of `your.test.code.directory` — this is where your story files will go later.
+
+
 The links and names should be written like this:
 ```
 home:
   search.button.css: "#tsf > div:nth-child(2) > div > div.FPdoLc > center > input[type='submit']:nth-child(1)"
   search.text.css: "input[type='text'][name='q']"
-  search.output.css: "#rso > div:nth-child(1) > div > div:nth-child(1) > div > div > div.r > a > h3"
+  search.output.css: "#rso > div:nth-child(1) > div > div.r > a > h3"
 ```
 The title `home:` is the name of the page these elements can be found on.
 
@@ -144,9 +151,9 @@ The part after the colon is the address of the element itself.
 
 ### Write your story
 
-In your `your.main.code.directory` directory create a `.story` file. I will call it `Google.story`.
+In your `your.test.code.directory` directory create a `.story` file. I will call it `Google.story`.
 
-_(Optional)_ Inside write the narrative, which should explain what is the purpose of this story. It has 3 mandatory parts: `In order to`, `As a` and `I want to`.
+_(Optional)_ Inside, write the narrative, which should explain the purpose of this story. It has 3 mandatory parts: `In order to`, `As a` and `I want to`.
 ```
 Narrative:
 In order to try jbehave-support
@@ -171,7 +178,7 @@ This scenario opens `www.google.com`, writes `embeditcz jbehave-support` into th
 
 ### Write your story class
 
-In the same directory as your `.story` file create a Java class that extends `AbstractSpringStories` and call it `<yourStoryName>Story` (naming is important). Add the annotation `@ContextConfiguration(classes = TestConfig.class)` to link it with your TextConfig class. Leave this class empty.
+In the same directory as your `.story` file, create a Java class that extends `AbstractSpringStories` and call it `<yourStoryName>Story` (naming is important). Add the annotation `@ContextConfiguration(classes = TestConfig.class)` to link it with your TextConfig class. Leave this class empty.
 ```
 @ContextConfiguration(classes = TestConfig.class)
 public class GoogleStory extends AbstractSpringStories {

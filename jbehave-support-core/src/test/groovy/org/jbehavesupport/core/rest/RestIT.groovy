@@ -3,13 +3,10 @@ package org.jbehavesupport.core.rest
 import org.jbehave.core.model.ExamplesTable
 import org.jbehavesupport.core.TestConfig
 import org.jbehavesupport.core.TestContext
-import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
-
-import static groovy.test.GroovyAssert.shouldFail
 
 @ContextConfiguration(classes = TestConfig)
 class RestIT extends Specification {
@@ -20,7 +17,6 @@ class RestIT extends Specification {
     @Autowired
     private TestContext testContext
 
-    @Test
     void shouldRejectMultipleKeysWhenBody() {
         given:
         ExamplesTable examplesTable = new ExamplesTable(
@@ -37,7 +33,6 @@ class RestIT extends Specification {
         exception.getMessage().contains("If @body is present, no other keys except headers are allowed.")
     }
 
-    @Test
     void canSendCollectionsWithDifferentNotations() {
         given:
         ExamplesTable examplesTable = new ExamplesTable(
@@ -68,7 +63,6 @@ class RestIT extends Specification {
         restServiceHandler.verifyResponse("200", resultsTable)
     }
 
-    @Test
     void canSaveCollectionsWithDifferentNotations() {
         given:
         ExamplesTable requestTable = new ExamplesTable(
@@ -104,8 +98,7 @@ class RestIT extends Specification {
         testContext.get("ADDRESS_0_DETAILS_3") == "details 0 3"
     }
 
-    @Test
-    void canRecieveCollectionsWithDifferentNotations() {
+    void canReceiveCollectionsWithDifferentNotations() {
         given:
         ExamplesTable examplesTable = new ExamplesTable(
             "| name                    | data           |\n" +
@@ -133,6 +126,46 @@ class RestIT extends Specification {
                 "| addresses.0.details[3] | details 0 3      |          |"
         )
         restServiceHandler.verifyResponse("200", resultsTable)
+    }
+
+    void canVerifyRawBody() {
+        given:
+        ExamplesTable examplesTable = new ExamplesTable(
+            "| name      | data    |\n" +
+                "| firstName | Pedro   |\n" +
+                "| lastName  | Salgado |"
+        )
+
+        when:
+        restServiceHandler.sendRequest("user/", HttpMethod.valueOf("POST"), examplesTable)
+
+        then:
+        ExamplesTable resultsTable = new ExamplesTable(
+            "| name  | expectedValue                                    | verifier |\n" +
+                "| @body | \"firstName\":\"Pedro\",\"lastName\":\"Salgado\" | CONTAINS |"
+        )
+        restServiceHandler.verifyResponse("200", resultsTable)
+    }
+
+    void canSaveRawBody() {
+        given:
+        ExamplesTable requestTable = new ExamplesTable(
+            "| name      | data    |\n" +
+                "| firstName | Pedro   |\n" +
+                "| lastName  | Salgado |"
+        )
+
+        ExamplesTable saveTable = new ExamplesTable(
+            "| name  | contextAlias |\n" +
+                "| @body | JSON_BODY    |"
+        )
+
+        when:
+        restServiceHandler.sendRequest("user/", HttpMethod.valueOf("POST"), requestTable)
+        restServiceHandler.saveResponse(saveTable)
+
+        then:
+        testContext.get("JSON_BODY") == testContext.get(RestServiceHandler.REST_RESPONSE_JSON)
     }
 
 }

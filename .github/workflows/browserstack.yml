@@ -18,7 +18,7 @@ jobs:
         java: [ 8 ]
         browser: [ Chrome, Firefox, Safari ]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.1
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository

@@ -2,7 +2,7 @@ environmentInfo:
   name: jbehave-support-test-environment
 
 ws:
-  url: http://localhost:11110/services/
+  url: http://localhost:11110/ws/
 
 rest:
   url: http://localhost:11110/rest/
@@ -36,3 +36,11 @@ browser-stack:
   username: browser-stack-username
   key: browser-stack-key
   url: https://${browser-stack.username}:${browser-stack.key}@hub-cloud.browserstack.com/wd/hub
+
+splunk:
+  host: localhost
+  port: 11110
+  scheme: http
+  credentials:
+    username: admin
+    password: password

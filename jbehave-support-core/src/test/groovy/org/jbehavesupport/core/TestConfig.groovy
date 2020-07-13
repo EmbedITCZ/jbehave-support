@@ -1,5 +1,6 @@
 package org.jbehavesupport.core
 
+import com.splunk.SSLSecurityProtocol
 import org.jbehave.core.configuration.MostUsefulConfiguration
 import org.jbehavesupport.core.healthcheck.HealthCheck
 import org.jbehavesupport.core.healthcheck.HealthCheckSteps
@@ -11,6 +12,7 @@ import org.jbehavesupport.core.internal.web.WebScreenshotCreator
 import org.jbehavesupport.core.internal.web.by.XpathByFactory
 import org.jbehavesupport.core.rest.RestServiceHandler
 import org.jbehavesupport.core.internal.web.webdriver.WebDriverDelegatingInterceptor
+import org.jbehavesupport.core.splunk.SplunkConfig
 import org.jbehavesupport.core.ssh.RollingLogResolver
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver
 import org.jbehavesupport.core.ssh.SshLog
@@ -36,6 +38,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 
+import static java.util.Objects.nonNull
 import static org.mockito.Mockito.when
 
 import java.time.ZonedDateTime
@@ -164,5 +167,18 @@ class TestConfig {
     @Bean
     RestServiceHandler testRestServiceHandler() {
         return new RestServiceHandler(env.getProperty("rest.url"))
+    }
+
+    @Bean
+    SplunkConfig splunkConfig() throws IOException {
+        return SplunkConfig.builder()
+            .host(env.getProperty("splunk.host"))
+            .port(Integer.parseInt(env.getProperty("splunk.port")))
+            .scheme(env.getProperty("splunk.scheme"))
+            .sslSecurityProtocol(nonNull(env.getProperty("splunk.sslSecurityProtocol")) ? SSLSecurityProtocol.valueOf(env.getProperty("splunk.sslSecurityProtocol")) : null)
+            .username(env.getProperty("splunk.credentials.username"))
+            .password(env.getProperty("splunk.credentials.password"))
+            .token(env.getProperty("splunk.credentials.token"))
+            .build();
     }
 }

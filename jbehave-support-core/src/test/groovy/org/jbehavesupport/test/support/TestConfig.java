@@ -1,20 +1,6 @@
 package org.jbehavesupport.test.support;
 
-import static java.lang.Integer.parseInt;
-import static java.util.Collections.singletonMap;
-import static org.jbehavesupport.core.ssh.SshSetting.builder;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.ZonedDateTime;
-
-import javax.jms.ConnectionFactory;
-import javax.sql.DataSource;
-
+import com.splunk.SSLSecurityProtocol;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -25,6 +11,7 @@ import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.internal.FileNameResolver;
+import org.jbehavesupport.core.splunk.OneShotSearchSplunkClient;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
 import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
@@ -37,6 +24,8 @@ import org.jbehavesupport.core.report.extension.TestContextXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.WsXmlReporterExtension;
 import org.jbehavesupport.core.rest.RestServiceHandler;
 import org.jbehavesupport.core.rest.RestTemplateConfigurer;
+import org.jbehavesupport.core.splunk.SplunkClient;
+import org.jbehavesupport.core.splunk.SplunkConfig;
 import org.jbehavesupport.core.ssh.RollingLogResolver;
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
 import org.jbehavesupport.core.ssh.SshHandler;
@@ -60,6 +49,21 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jms.core.JmsTemplate;
+
+import javax.jms.ConnectionFactory;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.ZonedDateTime;
+
+import static java.lang.Integer.parseInt;
+import static java.util.Collections.singletonMap;
+import static java.util.Objects.nonNull;
+import static org.jbehavesupport.core.ssh.SshSetting.builder;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Configuration
 @ComponentScan
@@ -132,7 +136,7 @@ public class TestConfig {
     }
 
     @Bean
-    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, SshHandler sshHandler,TestContext testContext, FileNameResolver fileNameResolver) {
+    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, SshHandler sshHandler, TestContext testContext, FileNameResolver fileNameResolver) {
         return new ServerLogXmlReporterExtension(testContext, fileNameResolver, sshHandler, beanFactory);
     }
 
@@ -330,5 +334,23 @@ public class TestConfig {
         RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
         driver.manage().window().maximize();
         return driver;
+    }
+
+    @Bean
+    SplunkConfig splunkConfig() throws IOException {
+        return SplunkConfig.builder()
+            .host(env.getProperty("splunk.host"))
+            .port(Integer.parseInt(env.getProperty("splunk.port")))
+            .scheme(env.getProperty("splunk.scheme"))
+            .sslSecurityProtocol(nonNull(env.getProperty("splunk.sslSecurityProtocol")) ? SSLSecurityProtocol.valueOf(env.getProperty("splunk.sslSecurityProtocol")) : null)
+            .username(env.getProperty("splunk.credentials.username"))
+            .password(env.getProperty("splunk.credentials.password"))
+            .token(env.getProperty("splunk.credentials.token"))
+            .build();
+    }
+
+    @Bean
+    public SplunkClient splunkClient(SplunkConfig config) {
+        return new OneShotSearchSplunkClient(config);
     }
 }

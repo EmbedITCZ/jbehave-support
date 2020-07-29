@@ -21,7 +21,7 @@ Application exposes H2 database:
 
 We are running database in server mode without storage (in memory mode).
 
-Application also expose webservice endpoint for webservice testing. Endpoint url is: http://localhost:8080/services/
+Application also expose webservice endpoint for webservice testing. Endpoint url is: http://localhost:8080/ws/
 
 ## run test application locally
 You can run test application locally:

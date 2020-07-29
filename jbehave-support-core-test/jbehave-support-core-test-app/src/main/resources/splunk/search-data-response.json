@@ -1,0 +1,36 @@
+{
+  "preview": false,
+  "init_offset": 0,
+  "messages": [],
+  "fields": [
+    {
+      "name": "host"
+    },
+    {
+      "name": "namespace"
+    },
+    {
+      "name": "index"
+    },
+    {
+      "name": "_time"
+    },
+    {
+      "name": "message"
+    },
+    {
+      "name": "level"
+    }
+  ],
+  "results": [
+    {
+      "host": "a8210fc9865a",
+      "namespace": "in00a1-hi-am",
+      "index": "main",
+      "_time": "2020-07-10T07:40:26.631+00:00",
+      "message": "response for https://am.in00a1.cz.infra/cabus-am/rest/openapi/v2/account/persons/147814/accountBalance: 200 OK with headers [Date:\"Fri, 10 Jul 2020 07:39:50 GMT\", Content-Type:\"application/json;charset=UTF-8\", Transfer-Encoding:\"chunked\", Connection:\"keep-alive\", Vary:\"Accept-Encoding\", X-B3-TraceId:\"30a3d60bd3d698eae25eaf5afe3e1df5\", X-B3-SpanId:\"48a4bc7562a346eb\", X-B3-ParentSpanId:\"1017258853b1a1d7\", X-B3-Sampled:\"1\", Cache-Control:\"no-cache, no-store, max-age=0, must-revalidate\", Pragma:\"no-cache\", Expires:\"0\", Strict-Transport-Security:\"max-age=15724800; includeSubDomains\", X-XSS-Protection:\"1; mode=block\", X-Frame-Options:\"DENY\", X-Content-Type-Options:\"nosniff\"]",
+      "level": "DEBUG"
+    }
+  ],
+  "highlighted": {}
+}

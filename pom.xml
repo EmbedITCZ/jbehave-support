@@ -113,6 +113,7 @@
         <plugin.version.maven-enforcer-plugin>1.4.1</plugin.version.maven-enforcer-plugin>
         <plugin.version.sonar-maven-plugin>3.7.0.1746</plugin.version.sonar-maven-plugin>
         <plugin.version.sonar-jacoco-plugin>3.3.2</plugin.version.sonar-jacoco-plugin>
+        <version.splunk>1.6.5.0</version.splunk>
     </properties>
 
     <modules>
@@ -203,6 +204,14 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <repositories>
+        <repository>
+            <id>splunk-artifactory</id>
+            <name>Splunk Releases</name>
+            <url>https://splunk.jfrog.io/splunk/ext-releases-local</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -454,6 +463,11 @@
                 <groupId>com.browserstack</groupId>
                 <artifactId>browserstack-local-java</artifactId>
                 <version>${version.browserstack-local-java}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.splunk</groupId>
+                <artifactId>splunk</artifactId>
+                <version>${version.splunk}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

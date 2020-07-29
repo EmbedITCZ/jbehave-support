@@ -27,7 +27,8 @@ public class SampleStoriesIT extends AbstractSpringStories {
             "org/jbehavesupport/test/sample/Ssh.story",
             "org/jbehavesupport/test/sample/HealthCheck.story",
             "org/jbehavesupport/test/sample/Jms.story",
-            "org/jbehavesupport/test/sample/Verification.story"
+            "org/jbehavesupport/test/sample/Verification.story",
+            "org/jbehavesupport/test/sample/Splunk.story"
         );
     }
 }

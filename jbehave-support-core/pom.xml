@@ -330,6 +330,11 @@
             <groupId>com.sun.activation</groupId>
             <artifactId>jakarta.activation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.splunk</groupId>
+            <artifactId>splunk</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <!-- test support packages -->
         <dependency>

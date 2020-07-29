@@ -2,6 +2,9 @@
 
 ## Splunk steps
 
+ * **WARNING**: Splunk implementation is still under active development and changes can/will be done.
+ * Please use at your own risk. If you want to use splunk support please contact us and let us know. 
+
 ### Configuration
 All the search queries are handled by a bean of `SplunkClient` type.
 

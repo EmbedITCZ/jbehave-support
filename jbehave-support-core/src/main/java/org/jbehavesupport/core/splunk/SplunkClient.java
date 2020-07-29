@@ -6,6 +6,9 @@ import java.util.List;
 
 
 /**
+ * WARNING: Splunk implementation is still under active development and changes can/will be done.
+ * Please use at your own risk. If you want to use splunk support please contact us and let us know.
+ * <p>
  * This an interface exposing search entry points for Splunk Java SDK.
  * <p>
  * Prior to your testing, verify that you have a valid Splunk account and you know hostname and port.

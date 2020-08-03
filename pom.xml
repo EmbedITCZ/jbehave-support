@@ -80,7 +80,7 @@
         <version.snakeyaml>1.26</version.snakeyaml>
         <version.h2>1.4.200</version.h2>
         <version.json-path>2.4.0</version.json-path>
-        <version.commons-lang3>3.10</version.commons-lang3>
+        <version.commons-lang3>3.11</version.commons-lang3>
         <version.commons-text>1.9</version.commons-text>
         <version.commons-dbcp2>2.7.0</version.commons-dbcp2>
         <version.commons-collections4>4.4</version.commons-collections4>

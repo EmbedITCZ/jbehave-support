@@ -74,7 +74,7 @@
         <version.spring>5.2.8.RELEASE</version.spring>
         <version.spring.ws-support>3.0.9.RELEASE</version.spring.ws-support>
         <version.activemq-broker>5.16.0</version.activemq-broker>
-        <version.sshj>0.29.0</version.sshj>
+        <version.sshj>0.30.0</version.sshj>
         <version.selenium>3.141.59</version.selenium>
         <version.webdrivermanager>4.1.0</version.webdrivermanager>
         <version.snakeyaml>1.26</version.snakeyaml>

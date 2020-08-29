@@ -19,6 +19,9 @@ web:
   url: http://localhost:11110/
   browser.driver.version: 2.38
 
+numeric:
+  scale: 5
+
 ssh:
   hostname: localhost
   port: 2000

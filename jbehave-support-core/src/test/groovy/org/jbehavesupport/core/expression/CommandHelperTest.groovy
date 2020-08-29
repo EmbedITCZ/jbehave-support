@@ -90,4 +90,20 @@ class CommandHelperTest extends Specification {
         "empty:A:"                        || ["A"]
         "empty:A::"                       || ["A"]
     }
+
+    @Unroll
+    def "Test wrong params for checkNumericParams: #params"() {
+        when:
+        CommandHelper.checkNumericParams(*params)
+
+        then:
+        Exception exception = thrown()
+        expected == exception.class
+        message == exception.message
+
+        where:
+        params       || expected                       || message
+        ["a", "1"]   || IllegalArgumentException.class || "String parameter must be numeric: a"
+        ["1,1", "1"] || IllegalArgumentException.class || "String parameter must be numeric: 1,1"
+    }
 }

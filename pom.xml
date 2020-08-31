@@ -84,7 +84,7 @@
         <version.commons-text>1.9</version.commons-text>
         <version.commons-dbcp2>2.7.0</version.commons-dbcp2>
         <version.commons-collections4>4.4</version.commons-collections4>
-        <version.mockito-core>3.5.5</version.mockito-core>
+        <version.mockito-core>3.5.7</version.mockito-core>
         <version.apache-httpclient>4.5.12</version.apache-httpclient>
         <version.slf4j>1.7.30</version.slf4j>
         <version.logback>1.2.3</version.logback>

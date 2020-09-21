@@ -77,7 +77,7 @@
         <version.sshj>0.30.0</version.sshj>
         <version.selenium>3.141.59</version.selenium>
         <version.webdrivermanager>4.2.0</version.webdrivermanager>
-        <version.snakeyaml>1.26</version.snakeyaml>
+        <version.snakeyaml>1.27</version.snakeyaml>
         <version.h2>1.4.200</version.h2>
         <version.json-path>2.4.0</version.json-path>
         <version.commons-lang3>3.11</version.commons-lang3>

@@ -85,7 +85,7 @@
         <version.commons-dbcp2>2.8.0</version.commons-dbcp2>
         <version.commons-collections4>4.4</version.commons-collections4>
         <version.mockito-core>3.5.13</version.mockito-core>
-        <version.apache-httpclient>4.5.12</version.apache-httpclient>
+        <version.apache-httpclient>4.5.13</version.apache-httpclient>
         <version.slf4j>1.7.30</version.slf4j>
         <version.logback>1.2.3</version.logback>
         <version.jackson>2.11.3</version.jackson>

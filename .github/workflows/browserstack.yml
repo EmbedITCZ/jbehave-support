@@ -5,7 +5,7 @@ on:
     branches: master
 
 env:
-  BROWSERSTACK_USER: paveljandejsek2
+  BROWSERSTACK_USER: github13CXXhC
   BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
 
 jobs:

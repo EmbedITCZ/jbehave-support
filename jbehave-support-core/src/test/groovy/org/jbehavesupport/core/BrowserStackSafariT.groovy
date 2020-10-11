@@ -13,7 +13,6 @@ import static org.jbehavesupport.test.support.TestConfig.SAFARI_BROWSERSTACK
 
 /**
  * This test verifies that our code is compatible with Safari using BrowserStack.
- * WebAction story isn't working yet.
  */
 @ContextConfiguration(classes = TestConfig.class)
 class BrowserStackSafariT extends Specification implements TestSupportBrowserStack {
@@ -49,7 +48,7 @@ class BrowserStackSafariT extends Specification implements TestSupportBrowserSta
         "sample/WebGivenStoryUsage.story"       | _
         "sample/WebProperty.story"              | _
         "sample/WebWaitCondition.story"         | _
-        //"sample/WebAction.story"                | _
+        "sample/WebAction.story"                | _
         "sample/WebNavigation.story"            | _
         "sample/WebScrollAction.story"          | _
     }

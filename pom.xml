@@ -106,7 +106,7 @@
         <plugin.version.maven-compiler-plugin>3.8.1</plugin.version.maven-compiler-plugin>
         <plugin.version.jetty-maven-plugin>9.4.32.v20200930</plugin.version.jetty-maven-plugin>
         <plugin.version.surefire-maven-plugin>2.22.2</plugin.version.surefire-maven-plugin>
-        <plugin.version.gmavenplus-plugin>1.10.1</plugin.version.gmavenplus-plugin>
+        <plugin.version.gmavenplus-plugin>1.11.0</plugin.version.gmavenplus-plugin>
         <plugin.version.maven-release-plugin>2.5.3</plugin.version.maven-release-plugin>
         <plugin.version.nexus-staging-maven-plugin>1.6.8</plugin.version.nexus-staging-maven-plugin>
         <plugin.version.maven-gpg-plugin>1.6</plugin.version.maven-gpg-plugin>

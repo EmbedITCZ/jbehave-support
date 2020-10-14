@@ -96,7 +96,7 @@
         <version.saaj-impl>1.5.2</version.saaj-impl>
         <version.jakarta.activation>1.2.2</version.jakarta.activation>
         <version.bytebuddy>1.10.17</version.bytebuddy>
-        <version.browserstack-local-java>1.0.5</version.browserstack-local-java>
+        <version.browserstack-local-java>1.0.6</version.browserstack-local-java>
 
         <plugin.version.maven-javadoc-plugin>3.2.0</plugin.version.maven-javadoc-plugin>
         <plugin.version.maven-failsafe-plugin>2.22.2</plugin.version.maven-failsafe-plugin>

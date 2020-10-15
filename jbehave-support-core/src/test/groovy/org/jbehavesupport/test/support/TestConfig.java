@@ -37,6 +37,7 @@ import org.jbehavesupport.core.test.app.oxm.NameRequest;
 import org.jbehavesupport.core.web.WebDriverFactory;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -268,7 +269,6 @@ public class TestConfig {
                 caps.setCapability("os", "OS X");
                 caps.setCapability("os_version", "Catalina");
                 caps.setCapability("browser", "Safari");
-                caps.setCapability("browser_version", "13.0");
                 caps.setCapability("browserstack.safari.driver", "2.48");
                 caps.setCapability("browserstack.safari.enablePopups", "true");
                 caps.setCapability("acceptSslCerts", true);
@@ -313,6 +313,12 @@ public class TestConfig {
                 caps.setCapability("os_version", "10");
                 caps.setCapability("browser", "Chrome");
 
+                // issue with w3c mode set on default - causes fails with window handles
+                // see https://github.com/webdriverio/webdriverio/issues/4187
+                ChromeOptions options = new ChromeOptions();
+                options.setExperimentalOption("w3c", false);
+                caps.setCapability(ChromeOptions.CAPABILITY, options);
+
                 return getBrowserStackWebDriver(caps);
             }
 
@@ -327,6 +333,7 @@ public class TestConfig {
     private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
         capabilities.setCapability("resolution", "1920x1080");
         capabilities.setCapability("browserstack.local", "true");
+        capabilities.setCapability("browser_version", "latest");
         capabilities.setCapability("browserstack.selenium_version", "3.141.59");
         capabilities.setCapability("name", env.getProperty("browser-stack.name"));
         capabilities.setCapability("build", env.getProperty("browser-stack.build"));

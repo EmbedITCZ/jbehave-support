@@ -337,6 +337,9 @@ public class TestConfig {
         capabilities.setCapability("browserstack.selenium_version", "3.141.59");
         capabilities.setCapability("name", env.getProperty("browser-stack.name"));
         capabilities.setCapability("build", env.getProperty("browser-stack.build"));
+        if (nonNull(env.getProperty("browserstack.local.identifier"))) {
+            capabilities.setCapability("browserstack.localIdentifier", env.getProperty("browserstack.local.identifier"));
+        }
 
         RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
         driver.manage().window().maximize();

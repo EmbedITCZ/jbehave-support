@@ -12,6 +12,7 @@ import static org.jbehavesupport.test.support.TestConfig.CHROME_BROWSERSTACK
 
 /**
  * This test verifies that our code is compatible with Chrome using BrowserStack.
+ * It assumes BrowserStack Local binary is already running.
  */
 @ContextConfiguration(classes = TestConfig.class)
 class BrowserStackChromeT extends Specification implements TestSupportBrowserStack {
@@ -25,11 +26,6 @@ class BrowserStackChromeT extends Specification implements TestSupportBrowserSta
     def setup() {
         System.setProperty("web.browser", CHROME_BROWSERSTACK)
         System.setProperty("browser-stack.build", getBuildName())
-        setupBrowserStackLocal(env.getProperty("browser-stack.key"))
-    }
-
-    def cleanupSpec() {
-        stopBrowserStackLocal()
     }
 
     def "Chrome test #story"() {

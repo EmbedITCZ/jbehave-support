@@ -13,6 +13,7 @@ import static org.jbehavesupport.test.support.TestConfig.SAFARI_BROWSERSTACK
 
 /**
  * This test verifies that our code is compatible with Safari using BrowserStack.
+ * It assumes BrowserStack Local binary is already running.
  */
 @ContextConfiguration(classes = TestConfig.class)
 class BrowserStackSafariT extends Specification implements TestSupportBrowserStack {
@@ -27,11 +28,6 @@ class BrowserStackSafariT extends Specification implements TestSupportBrowserSta
         System.setProperty("web.browser", SAFARI_BROWSERSTACK)
         System.setProperty("web.url", "http://bs-local.com:11110/")
         System.setProperty("browser-stack.build", getBuildName())
-        setupBrowserStackLocal(env.getProperty("browser-stack.key"))
-    }
-
-    def cleanupSpec() {
-        stopBrowserStackLocal()
     }
 
     def "Safari test #story"() {

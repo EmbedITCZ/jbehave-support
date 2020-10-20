@@ -29,6 +29,20 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+      - name: BrowserStack Env Setup
+        uses: browserstack/github-actions/setup-env@master
+        with:
+          username: ${{ env.BROWSERSTACK_USER }}
+          access-key: ${{ env.BROWSERSTACK_KEY }}
+      - name: BrowserStack Local Setup
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: start
+          local-identifier: random
       - name: BrowserStack${{ matrix.browser }}T on Java ${{ matrix.java }}
         run: |
           xvfb-run mvn verify -DskipUnitTests=true -Djbehave.report.level=STORY -Dbrowser-stack.username=${BROWSERSTACK_USER} -Dbrowser-stack.key=${BROWSERSTACK_KEY} -Dit.test=**/BrowserStack${{ matrix.browser }}T -Pintegration-test -B -V
+      - name: BrowserStack Local Stop
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: stop

@@ -4,12 +4,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jbehavesupport.core.AbstractSpringStories;
+import org.jbehavesupport.test.support.SshContainer;
 import org.jbehavesupport.test.support.TestConfig;
 
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(classes = TestConfig.class)
 public class SampleStoriesIT extends AbstractSpringStories {
+
+    static {
+        SshContainer.getInstance().start();
+    }
 
     @Override
     protected List<String> storyPaths() {

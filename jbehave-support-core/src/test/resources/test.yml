@@ -30,7 +30,7 @@ ssh:
   credentials:
     user: sa
     password: sa
-    keyPath: 'classpath:/ssh/privateKey.pem'
+    keyPath: 'classpath:/ssh/key'
 
 jms:
   brokerUrl: vm://localhost?broker.persistent=false

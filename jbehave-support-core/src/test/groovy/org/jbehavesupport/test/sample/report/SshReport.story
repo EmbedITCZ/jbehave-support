@@ -9,6 +9,7 @@ So you can se in output:
 Scenario: Test TEMPLATE mode of ssh extension
 
 Given ssh reporter mode is set to [TEMPLATE]
+And ssh test data are filled
 
 Then the following data are present in [TEST] log:
 | header     |
@@ -18,6 +19,7 @@ Then the following data are present in [TEST] log:
 Scenario: Test CACHE mode of ssh extension
 
 Given ssh reporter mode is set to [CACHE]
+And ssh test data are filled
 
 Then the following data are present in [TEST] log:
 | header     |
@@ -27,6 +29,7 @@ Then the following data are present in [TEST] log:
 Scenario: Test FULL mode of ssh extension
 
 Given ssh reporter mode is set to [FULL]
+And ssh test data are filled
 
 Then the following data are present in [TEST] log:
 | header     |

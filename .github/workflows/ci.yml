@@ -112,5 +112,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Set up Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
       - name: Run Maven
         run: mvn package -DskipTests org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=EmbedITCZ_jbehave-support -Dsonar.organization=embeditcz -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=/home/runner/work/jbehave-support/jbehave-support/jacoco/jacoco.xml,/home/runner/work/jbehave-support/jbehave-support/jacoco-it/jacoco.xml -e -X

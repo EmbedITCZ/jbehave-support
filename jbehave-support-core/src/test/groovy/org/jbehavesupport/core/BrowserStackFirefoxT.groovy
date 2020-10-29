@@ -12,6 +12,7 @@ import static org.jbehavesupport.test.support.TestConfig.FIREFOX_BROWSERSTACK
 
 /**
  * This test verifies that our code is compatible with Firefox using BrowserStack.
+ * It assumes BrowserStack Local binary is already running.
  */
 @ContextConfiguration(classes = TestConfig.class)
 class BrowserStackFirefoxT extends Specification implements TestSupportBrowserStack {
@@ -25,11 +26,6 @@ class BrowserStackFirefoxT extends Specification implements TestSupportBrowserSt
     def setup() {
         System.setProperty("web.browser", FIREFOX_BROWSERSTACK)
         System.setProperty("browser-stack.build", getBuildName())
-        setupBrowserStackLocal(env.getProperty("browser-stack.key"))
-    }
-
-    def cleanupSpec() {
-        stopBrowserStackLocal()
     }
 
     def "Firefox test #story"() {

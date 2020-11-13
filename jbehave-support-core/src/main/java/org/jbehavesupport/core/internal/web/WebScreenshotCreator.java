@@ -66,14 +66,12 @@ public class WebScreenshotCreator {
 
     private void takesScreenshot(WebScreenshotType screenShotType) throws IOException {
         log.info("Taking {} screenshot will place it in {}", screenShotType, screenshotDirectory);
-
-        prepareDirectory();
-
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
         if (screenshot == null && screenShotType != WebScreenshotType.FAILED) {
             throw new IllegalStateException("Creation of screenshot failed");
         } else if (screenshot != null) {
+            prepareDirectory();
             File destinationFile = fileNameResolver.resolveFilePath(FILE_NAME_PATTERN, screenshotDirectory, screenShotType.toString()).toFile();
             FileUtils.copyFile(screenshot, destinationFile);
 

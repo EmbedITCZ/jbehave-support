@@ -4,6 +4,33 @@
 
 ### To be removed - do not use
 
+Class _YamlPropertiesConfigurer_
+
+>Deprecated since version 1.1.4 - will be removed in the future
+>
+>Replaced with YamlPropertySourceFactory
+>
+>Example:
+>```
+>\\ Deprecated example
+>@Bean
+>public static YamlPropertiesConfigurer yamlPropertiesConfigurer() {
+>   return new YamlPropertiesConfigurer("common.yml");
+>}
+>
+>\\ What should be used instead
+>@Configuration
+>@PropertySource(value = "common-env.yml", factory = YamlPropertySourceFactory.class)
+>public class PropertyConfig {
+>}
+>```
+>To use variables please use standard spring `${}` placeholder format see `org.springframework.core.env.PropertySource` for more information
+>For example:
+>```
+>@PropertySource(value = {"common-env.yml", "${spring.profiles.active}.yml"}, factory = YamlPropertySourceFactory.class)
+>```
+
+---
 Column _OPERATOR_
 
 >Deprecated since version 1.0.0 - will be removed soon

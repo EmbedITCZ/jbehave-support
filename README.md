@@ -187,7 +187,7 @@ public class GoogleStory extends AbstractSpringStories {
 **This class is runnable. When you run it, it runs your story.**
 
 ## Thanks
-### Jetbrains
+### [![Jetbrains](docs/jetbrains.svg)](https://www.jetbrains.com)
 For providing us open source licenses to IntelliJ IDEA.
 
 ### [![Browserstack](docs/browserstack.png)](https://browserstack.com) 

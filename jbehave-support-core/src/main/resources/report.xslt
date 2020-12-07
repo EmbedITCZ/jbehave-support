@@ -10,6 +10,7 @@
     <xsl:import href="report-generator/failScreenshotReport.xslt"/>
     <xsl:import href="report-generator/screenshotReport.xslt"/>
     <xsl:import href="report-generator/jmsXmlReport.xslt"/>
+    <xsl:import href="report-generator/splunkXmlReport.xslt"/>
 
     <xsl:output method="html" doctype-system="about:legacy-compat"/>
 

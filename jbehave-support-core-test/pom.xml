@@ -31,7 +31,6 @@
         <version.jakarta.xml.bind-api>2.3.3</version.jakarta.xml.bind-api>
         <version.moxy>2.7.7</version.moxy>
         <version.jakarta.mail-api>1.6.5</version.jakarta.mail-api>
-        <version.jakarta.activation>1.2.2</version.jakarta.activation>
         <version.jakarta.xml.soap-api>1.4.2</version.jakarta.xml.soap-api>
         <version.saaj-impl>1.5.2</version.saaj-impl>
         <plugin.version.maven-jaxb2-plugin>0.14.0</plugin.version.maven-jaxb2-plugin>
@@ -96,11 +95,6 @@
                 <groupId>jakarta.mail</groupId>
                 <artifactId>jakarta.mail-api</artifactId>
                 <version>${version.jakarta.mail-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.activation</groupId>
-                <artifactId>jakarta.activation</artifactId>
-                <version>${version.jakarta.activation}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

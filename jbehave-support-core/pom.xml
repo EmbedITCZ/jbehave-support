@@ -327,10 +327,6 @@
             <artifactId>org.eclipse.persistence.moxy</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>jakarta.activation</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.splunk</groupId>
             <artifactId>splunk</artifactId>
             <optional>true</optional>

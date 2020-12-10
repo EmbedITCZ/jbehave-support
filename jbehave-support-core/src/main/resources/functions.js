@@ -26,6 +26,10 @@ function reportReady() {
         showHideAllInElement('#sql-queries-body');
     });
 
+    $('#expand-all-splunk-queries').click(function () {
+        showHideAllInElement('#splunk-queries-body');
+    });
+
     $('#expand-all-step-screenshots').click(function () {
             showHideAllInElement('#step-screen-shots');
     });

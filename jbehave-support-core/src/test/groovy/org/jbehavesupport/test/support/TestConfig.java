@@ -11,6 +11,7 @@ import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.internal.FileNameResolver;
+import org.jbehavesupport.core.report.extension.SplunkXmlReporterExtension;
 import org.jbehavesupport.core.splunk.OneShotSearchSplunkClient;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
 import org.jbehavesupport.core.report.XmlReporterFactory;
@@ -146,6 +147,11 @@ public class TestConfig {
     @Bean
     public ScreenshotReporterExtension screenshotReporterExtension(TestContext testContext) {
         return new ScreenshotReporterExtension(testContext);
+    }
+
+    @Bean
+    public SplunkXmlReporterExtension splunkXmlReporterExtension(){
+        return new SplunkXmlReporterExtension();
     }
 
     @Bean

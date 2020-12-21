@@ -1,7 +1,7 @@
 # Contributors guide
 We are happy You are considering contributing to jbehave-support! 😃
 
-Before you start, please read this short guide, so You don`t get lost. If You have any questions, do not hesitate to ask either on Gitter or through GitHub issues.
+Before you start, please read this short guide, so You don`t get lost. If You have any questions, do not hesitate to ask in GitHub discussions.
 
 ## Dev environment
 This project is written in Java 8, however we are aiming for Java 11 and latest Java compatibility (CI is run against 8, 11 and latest Java - currently 15). 
@@ -41,9 +41,7 @@ To build this project use the standard `mvn clean install`. We have 3 building p
     * Used for new version releases
     
 ## Bug reporting
-If you find a bug or have a question, feel free to create a new GitHub issue. Or contact us on:
-
-[![Gitter](https://badges.gitter.im/jbehave-support/community.svg)](https://gitter.im/jbehave-support/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+If you find a bug or have a question, feel free to create a new GitHub issue and/or discussion. 
 
 ## Testing
 We write tests primarily in groovy (even though Java can be used as well, plus we use Sample stories mentioned below for testing as well). 

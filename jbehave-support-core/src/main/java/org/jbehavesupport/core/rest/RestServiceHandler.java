@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
+import org.assertj.core.api.SoftAssertions;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Row;
 import org.jbehavesupport.core.TestContext;
@@ -522,15 +523,18 @@ public class RestServiceHandler {
 
     private void verifyJson(String json, List<Triple<String, Object, String>> expectedData, String actualResponseMessage) {
         assertThat(json).as(actualResponseMessage).isNotEmpty();
+        SoftAssertions softly = new SoftAssertions();
         DocumentContext jsonContext = JsonPath.parse(json);
         for (Triple<String, Object, String> data : expectedData) {
             String propertyName = data.getLeft();
             Object expectedValue = data.getMiddle();
 
             Object actualValue = getValueFromJson(propertyName, json, jsonContext, null);
-            verifierResolver.getVerifierByName(data.getRight(), equalsVerifier)
-                .verify(actualValue, expectedValue);
+            softly.assertThatCode(
+                () -> verifierResolver.getVerifierByName(data.getRight(), equalsVerifier).verify(actualValue, expectedValue)
+            ).doesNotThrowAnyException();
         }
+        softly.assertAll();
     }
 
     private Object getValueFromJson(String propertyName, String json, DocumentContext jsonContext, HttpHeaders headers) {

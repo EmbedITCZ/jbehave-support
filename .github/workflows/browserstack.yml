@@ -40,8 +40,12 @@ jobs:
           local-testing: start
           local-identifier: random
       - name: BrowserStack${{ matrix.browser }}T on Java ${{ matrix.java }}
-        run: |
-          xvfb-run mvn verify -DskipUnitTests=true -Djbehave.report.level=STORY -Dbrowser-stack.username=${BROWSERSTACK_USER} -Dbrowser-stack.key=${BROWSERSTACK_KEY} -Dit.test=**/BrowserStack${{ matrix.browser }}T -Pintegration-test -B -V
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: |
+            xvfb-run mvn verify -DskipUnitTests=true -Djbehave.report.level=STORY -Dbrowser-stack.username=${BROWSERSTACK_USER} -Dbrowser-stack.key=${BROWSERSTACK_KEY} -Dit.test=**/BrowserStack${{ matrix.browser }}T -Pintegration-test -B -V
       - name: BrowserStack Local Stop
         uses: browserstack/github-actions/setup-local@master
         with:

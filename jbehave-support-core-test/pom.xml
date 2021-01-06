@@ -32,7 +32,7 @@
         <version.moxy>2.7.7</version.moxy>
         <version.jakarta.mail-api>1.6.5</version.jakarta.mail-api>
         <version.jakarta.xml.soap-api>1.4.2</version.jakarta.xml.soap-api>
-        <version.saaj-impl>1.5.2</version.saaj-impl>
+        <version.saaj-impl>2.0.0</version.saaj-impl>
         <plugin.version.maven-jaxb2-plugin>0.14.0</plugin.version.maven-jaxb2-plugin>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <maven.deploy.skip>true</maven.deploy.skip>

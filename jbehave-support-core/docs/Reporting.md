@@ -57,6 +57,9 @@ There are several extensions already prepared and ready to use:
       - CACHE: copies cached server log(s) used within scenario execution
     - Extension contains fail mode, which acts like TEMPLATE mode if test fails
       - it can be turned on by using property: ssh.reporting.logOnFailure with value "true"
+  - `SplunkXmlReporterExtension` (copies Splunk queries and their results from [SplunkSteps](Splunk.md))
+    - Splunk implementation is still under active development and changes can/will be done.
+    - Reporting works with default implementation of `OneShotSearchSplunkClient` provided by us
 
 
 To use these extensions simply register the wanted extension as a bean, e.g.:

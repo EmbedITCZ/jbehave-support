@@ -11,6 +11,7 @@ import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.internal.FileNameResolver;
+import org.jbehavesupport.core.report.extension.SplunkXmlReporterExtension;
 import org.jbehavesupport.core.splunk.OneShotSearchSplunkClient;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
 import org.jbehavesupport.core.report.XmlReporterFactory;
@@ -32,7 +33,7 @@ import org.jbehavesupport.core.ssh.SshHandler;
 import org.jbehavesupport.core.ssh.SshLog;
 import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
-import org.jbehavesupport.core.support.YamlPropertiesConfigurer;
+import org.jbehavesupport.core.support.YamlPropertySourceFactory;
 import org.jbehavesupport.core.test.app.oxm.NameRequest;
 import org.jbehavesupport.core.web.WebDriverFactory;
 import org.jbehavesupport.core.web.WebSetting;
@@ -45,6 +46,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.env.Environment;
@@ -69,6 +71,7 @@ import static org.mockito.Mockito.when;
 @Configuration
 @ComponentScan
 @RequiredArgsConstructor
+@PropertySource(value = "test.yml", factory = YamlPropertySourceFactory.class)
 public class TestConfig {
 
     public static final String FIREFOX_BROWSERSTACK = "firefox-browserstack";
@@ -78,11 +81,6 @@ public class TestConfig {
     private final Environment env;
 
     final ResourceLoader resourceLoader;
-
-    @Bean
-    public static YamlPropertiesConfigurer yamlPropertiesConfigurer() {
-        return new YamlPropertiesConfigurer("test.yml");
-    }
 
     @Bean
     @Qualifier("TEST")
@@ -149,6 +147,11 @@ public class TestConfig {
     @Bean
     public ScreenshotReporterExtension screenshotReporterExtension(TestContext testContext) {
         return new ScreenshotReporterExtension(testContext);
+    }
+
+    @Bean
+    public SplunkXmlReporterExtension splunkXmlReporterExtension(){
+        return new SplunkXmlReporterExtension();
     }
 
     @Bean

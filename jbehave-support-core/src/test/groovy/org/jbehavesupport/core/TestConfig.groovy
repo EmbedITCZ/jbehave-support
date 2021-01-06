@@ -18,7 +18,7 @@ import org.jbehavesupport.core.ssh.SimpleRollingLogResolver
 import org.jbehavesupport.core.ssh.SshLog
 import org.jbehavesupport.core.ssh.SshSetting
 import org.jbehavesupport.core.ssh.SshTemplate
-import org.jbehavesupport.core.support.YamlPropertiesConfigurer
+import org.jbehavesupport.core.support.YamlPropertySourceFactory
 import org.jbehavesupport.core.test.app.oxm.NameRequest
 import org.jbehavesupport.core.test.app.oxm.NameResponse
 import org.jbehavesupport.core.verification.Verifier
@@ -36,6 +36,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
 
 import static java.util.Objects.nonNull
@@ -50,6 +51,7 @@ import java.util.concurrent.RejectedExecutionException
 
 @Configuration
 @ComponentScan
+@PropertySource(value = "test.yml", factory = YamlPropertySourceFactory.class)
 class TestConfig {
 
     @Autowired
@@ -61,11 +63,6 @@ class TestConfig {
     @PostConstruct
     void configuration() {
         applicationContext.getBean(ExamplesEvaluationTableConverter.class).setConfiguration(new MostUsefulConfiguration())
-    }
-
-    @Bean
-    static YamlPropertiesConfigurer yamlPropertiesConfigurer() {
-        return new YamlPropertiesConfigurer("test.yml")
     }
 
     @Bean

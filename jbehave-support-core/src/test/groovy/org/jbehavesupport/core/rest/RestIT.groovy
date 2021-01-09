@@ -168,4 +168,22 @@ class RestIT extends Specification {
         testContext.get("JSON_BODY") == testContext.get(RestServiceHandler.REST_RESPONSE_JSON)
     }
 
+    void canSaveHeadersForEmptyResponse() {
+        given:
+        restServiceHandler.sendRequest("init/", HttpMethod.valueOf("PATCH"), null)
+
+        when:
+        ExamplesTable saveTable = new ExamplesTable(
+            "| name                      | contextAlias      |\n" +
+                "| @header.Expires | EXPIRES |\n" +
+                "| @body | JSON_BODY    |"
+        )
+        restServiceHandler.saveResponse(saveTable)
+
+        then:
+        noExceptionThrown()
+        testContext.get("JSON_BODY") == null
+        testContext.get("EXPIRES") == "0"
+    }
+
 }

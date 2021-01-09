@@ -403,11 +403,18 @@ public class RestServiceHandler {
     }
 
     public void saveResponse(ExamplesTable mapping) {
-        String response = testContext.get(REST_RESPONSE_JSON).toString();
+        boolean responsePresent = testContext.get(REST_RESPONSE_JSON) != null;
+        String response = responsePresent ? testContext.get(REST_RESPONSE_JSON).toString() : null;
+        DocumentContext jsonContext = responsePresent ? JsonPath.parse(response) : null;
         HttpHeaders headers = testContext.get(REST_RESPONSE_HEADERS);
-        DocumentContext jsonContext = JsonPath.parse(response);
+
         Consumer<Map<String, String>> rowConsumer = row -> {
             String propertyName = row.get(NAME);
+            if (!responsePresent) {
+                assertThat(propertyName.startsWith(HEADER_START) || propertyName.startsWith(RAW_BODY_KEY))
+                    .as("no such parameter %s found, response body is empty", propertyName)
+                    .isTrue();
+            }
             String alias = row.get(ALIAS);
             Object val = getValueFromJson(propertyName, response, jsonContext, headers);
             testContext.put(alias, val, MetadataUtil.userDefined());
@@ -535,14 +542,16 @@ public class RestServiceHandler {
 
     private Object getValueFromJson(String propertyName, String json, DocumentContext jsonContext, HttpHeaders headers) {
         assertThat(propertyName).isNotNull();
-        assertThat(propertyName.startsWith(HEADER_START) && headers == null).isFalse()
-            .as("parameter name cannot be a header when headers are null");
+        assertThat(propertyName.startsWith(HEADER_START) && headers == null)
+            .as("parameter name cannot be a header when headers are null").isFalse();
 
         if (propertyName.equals(RAW_BODY_KEY)) {
             return json;
         }
         if (propertyName.startsWith(HEADER_START) && headers != null) {
-            return headers.get(propertyName.substring(HEADER_START.length())).get(0);
+            List<String> headerValues = headers.get(propertyName.substring(HEADER_START.length()));
+            assertThat(headerValues).as("no header {} found", propertyName).isNotNull();
+            return headerValues.get(0);
         }
 
         return jsonContext.read("$." + propertyName);

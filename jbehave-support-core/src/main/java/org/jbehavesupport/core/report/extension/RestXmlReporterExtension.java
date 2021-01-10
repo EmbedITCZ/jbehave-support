@@ -1,6 +1,6 @@
 package org.jbehavesupport.core.report.extension;
 
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -131,7 +131,7 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     }
 
     private void printJsonBody(final Writer writer, final String message) {
-        if (!isEmpty(message)) {
+        if (hasText(message)) {
             printBegin(writer, BODY_TAG);
             printCData(writer, message);
             printEnd(writer, BODY_TAG);

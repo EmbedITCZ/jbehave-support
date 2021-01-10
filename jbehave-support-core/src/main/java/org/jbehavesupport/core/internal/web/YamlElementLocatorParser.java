@@ -1,7 +1,6 @@
 package org.jbehavesupport.core.internal.web;
 
 import static java.util.stream.Collectors.joining;
-import static org.springframework.util.StringUtils.isEmpty;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,7 @@ import org.openqa.selenium.By;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -72,7 +72,7 @@ public class YamlElementLocatorParser {
                 type = lastPart;
             } else {
                 middlePart = Stream.of(middlePart, lastPart)
-                    .filter(s -> !isEmpty(s))
+                    .filter(StringUtils::hasText)
                     .collect(joining(SEPARATOR));
             }
 

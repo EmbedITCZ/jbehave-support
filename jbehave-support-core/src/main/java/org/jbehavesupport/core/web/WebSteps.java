@@ -17,7 +17,6 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
@@ -255,7 +254,7 @@ public final class WebSteps {
     @Given("tab with [$urlTitle] containing [$text] is focused")
     @Then("tab with [$urlTitle] containing [$text] is focused")
     public void findTabWithUrlOrTitle(String urlTitle, ExpressionEvaluatingParameter<String> text) {
-        Assertions.assertThat(urlTitle).matches("url|title").as("Must be url or title");
+        assertThat(urlTitle).as("Must be url or title").matches("url|title");
         driver.getWindowHandles().stream()
             .filter(handle -> {
                 try {

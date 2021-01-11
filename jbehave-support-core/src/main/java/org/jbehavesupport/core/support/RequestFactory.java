@@ -6,7 +6,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.ClassUtils.isAssignable;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -187,7 +187,7 @@ public class RequestFactory<REQUEST> {
             pathStep = pathSteps.next();
             pathPrevious = pathCurrent;
             pathCurrent = Stream.of(pathCurrent, pathStep)
-                .filter(s -> !isEmpty(s))
+                .filter(s -> hasText(s))
                 .collect(joining("."));
 
             if (!factoryContext.containsKey(pathCurrent)) {

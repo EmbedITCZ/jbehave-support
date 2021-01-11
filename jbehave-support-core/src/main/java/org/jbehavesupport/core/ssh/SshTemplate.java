@@ -11,7 +11,7 @@ import static net.schmizz.sshj.common.IOUtils.readFully;
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
 import static org.springframework.util.StreamUtils.copyToString;
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,8 +55,8 @@ public class SshTemplate {
     }
 
     public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver, boolean reportable) {
-        isTrue(!isEmpty(sshSetting.getLogPath()), "log path must not be null or empty");
-        isTrue(!isEmpty(timestampFormat), "timestamp format must not be null or empty");
+        isTrue(hasText(sshSetting.getLogPath()), "log path must not be null or empty");
+        isTrue(hasText(timestampFormat), "timestamp format must not be null or empty");
 
         this.sshSetting = sshSetting;
         this.timestampFormat = timestampFormat;
@@ -109,7 +109,7 @@ public class SshTemplate {
     }
 
     private String executeCommand(String cmd) throws IOException {
-        isTrue(!isEmpty(cmd), "cmd must not be null or empty");
+        isTrue(hasText(cmd), "cmd must not be null or empty");
         try (
             Session session = getSshClient().startSession();
             Session.Command command = session.exec(cmd.trim())

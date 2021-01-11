@@ -2,6 +2,7 @@ package org.jbehavesupport.core.internal.expression.temporal;
 
 
 import static org.springframework.util.Assert.isTrue;
+import static org.springframework.util.StringUtils.hasText;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +12,6 @@ import java.time.temporal.ChronoField;
 import org.jbehavesupport.core.expression.ExpressionCommand;
 import org.jbehavesupport.core.internal.util.RandomDate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 /**
  * Generate random {@link java.time.LocalDate}
@@ -23,7 +23,6 @@ import org.springframework.util.StringUtils;
 @Component
 public class RandomDateCommand implements ExpressionCommand {
 
-    
     private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
         .appendPattern("yyyy[-M[-d]]")
         .parseDefaulting(ChronoField.MONTH_OF_YEAR, 1)
@@ -44,7 +43,7 @@ public class RandomDateCommand implements ExpressionCommand {
     }
 
     LocalDate parseTime(String input) {
-        if (StringUtils.isEmpty(input)) {
+        if (!hasText(input)) {
             return null;
         }
         return DATE_TIME_FORMATTER.parse(input, LocalDate::from);

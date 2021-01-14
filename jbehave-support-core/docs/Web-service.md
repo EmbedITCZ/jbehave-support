@@ -110,3 +110,11 @@ Given [CreateAccountRequest] data for [MYAPP]:
 | contract.contractParameters            |      | org.myapp.oxm.CurrentContractParametersDto |
 | contract.contractParameters.billingDay | 7    |                                            |
 ```
+
+#### Enable WS message logging from WS steps
+To enable logging of WS messages add spring `MessageTracing` into logback
+```
+<logger name="org.springframework.ws.client.MessageTracing" level="trace" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+</logger>
+```

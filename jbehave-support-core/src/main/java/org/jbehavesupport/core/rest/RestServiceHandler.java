@@ -125,6 +125,7 @@ public class RestServiceHandler {
         if (restXmlReporterExtension != null) {
             template.getInterceptors().add(restXmlReporterExtension);
         }
+        template.getInterceptors().add(new RestLoggingInterceptor());
     }
 
     public void sendCheckedRequest(String urlPath, HttpMethod requestMethod, ExamplesTable data) throws IOException{

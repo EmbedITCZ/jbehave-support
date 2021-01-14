@@ -180,3 +180,11 @@ This table will generate this JSON:
 ```
 {"firstName":"Mario","plumber":true,"princess":null,"brother":"Luigi","age":24,"height":1.56,"powerups":["fireball",null]}
 ```
+
+#### Enable JSON message logging from REST steps
+To enable logging of JSON messages add `RestLoggingInterceptor` into logback
+```
+<logger name="org.jbehavesupport.core.rest.RestLoggingInterceptor" level="trace" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+</logger>
+```

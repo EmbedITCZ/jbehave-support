@@ -14,6 +14,7 @@ List of commands:
 - [DATE_PARSE](#date_parse)
 - [DATE_TIME_PARSE](#date_time_parse)
 - [EMPTY_STRING](#empty_string)
+- [ENV](#env)
 - [FILE](#file)
 - [FORMAT_DATE](#format_date)
 - [FORMAT_DATE_TIME](#format_date_time)
@@ -96,6 +97,14 @@ This command produces empty string.
 > {EMPTY_STRING}  
 > {EMPTY}
 > ```
+ 
+>#### ENV
+ Returns the value of specified environment property.
+ 
+ > Examples:  
+ > ```
+ > {ENV:PROPERTY_NAME}  
+ > ```
 
 #### FILE
 Provides canonical path to file. Command consumes two parameters:

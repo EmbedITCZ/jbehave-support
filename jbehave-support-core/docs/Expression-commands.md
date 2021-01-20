@@ -13,6 +13,7 @@ List of commands:
 - [CURRENT_DATE_TIME](#current_date_time)
 - [DATE_PARSE](#date_parse)
 - [DATE_TIME_PARSE](#date_time_parse)
+- [DIVIDE](#divide)
 - [EMPTY_STRING](#empty_string)
 - [ENV](#env)
 - [FILE](#file)
@@ -20,6 +21,8 @@ List of commands:
 - [FORMAT_DATE_TIME](#format_date_time)
 - [LOWER_CASE](#lower_case)
 - [MAP](#map)
+- [MINUS](#minus)
+- [MULTIPLY](#multiply)
 - [NEXT_CALENDAR_DAY](#next_calendar_day)
 - [NIL](#nil)
 - [NULL](#null)
@@ -31,6 +34,7 @@ List of commands:
 - [RANDOM_NUMBER_IN_RANGE](#random_number_in_range)
 - [RANDOM_STRING](#random_string)
 - [RESOURCE](#resource)
+- [ROUND](#round)
 - [SUBSTR](#substr)
 - [TEST_CONTEXT_COPY](#test_context_copy)
 - [UNESCAPE](#unescape)
@@ -88,6 +92,16 @@ Command consumes two arguments:
 > ``` 
 > {DATE_TIME_PARSE:10.15.30 05/20/2031:HH.mm.ss MM/dd/yyyy} 
 > ```
+
+#### DIVIDE
+Command for dividing first parameter by others
+Default rounding is to 10 decimal places, can be changed by property `numeric.scale`
+
+> Example:
+> ``` 
+> {DIVIDE:10:5:4} 
+> ```
+> Result of the command: `0.5`
 
 #### EMPTY_STRING
 This command produces empty string.
@@ -156,6 +170,24 @@ Maps the first argument according to the mapping supplied in the second argument
 > {MAP:0:[0,Zero],[1,One],[Unknown]}
 > ```
 > Produces result `Zero`
+
+#### MINUS
+This command simply subtract parameters from first one
+
+> Example:
+> ```
+> {MINUS:2:2:3}
+> ```
+> Result of the command: `-3`
+
+#### MULTIPLY
+This command simply multiply parameters
+
+> Example:
+> ```
+> {MULTIPLY:2:2:3}
+> ```
+> Result of the command: `12`
 
 #### NEXT_CALENDAR_DAY
 Command consumes one parameter as day. If the day is higher or equal to day from `TimeFacade` current month is used. If the day is lower than day from `TimeFacade` we will reset day to 1 and set month to next month.
@@ -269,6 +301,15 @@ Provides byte array for sending files in SOAP or REST requests.
 > {RESOURCE:image.png}
 > ```
 > Result of the command: `Resource object`
+
+#### ROUND
+This command round first parameter
+
+> Example:
+> ```
+> {ROUND:2.1111:2}
+> ```
+> Result of the command: `2.11`
 
 #### SUBSTR
 Returns a string that is a substring of the first parameter.

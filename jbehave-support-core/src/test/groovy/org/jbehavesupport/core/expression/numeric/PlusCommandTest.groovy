@@ -1,7 +1,6 @@
-package org.jbehavesupport.core.expression
+package org.jbehavesupport.core.expression.numeric
 
-
-import org.jbehavesupport.core.internal.expression.PlusCommand
+import org.jbehavesupport.core.internal.expression.numeric.PlusCommand
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -23,20 +22,15 @@ class PlusCommandTest extends Specification {
         [2.2D, 2.2F, 2L]    || new BigDecimal("6.4")
     }
 
-    def "Plus command evaluation for #params should throw #expected"() {
+    @Unroll
+    def "Test wrong number of params for PlusCommand"() {
         when:
-        new PlusCommand().execute(*params)
+        new PlusCommand().execute([1])
 
         then:
         Exception exception = thrown()
-        expected == exception.class
-        message == exception.message
-
-        where:
-        params       || expected                       || message
-        ["1"]        || IllegalArgumentException.class || "At least two parameters were expected"
-        ["a", "1"]   || IllegalArgumentException.class || "String parameter must be numeric: a"
-        ["1,1", "1"] || IllegalArgumentException.class || "String parameter must be numeric: 1,1"
+        IllegalArgumentException.class == exception.class
+        "At least two parameters were expected" == exception.message
     }
 
 }

@@ -1,6 +1,7 @@
 package org.jbehavesupport.core.internal.parameterconverters;
 
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,6 +47,15 @@ public class ExamplesEvaluationTableConverter implements ParameterConverters.Par
 
     private Map<String, String> translateRow(Map<String, String> row) {
         return row.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> expressionEvaluator.evaluate(e.getValue()).toString()));
+            .collect(
+                Collectors.toMap(
+                    Map.Entry::getKey,
+                    e -> expressionEvaluator.evaluate(e.getValue()).toString(),
+                    (u, v) -> {
+                        throw new IllegalStateException(String.format("Duplicate key %s", u));
+                    },
+                    LinkedHashMap::new
+                )
+            );
     }
 }

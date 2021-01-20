@@ -23,7 +23,7 @@ class WebActionBuilderTest extends Specification {
             .on("a2").perform("b2").value("c2").alias("d2")
 
         then:
-        deleteWhitespace(b.buildExamplesTable().tableAsString) ==
+        deleteWhitespace(b.buildExamplesTable().asString()) ==
             deleteWhitespace("""|element|action|value|alias|
                                 |a1     |b1    |c1   |d1   |
                                 |a2     |b2    |c2   |d2   |""")
@@ -44,7 +44,7 @@ class WebActionBuilderTest extends Specification {
             .on("6").select("c")
 
         then:
-        deleteWhitespace(b.buildExamplesTable().tableAsString) ==
+        deleteWhitespace(b.buildExamplesTable().asString()) ==
             deleteWhitespace("""|element|action      |value|alias|
                                 |@alert |ACCEPT      |     |     |
                                 |@alert |DISMISS     |     |     |
@@ -66,7 +66,7 @@ class WebActionBuilderTest extends Specification {
             .on("a1").perform("b1").and()
 
         then:
-        deleteWhitespace(b.buildExamplesTable().tableAsString) ==
+        deleteWhitespace(b.buildExamplesTable().asString()) ==
             deleteWhitespace("""{headerSeparator=!,valueSeparator=?}
                                 !element!action!value!alias!
                                 ?a1     ?b1    ?     ?     ?""")

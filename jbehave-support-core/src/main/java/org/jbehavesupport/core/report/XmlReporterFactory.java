@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -45,8 +46,10 @@ import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.NullStoryReporter;
 import org.jbehave.core.reporters.StoryReporter;
 import org.jbehave.core.reporters.StoryReporterBuilder;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -65,7 +68,7 @@ public class XmlReporterFactory extends Format {
     private final XPath xPath = XPathFactory.newInstance().newXPath();
 
     @Autowired
-    private List<XmlReporterExtension> xmlReporterExtensions;
+    private ConfigurableListableBeanFactory beanFactory;
 
     @Value("${report.indexTemplate:index.xslt}")
     private Resource indexTemplate;
@@ -95,7 +98,7 @@ public class XmlReporterFactory extends Format {
         String fileName = filePrintStreamFactory.getOutputFile().getName();
         reportsAbsoluteDirectory = filePrintStreamFactory.getOutputFile().getParentFile().getAbsolutePath();
         if (!fileName.matches("(Before|After)Stories.xml")) {
-            XmlReporter reportXml = new XmlReporter(xmlReporterExtensions, filePrintStreamFactory.createPrintStream(), reportTemplate.getFilename());
+            XmlReporter reportXml = new XmlReporter(getXmlReporterExtensions(), filePrintStreamFactory.createPrintStream(), reportTemplate.getFilename());
             reportXml.doReportFailureTrace(storyReporterBuilder.reportFailureTrace());
             reportXml.doCompressFailureTrace(storyReporterBuilder.compressFailureTrace());
 
@@ -128,6 +131,12 @@ public class XmlReporterFactory extends Format {
             }
             storeIndex(container);
         }
+    }
+
+    private List<XmlReporterExtension> getXmlReporterExtensions() {
+        return BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, XmlReporterExtension.class).entrySet().stream()
+            .map(Map.Entry::getValue)
+            .collect(Collectors.toList());
     }
 
     private void storeIndex(IndexContainer container) {

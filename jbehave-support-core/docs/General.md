@@ -24,17 +24,21 @@ and in [EscapingInContext story](../src/test/groovy/org/jbehavesupport/test/samp
 
 ### Comparison operators
 
-For some verification steps it's possible to use verifiers such as:
-`EQ` - equals - default when no operator is specified
-`NE` - not equals
-`LT` - lower than
-`GT` - greater than
-`CONTAINS` - String contains another String
-`NOT_CONTAINS` - String doesn't contain another String
-`SIZE_EQ` - Size of collection is exactly expected value
-`SIZE_LT` - Size of collection is lower than expected value
-`SIZE_GT` - Size of collection is greater than expected value
-`REGEX_MATCH` - Matches String using regular expression - matches whole string
+For some verification steps it's possible to use verifiers such as:  
+`EQ` - equals - default when no operator is specified  
+`NE` - not equals  
+`LT` - lower than  
+`LE` - lower than or equal to  
+`GT` - greater than  
+`GE` - greater than or equal to  
+`CONTAINS` - String contains another String  
+`NOT_CONTAINS` - String doesn't contain another String  
+`SIZE_EQ` - Size of collection is exactly expected value  
+`SIZE_LT` - Size of collection is lower than expected value  
+`SIZE_LE` - Size of collection is lower than or equal to expected value  
+`SIZE_GT` - Size of collection is greater than expected value  
+`SIZE_GE` - Size of collection is greater than or equal to expected value  
+`REGEX_MATCH` - Matches String using regular expression - matches whole string  
 `REGEX_FIND` - Check if regular expression matches any part of given value - matches data on one line
 
 The following sample step compares data from a ClientResponse from MYAPP against values in test context using operators.

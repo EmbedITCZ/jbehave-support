@@ -9,21 +9,21 @@ import spock.lang.Unroll
 import java.time.LocalDate
 
 @ContextConfiguration(classes = TestConfig)
-class GreaterThanVerifierTest extends Specification {
+class GreaterThanOrEqualVerifierTest extends Specification {
 
     @Autowired
-    GreaterThanVerifier greaterThanVerifier
+    GreaterThanOrEqualVerifier greaterThanOrEqualVerifier
 
     def "Name"() {
 
         expect:
-        greaterThanVerifier.name() == "GT"
+        greaterThanOrEqualVerifier.name() == "GE"
     }
 
     @Unroll
     "VerifyPositive #actual to #expected"() {
         when:
-        greaterThanVerifier.verify(actual, expected)
+        greaterThanOrEqualVerifier.verify(actual, expected)
 
         then:
         true
@@ -31,16 +31,17 @@ class GreaterThanVerifierTest extends Specification {
         where:
         actual                     | expected
         20                         | 7
+        20                         | 20
         456.789                    | 132.456
         new LocalDate(2002, 7, 15) | new LocalDate(2002, 7, 14)
+        new LocalDate(2002, 7, 15) | new LocalDate(2002, 7, 15)
         new LocalDate(2002, 7, 15) | "2000-06-14"
     }
-
 
     @Unroll
     "VerifyNegative #actual to #expected"() {
         when:
-        greaterThanVerifier.verify(actual, expected)
+        greaterThanOrEqualVerifier.verify(actual, expected)
 
         then:
         def thr = thrown(Throwable)
@@ -48,10 +49,9 @@ class GreaterThanVerifierTest extends Specification {
 
         where:
         actual                     | expected                   || message
-        7                          | 22                         || "value '7' is not greater than '22'"
-        7                          | 7                          || "value '7' is not greater than '7'"
-        1.000001                   | 2.000002                   || "value '1.000001' is not greater than '2.000002'"
-        new LocalDate(2002, 7, 15) | new LocalDate(2002, 7, 15) || "value '2002-07-15' is not greater than '2002-07-15'"
-        new LocalDate(2002, 7, 15) | "2003-01-01"               || "value '2002-07-15' is not greater than '2003-01-01'"
+        7                          | 22                         || "value '7' is not greater than or equal to '22'"
+        1.000001                   | 2.000002                   || "value '1.000001' is not greater than or equal to '2.000002'"
+        new LocalDate(2002, 7, 15) | "2003-01-01"               || "value '2002-07-15' is not greater than or equal to '2003-01-01'"
     }
+
 }

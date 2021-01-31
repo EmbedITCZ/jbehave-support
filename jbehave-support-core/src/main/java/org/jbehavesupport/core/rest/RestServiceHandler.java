@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.Row;
 import org.jbehavesupport.core.TestContext;
-import org.jbehavesupport.core.internal.ExampleTableConstraints;
 import org.jbehavesupport.core.internal.ExamplesTableUtil;
 import org.jbehavesupport.core.internal.MetadataUtil;
 import org.jbehavesupport.core.internal.SkipSslVerificationHttpRequestFactory;
@@ -50,11 +49,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.ALIAS;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.OPERATOR;
+import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.assertDuplicatesInColumns;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.getValue;
 import static org.springframework.util.Assert.state;
@@ -86,12 +88,12 @@ public class RestServiceHandler {
     private static final String HEADER_START = "@header.";
     private static final String RAW_BODY_KEY = "@body";
     private static final String STATUS_HEADER = HEADER_START + "Status";
-    private static Pattern indexedKeyPattern = Pattern.compile("(.*)\\[(\\d+)\\]");
-    private static Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)\\]\\.(.*)");
-    private static Pattern indexedKeyPattern3 = Pattern.compile("(.*)\\[(\\d*)\\]");
+    private static final Pattern indexedKeyPattern = Pattern.compile("(.*)\\[(\\d+)]");
+    private static final Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)]\\.(.*)");
+    private static final Pattern indexedKeyPattern3 = Pattern.compile("(.*)\\[(\\d*)]");
     private static final String PERIOD_REGEX = "\\.(\\d+)(\\.)?";
 
-    private String url;
+    private final String url;
 
     @Autowired
     private TestContext testContext;
@@ -169,7 +171,7 @@ public class RestServiceHandler {
         testContext.put(REST_RESPONSE_JSON, e.getResponseBodyAsString());
     }
 
-    private HttpEntity createRequestEntity(final ExamplesTable data) throws IOException {
+    private HttpEntity createRequestEntity(ExamplesTable data) throws IOException {
         if (data == null) { //return dummy
             return new HttpEntity<>("", null);
         }
@@ -200,7 +202,7 @@ public class RestServiceHandler {
                 iterator.remove();
             }
         }
-        setHeadersContentTypeIfNull(headers, MediaType.APPLICATION_JSON);
+        setContentTypeIfNull(headers);
         return headers;
     }
 
@@ -258,9 +260,9 @@ public class RestServiceHandler {
         return new HttpEntity<>(createJsonRequest(requestEntityMap), headers);
     }
 
-    private void setHeadersContentTypeIfNull(HttpHeaders headers, MediaType mediaType) {
+    private void setContentTypeIfNull(HttpHeaders headers) {
         if (headers.getContentType() == null) {
-            headers.setContentType(mediaType);
+            headers.setContentType(MediaType.APPLICATION_JSON);
         }
     }
 
@@ -275,12 +277,12 @@ public class RestServiceHandler {
         boolean isCollection = false;
         List<String> orderedKeys = data.keySet().stream().sorted(new IndexedKeyComparator()).collect(Collectors.toList());
         for (String key : orderedKeys) {
-            Integer index = 0;
+            int index = 0;
             Object value = data.get(key);
             Matcher matcher = indexedKeyPattern2.matcher(key);
             if (matcher.matches()) {
                 isCollection = true;
-                index = Integer.valueOf(matcher.group(1));
+                index = parseInt(matcher.group(1));
                 key = matcher.group(2);
             }
 
@@ -305,10 +307,10 @@ public class RestServiceHandler {
         return json;
     }
 
-    private class IndexedKeyComparator implements Comparator<String> {
+    private static class IndexedKeyComparator implements Comparator<String> {
         @Override
         public int compare(final String o1, final String o2) {
-            Pattern p = Pattern.compile("([^\\[\\]]*)\\[(\\d+)\\](.*)");
+            Pattern p = Pattern.compile("([^\\[\\]]*)\\[(\\d+)](.*)");
             Matcher o1Matcher = p.matcher(o1);
             Matcher o2Matcher = p.matcher(o2);
 
@@ -322,8 +324,8 @@ public class RestServiceHandler {
                 if (result != 0) {
                     return result;
                 }
-                int o1Index = Integer.parseInt(o1Matcher.group(grpNumber + 1));
-                int o2Index = Integer.parseInt(o2Matcher.group(grpNumber + 1));
+                int o1Index = parseInt(o1Matcher.group(grpNumber + 1));
+                int o2Index = parseInt(o2Matcher.group(grpNumber + 1));
                 result = o1Index - o2Index;
                 if (result != 0) {
                     return result;
@@ -343,7 +345,7 @@ public class RestServiceHandler {
             Matcher matcher = indexedKeyPattern.matcher(k1);
             if (matcher.matches()) {
                 k1 = matcher.group(1);
-                index = Integer.parseInt(matcher.group(2));
+                index = parseInt(matcher.group(2));
             }
 
             Map<String, Object> map;
@@ -378,7 +380,7 @@ public class RestServiceHandler {
             } else {
                 requestMap.put(k1, map);
             }
-        } else if (key.matches(".*\\[\\d*\\].*")) { // not nested, collection element
+        } else if (key.matches(".*\\[\\d*].*")) { // not nested, collection element
             Matcher matcher = indexedKeyPattern3.matcher(key);
             if (matcher.matches()) {
                 String k1 = matcher.group(1);
@@ -389,7 +391,7 @@ public class RestServiceHandler {
                     list = new ArrayList<>();
                 }
                 if (!matcher.group(2).isEmpty()) {
-                    int index = Integer.parseInt(matcher.group(2));
+                    int index = parseInt(matcher.group(2));
                     if (list.size() > index) {
                         list.set(index, value);
                     } else {
@@ -434,7 +436,7 @@ public class RestServiceHandler {
     }
 
     private void verifyResponseHeaders(HttpHeaders actualHeaders, ExamplesTable data, String actualResponseMessage) {
-        String usedOperator = data.getHeaders().contains(ExampleTableConstraints.VERIFIER) ? ExampleTableConstraints.VERIFIER : ExampleTableConstraints.OPERATOR;
+        String usedOperator = data.getHeaders().contains(VERIFIER) ? VERIFIER : OPERATOR;
         List<Triple<String, Object, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, usedOperator);
         for (Triple<String, Object, String> triple : expectedData) {
             String key = triple.getLeft();
@@ -450,7 +452,7 @@ public class RestServiceHandler {
     }
 
     private void verifyResponseJson(String response, ExamplesTable expectedDataTable, String actualResponseMessage) {
-        String usedOperator = expectedDataTable.getHeaders().contains(ExampleTableConstraints.VERIFIER) ? ExampleTableConstraints.VERIFIER : ExampleTableConstraints.OPERATOR;
+        String usedOperator = expectedDataTable.getHeaders().contains(VERIFIER) ? VERIFIER : OPERATOR;
         List<Triple<String, Object, String>> expectedData =
             ExamplesTableUtil.convertTriple(expectedDataTable, NAME, EXPECTED_VALUE, usedOperator)
                 .stream()
@@ -498,16 +500,16 @@ public class RestServiceHandler {
     }
 
     private Map<String, String> convertIfNeeded(Map<String, String> map) {
-        String name = map.get(ExampleTableConstraints.NAME);
+        String name = map.get(NAME);
         String newName = name.replaceAll(PERIOD_REGEX, "\\[$1\\]$2");
-        map.put(ExampleTableConstraints.NAME, newName);
+        map.put(NAME, newName);
         return map;
     }
 
-    private HttpStatus parseHttpStatus(final String status) {
+    private HttpStatus parseHttpStatus(String status) {
         HttpStatus expectedStatus;
         if (status.matches("\\d+")) {
-            expectedStatus = HttpStatus.valueOf(Integer.valueOf(status));
+            expectedStatus = HttpStatus.valueOf(parseInt(status));
         } else {
             expectedStatus = HttpStatus.valueOf(status);
         }

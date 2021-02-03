@@ -268,7 +268,7 @@
     <xsl:template name="value">
         <xsl:for-each select="value">
             <td>
-                <xsl:value-of select="."/>
+                <xsl:value-of select="." disable-output-escaping="yes"/>
             </td>
         </xsl:for-each>
     </xsl:template>

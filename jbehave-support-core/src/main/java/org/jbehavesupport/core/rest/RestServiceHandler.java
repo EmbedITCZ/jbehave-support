@@ -88,9 +88,9 @@ public class RestServiceHandler {
     private static final String HEADER_START = "@header.";
     private static final String RAW_BODY_KEY = "@body";
     private static final String STATUS_HEADER = HEADER_START + "Status";
-    private static final Pattern indexedKeyPattern = Pattern.compile("(.*)\\[(\\d+)]");
-    private static final Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)]\\.(.*)");
-    private static final Pattern indexedKeyPattern3 = Pattern.compile("(.*)\\[(\\d*)]");
+    private static final Pattern indexedKeyPattern = Pattern.compile("(.*)\\[(\\d+)\\]");
+    private static final Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)\\]\\.(.*)");
+    private static final Pattern indexedKeyPattern3 = Pattern.compile("(.*)\\[(\\d*)\\]");
     private static final String PERIOD_REGEX = "\\.(\\d+)(\\.)?";
 
     private final String url;
@@ -310,7 +310,7 @@ public class RestServiceHandler {
     private static class IndexedKeyComparator implements Comparator<String> {
         @Override
         public int compare(final String o1, final String o2) {
-            Pattern p = Pattern.compile("([^\\[\\]]*)\\[(\\d+)](.*)");
+            Pattern p = Pattern.compile("([^\\[\\]]*)\\[(\\d+)\\](.*)");
             Matcher o1Matcher = p.matcher(o1);
             Matcher o2Matcher = p.matcher(o2);
 

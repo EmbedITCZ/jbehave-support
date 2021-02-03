@@ -157,12 +157,12 @@ When [POST] request to [TEST]/[user/] is sent with data:
 (Saving and verifying raw body from response is done in the same way with the `@body` as well, except in these cases other keys can be present as well.)
 
 #### Handling JSON data types
-All JSON data will be send as a string, unless specified otherwise. To specify a data type, use optional `type` column in your data table. These data types are supported:
+All JSON data will be sent as a string, unless specified otherwise. To specify a data type, use optional `type` column in your data table. These data types are supported:
  + `string`
  + `boolean`
  + `number`
 
-If you leave the column blank, the data will be send as a string. The `{NULL}` command will send `null` no matter what is written in the type column.
+If you leave the column blank, the data will be sent as a string. The `{NULL}` command will send `null` no matter what is written in the type column.
 
 Ex.:
 ```
@@ -187,4 +187,12 @@ To enable logging of JSON messages add `RestLoggingInterceptor` into logback
 <logger name="org.jbehavesupport.core.rest.RestLoggingInterceptor" level="trace" additivity="false">
         <appender-ref ref="CONSOLE"/>
 </logger>
+```
+
+#### Verifying using JSONPath
+We offer limited support for JSONPath verification. To use it simply start the value in the `name` column with `$.`, e.g.:
+```
+Then response from [TEST] REST API has status [200] and values match:
+| name                                   | expectedValue    | verifier |
+| $[?(@.firstName=='Bruno')].id          |                  | NOT_NULL |
 ```

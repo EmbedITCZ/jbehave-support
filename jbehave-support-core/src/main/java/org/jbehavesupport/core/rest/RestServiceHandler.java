@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -93,6 +94,7 @@ public class RestServiceHandler {
     private static final Pattern indexedKeyPattern2 = Pattern.compile("^\\[(\\d+)\\]\\.(.*)");
     private static final Pattern indexedKeyPattern3 = Pattern.compile("(.*)\\[(\\d*)\\]");
     private static final String PERIOD_REGEX = "\\.(\\d+)(\\.)?";
+    private static final String JSON_PATH_ROOT = "$";
 
     private final String url;
 
@@ -184,7 +186,6 @@ public class RestServiceHandler {
             state(!isRaw, "multipart request can not use raw data");
             return createMultipartRequestEntity(requestDataList, headers);
         } else if (isRaw) {
-
             return createRawBodyRequestEntity(requestDataList, headers);
         }
         return createJsonRequestEntity(requestDataList, headers);
@@ -561,7 +562,12 @@ public class RestServiceHandler {
             return headerValues.get(0);
         }
 
-        return jsonContext.read("$." + propertyName);
+        String jsonPath = propertyName.startsWith(JSON_PATH_ROOT) ? propertyName : JSON_PATH_ROOT + '.' + propertyName;
+        Object propertyValue = jsonContext.read(jsonPath);
+        if (propertyValue instanceof JSONArray && ((JSONArray) propertyValue).size() == 1) {
+            return ((JSONArray) propertyValue).get(0);
+        }
+        return propertyValue;
     }
 
     /**

@@ -19,7 +19,7 @@ public RestServiceHandler testRestServiceHandler() {
     return new TestRestServiceHandler("http://resttest.com");
 }
 ```
-As a paramter to the constructor, pass the URL of your rest service as a String. (In this case `http://resttest.com`.)
+As a parameter to the constructor, pass the URL of your rest service as a String. (In this case `http://resttest.com`.)
 
 ## Write a [story](../../../README.md#write-your-story)
 Create a Rest.story file with this scenario:

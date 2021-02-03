@@ -356,3 +356,14 @@ Then response from [TEST] REST API has status [200]
 When response values from [TEST] REST API are saved:
 | name  | contextAlias |
 | @body | JSON_BODY    |
+
+Scenario: using JSONPath
+When [POST] request to [TEST]/[user/] is sent with data:
+| name                 | data                           | contextAlias |
+| firstName            | Bruno                          |              |
+| lastName             | {RANDOM_STRING:10}             | LAST_NAME    |
+Then response from [TEST] REST API has status [200] and values match:
+| name                                   | expectedValue    | verifier |
+| $[?(@.firstName=='Bruno')].id          |                  | NOT_NULL |
+| $.firstName                            | Bruno            |          |
+| $[?(@.firstName=='Bruno')].lastName    | {CP:LAST_NAME}   |          |

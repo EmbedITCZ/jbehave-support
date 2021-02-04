@@ -112,7 +112,7 @@ Given [CreateAccountRequest] data for [MYAPP]:
 ```
 
 ### Using XPaths in validation/saving response
-In case more flexible way to save or validate response is needed, XPaths can be used <br>
+In case more flexible way to save or validate response is needed, XPaths can be used. To use it simply start the value in the `name` column with `/`.
 This solution doesn't use namespaces
 ```
 Then [NameResponse] values from [TEST] match:

@@ -190,7 +190,7 @@ To enable logging of JSON messages add `RestLoggingInterceptor` into logback
 ```
 
 #### Verifying using JSONPath
-We offer limited support for JSONPath verification. To use it simply start the value in the `name` column with `$.`, e.g.:
+We offer limited support for JSONPath verification. To use it simply start the value in the `name` column with `$`, e.g.:
 ```
 Then response from [TEST] REST API has status [200] and values match:
 | name                                   | expectedValue    | verifier |

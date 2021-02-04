@@ -111,6 +111,25 @@ Given [CreateAccountRequest] data for [MYAPP]:
 | contract.contractParameters.billingDay | 7    |                                            |
 ```
 
+### Using XPaths in validation/saving response
+In case more flexible way to save or validate response is needed, XPaths can be used <br>
+This solution doesn't use namespaces
+```
+Then [NameResponse] values from [TEST] match:
+| name                               | expectedValue |
+| //relatives[1]/Name                | Sarah         |
+| //relatives[1]/Relation            | Daughter      |
+| //relatives[Name='Kamil']/Name     | Kamil         |
+| //relatives[Name='Kamil']/Relation | Son           |
+```
+If using namespaces for XPaths is needed, use `mode` column with `NAMESPACE_AWARE` value
+```
+And [NameResponse] values from [TEST] are saved:
+| name                                                                                   | contextAlias   | mode            |
+| //*["firstName"=local-name()]                                                          | JOHN_XPATH     | NAMESPACE_AWARE |
+| //*["firstName"=local-name()]["http://jbehavesupport.org/definitions"=namespace-uri()] | JOHN_XPATH_NS  | NAMESPACE_AWARE |
+```
+
 #### Enable WS message logging from WS steps
 To enable logging of WS messages add spring `MessageTracing` into logback
 ```

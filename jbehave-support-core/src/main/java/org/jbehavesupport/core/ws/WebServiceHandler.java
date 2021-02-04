@@ -420,7 +420,7 @@ public abstract class WebServiceHandler {
             Document ownerDoc = node.getOwnerDocument();
             NamedNodeMap map = node.getAttributes();
             Node n;
-            while ((0!=map.getLength())) {
+            while (map.getLength() != 0) {
                 n = map.item(0);
                 map.removeNamedItemNS(n.getNamespaceURI(), n.getLocalName());
             }

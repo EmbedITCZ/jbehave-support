@@ -80,7 +80,7 @@ public abstract class WebServiceHandler {
     private static final String CONTEXT_SEPARATOR = ".";
     private static final String REQUEST_POSTFIX = "Request";
     public static final String BRACKET_REGEX = "(.*)\\[(\\d+)\\](.*)";
-    public static final String SLASH_PREFIX = "/";
+    private static final String SLASH_PREFIX = "/";
     public static final String NAMESPACE_AWARE = "NAMESPACE_AWARE";
 
     @Autowired

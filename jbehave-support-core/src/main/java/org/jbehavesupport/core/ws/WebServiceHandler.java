@@ -402,7 +402,7 @@ public abstract class WebServiceHandler {
             Marshaller marshaller = context.createMarshaller();
             marshaller.marshal(bean, document);
             return document;
-        } catch (ParserConfigurationException | JAXBException  e){
+        } catch (ParserConfigurationException | JAXBException e){
             throw new IllegalArgumentException("Unable to build DOM document for xpath");
         }
     }

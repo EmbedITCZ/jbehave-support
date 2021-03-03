@@ -17,7 +17,7 @@ import static org.springframework.util.Assert.isTrue;
 @Component
 public class DivideCommand implements ExpressionCommand {
 
-    @Value("${numeric.scale}")
+    @Value("${numeric.scale:10}")
     private int scale = 10;
 
     @Override

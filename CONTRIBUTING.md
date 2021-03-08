@@ -4,7 +4,7 @@ We are happy You are considering contributing to jbehave-support! 😃
 Before you start, please read this short guide, so You don`t get lost. If You have any questions, do not hesitate to ask in GitHub discussions.
 
 ## Dev environment
-This project is written in Java 8, however we are aiming for Java 11 and latest Java compatibility (CI is run against 8, 11 and latest Java - currently 15). 
+This project is written in Java 8, however we are aiming for Java 11 and latest Java compatibility (CI is run against 8, 11 and latest Java - currently 16). 
 
 We are using the latest version of IntelliJ IDEA as an IDE. These are the plugins you need:
 * SonarLint

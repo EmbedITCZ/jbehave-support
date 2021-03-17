@@ -135,7 +135,8 @@ public abstract class AbstractSpringStories extends JUnitStories {
                 .usePendingStepStrategy(new FailingUponPendingStep())
                 .useViewGenerator(new FreemarkerViewGenerator(new SuffixRemovingStoryNameResolver()))
                 .useParameterConverters(parameterConverters)
-                .useFailureStrategy(new RethrowingFailure());
+                .useFailureStrategy(new RethrowingFailure())
+                .useStoryExecutionComparator((x,y) -> 1); // always return in the same order as passed
 
             StoryParser parser = storyParser(configuration);
             if (parser != null) {

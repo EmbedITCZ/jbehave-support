@@ -1,6 +1,7 @@
 package org.jbehavesupport.core.ws;
 
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.ConvertedParameters;
 import org.jbehave.core.steps.Parameters;
@@ -384,27 +385,21 @@ public abstract class WebServiceHandler {
         return evaluateXpath(xmlResponse[0], propertyName);
     }
 
-    private Object evaluateXpath(Document document, String expression){
-        try {
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            return xpath.compile(expression).evaluate(document, XPathConstants.STRING);
-        } catch (XPathExpressionException e) {
-            throw new IllegalArgumentException("Unable to parse xpath: " + expression);
-        }
+    @SneakyThrows(XPathExpressionException.class)
+    private Object evaluateXpath(Document document, String expression) {
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        return xpath.compile(expression).evaluate(document, XPathConstants.STRING);
     }
 
-    private Document createXmlResponse(Object bean){
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-            Document document = documentBuilder.newDocument();
-            JAXBContext context = JAXBContext.newInstance(bean.getClass());
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.marshal(bean, document);
-            return document;
-        } catch (ParserConfigurationException | JAXBException e){
-            throw new IllegalArgumentException("Unable to build DOM document for xpath");
-        }
+    @SneakyThrows({ ParserConfigurationException.class, JAXBException.class })
+    private Document createXmlResponse(Object bean) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+        Document document = documentBuilder.newDocument();
+        JAXBContext context = JAXBContext.newInstance(bean.getClass());
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.marshal(bean, document);
+        return document;
     }
 
     public Document cleanNameSpace(Document document) {

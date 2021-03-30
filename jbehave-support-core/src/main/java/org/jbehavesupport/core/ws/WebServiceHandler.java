@@ -1,7 +1,6 @@
 package org.jbehavesupport.core.ws;
 
 import lombok.Data;
-import lombok.SneakyThrows;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.ConvertedParameters;
 import org.jbehave.core.steps.Parameters;
@@ -81,7 +80,7 @@ public abstract class WebServiceHandler {
     private static final String CONTEXT_SEPARATOR = ".";
     private static final String REQUEST_POSTFIX = "Request";
     public static final String BRACKET_REGEX = "(.*)\\[(\\d+)\\](.*)";
-    public static final String SLASH_PREFIX = "/";
+    private static final String SLASH_PREFIX = "/";
     public static final String NAMESPACE_AWARE = "NAMESPACE_AWARE";
 
     @Autowired
@@ -385,21 +384,27 @@ public abstract class WebServiceHandler {
         return evaluateXpath(xmlResponse[0], propertyName);
     }
 
-    @SneakyThrows(XPathExpressionException.class)
-    private Object evaluateXpath(Document document, String expression) {
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        return xpath.compile(expression).evaluate(document, XPathConstants.STRING);
+    private Object evaluateXpath(Document document, String expression){
+        try {
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            return xpath.compile(expression).evaluate(document, XPathConstants.STRING);
+        } catch (XPathExpressionException e) {
+            throw new IllegalArgumentException("Unable to parse xpath: " + expression);
+        }
     }
 
-    @SneakyThrows({ JAXBException.class, ParserConfigurationException.class })
-    private Document createXmlResponse(Object bean) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        Document document = documentBuilder.newDocument();
-        JAXBContext context = JAXBContext.newInstance(bean.getClass());
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.marshal(bean, document);
-        return document;
+    private Document createXmlResponse(Object bean){
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+            Document document = documentBuilder.newDocument();
+            JAXBContext context = JAXBContext.newInstance(bean.getClass());
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.marshal(bean, document);
+            return document;
+        } catch (ParserConfigurationException | JAXBException e){
+            throw new IllegalArgumentException("Unable to build DOM document for xpath");
+        }
     }
 
     public Document cleanNameSpace(Document document) {
@@ -415,7 +420,7 @@ public abstract class WebServiceHandler {
             Document ownerDoc = node.getOwnerDocument();
             NamedNodeMap map = node.getAttributes();
             Node n;
-            while ((0!=map.getLength())) {
+            while (map.getLength() != 0) {
                 n = map.item(0);
                 map.removeNamedItemNS(n.getNamespaceURI(), n.getLocalName());
             }

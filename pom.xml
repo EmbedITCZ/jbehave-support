@@ -71,7 +71,7 @@
         <version.spockframework>2.0-M5-groovy-3.0</version.spockframework>
         <version.junit-vintage>5.7.1</version.junit-vintage>
         <version.assertj>3.19.0</version.assertj>
-        <version.spring>5.3.4</version.spring>
+        <version.spring>5.3.5</version.spring>
         <version.spring.ws-support>3.0.10.RELEASE</version.spring.ws-support>
         <version.activemq-broker>5.16.1</version.activemq-broker>
         <version.sshj>0.31.0</version.sshj>

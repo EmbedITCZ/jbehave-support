@@ -11,8 +11,8 @@ class TestContextImplTest extends Specification {
     def "Get values with type #key and expected #expected"() {
         setup:
         TestContext tc = new TestContextImpl()
-        tc.put("myLong", new Long(7))
-        tc.put("myBigInt", new BigInteger(8))
+        tc.put("myLong", 7L)
+        tc.put("myBigInt", 8G)
         tc.put("myBigDec", new BigDecimal("9"))
         tc.put("stLong", "22")
         tc.put("stBigInt", "33")
@@ -27,7 +27,7 @@ class TestContextImplTest extends Specification {
         where:
         key        | expected
         "myLong"   | Long.valueOf(7)
-        "myBigInt" | new BigInteger(8)
+        "myBigInt" | BigInteger.valueOf(8)
         "myBigDec" | new BigDecimal(9)
         "stLong"   | "22"
         "stBigInt" | "33"

@@ -31,8 +31,8 @@ class LowerThanVerifierTest extends Specification {
         actual                     | expected
         9                          | 13
         3.88                       | 4.11
-        new LocalDate(2002, 7, 14) | new LocalDate(2002, 7, 15)
-        new LocalDate(2002, 7, 14) | "2002-08-14"
+        LocalDate.of(2002, 7, 14)  | LocalDate.of(2002, 7, 15)
+        LocalDate.of(2002, 7, 14)  | "2002-08-14"
     }
 
     @Unroll
@@ -49,7 +49,7 @@ class LowerThanVerifierTest extends Specification {
         22                         | 7                          || "value '22' is not lower than '7'"
         22                         | 22                         || "value '22' is not lower than '22'"
         100000.1                   | 0.000001                   || "value '100000.1' is not lower than '0.000001'"
-        new LocalDate(2002, 7, 15) | new LocalDate(2002, 7, 15) || "value '2002-07-15' is not lower than '2002-07-15'"
-        new LocalDate(2002, 7, 15) | "2000-01-01"               || "value '2002-07-15' is not lower than '2000-01-01'"
+        LocalDate.of(2002, 7, 15)  | LocalDate.of(2002, 7, 15) || "value '2002-07-15' is not lower than '2002-07-15'"
+        LocalDate.of(2002, 7, 15)  | "2000-01-01"               || "value '2002-07-15' is not lower than '2000-01-01'"
     }
 }

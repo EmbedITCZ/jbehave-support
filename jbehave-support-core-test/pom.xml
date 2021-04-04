@@ -39,6 +39,7 @@
         <sonar.skip>true</sonar.skip>
         <!-- override version from boot parent, remove once boot has same or newer -->
         <lombok.version>1.18.20</lombok.version>
+        <groovy.version>3.0.7</groovy.version>
     </properties>
 
     <dependencyManagement>

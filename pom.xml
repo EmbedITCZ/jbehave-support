@@ -68,7 +68,7 @@
         <version.jbehave-junit-support>4.8.3</version.jbehave-junit-support>
         <version.groovy>3.0.7</version.groovy>
         <version.junit>4.13.2</version.junit>
-        <version.spockframework>2.0-M4-groovy-3.0</version.spockframework>
+        <version.spockframework>2.0-M5-groovy-3.0</version.spockframework>
         <version.junit-vintage>5.7.1</version.junit-vintage>
         <version.assertj>3.19.0</version.assertj>
         <version.spring>5.3.5</version.spring>

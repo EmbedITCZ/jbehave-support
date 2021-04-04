@@ -11,10 +11,10 @@ import spock.lang.Specification
 class BytesCommandTest extends Specification {
 
     @Autowired
-    private final BytesCommand bytesCommand
+    private BytesCommand bytesCommand
 
     @Autowired
-    private final TestContext testContext
+    private TestContext testContext
 
     void ConvertsCorrectly() {
         when:

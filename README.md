@@ -19,7 +19,9 @@ along with support for [verification](jbehave-support-core/docs/General.md#verif
 [expression commands](jbehave-support-core/docs/Expression-commands.md) and 
 basic [reporting](jbehave-support-core/docs/Reporting.md).
 
-Currently supported Java versions are 8, 11 (latest LTS) and 16 (latest version).
+Currently supported Java versions are 8, 11 (latest LTS) and 16 (latest version).  
+Java 16 support is limited due to JEP 396 and incompatibilities in some of our dependencies. When running on Java 16 please use `--add-opens java.base/java.lang=ALL-UNNAMED` or `--illegal-access=permit`
+to bypass the newly introduced restrictions in the meantime.
 
 ## Contents
 1. [Modules](#modules)

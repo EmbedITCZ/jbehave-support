@@ -32,7 +32,7 @@ class EqualsVerifierTest extends Specification {
         ""                         | ""
         null                       | null
         "tst"                      | "tst"
-        new LocalDate(2002, 7, 14) | new LocalDate(2002, 7, 14)
+        LocalDate.of(2002, 7, 14)  | LocalDate.of(2002, 7, 14)
         12                         | 12
         [1,2,3,4] as int[]         | [1,2,3,4] as int[]
     }
@@ -48,7 +48,7 @@ class EqualsVerifierTest extends Specification {
 
         where:
         actual                     | expected                   || message
-        new LocalDate(2002, 7, 15) | new LocalDate(2002, 7, 14) || "value '2002-07-15' is not equal to '2002-07-14'"
+        LocalDate.of(2002, 7, 15)  | LocalDate.of(2002, 7, 14)  || "value '2002-07-15' is not equal to '2002-07-14'"
         7                          | 9                          || "value '7' is not equal to '9'"
         "me"                       | "you"                      || "value 'me' is not equal to 'you'"
         null                       | "we"                       || "Actual value must be provided"

@@ -1,6 +1,5 @@
 package org.jbehavesupport.core.expression.temporal
 
-
 import org.jbehavesupport.core.internal.expression.temporal.NextCalendarDayCommand
 import org.jbehavesupport.core.support.TimeFacade
 import spock.lang.Specification
@@ -12,10 +11,10 @@ import java.time.ZoneId
 @Unroll
 class NextCalendarDayCommandTest extends Specification {
 
-    def toInstant = { year, month, dayOfMonth -> new LocalDate(year, month, dayOfMonth).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant() }
-    def monthWith31daysTimeFacade = [getCurrentInstant: { -> toInstant(2005, 5, 20) }] as TimeFacade
-    def monthWith30daysTimeFacade = [getCurrentInstant: { -> toInstant(2005, 4, 20) }] as TimeFacade
-    def monthWith28daysTimeFacade = [getCurrentInstant: { -> toInstant(2005, 2, 20) }] as TimeFacade
+    def toInstant = { year, month, dayOfMonth -> LocalDate.of(year, month, dayOfMonth).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant() }
+    def monthWith31daysTimeFacade = [getCurrentDate: { -> Date.from(toInstant(2005, 5, 20))}] as TimeFacade
+    def monthWith30daysTimeFacade = [getCurrentDate: { -> Date.from(toInstant(2005, 4, 20))}] as TimeFacade
+    def monthWith28daysTimeFacade = [getCurrentDate: { -> Date.from(toInstant(2005, 2, 20))}] as TimeFacade
 
     def "for a 31 days long month test execute with #expression returns #expected"() {
         when:

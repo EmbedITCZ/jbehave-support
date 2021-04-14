@@ -32,36 +32,36 @@
         <plugins>
             <!-- generate java from XSD -->
             <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-xjc-plugin</artifactId>
+                <configuration>
+                    <extensions>
+                        <extension>net.java.dev.jaxb2-commons:jaxb-fluent-api:2.1.8</extension>
+                    </extensions>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>client</id>
-                        <phase>generate-resources</phase>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>xsdtojava</goal>
                         </goals>
                         <configuration>
-                            <schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
-                            <extension>true</extension>
-                            <enableIntrospection>true</enableIntrospection>
-                            <bindingDirectory>${project.basedir}/src/main/resources</bindingDirectory>
-                            <bindingIncludes>
-                                <bindingInclude>binding.xjb</bindingInclude>
-                            </bindingIncludes>
-                            <plugins>
-                                <plugin>
-                                    <groupId>net.java.dev.jaxb2-commons</groupId>
-                                    <artifactId>jaxb-fluent-api</artifactId>
-                                    <version>2.1.8</version>
-                                </plugin>
-                            </plugins>
-                            <args>
-                                <arg>-Xfluent-api</arg>
-                            </args>
+                            <sourceRoot>${basedir}/target/generated-sources/cxf/</sourceRoot>
+                            <xsdOptions>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/name.xsd</xsd>
+                                    <bindingFile>${project.basedir}/src/main/resources/binding.xjb</bindingFile>
+                                    <extension>true</extension>
+                                    <extensionArgs>
+                                        <extensionArg>-Xfluent-api</extensionArg>
+                                    </extensionArgs>
+                                </xsdOption>
+                            </xsdOptions>
                         </configuration>
                     </execution>
                 </executions>
+
             </plugin>
         </plugins>
     </build>

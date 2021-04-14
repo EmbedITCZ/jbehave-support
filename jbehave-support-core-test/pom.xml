@@ -33,10 +33,13 @@
         <version.jakarta.mail-api>1.6.5</version.jakarta.mail-api>
         <version.jakarta.xml.soap-api>1.4.2</version.jakarta.xml.soap-api>
         <version.saaj-impl>1.5.2</version.saaj-impl>
-        <plugin.version.maven-jaxb2-plugin>0.14.0</plugin.version.maven-jaxb2-plugin>
+        <plugin.version.cxf-xjc-plugin>3.3.1</plugin.version.cxf-xjc-plugin>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
         <sonar.skip>true</sonar.skip>
+        <!-- override version from boot parent, remove once boot has same or newer -->
+        <lombok.version>1.18.20</lombok.version>
+        <groovy.version>3.0.7</groovy.version>
     </properties>
 
     <dependencyManagement>
@@ -103,9 +106,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.jvnet.jaxb2.maven2</groupId>
-                    <artifactId>maven-jaxb2-plugin</artifactId>
-                    <version>${plugin.version.maven-jaxb2-plugin}</version>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-xjc-plugin</artifactId>
+                    <version>${plugin.version.cxf-xjc-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

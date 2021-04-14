@@ -32,9 +32,9 @@ class LowerThanOrEqualVerifierTest extends Specification {
         9                          | 13
         22                         | 22
         3.88                       | 4.11
-        new LocalDate(2002, 7, 14) | new LocalDate(2002, 7, 15)
-        new LocalDate(2002, 7, 15) | new LocalDate(2002, 7, 15)
-        new LocalDate(2002, 7, 14) | "2002-08-14"
+        LocalDate.of(2002, 7, 14)  | LocalDate.of(2002, 7, 15)
+        LocalDate.of(2002, 7, 15)  | LocalDate.of(2002, 7, 15)
+        LocalDate.of(2002, 7, 14)  | "2002-08-14"
     }
 
     @Unroll
@@ -50,7 +50,7 @@ class LowerThanOrEqualVerifierTest extends Specification {
         actual                     | expected                   || message
         22                         | 7                          || "value '22' is not lower than or equal to '7'"
         100000.1                   | 0.000001                   || "value '100000.1' is not lower than or equal to '0.000001'"
-        new LocalDate(2002, 7, 15) | "2000-01-01"               || "value '2002-07-15' is not lower than or equal to '2000-01-01'"
+        LocalDate.of(2002, 7, 15)  | "2000-01-01"               || "value '2002-07-15' is not lower than or equal to '2000-01-01'"
     }
 
 }

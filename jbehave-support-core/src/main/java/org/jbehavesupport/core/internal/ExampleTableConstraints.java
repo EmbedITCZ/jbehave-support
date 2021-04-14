@@ -11,6 +11,7 @@ public final class ExampleTableConstraints {
     public static final String EXPECTED_VALUE = "expectedValue";
     public static final String VERIFIER = "verifier";
     public static final String TYPE = "type";
+    public static final String MODE = "mode";
     /**
      * @deprecated(since = "1.0.0", forRemoval = true) use {@link #VERIFIER} instead
      */

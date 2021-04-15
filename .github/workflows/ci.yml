@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'zulu'
       - name: Build with Java ${{ matrix.java }}
         run: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
@@ -46,6 +47,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'zulu'
       - name: Test with Java ${{ matrix.java }}
         run: |
           mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -B -V
@@ -75,6 +77,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'zulu'
       - name: System test with Java ${{ matrix.java }}
         run: |
           xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -D--add-opens -Djava.base/java.lang=ALL-UNNAMED -Pintegration-test -B -V
@@ -116,5 +119,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: 'zulu'
       - name: Run Maven
         run: mvn package -DskipTests org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=EmbedITCZ_jbehave-support -Dsonar.organization=embeditcz -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=/home/runner/work/jbehave-support/jbehave-support/jacoco/jacoco.xml,/home/runner/work/jbehave-support/jbehave-support/jacoco-it/jacoco.xml -e -X

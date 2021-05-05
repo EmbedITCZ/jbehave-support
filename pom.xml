@@ -73,7 +73,7 @@
         <version.assertj>3.19.0</version.assertj>
         <version.spring>5.3.6</version.spring>
         <version.spring.ws-support>3.0.10.RELEASE</version.spring.ws-support>
-        <version.activemq-broker>5.16.1</version.activemq-broker>
+        <version.activemq-broker>5.16.2</version.activemq-broker>
         <version.sshj>0.31.0</version.sshj>
         <version.selenium>3.141.59</version.selenium>
         <version.webdrivermanager>4.4.1</version.webdrivermanager>

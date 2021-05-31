@@ -125,9 +125,11 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     }
 
     private void printHeaders(final Writer writer, HttpHeaders headers) {
-        printBegin(writer, HEADERS_TAG);
-        headers.entrySet().forEach(he -> printSelfClosed(writer, HEADER_TAG, getHeaderAttributes(he)));
-        printEnd(writer, HEADERS_TAG);
+        if (headers != null) {
+            printBegin(writer, HEADERS_TAG);
+            headers.entrySet().forEach(he -> printSelfClosed(writer, HEADER_TAG, getHeaderAttributes(he)));
+            printEnd(writer, HEADERS_TAG);
+        }
     }
 
     private void printJsonBody(final Writer writer, final String message) {
@@ -148,8 +150,12 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
 
     private Map<String, String> getResponseMessageAttributes(RestMessageContext message) {
         Map<String, String> responseMessageAttributes = new HashMap<>();
-        responseMessageAttributes.put("status", String.valueOf(message.getResponseStatus()));
-        responseMessageAttributes.put("time", message.getResponseTimeStamp().atZone(ZoneId.systemDefault()).toString());
+        if (message.getResponseStatus() != null) {
+            responseMessageAttributes.put("status", String.valueOf(message.getResponseStatus()));
+        }
+        if (message.getResponseTimeStamp() != null) {
+            responseMessageAttributes.put("time", message.getResponseTimeStamp().atZone(ZoneId.systemDefault()).toString());
+        }
         return responseMessageAttributes;
     }
 

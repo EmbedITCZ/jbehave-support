@@ -94,7 +94,7 @@
         <version.jakarta.xml.bind-api>2.3.3</version.jakarta.xml.bind-api>
         <version.moxy>2.7.7</version.moxy>
         <version.saaj-impl>1.5.2</version.saaj-impl>
-        <version.bytebuddy>1.11.0</version.bytebuddy>
+        <version.bytebuddy>1.11.1</version.bytebuddy>
 
         <plugin.version.maven-javadoc-plugin>3.3.0</plugin.version.maven-javadoc-plugin>
         <plugin.version.maven-failsafe-plugin>2.22.2</plugin.version.maven-failsafe-plugin>

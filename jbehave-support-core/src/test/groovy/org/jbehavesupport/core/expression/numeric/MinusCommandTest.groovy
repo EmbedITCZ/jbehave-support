@@ -1,15 +1,18 @@
 package org.jbehavesupport.core.expression.numeric
 
 import org.jbehavesupport.core.internal.expression.numeric.MinusCommand
+import org.springframework.core.convert.support.DefaultConversionService
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
 class MinusCommandTest extends Specification {
 
+    def conversionService = new DefaultConversionService()
+
     def "Minus command evaluation for #params wit result #expected"() {
         when:
-        def actual = new MinusCommand().execute(*params)
+        def actual = new MinusCommand(conversionService).execute(*params)
         then:
         expected == actual
         where:
@@ -25,7 +28,7 @@ class MinusCommandTest extends Specification {
     @Unroll
     def "Test wrong number of params for MinusCommand"() {
         when:
-        new MinusCommand().execute([1])
+        new MinusCommand(conversionService).execute([1])
 
         then:
         Exception exception = thrown()

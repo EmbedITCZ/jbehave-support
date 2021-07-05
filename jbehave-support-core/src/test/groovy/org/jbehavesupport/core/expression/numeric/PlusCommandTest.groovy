@@ -1,15 +1,18 @@
 package org.jbehavesupport.core.expression.numeric
 
 import org.jbehavesupport.core.internal.expression.numeric.PlusCommand
+import org.springframework.core.convert.support.DefaultConversionService
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
 class PlusCommandTest extends Specification {
 
+    def conversionService = new DefaultConversionService()
+
     def "Plus command evaluation for #params wit result #expected"() {
         when:
-        def actual = new PlusCommand().execute(*params)
+        def actual = new PlusCommand(conversionService).execute(*params)
         then:
         expected == actual
         where:
@@ -25,7 +28,7 @@ class PlusCommandTest extends Specification {
     @Unroll
     def "Test wrong number of params for PlusCommand"() {
         when:
-        new PlusCommand().execute([1])
+        new PlusCommand(conversionService).execute([1])
 
         then:
         Exception exception = thrown()

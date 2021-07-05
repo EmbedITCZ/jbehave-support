@@ -1,15 +1,18 @@
 package org.jbehavesupport.core.expression.numeric
 
 import org.jbehavesupport.core.internal.expression.numeric.MultiplyCommand
+import org.springframework.core.convert.support.DefaultConversionService
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
 class MultiplyCommandTest extends Specification {
 
+    def conversionService = new DefaultConversionService()
+
     def "Multiply command evaluation for #params wit result #expected"() {
         when:
-        def actual = new MultiplyCommand().execute(*params)
+        def actual = new MultiplyCommand(conversionService).execute(*params)
         then:
         expected == actual
         where:
@@ -25,7 +28,7 @@ class MultiplyCommandTest extends Specification {
     @Unroll
     def "Test wrong number of params for MultiplyCommand"() {
         when:
-        new MultiplyCommand().execute([1])
+        new MultiplyCommand(conversionService).execute([1])
 
         then:
         Exception exception = thrown()

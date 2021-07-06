@@ -5,23 +5,23 @@ import net.schmizz.sshj.transport.verification.PromiscuousVerifier
 import org.jbehavesupport.core.TestConfig
 import org.jbehavesupport.core.TestContext
 import org.jbehavesupport.test.support.SshContainer
-import org.junit.Rule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.test.context.ContextConfiguration
-import org.testcontainers.spock.Testcontainers
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import spock.lang.Shared
 import spock.lang.Specification
 
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-@Testcontainers
 @ContextConfiguration(classes = TestConfig)
 class SshStepsIT extends Specification {
 
-    @Rule
-    SshContainer sshContainer = SshContainer.instance
+    @Shared
+    static SshContainer sshContainer = new SshContainer()
 
     @Autowired
     SshSteps sshSteps
@@ -31,6 +31,19 @@ class SshStepsIT extends Specification {
 
     @Autowired
     Environment environment
+
+    @DynamicPropertySource
+    static void sshProperties(DynamicPropertyRegistry registry) {
+        sshContainer.updateDynamicPropertyRegistry(registry)
+    }
+
+    def setupSpec() {
+        sshContainer.start()
+    }
+
+    def cleanupSpec() {
+        sshContainer.stop()
+    }
 
     def "test soft assertions in logContainsData"() {
         given:

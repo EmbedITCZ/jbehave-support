@@ -22,6 +22,7 @@ web:
 numeric:
   scale: 5
 
+# most of ssh setting values are generated dynamically in SshContainer class
 ssh:
   hostname: localhost
   port: 2000

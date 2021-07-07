@@ -76,7 +76,7 @@
         <version.moxy>2.7.7</version.moxy>
         <version.splunk>1.6.5.0</version.splunk>
 
-        <plugin.version.jetty-maven-plugin>9.4.34.v20201102</plugin.version.jetty-maven-plugin>
+        <plugin.version.jetty-maven-plugin>11.0.6</plugin.version.jetty-maven-plugin>
         <plugin.version.gmavenplus-plugin>1.12.1</plugin.version.gmavenplus-plugin>
         <plugin.version.maven-release-plugin>2.5.3</plugin.version.maven-release-plugin>
         <plugin.version.nexus-staging-maven-plugin>1.6.8</plugin.version.nexus-staging-maven-plugin>

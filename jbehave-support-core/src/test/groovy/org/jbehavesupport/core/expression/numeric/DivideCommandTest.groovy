@@ -1,15 +1,18 @@
 package org.jbehavesupport.core.expression.numeric
 
 import org.jbehavesupport.core.internal.expression.numeric.DivideCommand
+import org.springframework.core.convert.support.DefaultConversionService
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
 class DivideCommandTest extends Specification {
 
+    def conversionService = new DefaultConversionService()
+
     def "Divide command evaluation for #params wit result #expected"() {
         when:
-        def actual = new DivideCommand().execute(*params)
+        def actual = new DivideCommand(conversionService).execute(*params)
         then:
         expected == actual
         where:
@@ -27,7 +30,7 @@ class DivideCommandTest extends Specification {
     @Unroll
     def "Test wrong number of params for DivideCommand"() {
         when:
-        new DivideCommand().execute([1])
+        new DivideCommand(conversionService).execute([1])
 
         then:
         Exception exception = thrown()
@@ -38,7 +41,7 @@ class DivideCommandTest extends Specification {
     @Unroll
     def "Test dividing by zero"() {
         when:
-        new DivideCommand().execute([1, 0, 1].toArray())
+        new DivideCommand(conversionService).execute([1, 0, 1].toArray())
 
         then:
         Exception exception = thrown()

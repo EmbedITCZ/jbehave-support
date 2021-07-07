@@ -4,7 +4,10 @@ import static org.jbehavesupport.core.internal.expression.CommandHelper.checkNum
 import static org.springframework.util.Assert.isTrue;
 import java.math.BigDecimal;
 import java.util.Arrays;
+
+import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.expression.ExpressionCommand;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,14 +15,17 @@ import org.springframework.stereotype.Component;
  * Parameters must be numbers or numeric string.
  */
 @Component
+@RequiredArgsConstructor
 public class PlusCommand implements ExpressionCommand {
+
+    private final ConversionService conversionService;
 
     @Override
     public Object execute(Object... params) {
         isTrue(params.length >= 2, "At least two parameters were expected");
         checkNumericParams(params);
         return Arrays.stream(params)
-            .map(i -> new BigDecimal(i.toString()))
+            .map(i -> conversionService.convert(i, BigDecimal.class))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

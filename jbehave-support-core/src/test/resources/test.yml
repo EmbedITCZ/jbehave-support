@@ -29,7 +29,7 @@ ssh:
   logPath: app.log
   timestampFormat: yyyy-MM-dd HH:mm:ss,SSS
   credentials:
-    user: sa
+    user: root
     password: sa
     keyPath: 'classpath:/ssh/key'
 

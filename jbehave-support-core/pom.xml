@@ -235,11 +235,6 @@
             <artifactId>jbehave-junit-support</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
         </dependency>
@@ -338,6 +333,7 @@
             <artifactId>spock-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Spock depends on JUnit 5, so we need to supply vintage for JUnit4 tests to run -->
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>

@@ -73,6 +73,7 @@ update person set first_name = 'John' where first_name = 'James'
 
 !-- Set Ssh reporter mode to full and check something in logs
 Given ssh reporter mode is set to [FULL]
+And ssh test data are filled
 
 Then the following data are present in [TEST] log:
 | header     |

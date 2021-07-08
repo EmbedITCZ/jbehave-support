@@ -7,29 +7,17 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jbehave.core.model.ExamplesTable;
-import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
-import org.jbehavesupport.core.internal.FileNameResolver;
-import org.jbehavesupport.core.report.extension.SplunkXmlReporterExtension;
 import org.jbehavesupport.core.splunk.OneShotSearchSplunkClient;
 import org.jbehavesupport.core.jms.JmsJaxbHandler;
 import org.jbehavesupport.core.report.XmlReporterFactory;
-import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.JmsXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.ScreenshotReporterExtension;
-import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.SqlXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.TestContextXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.WsXmlReporterExtension;
 import org.jbehavesupport.core.rest.RestServiceHandler;
 import org.jbehavesupport.core.rest.RestTemplateConfigurer;
 import org.jbehavesupport.core.splunk.SplunkClient;
 import org.jbehavesupport.core.splunk.SplunkConfig;
 import org.jbehavesupport.core.ssh.RollingLogResolver;
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
-import org.jbehavesupport.core.ssh.SshHandler;
 import org.jbehavesupport.core.ssh.SshLog;
 import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
@@ -42,7 +30,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -107,51 +94,6 @@ public class TestConfig {
     @Bean
     public XmlReporterFactory xmlReporterFactory() {
         return new XmlReporterFactory();
-    }
-
-    @Bean
-    public WsXmlReporterExtension wsXmlReporterExtension() {
-        return new WsXmlReporterExtension();
-    }
-
-    @Bean
-    public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext, FileNameResolver fileNameResolver) {
-        return new RestXmlReporterExtension(testContext, fileNameResolver);
-    }
-
-    @Bean
-    public JmsXmlReporterExtension jmsXmlReporterExtension() {
-        return new JmsXmlReporterExtension();
-    }
-
-    @Bean
-    public EnvironmentInfoXmlReporterExtension environmentInfoXmlReporterExtension() {
-        return new EnvironmentInfoXmlReporterExtension(env);
-    }
-
-    @Bean
-    public TestContextXmlReporterExtension testContextXmlReporterExtension(TestContext testContext) {
-        return new TestContextXmlReporterExtension(testContext);
-    }
-
-    @Bean
-    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, SshHandler sshHandler, TestContext testContext, FileNameResolver fileNameResolver) {
-        return new ServerLogXmlReporterExtension(testContext, fileNameResolver, sshHandler, beanFactory);
-    }
-
-    @Bean
-    public SqlXmlReporterExtension sqlXmlReporterExtension() {
-        return new SqlXmlReporterExtension();
-    }
-
-    @Bean
-    public ScreenshotReporterExtension screenshotReporterExtension(TestContext testContext) {
-        return new ScreenshotReporterExtension(testContext);
-    }
-
-    @Bean
-    public SplunkXmlReporterExtension splunkXmlReporterExtension(){
-        return new SplunkXmlReporterExtension();
     }
 
     @Bean

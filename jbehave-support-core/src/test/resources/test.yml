@@ -22,15 +22,16 @@ web:
 numeric:
   scale: 5
 
+# most of ssh setting values are generated dynamically in SshContainer class
 ssh:
   hostname: localhost
   port: 2000
   logPath: app.log
   timestampFormat: yyyy-MM-dd HH:mm:ss,SSS
   credentials:
-    user: sa
+    user: root
     password: sa
-    keyPath: 'classpath:/ssh/privateKey.pem'
+    keyPath: 'classpath:/ssh/key'
 
 jms:
   brokerUrl: vm://localhost?broker.persistent=false

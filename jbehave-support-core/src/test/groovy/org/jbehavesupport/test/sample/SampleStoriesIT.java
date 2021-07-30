@@ -1,15 +1,30 @@
 package org.jbehavesupport.test.sample;
 
+import org.jbehavesupport.core.AbstractSpringStories;
+import org.jbehavesupport.test.support.SshContainer;
+import org.jbehavesupport.test.support.TestConfig;
+import org.junit.ClassRule;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.jbehavesupport.core.AbstractSpringStories;
-import org.jbehavesupport.test.support.TestConfig;
-
-import org.springframework.test.context.ContextConfiguration;
-
+// spring junit4 runner needed for testcontainer lifecycle by classrule to work
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class SampleStoriesIT extends AbstractSpringStories {
+
+    @ClassRule
+    public static SshContainer sshContainer = new SshContainer();
+
+    @DynamicPropertySource
+    static void sshProperties(DynamicPropertyRegistry registry) {
+        sshContainer.updateDynamicPropertyRegistry(registry);
+    }
 
     @Override
     protected List<String> storyPaths() {

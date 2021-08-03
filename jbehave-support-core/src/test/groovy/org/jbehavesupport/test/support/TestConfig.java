@@ -2,6 +2,7 @@ package org.jbehavesupport.test.support;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonMap;
+import static java.util.Objects.nonNull;
 import static org.jbehavesupport.core.ssh.SshSetting.builder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;

@@ -1,5 +1,3 @@
-
-
 spring:
   datasource:
     port: 11112
@@ -11,8 +9,6 @@ spring:
     user:
       name: sa
       password: sa
-  webservices:
-      path: /ws
 
 server:
   port: 11110

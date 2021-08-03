@@ -321,11 +321,6 @@
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.moxy</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.splunk</groupId>
-            <artifactId>splunk</artifactId>
-            <optional>true</optional>
-        </dependency>
 
         <!-- test support packages -->
         <dependency>

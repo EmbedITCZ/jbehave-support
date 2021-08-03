@@ -138,14 +138,6 @@
         </pluginManagement>
     </build>
 
-    <repositories>
-        <repository>
-            <id>splunk-artifactory</id>
-            <name>Splunk Releases</name>
-            <url>https://splunk.jfrog.io/splunk/ext-releases-local</url>
-        </repository>
-    </repositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -213,11 +205,6 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>org.eclipse.persistence.moxy</artifactId>
                 <version>${version.moxy}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.splunk</groupId>
-                <artifactId>splunk</artifactId>
-                <version>${version.splunk}</version>
             </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>

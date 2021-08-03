@@ -17,9 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.jbehavesupport.core.internal.splunk.SplunkSearchContext;
-import org.jbehavesupport.core.report.extension.SplunkXmlReporterExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -56,8 +53,6 @@ public class OneShotSearchSplunkClient implements SplunkClient {
     @NonNull
     private final SplunkConfig config;
     private Service service;
-    @Autowired(required = false)
-    private SplunkXmlReporterExtension splunkXmlReporterExtension;
 
     /**
      * {@inheritDoc}
@@ -66,7 +61,7 @@ public class OneShotSearchSplunkClient implements SplunkClient {
     public List<SplunkSearchResultEntry> search(String query, String earliestTime, String latestTime, SplunkOutputModes splunkOutputMode) {
         validateTimes(earliestTime, latestTime);
         try {
-            List<SplunkSearchResultEntry> searchResults = processSearchResult(getSplunkService().oneshotSearch(
+            return processSearchResult(getSplunkService().oneshotSearch(
                 query,
                 toArgs(
                     Arrays.asList(
@@ -76,10 +71,6 @@ public class OneShotSearchSplunkClient implements SplunkClient {
                     )
                 )
             ), splunkOutputMode);
-            if (splunkXmlReporterExtension != null){
-                splunkXmlReporterExtension.addSplunkSearchContext(new SplunkSearchContext(searchResults, query));
-            }
-            return searchResults;
         } catch (IOException e) {
             throw new IllegalArgumentException("Splunk search failed", e);
         }

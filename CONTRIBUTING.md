@@ -32,12 +32,8 @@ Please keep the coding style uniform. (In IntelliJ IDEA select the text You want
 For the documentation, we use .md files stored in `jbehave-support-core/docs` and public APIs are documented with JavaDoc. Sometimes, it is best to just show examples, as is the case with sample stories.
 
 ## Building the project with Maven
-To build this project use the standard `mvn clean install`. We have 3 building profiles:
-1. development
-    * Build for contributors;
-2. integration-test
-    * Build for integration tests; Builds the app with all tests and runs them against test application backend (launched as part of the profile). [Learn more](docs/IntegrationTest.md)
-3. release
+To build this project use the standard `mvn clean install`. We have only one specific building profile:
+1. release
     * Used for new version releases
     
 ## Bug reporting

@@ -26,7 +26,6 @@ Application also expose webservice endpoint for webservice testing. Endpoint url
 ## run test application locally
 You can run test application locally:
 - from intellij
-    - check maven profile development
     - run class org.jbehavesupport.core.test.app.JbehaveSupportCoreTestApplication
 - from command line
     - cd jbehave-support/jbehave-support-core-test/jbehave-support-core-test-app

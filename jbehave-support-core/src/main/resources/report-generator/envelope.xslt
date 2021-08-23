@@ -140,17 +140,6 @@
                                 </a>
                             </li>
                         </xsl:if>
-                        <xsl:if test="splunk">
-                            <li class="nav-item">
-                                <a class="nav-link">
-                                    <xsl:attribute name="href">
-                                        <xsl:value-of select="concat('#splunk-queries',$storyIndex)"/>
-                                    </xsl:attribute>
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                    Splunk queries
-                                </a>
-                            </li>
-                        </xsl:if>
                     </ul>
                 </nav>
 
@@ -203,9 +192,6 @@
                         <xsl:with-param name="storyIndex" select="$storyIndex"/>
                     </xsl:call-template>
                     <xsl:call-template name="serverLog">
-                        <xsl:with-param name="storyIndex" select="$storyIndex"/>
-                    </xsl:call-template>
-                    <xsl:call-template name="splunk">
                         <xsl:with-param name="storyIndex" select="$storyIndex"/>
                     </xsl:call-template>
                 </main>

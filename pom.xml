@@ -75,7 +75,6 @@
         <version.commons-collections4>4.4</version.commons-collections4>
         <version.moxy>2.7.7</version.moxy>
         <version.testcontainers>1.15.3</version.testcontainers>
-        <version.splunk>1.6.5.0</version.splunk>
 
         <plugin.version.gmavenplus-plugin>1.12.1</plugin.version.gmavenplus-plugin>
         <plugin.version.maven-release-plugin>2.5.3</plugin.version.maven-release-plugin>
@@ -136,14 +135,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <repositories>
-        <repository>
-            <id>splunk-artifactory</id>
-            <name>Splunk Releases</name>
-            <url>https://splunk.jfrog.io/splunk/ext-releases-local</url>
-        </repository>
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -212,11 +203,6 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>org.eclipse.persistence.moxy</artifactId>
                 <version>${version.moxy}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.splunk</groupId>
-                <artifactId>splunk</artifactId>
-                <version>${version.splunk}</version>
             </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>

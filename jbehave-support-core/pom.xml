@@ -181,13 +181,6 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <configuration>
                             <additionalparam>-Xdoclint:none</additionalparam>
-                            <additionnalDependencies>
-                                <additionalDependency>
-                                    <groupId>jakarta.interceptor</groupId>
-                                    <artifactId>jakarta.interceptor-api</artifactId>
-                                    <version>1.2.5</version>
-                                </additionalDependency>
-                            </additionnalDependencies>
                         </configuration>
                     </plugin>
                 </plugins>

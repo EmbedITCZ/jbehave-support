@@ -75,6 +75,8 @@
         <version.commons-collections4>4.4</version.commons-collections4>
         <version.moxy>2.7.7</version.moxy>
         <version.testcontainers>1.16.0</version.testcontainers>
+        <!-- remove once boot parent gets to the same or newer version -->
+        <lombok.version>1.18.22</lombok.version>
 
         <plugin.version.gmavenplus-plugin>1.12.1</plugin.version.gmavenplus-plugin>
         <plugin.version.maven-release-plugin>2.5.3</plugin.version.maven-release-plugin>

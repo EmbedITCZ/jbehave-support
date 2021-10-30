@@ -39,8 +39,7 @@ public class RestTemplateConfigurer {
     public final RestTemplateConfigurer header(Supplier<Map<String, String>> headerProvider) {
         ClientHttpRequestInterceptor headerInterceptor = (request, body, execution) -> {
             headerProvider.get()
-                .entrySet()
-                .forEach(header -> request.getHeaders().add(header.getKey(), header.getValue()));
+                .forEach((key, value) -> request.getHeaders().add(key, value));
             return execution.execute(request, body);
         };
         return interceptor(headerInterceptor);

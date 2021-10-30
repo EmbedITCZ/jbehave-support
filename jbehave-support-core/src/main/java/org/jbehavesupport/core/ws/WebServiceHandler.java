@@ -267,16 +267,18 @@ public abstract class WebServiceHandler {
     /**
      * Custom initialization of {@link RequestFactory}.
      * <p>
-     * e.g change default bean access strategy to field access strategy;
+     * e.g. change default bean access strategy to field access strategy;
      * <pre>{@code
      *      requestFactory.withFieldAccessStrategy();
      * }</pre>
+     * </p>
      * <p>
      * or you can register custom handler for request modification
      * <pre>{@code
      *      requestFactory
      *          .handler...
      * }</pre>
+     * </p>
      *
      * @param requestFactory
      */

@@ -80,6 +80,8 @@ import static org.springframework.util.Assert.state;
  *     }
  *
  * }
+ * </pre>
+ * </p>
  */
 @Slf4j
 public class RestServiceHandler {
@@ -386,9 +388,9 @@ public class RestServiceHandler {
             Matcher matcher = indexedKeyPattern3.matcher(key);
             if (matcher.matches()) {
                 String k1 = matcher.group(1);
-                List list;
+                List<Object> list;
                 if (requestMap.containsKey(k1)) {
-                    list = (List) requestMap.get(k1);
+                    list = (List<Object>) requestMap.get(k1);
                 } else {
                     list = new ArrayList<>();
                 }

@@ -27,6 +27,9 @@ and in [EscapingInContext story](../src/test/groovy/org/jbehavesupport/test/samp
 For some verification steps it's possible to use verifiers such as:  
 `EQ` - equals - default when no operator is specified  
 `NE` - not equals  
+`MATH_EQ` - 'mathematical' equality - first converts the strings to numbers, and then compares them. 
+For example, the following would resolve as true: `1.2E3` MATH_EQ `1200`.
+Uses Double.valueOf(String s) for conversion, so consult Oracle documentation if uncertain about behaviour.  
 `LT` - lower than  
 `LE` - lower than or equal to  
 `GT` - greater than  

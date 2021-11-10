@@ -28,13 +28,13 @@ class EqualsVerifierTest extends Specification {
         true
 
         where:
-        actual                     | expected
-        ""                         | ""
-        null                       | null
-        "tst"                      | "tst"
-        LocalDate.of(2002, 7, 14)  | LocalDate.of(2002, 7, 14)
-        12                         | 12
-        [1,2,3,4] as int[]         | [1,2,3,4] as int[]
+        actual                    | expected
+        ""                        | ""
+        null                      | null
+        "tst"                     | "tst"
+        LocalDate.of(2002, 7, 14) | LocalDate.of(2002, 7, 14)
+        12                        | 12
+        [1, 2, 3, 4] as int[]     | [1, 2, 3, 4] as int[]
     }
 
     @Unroll
@@ -47,12 +47,13 @@ class EqualsVerifierTest extends Specification {
         exception.getMessage().contains(message)
 
         where:
-        actual                     | expected                   || message
-        LocalDate.of(2002, 7, 15)  | LocalDate.of(2002, 7, 14)  || "value '2002-07-15' is not equal to '2002-07-14'"
-        7                          | 9                          || "value '7' is not equal to '9'"
-        "me"                       | "you"                      || "value 'me' is not equal to 'you'"
-        null                       | "we"                       || "Actual value must be provided"
-        "they"                     | null                       || "value 'they' is not equal to 'null'"
-        [1,2,3,4] as int[]         | [4,3,2,1] as int[]         || "is not equal to"
+        actual                    | expected                  || message
+        LocalDate.of(2002, 7, 15) | LocalDate.of(2002, 7, 14) || "value '2002-07-15' is not equal to '2002-07-14'"
+        7                         | 9                         || "value '7' is not equal to '9'"
+        "1.2E3"                   | 1200                      || "value '1.2E3' is not equal to '1200'"
+        "me"                      | "you"                     || "value 'me' is not equal to 'you'"
+        null                      | "we"                      || "Actual value must be provided"
+        "they"                    | null                      || "value 'they' is not equal to 'null'"
+        [1, 2, 3, 4] as int[]     | [4, 3, 2, 1] as int[]     || "is not equal to"
     }
 }

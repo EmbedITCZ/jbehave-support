@@ -13,6 +13,7 @@ public class VerifierNames {
     public static final String REGEX_MATCH = "REGEX_MATCH";
     public static final String REGEX_FIND = "REGEX_FIND";
 
+    public static final String MATH_EQ = "MATH_EQ";
     public static final String GT = "GT";
     public static final String GE = "GE";
     public static final String LT = "LT";

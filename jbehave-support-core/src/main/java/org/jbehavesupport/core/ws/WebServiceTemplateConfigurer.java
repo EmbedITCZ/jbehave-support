@@ -119,7 +119,7 @@ public class WebServiceTemplateConfigurer {
             super.afterPropertiesSet();
         }
 
-        private String credential() throws IOException {
+        private String credential() {
             StringBuilder sb = new StringBuilder();
             sb.append(getUsername());
             sb.append(':');

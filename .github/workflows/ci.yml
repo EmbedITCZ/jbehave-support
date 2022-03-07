@@ -13,7 +13,7 @@ jobs:
       matrix:
         java: [ 8, 17 ]
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - uses: actions/cache@v2.1.7
         with:
           path: ~/.m2/repository
@@ -36,7 +36,7 @@ jobs:
       matrix:
         java: [ 8, 17 ]
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - uses: actions/cache@v2.1.7
         with:
           path: ~/.m2/repository
@@ -66,7 +66,7 @@ jobs:
       matrix:
         java: [ 8, 17 ]
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - uses: actions/cache@v2.1.7
         with:
           path: ~/.m2/repository
@@ -106,7 +106,7 @@ jobs:
     needs: [ build, test, system-test ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Download result for test execution
         uses: actions/download-artifact@v2
         with:

@@ -86,6 +86,51 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                            <workingDirectory>${project.basedir}/../jbehave-support-core-test/jbehave-support-core-test-app</workingDirectory>
+                            <addOutputToClasspath>false</addOutputToClasspath>
+<!--                            <quietLogs>true</quietLogs>-->
+<!--                            <useMavenLogger>true</useMavenLogger>-->
+
+                            <executable>mvn</executable>
+                            <arguments>
+                                <argument>package</argument>
+                                <argument>spring-boot:start</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                            <workingDirectory>${project.basedir}/../jbehave-support-core-test/jbehave-support-core-test-app</workingDirectory>
+                            <addOutputToClasspath>false</addOutputToClasspath>
+<!--                            <quietLogs>true</quietLogs>-->
+<!--                            <useMavenLogger>true</useMavenLogger>-->
+
+                            <executable>mvn</executable>
+                            <arguments>
+                                <argument>spring-boot:stop</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

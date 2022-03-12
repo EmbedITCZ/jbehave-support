@@ -84,6 +84,7 @@
         <plugin.version.maven-gpg-plugin>3.0.1</plugin.version.maven-gpg-plugin>
         <plugin.version.sonar-maven-plugin>3.9.1.2184</plugin.version.sonar-maven-plugin>
         <plugin.version.sonar-jacoco-plugin>3.3.2</plugin.version.sonar-jacoco-plugin>
+        <plugin.version.exec-maven-plugin>3.0.0</plugin.version.exec-maven-plugin>
     </properties>
 
     <modules>
@@ -94,6 +95,11 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${plugin.version.exec-maven-plugin}</version>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.gmavenplus</groupId>
                     <artifactId>gmavenplus-plugin</artifactId>

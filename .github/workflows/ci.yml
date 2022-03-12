@@ -78,15 +78,9 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
-      - name: Start test app with Java ${{ matrix.java }}
-        run: |
-          mvn -f jbehave-support-core-test/jbehave-support-core-test-app/pom.xml package spring-boot:start
       - name: System test with Java ${{ matrix.java }}
         run: |
           xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -D--add-opens -Djava.base/java.lang=ALL-UNNAMED -B -V
-      - name: Stop test app with Java ${{ matrix.java }}
-        if: always()
-        run: mvn -f jbehave-support-core-test/jbehave-support-core-test-app/pom.xml spring-boot:stop
       - name: Upload reports on Java ${{ matrix.java }}
         uses: actions/upload-artifact@v3
         if: always()

@@ -22,10 +22,10 @@ and in [EscapingInContext story](../src/test/groovy/org/jbehavesupport/test/samp
 
 ## Verification
 
-### Comparison operators
+### Comparison verifiers
 
 For some verification steps it's possible to use verifiers such as:  
-`EQ` - equals - default when no operator is specified  
+`EQ` - equals - default when no verifier is specified  
 `NE` - not equals  
 `MATH_EQ` - 'mathematical' equality - first converts the strings to numbers, and then compares them. 
 For example, the following would resolve as true: `1.2E3` MATH_EQ `1200`.
@@ -44,7 +44,7 @@ Uses Double.valueOf(String s) for conversion, so consult Oracle documentation if
 `REGEX_MATCH` - Matches String using regular expression - matches whole string  
 `REGEX_FIND` - Check if regular expression matches any part of given value - matches data on one line
 
-The following sample step compares data from a ClientResponse from MYAPP against values in test context using operators.
+The following sample step compares data from a ClientResponse from MYAPP against values in test context using verifiers.
 
 ```
 Then [ClientResponse] values from [MYAPP] match:

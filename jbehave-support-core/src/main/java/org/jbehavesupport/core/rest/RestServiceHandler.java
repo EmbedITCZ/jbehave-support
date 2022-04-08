@@ -57,7 +57,6 @@ import static org.jbehavesupport.core.internal.ExampleTableConstraints.ALIAS;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
-import static org.jbehavesupport.core.internal.ExampleTableConstraints.OPERATOR;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.assertDuplicatesInColumns;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.getValue;
@@ -440,8 +439,7 @@ public class RestServiceHandler {
     }
 
     private void verifyResponseHeaders(HttpHeaders actualHeaders, ExamplesTable data, String actualResponseMessage) {
-        String usedOperator = data.getHeaders().contains(VERIFIER) ? VERIFIER : OPERATOR;
-        List<Triple<String, Object, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, usedOperator);
+        List<Triple<String, Object, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, VERIFIER);
         for (Triple<String, Object, String> triple : expectedData) {
             String key = triple.getLeft();
             if (key.startsWith(HEADER_START) && !key.equals(STATUS_HEADER)) {
@@ -456,9 +454,8 @@ public class RestServiceHandler {
     }
 
     private void verifyResponseJson(String response, ExamplesTable expectedDataTable, String actualResponseMessage) {
-        String usedOperator = expectedDataTable.getHeaders().contains(VERIFIER) ? VERIFIER : OPERATOR;
         List<Triple<String, Object, String>> expectedData =
-            ExamplesTableUtil.convertTriple(expectedDataTable, NAME, EXPECTED_VALUE, usedOperator)
+            ExamplesTableUtil.convertTriple(expectedDataTable, NAME, EXPECTED_VALUE, VERIFIER)
                 .stream()
                 .filter(i -> !i.getLeft().startsWith(HEADER_START))
                 .collect(Collectors.toList());

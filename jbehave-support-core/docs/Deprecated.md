@@ -4,13 +4,7 @@
 
 ### To be removed - do not use
 
-
 ### To be rewritten - do not use
-
-_WebTableSteps_
->Deprecated since 1.1.0 - won't be removed but adjusted
->
->Those steps will be rewritten in future
 
 ### Already removed
 
@@ -197,5 +191,11 @@ Step _Then the following data are not present in [$systemQualifier] log:$missing
 >| missing string | NOT_CONTAINS |
 >
 >```
+---
+
+_WebTableSteps_
+>Deprecated since 1.1.0 - old version was archived to [separate repository](https://github.com/EmbedITCZ/jbehave-support-web-tables)
+>
+>Current steps were rewritten/simplified to support only simple HTML tables.
 
 --- 

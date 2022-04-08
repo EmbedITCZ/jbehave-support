@@ -219,21 +219,6 @@ public final class WebSteps {
         applicationEventPublisher.publishEvent(new WebScreenshotEvent(this, WAIT));
     }
 
-    /**
-     * @deprecated(since = "1.0.7", forRemoval = true) because it's not opening new tab, only focus tab opened by another action
-     *  getLastOpenedWindowHandler() may not work correctly on all browsers (https://developer.mozilla.org/en-US/docs/Web/WebDriver/Commands/GetWindowHandles)
-     *  findTabWithUrlOrTitle() should be used instead
-     */
-    @Deprecated
-    @Then("new tab is opened and focused")
-    public void switchToNewTab() {
-        assertThat(driver.getWindowHandles().size())
-            .as("last tab remains, new was not opened")
-            .isGreaterThan(0);
-        driver.switchTo().window(getLastOpenedWindowHandler());
-        applicationEventPublisher.publishEvent(new WebScreenshotEvent(this, STEP));
-    }
-
     @Given("open and focus new tab")
     @Then("open and focus new tab")
     public void openAndFocusNewTab() {
@@ -344,13 +329,11 @@ public final class WebSteps {
     }
 
     private String resolveVerifierName(Map<String, String> row) {
-        String operator = VerifierNames.EQ;
-        if (row.containsKey(ExampleTableConstraints.OPERATOR) && !row.get(ExampleTableConstraints.OPERATOR).isEmpty()) {
-            operator = row.get(ExampleTableConstraints.OPERATOR);
-        } else if (row.containsKey(ExampleTableConstraints.VERIFIER) && !row.get(ExampleTableConstraints.VERIFIER).isEmpty()) {
-            operator = row.get(ExampleTableConstraints.VERIFIER);
+        String verifier = VerifierNames.EQ;
+        if (row.containsKey(ExampleTableConstraints.VERIFIER) && !row.get(ExampleTableConstraints.VERIFIER).isEmpty()) {
+            verifier = row.get(ExampleTableConstraints.VERIFIER);
         }
-        return operator;
+        return verifier;
     }
 
     private String resolveHomePageUrl(String application) {

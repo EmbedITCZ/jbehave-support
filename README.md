@@ -19,8 +19,8 @@ along with support for [verification](jbehave-support-core/docs/General.md#verif
 [expression commands](jbehave-support-core/docs/Expression-commands.md) and 
 basic [reporting](jbehave-support-core/docs/Reporting.md).
 
-Currently supported Java versions are 8, 17 (latest LTS) and 18 (latest version).  
-Java 17+ support is limited due to JEP 396 and incompatibilities in some of our dependencies. When running on Java 17+ please use `--add-opens java.base/java.lang=ALL-UNNAMED`
+Currently supported Java versions are 17 (latest LTS and latest version).  
+Java 17 support is limited due to JEP 396 and incompatibilities in some of our dependencies. When running on Java 17 please use `--add-opens java.base/java.lang=ALL-UNNAMED`
 to bypass the newly introduced restrictions in the meantime.
 
 ## Contents

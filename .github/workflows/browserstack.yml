@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8 ]
+        java: [ 17 ]
         browser: [ Chrome, Firefox, Safari ]
     steps:
       - uses: actions/checkout@v3

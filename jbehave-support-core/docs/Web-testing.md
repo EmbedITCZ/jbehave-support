@@ -306,4 +306,10 @@ public void myMethod() {
 
 If you want to see screenshots in report register `ScreenshotReporterExtension`
 * WebScreenshotType has to be `MANUAL` or correspond with chosen mode (see property `web.screenshot.reporting.mode` in [Reporting](Reporting.md)), otherwise screenshot won't be taken 
-TODO: add explanation of table steps
+
+### WEB table steps
+
+For simple verification of HTML table contents please check our following example:
+For more examples see [WebTable.story](../src/test/groovy/org/jbehavesupport/test/sample/WebTable.story)
+
+Note: _We support only simple html tables (no alternative rendering technologies like wicket etc.) and we expect the table to have defined headers (`<th>` tags)._

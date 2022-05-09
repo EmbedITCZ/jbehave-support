@@ -66,7 +66,7 @@
     <properties>
         <version.java.release>1.8</version.java.release>
 
-        <version.jbehave>4.8.3</version.jbehave>
+        <version.jbehave>5.0</version.jbehave>
         <version.jbehave-junit-support>4.8.3</version.jbehave-junit-support>
         <version.spockframework>2.1-groovy-3.0</version.spockframework>
         <version.sshj>0.32.0</version.sshj>

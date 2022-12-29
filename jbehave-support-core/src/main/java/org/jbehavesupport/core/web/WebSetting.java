@@ -37,7 +37,6 @@ import java.util.function.Consumer;
 public class WebSetting {
 
     private String homePageUrl;
-    private WebTableSteps.HtmlRenderer htmlRenderer;
     @Singular
     private List<String> elementLocatorsSources;
     @Builder.Default

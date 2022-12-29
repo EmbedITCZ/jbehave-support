@@ -64,7 +64,7 @@
     </developers>
 
     <properties>
-        <version.java.release>1.8</version.java.release>
+        <java.version>17</java.version>
 
         <version.jbehave>4.8.3</version.jbehave>
         <version.jbehave-junit-support>4.8.3</version.jbehave-junit-support>
@@ -307,7 +307,7 @@
                                 <configuration>
                                     <rules>
                                         <requireJavaVersion>
-                                            <version>${version.java.release}</version>
+                                            <version>${java.version}</version>
                                         </requireJavaVersion>
                                     </rules>
                                 </configuration>

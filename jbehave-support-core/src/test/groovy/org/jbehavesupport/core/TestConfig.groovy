@@ -130,7 +130,7 @@ class TestConfig {
             .build()
 
         RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver()
-        return new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver)
+        return new SshTemplate(passwordSetting, env.getProperty("ssh.timestampFormat"), rollingLogResolver, false)
     }
 
     @Bean

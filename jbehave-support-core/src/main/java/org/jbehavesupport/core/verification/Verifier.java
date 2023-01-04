@@ -6,7 +6,7 @@ package org.jbehavesupport.core.verification;
 public interface Verifier {
 
     /**
-     * Symbolic name of verifier also represented by operator column.
+     * Symbolic name of verifier also represented by verifier column.
      *
      * @return verifier abbreviation
      */

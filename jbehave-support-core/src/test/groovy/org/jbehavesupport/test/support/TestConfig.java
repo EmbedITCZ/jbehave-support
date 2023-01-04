@@ -211,8 +211,8 @@ public class TestConfig {
 
         RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver();
         String timestampFormat = env.getProperty("ssh.timestampFormat");
-        SshTemplate passwordTemplate = new SshTemplate(passwordSetting, timestampFormat, rollingLogResolver);
-        SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver);
+        SshTemplate passwordTemplate = new SshTemplate(passwordSetting, timestampFormat, rollingLogResolver, false);
+        SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver, false);
 
         return new SshTemplate[]{passwordTemplate, keyTemplate};
     }

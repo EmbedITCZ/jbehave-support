@@ -32,8 +32,8 @@ Default behavior can be influenced by several properties:
 
 - `web.timeout` - Sets the timeout for Web Driver operation, defaults to `10` seconds if not set
     - timeout is used for webdriver implicitlyWait, setScriptTimeout, pageLoadTimeout
-- `web.browser` - Sets the browser which will be used, default supported values are `chrome` and `firefox47` (custom values can be optionally used as well, for more info see [custom browser support](#custom-browser-support)).
-Defaults to `chrome` if not set. Firefox support is experimental and should not be used.
+- `web.browser` - Sets the browser which will be used, default supported value is only `chrome` (custom values can be optionally used as well, for more info see [custom browser support](#custom-browser-support)).
+Defaults to `chrome` if not set. 
 - `web.browser.driver.location` - Sets the absolute path to the webdriver on disk, if not set then Web Driver is downloaded from the Internet.
 - `web.browser.driver.version` - Sets the Web Driver version of the browser used, defaults to the latest available version (not used if `web.browser.driver.location` is set, or `firefox47` is used as a browser)
 - `web.browser.driver.port` - Sets the port on which the Web Driver runs, defaults to any free port. (supported only for chrome)
@@ -244,7 +244,7 @@ There are the following element properties available:
 
 I'll leave it to the imagination of the inquiring to figure out what these properties mean.
 
-The step can be used with the optional 'operator' column where it's possible to specify any of the operators from [General info - Verification - Comparison operators](General.md).
+The step can be used with the optional 'verifier' column where it's possible to specify any of the verifiers from [General info - Verification - Comparison verifiers](General.md).
 
 ```
 Then on [home] page these conditions are verified:

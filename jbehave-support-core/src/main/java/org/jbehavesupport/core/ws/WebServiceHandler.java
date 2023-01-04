@@ -431,7 +431,7 @@ public abstract class WebServiceHandler {
 
     private Verifier getVerifier(Parameters parameters) {
         String verifierName = parameters.values().entrySet().stream()
-            .filter(e -> e.getKey().equals(ExampleTableConstraints.OPERATOR) || e.getKey().equals(ExampleTableConstraints.VERIFIER))
+            .filter(e -> e.getKey().equals(ExampleTableConstraints.VERIFIER))
             .map(Map.Entry::getValue)
             .findFirst()
             .orElse(null);

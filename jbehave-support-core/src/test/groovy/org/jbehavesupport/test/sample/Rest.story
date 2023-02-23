@@ -1,3 +1,19 @@
+Scenario: Saving arrays
+
+When [PATCH] request to [TEST]/[init/] is sent
+Then response from [TEST] REST API has status [OK]
+
+When [GET] request to [TEST]/[user/] is sent
+
+When response values from [TEST] REST API are saved:
+| name | contextAlias |
+| $.*  | user         |
+
+Then response from [TEST] REST API has status [OK] and values match:
+| name | expectedValue |
+| [0]  | {CP:user[0]}  |
+| [1]  | {CP:user[1]}  |
+
 Scenario: parameterless GET
 
 When [PATCH] request to [TEST]/[init/] is sent

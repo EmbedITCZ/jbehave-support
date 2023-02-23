@@ -410,20 +410,18 @@ public class RestServiceHandler {
 
     public void saveResponse(ExamplesTable mapping) {
         boolean responsePresent = testContext.get(REST_RESPONSE_JSON) != null;
-        String response = responsePresent ? testContext.get(REST_RESPONSE_JSON).toString() : null;
-        DocumentContext jsonContext = responsePresent ? JsonPath.parse(response) : null;
-        HttpHeaders headers = testContext.get(REST_RESPONSE_HEADERS);
+        var response = responsePresent ? testContext.get(REST_RESPONSE_JSON).toString() : null;
+        var jsonContext = responsePresent ? JsonPath.parse(response) : null;
+        var headers = testContext.<HttpHeaders>get(REST_RESPONSE_HEADERS);
 
         Consumer<Map<String, String>> rowConsumer = row -> {
-            String propertyName = row.get(NAME);
+            var propertyName = row.get(NAME);
             if (!responsePresent) {
                 assertThat(propertyName.startsWith(HEADER_START) || propertyName.startsWith(RAW_BODY_KEY))
                     .as("no such parameter %s found, response body is empty", propertyName)
                     .isTrue();
             }
-            String alias = row.get(ALIAS);
-            Object val = getValueFromJson(propertyName, response, jsonContext, headers);
-            testContext.put(alias, val, MetadataUtil.userDefined());
+            saveValueToTestContext(row.get(ALIAS), getValueFromJson(propertyName, response, jsonContext, headers));
         };
 
         convertCollectionNotation(mapping).getRowsAsParameters()
@@ -563,10 +561,23 @@ public class RestServiceHandler {
 
         String jsonPath = propertyName.startsWith(JSON_PATH_ROOT) ? propertyName : JSON_PATH_ROOT + '.' + propertyName;
         Object propertyValue = jsonContext.read(jsonPath);
-        if (propertyValue instanceof JSONArray && ((JSONArray) propertyValue).size() == 1) {
-            return ((JSONArray) propertyValue).get(0);
+        if (propertyValue instanceof JSONArray jsonArray && jsonArray.size() == 1) {
+            return jsonArray.get(0);
         }
         return propertyValue;
+    }
+
+    private void saveValueToTestContext(String alias, Object val) {
+        if (val instanceof JSONArray jsonArray) {
+            int i = 0;
+
+            for (var item: jsonArray) {
+                testContext.put(alias + "[" + i + "]", item, MetadataUtil.userDefined());
+                i++;
+            }
+        } else {
+            testContext.put(alias, val, MetadataUtil.userDefined());
+        }
     }
 
     /**

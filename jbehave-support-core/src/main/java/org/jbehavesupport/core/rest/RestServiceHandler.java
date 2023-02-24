@@ -571,13 +571,12 @@ public class RestServiceHandler {
         if (val instanceof JSONArray jsonArray) {
             int i = 0;
 
-            for (var item: jsonArray) {
+            for (var item : jsonArray) {
                 testContext.put(alias + "[" + i + "]", item, MetadataUtil.userDefined());
                 i++;
             }
-        } else {
-            testContext.put(alias, val, MetadataUtil.userDefined());
         }
+        testContext.put(alias, val, MetadataUtil.userDefined());
     }
 
     /**

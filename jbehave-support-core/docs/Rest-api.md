@@ -82,6 +82,24 @@ When response values from [TEST] REST API are saved:
 | name | contextAlias |
 | id   | NEW_ID       |
 ```
+> **Saving arrays data from response**
+> 
+> If the response attribute is an array then the value is saved as the whole array and all values are saved separately as well.
+> 
+> **Response**:
+> ```
+> {
+>    "ids": [1, 20, 333]
+> }
+> ```
+> **Save data**:
+> ```
+> When response values from [TEST] REST API are saved:
+> | name | contextAlias |
+> | ids  | NUMBERS      |
+> ```
+> Then ``{CP:NUMBERS}`` will return whole array as value ``[1,20,333]`` 
+> and ``{CP:NUMBERS[2]}`` will return only second item as value ``20``
 
 There are two methods for verification of the response.
 

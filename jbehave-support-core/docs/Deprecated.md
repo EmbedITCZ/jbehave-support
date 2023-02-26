@@ -201,3 +201,9 @@ _WebTableSteps_
 >
 >Current steps were rewritten/simplified to support only simple HTML tables.
 
+---
+
+_JMSSteps_
+>Old version was archived to [separate repository](https://github.com/EmbedITCZ/jbehave-support-jms)
+>
+>Removed altogether.

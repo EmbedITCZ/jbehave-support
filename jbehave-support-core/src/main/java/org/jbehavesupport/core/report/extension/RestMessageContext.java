@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 @Data
 @Builder
@@ -21,7 +21,7 @@ public class RestMessageContext {
     private HttpHeaders requestHeaders;
     private String requestJsonBody;
 
-    private HttpStatus responseStatus;
+    private HttpStatusCode responseStatus;
     private HttpHeaders responseHeaders;
     private String responseJsonBody;
 }

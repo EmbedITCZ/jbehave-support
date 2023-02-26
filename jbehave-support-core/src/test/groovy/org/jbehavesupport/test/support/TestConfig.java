@@ -18,7 +18,6 @@ import javax.sql.DataSource;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jbehave.core.model.ExamplesTable;
@@ -26,10 +25,8 @@ import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.internal.FileNameResolver;
-import org.jbehavesupport.core.jms.JmsJaxbHandler;
 import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.JmsXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.ScreenshotReporterExtension;
 import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
@@ -45,7 +42,6 @@ import org.jbehavesupport.core.ssh.SshLog;
 import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
 import org.jbehavesupport.core.support.YamlPropertySourceFactory;
-import org.jbehavesupport.core.test.app.oxm.NameRequest;
 import org.jbehavesupport.core.web.WebDriverFactory;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
@@ -62,7 +58,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.jms.core.JmsTemplate;
 
 @Configuration
 @ComponentScan
@@ -113,11 +108,6 @@ public class TestConfig {
     @Bean
     public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext, FileNameResolver fileNameResolver) {
         return new RestXmlReporterExtension(testContext, fileNameResolver);
-    }
-
-    @Bean
-    public JmsXmlReporterExtension jmsXmlReporterExtension() {
-        return new JmsXmlReporterExtension();
     }
 
     @Bean
@@ -239,19 +229,6 @@ public class TestConfig {
     @Qualifier("TEST")
     HealthCheck realHealthCheck() {
         return HealthChecks.http(env.getProperty("rest.url") + "user/", "", "");
-    }
-
-    @Bean
-    ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory(env.getProperty("jms.brokerUrl"));
-    }
-
-    @Bean
-    @Qualifier("TEST")
-    public JmsJaxbHandler jmsJaxbHandler() {
-        Class[] classesToBeBound = {NameRequest.class};
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
-        return new JmsJaxbHandler(jmsTemplate, classesToBeBound);
     }
 
     @Bean

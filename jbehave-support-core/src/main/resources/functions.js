@@ -18,10 +18,6 @@ function reportReady() {
         showHideAllInElement('#rest-calls-body');
     });
 
-    $('#expand-all-jms-messages').click(function () {
-            showHideAllInElement('#jms-messages-body');
-    });
-
     $('#expand-all-sql-queries').click(function () {
         showHideAllInElement('#sql-queries-body');
     });

@@ -11,7 +11,6 @@ Core jBehave support.
     - [Web service steps](docs/Web-service.md)
     - [SQL steps](docs/Sql-steps.md)
     - [SSH steps](docs/Ssh.md)
-    - [JMS steps](docs/Jms.md)
     - [Health check steps](docs/Health-checks.md)
 - [Reporting](docs/Reporting.md)
 - [Filtering](docs/Filtering.md)

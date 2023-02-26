@@ -43,7 +43,6 @@ There are several extensions already prepared and ready to use:
  - `ServerLogXmlReporterExtension` (copies server log(s) for each system with configured [SshTemplate](Ssh.md))
  - `FailScreenshotsReporterExtension` (prints out error screenshots from [Web testing](Web-testing.md) - if any were generated)
  - `SqlXmlReporterExtension` (copies SQL statements/results from [SqlSteps](Sql-steps.md))
- - `JmsXmlReporterExtension` (copies [JMS](Jms.md) message headers, prints out the message if it is `javax.jms.TextMessage`)
  - `ScreenshotReporterExtension` (prints out screenshots (except error) from [Web testing](Web-testing.md) - if any were generated)
    - Frequency of screenshot taking can be controlled by property: 'web.screenshot.reporting.mode'
      - MANUAL: screenshots from a manual step only

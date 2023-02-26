@@ -43,7 +43,7 @@ import java.time.ZonedDateTime
 import static org.mockito.Mockito.mock
 import static org.mockito.ArgumentMatchers.any
 
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 import java.util.concurrent.RejectedExecutionException
 
 @Configuration

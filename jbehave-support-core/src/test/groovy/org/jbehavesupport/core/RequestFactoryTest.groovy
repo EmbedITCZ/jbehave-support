@@ -17,8 +17,8 @@ import org.springframework.core.convert.support.DefaultConversionService
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-import javax.activation.DataHandler
-import javax.xml.bind.JAXBElement
+import jakarta.activation.DataHandler
+import jakarta.xml.bind.JAXBElement
 import javax.xml.datatype.DatatypeConstants
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar

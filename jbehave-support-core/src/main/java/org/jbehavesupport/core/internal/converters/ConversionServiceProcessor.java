@@ -1,6 +1,6 @@
 package org.jbehavesupport.core.internal.converters;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.support.ConfigurableConversionService;

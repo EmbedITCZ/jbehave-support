@@ -4,7 +4,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;

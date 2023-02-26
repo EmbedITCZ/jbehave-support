@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 
-import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
 
 import lombok.RequiredArgsConstructor;

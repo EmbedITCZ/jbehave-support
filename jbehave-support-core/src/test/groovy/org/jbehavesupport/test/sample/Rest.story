@@ -1,3 +1,20 @@
+Scenario: Saving arrays
+
+When [PATCH] request to [TEST]/[init/] is sent
+Then response from [TEST] REST API has status [OK]
+
+When [GET] request to [TEST]/[user/] is sent
+
+When response values from [TEST] REST API are saved:
+| name | contextAlias |
+| $.*  | user         |
+
+Then response from [TEST] REST API has status [OK] and values match:
+| name | expectedValue |
+| [0]  | {CP:user[0]}  |
+| [1]  | {CP:user[1]}  |
+| $.*  | {CP:user}     |
+
 Scenario: parameterless GET
 
 When [PATCH] request to [TEST]/[init/] is sent
@@ -303,16 +320,16 @@ Then response from [TEST] REST API has status [OK]
 
 Scenario: test success handlers
 When [POST] request to [TEST]/[mirror/] is sent with data:
-| name             | data        |
-| httpStatus       | CREATED     |
-| payload[0]       | happy       |
+| name       | data    |
+| httpStatus | CREATED |
+| payload[0] | happy   |
 Then response from [TEST] REST API is successful
 
 When [POST] request to [TEST]/[mirror/] is sent with data:
-| name             | data        |
-| httpStatus       | CREATED     |
-| payload[0]       | happy       |
-| payload[1]       | astronaut   |
+| name       | data      |
+| httpStatus | CREATED   |
+| payload[0] | happy     |
+| payload[1] | astronaut |
 Then response from [TEST] REST API is successful and values match:
 | name       | expectedValue |
 | payload[1] | astronaut     |
@@ -359,11 +376,11 @@ When response values from [TEST] REST API are saved:
 
 Scenario: using JSONPath
 When [POST] request to [TEST]/[user/] is sent with data:
-| name                 | data                           | contextAlias |
-| firstName            | Bruno                          |              |
-| lastName             | {RANDOM_STRING:10}             | LAST_NAME    |
+| name      | data               | contextAlias |
+| firstName | Bruno              |              |
+| lastName  | {RANDOM_STRING:10} | LAST_NAME    |
 Then response from [TEST] REST API has status [200] and values match:
-| name                                   | expectedValue    | verifier |
-| $[?(@.firstName=='Bruno')].id          |                  | NOT_NULL |
-| $.firstName                            | Bruno            |          |
-| $[?(@.firstName=='Bruno')].lastName    | {CP:LAST_NAME}   |          |
+| name                                | expectedValue  | verifier |
+| $[?(@.firstName=='Bruno')].id       |                | NOT_NULL |
+| $.firstName                         | Bruno          |          |
+| $[?(@.firstName=='Bruno')].lastName | {CP:LAST_NAME} |          |

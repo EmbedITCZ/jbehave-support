@@ -101,6 +101,7 @@ When response values from [TEST] REST API are saved:
 > Then ``{CP:NUMBERS}`` will return whole array as value ``[1,20,333]`` 
 > and ``{CP:NUMBERS[2]}`` will return only second item as value ``20``
 
+**Verifying data from response**
 There are two methods for verification of the response.
 
 The following step checks the response code of the last REST API call.

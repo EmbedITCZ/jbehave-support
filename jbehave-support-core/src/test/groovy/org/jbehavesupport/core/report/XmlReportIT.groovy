@@ -2,18 +2,14 @@ package org.jbehavesupport.core.report
 
 import groovy.xml.XmlSlurper
 import org.apache.commons.io.FileUtils
-import org.jbehavesupport.core.report.XmlReporterFactory
 import org.jbehavesupport.test.GenericStory
 import org.jbehavesupport.test.support.TestSupport
-import org.junit.runner.JUnitCore
 import org.springframework.test.context.TestContextManager
-import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.file.Files
 
 class XmlReportIT extends Specification implements TestSupport {
-    @Shared runner = new JUnitCore()
 
     def "Test report index generation"() {
         setup:
@@ -24,10 +20,8 @@ class XmlReportIT extends Specification implements TestSupport {
         } else {
             Files.createDirectory(reportDirectory.toPath())
         }
-        def testContextManager = new TestContextManager(GenericStory)
-        testContextManager.prepareTestInstance(runner)
 
-        def xmlReporterFactory = testContextManager.getTestContext()
+        def xmlReporterFactory = new TestContextManager(GenericStory).getTestContext()
             .applicationContext
             .autowireCapableBeanFactory
             .getBean(XmlReporterFactory)
@@ -36,8 +30,8 @@ class XmlReportIT extends Specification implements TestSupport {
         xmlReporterFactory."$reportsDirectoryField" = reportDir
 
         when:
-        def resultSampleContext = runner.run(runWith("report/SampleContext.story"))
-        def resultContext = runner.run(runWith("context/Context.story"))
+        def resultSampleContext = run(runWith("report/SampleContext.story"))
+        def resultContext = run(runWith("context/Context.story"))
 
         xmlReporterFactory.destroy()
         def indexFile = new File("./target/${reportDir}/index.xml")
@@ -45,8 +39,8 @@ class XmlReportIT extends Specification implements TestSupport {
         def reportXsltFile = new File("./target/${reportDir}/report.xslt")
 
         then:
-        resultSampleContext.failureCount == 0
-        resultContext.failureCount == 0
+        resultSampleContext.totalFailureCount == 0
+        resultContext.totalFailureCount == 0
         indexFile.exists()
         indexFile.length() > 0
         indexXsltFile.exists()

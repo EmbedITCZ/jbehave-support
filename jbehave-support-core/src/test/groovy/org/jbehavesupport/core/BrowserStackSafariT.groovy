@@ -1,12 +1,9 @@
 package org.jbehavesupport.core
 
-import org.jbehavesupport.core.TestConfig
 import org.jbehavesupport.test.support.TestSupportBrowserStack
-import org.junit.runner.JUnitCore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Shared
 import spock.lang.Specification
 
 import static org.jbehavesupport.test.support.TestConfig.SAFARI_BROWSERSTACK
@@ -21,9 +18,6 @@ class BrowserStackSafariT extends Specification implements TestSupportBrowserSta
     @Autowired
     private Environment env
 
-    @Shared
-    runner = new JUnitCore()
-
     def setup() {
         System.setProperty("web.browser", SAFARI_BROWSERSTACK)
         System.setProperty("web.url", "http://bs-local.com:11110/")
@@ -33,10 +27,10 @@ class BrowserStackSafariT extends Specification implements TestSupportBrowserSta
     def "Safari test #story"() {
         when:
         System.setProperty("browser-stack.name", "Safari test " + story)
-        def result = runner.run(runWith(story))
+        def result = run(runWith(story))
 
         then:
-        result.failureCount == 0
+        result.totalFailureCount == 0
 
         where:
         story | _

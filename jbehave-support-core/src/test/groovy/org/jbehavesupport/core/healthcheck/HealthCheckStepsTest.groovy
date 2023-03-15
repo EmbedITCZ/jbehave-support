@@ -1,9 +1,8 @@
 package org.jbehavesupport.core.healthcheck
 
-
+import org.assertj.core.error.AssertJMultipleFailuresError
 import org.jbehave.core.model.ExamplesTable
 import org.jbehavesupport.core.TestConfig
-import org.junit.runners.model.MultipleFailureException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -31,7 +30,7 @@ class HealthCheckStepsTest extends Specification {
         ExamplesTable examplesTable = new ExamplesTable(
                 "| component | \n" +
                 "| SICK      |")
-        MultipleFailureException fail = shouldFail(MultipleFailureException.class) {
+        AssertJMultipleFailuresError fail = shouldFail(AssertJMultipleFailuresError.class) {
             healthCheckSteps.checkComponentsAreHealthy(examplesTable)
         }
 

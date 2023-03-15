@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils
 import org.jbehave.core.embedder.MetaFilter
 import org.jbehave.core.model.Story
 import org.jbehavesupport.core.parsers.FilteringStoryParser
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 
 /**

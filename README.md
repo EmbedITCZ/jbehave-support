@@ -10,7 +10,6 @@ Light extension to [JBehave](https://jbehave.org) using Spring framework.
 Provides several base steps for working with 
 [REST](jbehave-support-core/docs/Rest-api.md), 
 [SOAP](jbehave-support-core/docs/Web-service.md), 
-[JMS](jbehave-support-core/docs/Jms.md), 
 [SQL](jbehave-support-core/docs/Sql-steps.md), 
 [SSH](jbehave-support-core/docs/Ssh.md), 
 [(Selenium based) web testing](jbehave-support-core/docs/Web-testing.md), 
@@ -57,7 +56,7 @@ Contributors guide can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 To show you how to set up a project using the jbehave-support library, I am going to make a test that Google searches `EmbedITCZ jbehave-support` and checks the result. To learn more about this example check out [Web-testing.md](jbehave-support-core/docs/Web-testing.md).
 
-Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/examples/Web-service.md), [REST](jbehave-support-core/docs/examples/Rest.md), [JMS](jbehave-support-core/docs/Jms.md)) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
+Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/examples/Web-service.md), [REST](jbehave-support-core/docs/examples/Rest.md) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
 
 ### Add to Java project as a Maven dependency
 

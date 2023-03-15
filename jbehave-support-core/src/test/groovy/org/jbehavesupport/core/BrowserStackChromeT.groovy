@@ -1,11 +1,9 @@
 package org.jbehavesupport.core
 
 import org.jbehavesupport.test.support.TestSupportBrowserStack
-import org.junit.runner.JUnitCore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Shared
 import spock.lang.Specification
 
 import static org.jbehavesupport.test.support.TestConfig.CHROME_BROWSERSTACK
@@ -20,9 +18,6 @@ class BrowserStackChromeT extends Specification implements TestSupportBrowserSta
     @Autowired
     private Environment env
 
-    @Shared
-    runner = new JUnitCore()
-
     def setup() {
         System.setProperty("web.browser", CHROME_BROWSERSTACK)
         System.setProperty("browser-stack.build", getBuildName())
@@ -31,10 +26,10 @@ class BrowserStackChromeT extends Specification implements TestSupportBrowserSta
     def "Chrome test #story"() {
         when:
         System.setProperty("browser-stack.name", "Chrome test " + story)
-        def result = runner.run(runWith(story))
+        def result = run(runWith(story))
 
         then:
-        result.failureCount == 0
+        result.totalFailureCount == 0
 
         where:
         story                             | _

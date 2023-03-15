@@ -7,29 +7,33 @@ import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTa
 import org.jbehavesupport.core.support.RequestFactory
 import org.jbehavesupport.core.test.app.oxm.NameRequest
 import org.jbehavesupport.core.ws.WebServiceSteps
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.support.ConfigurableConversionService
 import org.springframework.core.convert.support.DefaultConversionService
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 import jakarta.activation.DataHandler
 import jakarta.xml.bind.JAXBElement
 import javax.xml.datatype.DatatypeConstants
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeParseException
 import java.util.function.Consumer
 
 import static groovy.test.GroovyAssert.shouldFail
 import static groovy.test.GroovyAssert.shouldFailWithCause
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig)
 class RequestFactoryTest {
 
@@ -45,7 +49,7 @@ class RequestFactoryTest {
     @Autowired
     WebServiceSteps webServiceSteps
 
-    @Before
+    @BeforeEach
     void init() {
         ctx.clear()
     }

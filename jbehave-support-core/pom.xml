@@ -238,10 +238,16 @@
             <artifactId>spock-core</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Spock depends on JUnit 5, so we need to supply vintage for JUnit4 tests to run -->
+        <!-- for our junit 5 standard tests -->
         <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- for launching junit5 tests programmatically - e.g. for running stories out of spock/junit tests -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

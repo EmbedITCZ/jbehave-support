@@ -61,6 +61,11 @@
             <organization>EmbedIT</organization>
             <organizationUrl>https://www.embedit.com</organizationUrl>
         </developer>
+        <developer>
+            <name>Daniel Smrcek</name>
+            <organization>EmbedIT</organization>
+            <organizationUrl>https://www.embedit.com</organizationUrl>
+        </developer>
     </developers>
 
     <properties>

@@ -112,7 +112,7 @@ public class SshTemplate {
     }
 
     private SSHClient getSshClient() throws IOException {
-        if (sshClient == null || !sshClient.isConnected()) {
+        if (sshClient == null || !sshClient.isConnected() || !sshClient.isAuthenticated()) {
             sshClient = new SSHClient();
             sshClient.addHostKeyVerifier(new PromiscuousVerifier());
             sshClient.connect(sshSetting.getHostname(), sshSetting.getPort());

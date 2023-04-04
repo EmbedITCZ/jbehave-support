@@ -1,18 +1,13 @@
 package org.jbehavesupport.core.sql
 
 import org.jbehavesupport.test.support.TestSupport
-import org.junit.runner.JUnitCore
-import spock.lang.Issue
-import spock.lang.Shared
 import spock.lang.Specification
 
 class DifferentDatabaseResultErrorMessage extends Specification implements TestSupport {
-    @Shared
-        runner = new JUnitCore()
 
     def "differentDatabaseResultPresent"() {
         when:
-        def result = runner.run(runWith("sql/DifferentDatabaseResultPresent.story"))
+        def result = run(runWith("sql/DifferentDatabaseResultPresent.story"))
 
         then:
         result.failures.stream().anyMatch({ e -> e.exception.message.contains("Result set does not contain expected data") })
@@ -34,22 +29,22 @@ class DifferentDatabaseResultErrorMessage extends Specification implements TestS
 
     def "differentDatabaseResultMatch"() {
         when:
-        def result = runner.run(runWith("sql/DifferentDatabaseResultMatch.story"))
+        def result = run(runWith("sql/DifferentDatabaseResultMatch.story"))
 
         then:
-        result.getFailureCount() == 1
-        result.getFailures().get(0).getMessage().contains("[row [0], column [AGE]]")
-        result.getFailures().get(0).getMessage().contains("value '31' is not equal to '1'")
-        result.getFailures().get(0).getMessage().contains("[row [0], column [FN]]")
-        result.getFailures().get(0).getMessage().contains("value 'John' is not equal to 'Dummy'")
-        result.getFailures().get(0).getMessage().contains("[row [0], column [LAST_UPDATE]]")
-        result.getFailures().get(0).getMessage().contains("value '2018-06-18' is not equal to '2001-06-18")
-        result.getFailures().get(0).getMessage().contains("[row [0], column [LN]]")
-        result.getFailures().get(0).getMessage().contains("value 'Doe' is not equal to 'Does't'")
-        result.getFailures().get(0).getMessage().contains("[row [2], column [FN]]")
-        result.getFailures().get(0).getMessage().contains("value 'Michael' is not equal to 'null'")
-        result.getFailures().get(0).getMessage().contains("[row [2], column [LN]]")
-        result.getFailures().get(0).getMessage().contains("value 'Doe' is not equal to 'null'")
+        result.getTotalFailureCount() == 1
+        result.getFailures().get(0).exception.getMessage().contains("[row [0], column [AGE]]")
+        result.getFailures().get(0).exception.getMessage().contains("value '31' is not equal to '1'")
+        result.getFailures().get(0).exception.getMessage().contains("[row [0], column [FN]]")
+        result.getFailures().get(0).exception.getMessage().contains("value 'John' is not equal to 'Dummy'")
+        result.getFailures().get(0).exception.getMessage().contains("[row [0], column [LAST_UPDATE]]")
+        result.getFailures().get(0).exception.getMessage().contains("value '2018-06-18' is not equal to '2001-06-18")
+        result.getFailures().get(0).exception.getMessage().contains("[row [0], column [LN]]")
+        result.getFailures().get(0).exception.getMessage().contains("value 'Doe' is not equal to 'Does't'")
+        result.getFailures().get(0).exception.getMessage().contains("[row [2], column [FN]]")
+        result.getFailures().get(0).exception.getMessage().contains("value 'Michael' is not equal to 'null'")
+        result.getFailures().get(0).exception.getMessage().contains("[row [2], column [LN]]")
+        result.getFailures().get(0).exception.getMessage().contains("value 'Doe' is not equal to 'null'")
 
     }
 

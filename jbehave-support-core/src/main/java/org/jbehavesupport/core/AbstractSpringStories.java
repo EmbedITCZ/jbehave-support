@@ -1,21 +1,5 @@
 package org.jbehavesupport.core;
 
-import static java.util.Objects.nonNull;
-import static org.springframework.util.Assert.notNull;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import org.jbehavesupport.core.internal.FullScenarioNameStorer;
-import org.jbehavesupport.core.internal.SuffixRemovingStoryNameResolver;
-import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
-import org.jbehavesupport.core.internal.web.GivenStoryHelper;
-import org.jbehavesupport.core.report.XmlReporterFactory;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbehave.core.configuration.Configuration;
@@ -35,17 +19,32 @@ import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.ParameterControls;
 import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.spring.SpringStepsFactory;
+import org.jbehavesupport.core.internal.FullScenarioNameStorer;
+import org.jbehavesupport.core.internal.SuffixRemovingStoryNameResolver;
+import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
+import org.jbehavesupport.core.internal.web.GivenStoryHelper;
+import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.engine.EmbedderConfiguration;
 import org.jbehavesupport.engine.JUnit5Stories;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
 
-@ContextConfiguration(classes = JBehaveDefaultConfig.class)
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.util.Objects.nonNull;
+import static org.springframework.util.Assert.notNull;
+
+@SpringBootTest(classes = JBehaveDefaultConfig.class)
 public abstract class AbstractSpringStories extends JUnit5Stories {
 
     public static final String JBEHAVE_SCENARIO = "jbehave_scenario";
@@ -132,7 +131,7 @@ public abstract class AbstractSpringStories extends JUnit5Stories {
                 .useViewGenerator(new FreemarkerViewGenerator(new SuffixRemovingStoryNameResolver(), FreemarkerViewGenerator.class))
                 .useParameterConverters(parameterConverters)
                 .useFailureStrategy(new RethrowingFailure())
-                .useStoryExecutionComparator((x,y) -> 1); // always return in the same order as passed
+                .useStoryExecutionComparator((x, y) -> 1); // always return in the same order as passed
 
             StoryParser parser = storyParser(configuration);
             if (parser != null) {

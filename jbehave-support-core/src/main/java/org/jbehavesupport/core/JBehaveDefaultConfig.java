@@ -2,7 +2,6 @@ package org.jbehavesupport.core;
 
 import org.jbehavesupport.core.expression.ExpressionCommand;
 import org.jbehavesupport.core.expression.ExpressionEvaluator;
-import org.jbehavesupport.core.internal.ConditionalOnMissingBean;
 import org.jbehavesupport.core.internal.TestContextImpl;
 import org.jbehavesupport.core.internal.expression.ExpressionEvaluatorImpl;
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
@@ -18,7 +17,6 @@ import org.jbehavesupport.core.internal.web.webdriver.WebDriverDelegatingInterce
 import org.jbehavesupport.core.internal.web.webdriver.WebDriverFactoryResolverImpl;
 import org.jbehavesupport.core.ssh.SshHandler;
 import org.jbehavesupport.core.support.TimeFacade;
-
 import org.jbehavesupport.core.verification.Verifier;
 import org.jbehavesupport.core.verification.VerifierResolver;
 import org.jbehavesupport.core.web.ByFactory;
@@ -37,6 +35,7 @@ import org.jbehavesupport.core.web.WebWaitConditionResolver;
 import org.openqa.selenium.WebDriver;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@ComponentScan(basePackages = "org.jbehavesupport")
+@ComponentScan
 public class JBehaveDefaultConfig {
 
     @Bean

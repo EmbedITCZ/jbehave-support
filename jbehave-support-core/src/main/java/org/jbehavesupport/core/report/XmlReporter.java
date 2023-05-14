@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.jbehave.core.model.Story;
 import org.jbehave.core.reporters.XmlOutput;
+import org.jbehave.core.steps.Timing;
 
 public class XmlReporter extends XmlOutput {
 
@@ -70,8 +71,8 @@ public class XmlReporter extends XmlOutput {
     }
 
     @Override
-    public void afterScenario() {
-        super.afterScenario();
+    public void afterScenario(Timing timing) {
+        super.afterScenario(timing);
         printTag(TAG_BEGIN, SCENARIO_REPORT);
         writeExtensions(e -> ReportRenderingPhase.AFTER_SCENARIO.equals(e.getReportRenderingPhase()));
         printTag(TAG_END, SCENARIO_REPORT);

@@ -83,7 +83,7 @@ jobs:
           mvn -f jbehave-support-core-test/jbehave-support-core-test-app/pom.xml package spring-boot:start
       - name: System test with Java ${{ matrix.java }}
         run: |
-          xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -D--add-opens -Djava.base/java.lang=ALL-UNNAMED -B -V
+          xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -B -V
       - name: Stop test app with Java ${{ matrix.java }}
         if: always()
         run: mvn -f jbehave-support-core-test/jbehave-support-core-test-app/pom.xml spring-boot:stop

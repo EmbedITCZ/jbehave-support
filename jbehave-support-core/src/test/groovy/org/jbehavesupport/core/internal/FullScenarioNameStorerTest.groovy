@@ -1,6 +1,8 @@
 package org.jbehavesupport.core.internal
 
+import org.jbehave.core.model.Scenario
 import org.jbehave.core.model.Story
+import org.jbehavesupport.core.TestContext
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -12,7 +14,7 @@ class FullScenarioNameStorerTest extends Specification {
     FullScenarioNameStorer storer
 
     @Shared
-    org.jbehavesupport.core.TestContext ctx
+    TestContext ctx
 
     def setup() {
         ctx = new TestContextImpl()
@@ -22,7 +24,7 @@ class FullScenarioNameStorerTest extends Specification {
     def "before story and scenario positive"() {
         when:
         storer.beforeStory(new Story("storyPath"), false)
-        storer.beforeScenario("scenarioTitle")
+        storer.beforeScenario(new Scenario("scenarioTitle", null))
 
         then:
         ctx.get(JBEHAVE_SCENARIO) == "storyPath#scenarioTitle"
@@ -31,12 +33,12 @@ class FullScenarioNameStorerTest extends Specification {
     def "before and after story positive"() {
         expect:
         storer.beforeStory(new Story("storyPath"), false)
-        storer.beforeScenario("scenarioTitle")
+        storer.beforeScenario(new Scenario("scenarioTitle", null))
 
         ctx.get(JBEHAVE_SCENARIO) == "storyPath#scenarioTitle"
 
         storer.afterStory(false)
-        storer.beforeScenario("scenarioTitle")
+        storer.beforeScenario(new Scenario("scenarioTitle", null))
 
         ctx.get(JBEHAVE_SCENARIO) == "null#scenarioTitle"
     }
@@ -44,7 +46,7 @@ class FullScenarioNameStorerTest extends Specification {
     def "before story and scenario negative "() {
         when:
         storer.beforeStory(new Story("storyPath"), true)
-        storer.beforeScenario("scenarioTitle")
+        storer.beforeScenario(new Scenario("scenarioTitle", null))
 
         then:
         ctx.get(JBEHAVE_SCENARIO) == "null#scenarioTitle"
@@ -53,12 +55,12 @@ class FullScenarioNameStorerTest extends Specification {
     def "before and after story"() {
         expect:
         storer.beforeStory(new Story("storyPath"), false)
-        storer.beforeScenario("scenarioTitle")
+        storer.beforeScenario(new Scenario("scenarioTitle", null))
 
         ctx.get(JBEHAVE_SCENARIO) == "storyPath#scenarioTitle"
 
         storer.afterStory(true)
-        storer.beforeScenario("scenarioTitle")
+        storer.beforeScenario(new Scenario("scenarioTitle", null))
 
         ctx.get(JBEHAVE_SCENARIO) == "storyPath#scenarioTitle"
     }

@@ -71,8 +71,8 @@
     <properties>
         <java.version>17</java.version>
 
-        <version.jbehave>4.8.3</version.jbehave>
-        <version.jbehave-junit-support>4.8.3.1</version.jbehave-junit-support>
+        <version.jbehave>5.0</version.jbehave>
+        <version.jbehave-junit-support>5.0.0</version.jbehave-junit-support>
         <version.spockframework>2.4-M1-groovy-4.0</version.spockframework>
         <version.sshj>0.33.0</version.sshj>
         <version.webdrivermanager>5.2.1</version.webdrivermanager>

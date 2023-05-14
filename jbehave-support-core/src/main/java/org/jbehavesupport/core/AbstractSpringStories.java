@@ -129,7 +129,7 @@ public abstract class AbstractSpringStories extends JUnit5Stories {
                 .useStoryReporterBuilder(storyReporterBuilder())
                 .useParameterControls(new ParameterControls().useDelimiterNamedParameters(true))
                 .usePendingStepStrategy(new FailingUponPendingStep())
-                .useViewGenerator(new FreemarkerViewGenerator(new SuffixRemovingStoryNameResolver()))
+                .useViewGenerator(new FreemarkerViewGenerator(new SuffixRemovingStoryNameResolver(), FreemarkerViewGenerator.class))
                 .useParameterConverters(parameterConverters)
                 .useFailureStrategy(new RethrowingFailure())
                 .useStoryExecutionComparator((x,y) -> 1); // always return in the same order as passed

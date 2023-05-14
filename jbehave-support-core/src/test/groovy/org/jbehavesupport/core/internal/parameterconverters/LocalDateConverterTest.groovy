@@ -12,11 +12,11 @@ import java.time.LocalDate
 class LocalDateConverterTest extends Specification {
 
     @Autowired
-    ParameterConverters.ParameterConverter<LocalDate> converter
+    ParameterConverters.ParameterConverter<String, LocalDate> converter
 
     def "Accept"() {
         expect:
-        converter.accept(LocalDate.class) == true
+        converter.canConvertTo(LocalDate.class) == true
     }
 
     def "ConvertValue"() {

@@ -7,9 +7,9 @@ import org.jbehave.core.steps.ParameterConverters;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BigDecimalConverter implements ParameterConverters.ParameterConverter<BigDecimal> {
+public class BigDecimalConverter extends ParameterConverters.FromStringParameterConverter<BigDecimal> {
     @Override
-    public boolean accept(Type type) {
+    public boolean canConvertTo(Type type) {
         return type == BigDecimal.class;
     }
 

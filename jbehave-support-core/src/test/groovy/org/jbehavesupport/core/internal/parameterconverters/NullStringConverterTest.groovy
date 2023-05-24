@@ -11,11 +11,11 @@ import spock.lang.Specification
 class NullStringConverterTest extends Specification {
 
     @Autowired
-    ParameterConverters.ParameterConverter<String> converter
+    ParameterConverters.ParameterConverter<String, String> converter
 
     def "Accept"() {
         expect:
-        converter.accept(String.class) == true
+        converter.canConvertTo(String.class) == true
     }
 
     def "ConvertValue"() {

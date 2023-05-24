@@ -7,10 +7,10 @@ import org.jbehavesupport.core.internal.expression.NullCommand;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NullStringConverter implements ParameterConverters.ParameterConverter<String> {
+public class NullStringConverter extends ParameterConverters.FromStringParameterConverter<String> {
 
     @Override
-    public boolean accept(Type type) {
+    public boolean canConvertTo(Type type) {
         if (type instanceof Class<?>) {
             return String.class.isAssignableFrom((Class<?>) type);
         }

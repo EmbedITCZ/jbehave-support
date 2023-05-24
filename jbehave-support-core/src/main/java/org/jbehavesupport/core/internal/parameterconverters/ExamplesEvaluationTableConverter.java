@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExamplesEvaluationTableConverter implements ParameterConverters.ParameterConverter<ExamplesTable> {
+public class ExamplesEvaluationTableConverter extends ParameterConverters.FromStringParameterConverter<ExamplesTable> {
 
     private final ExpressionEvaluator expressionEvaluator;
 
@@ -28,7 +28,7 @@ public class ExamplesEvaluationTableConverter implements ParameterConverters.Par
     }
 
     @Override
-    public boolean accept(Type type) {
+    public boolean canConvertTo(Type type) {
         if (type instanceof Class<?>) {
             return ExamplesTable.class.isAssignableFrom((Class<?>) type);
         }

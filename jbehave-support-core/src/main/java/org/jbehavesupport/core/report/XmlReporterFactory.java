@@ -67,16 +67,16 @@ public class XmlReporterFactory extends Format {
     @Autowired
     private List<XmlReporterExtension> xmlReporterExtensions;
 
-    @Value("${report.indexTemplate:index.xslt}")
+    @Value("${report.indexTemplate:classpath:index.xslt}")
     private Resource indexTemplate;
 
-    @Value("${report.template:report.xslt}")
+    @Value("${report.template:classpath:report.xslt}")
     private Resource reportTemplate;
 
-    @Value("#{'${report.additionalResources:functions.js, report-generator}'.split(',')}")
+    @Value("#{'${report.additionalResources:classpath:functions.js, classpath:report-generator}'.split(',')}")
     private List<Resource> additionalResources;
 
-    @Value("${report.directory:reports}")
+    @Value("${report.directory:classpath:reports}")
     private String reportsDirectory;
 
     private String reportsAbsoluteDirectory;

@@ -75,6 +75,9 @@
         <version.commons-collections4>4.4</version.commons-collections4>
         <version.moxy>4.0.0</version.moxy>
         <version.testcontainers>1.16.3</version.testcontainers>
+        <!-- remove once boot is on same or newer versions -->
+        <lombok.version>1.18.30</lombok.version>
+        <groovy.version>4.0.15</groovy.version>
         <!-- TODO: Actions.click() seems to fail with an error on selenium 4, we should investigate and fix this -->
         <selenium.version>3.141.59</selenium.version>
 

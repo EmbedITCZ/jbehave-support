@@ -10,7 +10,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 @Component
 public class ChromeWebDriverFactory implements WebDriverFactory {
@@ -32,6 +32,8 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
     @Value("${web.browser.driver.startup.arguments:#{null}}")
     private String browserStartupArguments;
 
+    @Value("${web.browser.binary.location:#{null}}")
+    private String binaryLocation;
     private boolean driverSetup = false;
 
     private RemoteWebDriver driver = null;
@@ -44,9 +46,9 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
     @Override
     public RemoteWebDriver createWebDriver() {
         createChromeDriver();
-        driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(timeout));
+        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(timeout));
         return driver;
     }
 
@@ -69,6 +71,10 @@ public class ChromeWebDriverFactory implements WebDriverFactory {
             options.addArguments(browserStartupArguments.split("\\s+"));
         } else {
             options.addArguments("--start-maximized");
+        }
+
+        if (binaryLocation != null) {
+            options.setBinary(binaryLocation);
         }
 
         ChromeDriverService.Builder driverServiceBuilder = new ChromeDriverService.Builder();

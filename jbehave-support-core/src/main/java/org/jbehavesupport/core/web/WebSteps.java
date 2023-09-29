@@ -71,7 +71,8 @@ public final class WebSteps {
         return CURRENT_SETTING.get();
     }
 
-    @BeforeScenario
+    @BeforeScenario()
+    @Given("Web browser is whatever")
     public void beforeScenario() {
         if (!givenStoryHelper.isInGivenStory()) {
             driver.quit();

@@ -38,6 +38,7 @@ Defaults to `chrome` if not set.
 - `web.browser.driver.version` - Sets the Web Driver version of the browser used, defaults to the latest available version (not used if `web.browser.driver.location` is set, or `firefox47` is used as a browser)
 - `web.browser.driver.port` - Sets the port on which the Web Driver runs, defaults to any free port. (supported only for chrome)
 - `web.browser.driver.startup.arguments` - Sets browser startup arguments.
+- `web.browser.binary.location` - Set browser exe file location, defaults to default location. (supported only for chrome)
 
 #### Custom browser support
 

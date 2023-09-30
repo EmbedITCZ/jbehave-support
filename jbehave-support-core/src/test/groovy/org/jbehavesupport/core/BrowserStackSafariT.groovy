@@ -1,5 +1,6 @@
 package org.jbehavesupport.core
 
+import org.jbehavesupport.test.support.TestAppSupport
 import org.jbehavesupport.test.support.TestSupportBrowserStack
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
@@ -13,14 +14,14 @@ import static org.jbehavesupport.test.support.TestConfig.SAFARI_BROWSERSTACK
  * It assumes BrowserStack Local binary is already running.
  */
 @ContextConfiguration(classes = TestConfig.class)
-class BrowserStackSafariT extends Specification implements TestSupportBrowserStack {
+class BrowserStackSafariT extends Specification implements TestSupportBrowserStack, TestAppSupport {
 
     @Autowired
     private Environment env
 
     def setup() {
         System.setProperty("web.browser", SAFARI_BROWSERSTACK)
-        System.setProperty("web.url", "http://bs-local.com:11110/")
+        System.setProperty("web.url", "http://bs-local.com:$uiPort/")
         System.setProperty("browser-stack.build", getBuildName())
     }
 

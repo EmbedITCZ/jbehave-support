@@ -2,6 +2,7 @@ package org.jbehavesupport.test.sample.report;
 
 import org.jbehavesupport.core.AbstractSpringStories;
 import org.jbehavesupport.test.support.SshContainer;
+import org.jbehavesupport.test.support.TestAppContainer;
 import org.jbehavesupport.test.support.TestConfig;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -14,13 +15,15 @@ import java.util.List;
 public class ReportSampleStoriesIT extends AbstractSpringStories {
 
     public static SshContainer sshContainer = new SshContainer();
+    public static TestAppContainer testAppContainer = TestAppContainer.getTestAppContainer();
 
     static {
         sshContainer.start();
+        testAppContainer.start();
     }
 
     @DynamicPropertySource
-    static void sshProperties(DynamicPropertyRegistry registry) {
+    static void containerProperties(DynamicPropertyRegistry registry) {
         sshContainer.updateDynamicPropertyRegistry(registry);
     }
 

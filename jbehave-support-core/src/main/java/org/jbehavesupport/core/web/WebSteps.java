@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.hc.core5.net.URIBuilder;
 import org.assertj.core.api.SoftAssertions;
 import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
@@ -26,7 +27,6 @@ import org.jbehavesupport.core.verification.Verifier;
 import org.jbehavesupport.core.verification.VerifierResolver;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.http.client.utils.URIBuilder;
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;

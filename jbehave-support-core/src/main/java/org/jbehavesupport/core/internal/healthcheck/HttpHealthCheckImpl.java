@@ -1,23 +1,22 @@
 package org.jbehavesupport.core.internal.healthcheck;
 
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.jbehavesupport.core.healthcheck.HealthCheck;
+
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-
-import org.jbehavesupport.core.healthcheck.HealthCheck;
-
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 
 public class HttpHealthCheckImpl implements HealthCheck {
     private String url;
@@ -32,25 +31,30 @@ public class HttpHealthCheckImpl implements HealthCheck {
 
     @Override
     public void check() {
-        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        var credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(
             new AuthScope(new AuthScope(null, -1)),
-            new UsernamePasswordCredentials(username, password));
+            new UsernamePasswordCredentials(username, password.toCharArray()));
         try {
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+            var sslsf = new SSLConnectionSocketFactory(
                 new SSLContextBuilder()
                     .loadTrustMaterial(null, new TrustSelfSignedStrategy())
                     .build());
+
+            var connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setSSLSocketFactory(sslsf)
+                .build();
+
             CloseableHttpClient httpclient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credentialsProvider)
-                .setSSLSocketFactory(sslsf)
+                .setConnectionManager(connectionManager)
                 .build();
 
             HttpGet httpGet = new HttpGet(url);
             CloseableHttpResponse response = httpclient.execute(httpGet);
-            if (response.getStatusLine().getStatusCode() != 200) {
+            if (response.getCode() != 200) {
                 throw new IllegalStateException(
-                    "Status code is " + response.getStatusLine().getStatusCode() + ". " + response.getStatusLine().getReasonPhrase());
+                    "Status code is " + response.getCode() + ". " + response.getReasonPhrase());
             }
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             throw new IllegalStateException(e);

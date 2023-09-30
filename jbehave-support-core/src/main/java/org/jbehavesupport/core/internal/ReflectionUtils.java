@@ -1,7 +1,7 @@
 package org.jbehavesupport.core.internal;
 
-import static org.apache.http.util.Asserts.notEmpty;
 import static org.springframework.beans.BeanUtils.getPropertyDescriptor;
+import static org.springframework.util.Assert.hasLength;
 import static org.springframework.util.Assert.notNull;
 import static org.springframework.util.ReflectionUtils.doWithFields;
 
@@ -59,7 +59,7 @@ public class ReflectionUtils {
     @SuppressWarnings("squid:S1166")
     public static Object getPropertyValue(Object bean, String propertyPath) {
         notNull(propertyPath, "property path must be specified");
-        notEmpty(propertyPath, "property path");
+        hasLength(propertyPath, "property path is empty");
         Object beanAttribute = bean;
         try {
             for (String currentPath : propertyPath.split("\\.")) {

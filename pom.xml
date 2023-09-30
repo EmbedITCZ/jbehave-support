@@ -13,7 +13,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.4</version>
+        <version>3.1.4</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -74,9 +74,8 @@
         <version.commons-collections4>4.4</version.commons-collections4>
         <version.moxy>4.0.0</version.moxy>
         <version.testcontainers>1.16.3</version.testcontainers>
-        <!-- remove once boot is on same or newer versions -->
-        <lombok.version>1.18.30</lombok.version>
-        <groovy.version>4.0.15</groovy.version>
+
+        <!-- remove once boot is on same or newer version  -->
         <selenium.version>4.13.0</selenium.version>
 
         <plugin.version.gmavenplus-plugin>1.13.1</plugin.version.gmavenplus-plugin>

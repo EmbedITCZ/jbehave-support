@@ -32,7 +32,7 @@ import org.springframework.util.MimeType;
 @RequiredArgsConstructor
 public class RestXmlReporterExtension extends AbstractXmlReporterExtension implements ClientHttpRequestInterceptor {
 
-    @Value("${rest.directory:classpath:./target/reports}")
+    @Value("${rest.directory:./target/reports}")
     private String restDirectory;
 
     private final TestContext testContext;

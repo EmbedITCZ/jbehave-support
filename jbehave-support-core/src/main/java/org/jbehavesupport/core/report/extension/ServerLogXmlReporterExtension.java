@@ -63,7 +63,7 @@ public class ServerLogXmlReporterExtension extends AbstractXmlReporterExtension 
 
     private boolean loggingOnFailure;
 
-    @Value("${web.reporting.directory:classpath:./target/reports}")
+    @Value("${web.reporting.directory:./target/reports}")
     private String logFileDirectory;
 
     @Value("${ssh.reporting.mode:CACHE}")

@@ -44,6 +44,14 @@ Class _FirefoxWebDriverFactory_
 
 ---
 
+Property `web.browser.driver.version`
+
+>Deprecated since 2.0.0
+>
+>`web.browser.version` should be used instead, for older browser compatibility testing
+
+---
+
 Column _OPERATOR_
 
 >Deprecated since version 1.0.0 - will be removed soon

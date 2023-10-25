@@ -15,7 +15,7 @@
                     <div>
                         <xsl:attribute name="class">
                             <xsl:choose>
-                                <xsl:when test="not(descendant::step[@outcome='failed'])">card-header bg-success
+                                <xsl:when test="not(descendant::steps/step[@outcome='failed'])">card-header bg-success
                                     text-white
                                 </xsl:when>
                                 <xsl:otherwise>card-header bg-danger text-white</xsl:otherwise>
@@ -40,7 +40,18 @@
                                     <xsl:call-template name="meta"/>
                                 </div>
                                 <div class="col-6">
-                                    <xsl:call-template name="renderStepOccurrence"/>
+                                    <xsl:choose>
+                                        <xsl:when test="not(descendant::examples)">
+                                            <xsl:call-template name="renderStepOccurrence">
+                                                <xsl:with-param name="stepsPath" select="steps/step" />
+                                            </xsl:call-template>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:call-template name="renderStepOccurrence">
+                                                <xsl:with-param name="stepsPath" select="examples/steps/step" />
+                                            </xsl:call-template>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +73,112 @@
                                 </xsl:attribute>
 
                                 <xsl:call-template name="story"/>
-                                <xsl:call-template name="step"/>
+
+                                <xsl:choose>
+                                    <xsl:when test="not(descendant::examples)">
+                                        <xsl:call-template name="step">
+                                            <xsl:with-param name="stepsPath" select="steps/step" />
+                                        </xsl:call-template>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <!-- print steps-->
+                                        <!-- TODO format examples table, it has to be written differently in xml-->
+                                        <xsl:call-template name="step">
+                                            <xsl:with-param name="stepsPath" select="examples/step" />
+                                        </xsl:call-template>
+                                        <!-- print examples table -->
+                                        <div class="card-body">
+                                            <a data-toggle="collapse">
+                                                <xsl:attribute name="href">
+                                                    <xsl:value-of select="concat('#examples-table-',$storyIndex,$scenarioIndex)"/>
+                                                </xsl:attribute>
+                                                Collapse examples table
+                                            </a>
+                                        </div>
+                                        <div class="card-body collapse show" style="overflow:auto;">
+                                            <xsl:attribute name="id">
+                                                <xsl:value-of select="concat('examples-table-',$storyIndex,$scenarioIndex)"/>
+                                            </xsl:attribute>
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <xsl:for-each select="examples/parameters/names/name">
+                                                        <th>
+                                                            <xsl:value-of select="."/>
+                                                        </th>
+                                                    </xsl:for-each>
+                                                </tr>
+                                                <xsl:for-each select="examples/parameters/values">
+                                                    <tr>
+                                                        <xsl:for-each select="value">
+                                                            <td>
+                                                                <xsl:value-of select="."/>
+                                                            </td>
+                                                        </xsl:for-each>
+                                                    </tr>
+                                                </xsl:for-each>
+                                            </table>
+                                        </div>
+                                        <!-- process scenarios -->
+                                        <xsl:for-each select="examples/child::*">
+                                            <xsl:variable name="exampleIndex" select="count(preceding-sibling::example)+1"/>
+                                            <!-- print scenario steps -->
+                                            <xsl:if test="self::steps">
+                                                <!-- TODO format examples table, it has to be written differently in xml-->
+                                                <xsl:variable name="exampleStepsIndex" select="count(preceding-sibling::example)"/>
+                                                <div class="card-body collapse show">
+                                                    <xsl:attribute name="id">
+                                                        <xsl:value-of select="concat('test-steps-example',$storyIndex,$scenarioIndex,$exampleStepsIndex)"/>
+                                                    </xsl:attribute>
+                                                    <xsl:call-template name="step">
+                                                        <xsl:with-param name="stepsPath" select="step" />
+                                                    </xsl:call-template>
+                                                </div>
+                                            </xsl:if>
+                                            <!-- print scenario header -->
+                                            <xsl:if test="self::example">
+                                                <xsl:variable name="divClass">
+                                                    <xsl:choose>
+                                                        <xsl:when test="count(following-sibling::steps[1]/step[@outcome='failed']) > 0">
+                                                            card-header bg-danger text-white
+                                                        </xsl:when>
+                                                        <xsl:otherwise>
+                                                            card-header bg-success text-white
+                                                        </xsl:otherwise>
+                                                    </xsl:choose>
+                                                </xsl:variable>
+                                                <div>
+                                                    <xsl:attribute name="class">
+                                                        <xsl:value-of select="$divClass"/>
+                                                    </xsl:attribute>
+                                                    <i class="fa fa-bars" aria-hidden="true"/>
+                                                    <xsl:value-of
+                                                        select="concat(' ',$exampleIndex,'. parameterized scenario')"/>
+                                                    <a data-toggle="collapse" class="float-right">
+                                                        <xsl:attribute name="href">
+                                                            <xsl:value-of select="concat('#test-steps-example',$storyIndex,$scenarioIndex,$exampleIndex)"/>
+                                                        </xsl:attribute>
+                                                        Collapse steps
+                                                    </a>
+                                                    <div class="float-right">
+                                                        |
+                                                    </div>
+                                                    <a data-toggle="collapse" class="float-right">
+                                                        <xsl:attribute name="href">
+                                                            <xsl:value-of select="concat('#parameters-example',$storyIndex,$scenarioIndex,$exampleIndex)"/>
+                                                        </xsl:attribute>
+                                                        Collapse parameters
+                                                    </a>
+                                                </div>
+                                                <div class="card-body collapse show">
+                                                    <xsl:attribute name="id">
+                                                        <xsl:value-of select="concat('parameters-example',$storyIndex,$scenarioIndex,$exampleIndex)"/>
+                                                    </xsl:attribute>
+                                                    <xsl:value-of select="."/>
+                                                </div>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </div>
                         </div>
 
@@ -110,20 +226,21 @@
     </xsl:template>
 
     <xsl:template name="renderStepOccurrence">
+        <xsl:param name="stepsPath" />
         <div class="progress" style="height: 18px;">
             <div class="progress-bar bg-success" role="progressbar" title="successful">
                 <xsl:variable name="percent"
-                              select="format-number((count(step[@outcome='successful']) div count(step)), '0%')"/>
+                              select="format-number((count($stepsPath[@outcome='successful']) div count($stepsPath)), '0%')"/>
                 <xsl:attribute name="style">
                     width:
                     <xsl:value-of select="$percent"/>
                 </xsl:attribute>
                 <xsl:value-of select="$percent"/>
             </div>
-            <xsl:if test="count(step[@outcome='failed']) > 0">
+            <xsl:if test="count($stepsPath[@outcome='failed']) > 0">
                 <div class="progress-bar bg-danger" role="progressbar" title="failed">
                     <xsl:variable name="percent"
-                                  select="format-number((count(step[@outcome='failed']) div count(step)), '0%')"/>
+                                  select="format-number((count($stepsPath[@outcome='failed']) div count($stepsPath)), '0%')"/>
                     <xsl:attribute name="style">
                         width:
                         <xsl:value-of select="$percent"/>
@@ -131,10 +248,10 @@
                     <xsl:value-of select="$percent"/>
                 </div>
             </xsl:if>
-            <xsl:if test="count(step[@outcome='ignorable']) > 0">
+            <xsl:if test="count($stepsPath[@outcome='ignorable']) > 0">
                 <div class="progress-bar bg-warning" role="progressbar" title="ignored">
                     <xsl:variable name="percent"
-                                  select="format-number((count(step[@outcome='ignorable']) div count(step)), '0%')"/>
+                                  select="format-number((count($stepsPath[@outcome='ignorable']) div count($stepsPath)), '0%')"/>
                     <xsl:attribute name="style">
                         width:
                         <xsl:value-of select="$percent"/>
@@ -142,10 +259,10 @@
                     <xsl:value-of select="$percent"/>
                 </div>
             </xsl:if>
-            <xsl:if test="count(step[@outcome='notPerformed']) > 0">
+            <xsl:if test="count($stepsPath[@outcome='notPerformed']) > 0">
                 <div class="progress-bar bg-secondary" role="progressbar" title="not performed">
                     <xsl:variable name="percent"
-                                  select="format-number((count(step[@outcome='notPerformed']) div count(step)), '0%')"/>
+                                  select="format-number((count($stepsPath[@outcome='notPerformed']) div count($stepsPath)), '0%')"/>
                     <xsl:attribute name="style">
                         width:
                         <xsl:value-of select="$percent"/>
@@ -155,7 +272,7 @@
             </xsl:if>
             <div class="progress-bar bg-info" role="progressbar" title="comment">
                 <xsl:variable name="percent"
-                              select="format-number((count(step[@outcome='comment']) div count(step)), '0%')"/>
+                              select="format-number((count($stepsPath[@outcome='comment']) div count($stepsPath)), '0%')"/>
                 <xsl:attribute name="style">
                     width:
                     <xsl:value-of select="$percent"/>
@@ -167,7 +284,7 @@
 
     <xsl:template name="story">
         <xsl:for-each select="story">
-            <xsl:variable name="isFailed" select="count(descendant::step[@outcome='failed']) > 0"/>
+            <xsl:variable name="isFailed" select="count(descendant::steps/step[@outcome='failed']) > 0"/>
             <div>
                 <xsl:choose>
                     <xsl:when test="$isFailed">
@@ -230,14 +347,14 @@
 
     <xsl:template name="parameter">
         <xsl:for-each select="parameter/parameters">
-        <table class="table table-sm table-hover">
-            <thead>
-                <xsl:call-template name="names"/>
-            </thead>
-            <tbody>
-                <xsl:call-template name="values"/>
-            </tbody>
-        </table>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <xsl:call-template name="names"/>
+                </thead>
+                <tbody>
+                    <xsl:call-template name="values"/>
+                </tbody>
+            </table>
         </xsl:for-each>
     </xsl:template>
 
@@ -274,7 +391,8 @@
     </xsl:template>
 
     <xsl:template name="step">
-        <xsl:for-each select="step">
+        <xsl:param name="stepsPath" />
+        <xsl:for-each select="$stepsPath">
             <xsl:variable name="scenarioIndex" select="count(../preceding-sibling::scenario)+1"/>
             <div>
                 <xsl:attribute name="class">

@@ -17,7 +17,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <textarea class="form-control" wrap="off" readonly="true" rows="26">
-                                <xsl:value-of select="../failure"/>
+                                <xsl:value-of select="../../failure"/>
                             </textarea>
                         </div>
                     </div>

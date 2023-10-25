@@ -35,9 +35,10 @@ Default behavior can be influenced by several properties:
 - `web.browser` - Sets the browser which will be used, default supported value is only `chrome` (custom values can be optionally used as well, for more info see [custom browser support](#custom-browser-support)).
 Defaults to `chrome` if not set. 
 - `web.browser.driver.location` - Sets the absolute path to the webdriver on disk, if not set then Web Driver is downloaded from the Internet.
-- `web.browser.driver.version` - Sets the Web Driver version of the browser used, defaults to the latest available version (not used if `web.browser.driver.location` is set, or `firefox47` is used as a browser)
 - `web.browser.driver.port` - Sets the port on which the Web Driver runs, defaults to any free port. (supported only for chrome)
 - `web.browser.driver.startup.arguments` - Sets browser startup arguments.
+- `web.browser.binary.location` - Set browser binary location, defaults to default location. (supported only for chrome)
+- `web.browser.version` - Set browser version, default is actual chrome installation, if desired version isn't installed, driver will download chrome for automated testing with given version. It's great especially as download version of browser is made for testing and does not interfere with automated testing as much as regular build. (supported only for chrome)
 
 #### Custom browser support
 

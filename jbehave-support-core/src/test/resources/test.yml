@@ -18,7 +18,7 @@ db:
 web:
   url: http://localhost:11110/
   browser.driver.version: 2.38
-
+  screenshot.reporting.mode: FAILED
 numeric:
   scale: 5
 

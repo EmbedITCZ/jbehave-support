@@ -11,6 +11,7 @@ import org.jbehavesupport.core.healthcheck.HealthChecks;
 import org.jbehavesupport.core.internal.FileNameResolver;
 import org.jbehavesupport.core.report.XmlReporterFactory;
 import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
+import org.jbehavesupport.core.report.extension.FailScreenshotsReporterExtension;
 import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
 import org.jbehavesupport.core.report.extension.ScreenshotReporterExtension;
 import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
@@ -124,6 +125,11 @@ public class TestConfig {
     @Bean
     public ScreenshotReporterExtension screenshotReporterExtension(TestContext testContext) {
         return new ScreenshotReporterExtension(testContext);
+    }
+
+    @Bean
+    public FailScreenshotsReporterExtension failScreenshotsReporterExtension(TestContext testContext) {
+        return new FailScreenshotsReporterExtension(testContext);
     }
 
     @Bean

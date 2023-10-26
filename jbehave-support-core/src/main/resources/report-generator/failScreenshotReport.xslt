@@ -18,11 +18,11 @@
                     <div class="modal-body">
                         <a>
                             <xsl:attribute name="href">
-                                <xsl:value-of select="../following-sibling::*[1]/errorScreenshots/screenshot"/>
+                                <xsl:value-of select="../../following-sibling::*[1]/errorScreenshots/screenshot"/>
                             </xsl:attribute>
                             <img class="img-fluid" width="770">
                                 <xsl:attribute name="src">
-                                    <xsl:value-of select="../following-sibling::*[1]/errorScreenshots/screenshot"/>
+                                    <xsl:value-of select="../../following-sibling::*[1]/errorScreenshots/screenshot"/>
                                 </xsl:attribute>
                             </img>
                         </a>

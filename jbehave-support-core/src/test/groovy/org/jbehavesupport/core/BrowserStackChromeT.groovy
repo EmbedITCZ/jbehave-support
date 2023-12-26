@@ -6,7 +6,7 @@ import org.springframework.core.env.Environment
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-import static org.jbehavesupport.test.support.TestConfig.CHROME_BROWSERSTACK
+import static org.jbehavesupport.test.TestConfig.CHROME_BROWSERSTACK
 
 /**
  * This test verifies that our code is compatible with Chrome using BrowserStack.

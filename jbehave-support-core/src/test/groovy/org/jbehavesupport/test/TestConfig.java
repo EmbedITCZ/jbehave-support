@@ -1,28 +1,16 @@
-package org.jbehavesupport.test.support;
+package org.jbehavesupport.test;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jbehave.core.model.ExamplesTable;
-import org.jbehavesupport.core.TestContext;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
-import org.jbehavesupport.core.internal.FileNameResolver;
-import org.jbehavesupport.core.report.XmlReporterFactory;
-import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.FailScreenshotsReporterExtension;
-import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.ScreenshotReporterExtension;
-import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.SqlXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.TestContextXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.WsXmlReporterExtension;
 import org.jbehavesupport.core.rest.RestServiceHandler;
 import org.jbehavesupport.core.rest.RestTemplateConfigurer;
 import org.jbehavesupport.core.ssh.RollingLogResolver;
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
-import org.jbehavesupport.core.ssh.SshHandler;
 import org.jbehavesupport.core.ssh.SshLog;
 import org.jbehavesupport.core.ssh.SshSetting;
 import org.jbehavesupport.core.ssh.SshTemplate;
@@ -30,14 +18,15 @@ import org.jbehavesupport.core.support.YamlPropertySourceFactory;
 import org.jbehavesupport.core.web.WebDriverFactory;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
+import org.jbehavesupport.test.support.TestWebServiceHandler;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
@@ -56,7 +45,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Configuration
+@SpringBootConfiguration
+@EnableAutoConfiguration
 @ComponentScan
 @RequiredArgsConstructor
 @PropertySource(value = "test.yml", factory = YamlPropertySourceFactory.class)
@@ -85,51 +75,6 @@ public class TestConfig {
         dataSource.setUsername(env.getProperty("db.username"));
         dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
-    }
-
-    @Bean
-    public XmlReporterFactory xmlReporterFactory() {
-        return new XmlReporterFactory();
-    }
-
-    @Bean
-    public WsXmlReporterExtension wsXmlReporterExtension() {
-        return new WsXmlReporterExtension();
-    }
-
-    @Bean
-    public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext, FileNameResolver fileNameResolver) {
-        return new RestXmlReporterExtension(testContext, fileNameResolver);
-    }
-
-    @Bean
-    public EnvironmentInfoXmlReporterExtension environmentInfoXmlReporterExtension() {
-        return new EnvironmentInfoXmlReporterExtension(env);
-    }
-
-    @Bean
-    public TestContextXmlReporterExtension testContextXmlReporterExtension(TestContext testContext) {
-        return new TestContextXmlReporterExtension(testContext);
-    }
-
-    @Bean
-    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, SshHandler sshHandler, TestContext testContext, FileNameResolver fileNameResolver) {
-        return new ServerLogXmlReporterExtension(testContext, fileNameResolver, sshHandler, beanFactory);
-    }
-
-    @Bean
-    public SqlXmlReporterExtension sqlXmlReporterExtension() {
-        return new SqlXmlReporterExtension();
-    }
-
-    @Bean
-    public ScreenshotReporterExtension screenshotReporterExtension(TestContext testContext) {
-        return new ScreenshotReporterExtension(testContext);
-    }
-
-    @Bean
-    public FailScreenshotsReporterExtension failScreenshotsReporterExtension(TestContext testContext) {
-        return new FailScreenshotsReporterExtension(testContext);
     }
 
     @Bean

@@ -44,7 +44,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.nonNull;
 import static org.springframework.util.Assert.notNull;
 
-@SpringBootTest(classes = JBehaveDefaultConfig.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public abstract class AbstractSpringStories extends JUnit5Stories {
 
     public static final String JBEHAVE_SCENARIO = "jbehave_scenario";

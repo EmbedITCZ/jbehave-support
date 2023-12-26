@@ -89,9 +89,10 @@ Also, make sure to have the test resources setup correctly, simple setup to use 
 ### Create a TestConfig configuration file
 
 From this file, jbehave-support will take all the necessary information about tested applications and the types of reports you want.
-First create a Java class and call it `TestConfig`. Add the spring annotation `@Configuration`.
+First create a Java class and call it `TestConfig`. Add the spring annotations `@EnableAutoConfiguration` and `@SpringBootConfiguration` (or `@Configuration` if your project already contains a spring boot configuration).
 ```
-@Configuration
+@SpringBootConfiguration
+@EnableAutoConfiguration
 public class TestConfig {
 ```
 Setting up the application you want to test largely depends on what do you want to test. Generally, you need to add a Spring bean method setting up the necessary parameters. We will be setting-up a WebSetting for Selenium to access google.com. ([More](jbehave-support-core/docs/Web-testing.md#configuration) about setting up web testing)
@@ -175,9 +176,8 @@ This scenario opens `www.google.com`, writes `embeditcz jbehave-support` into th
 
 ### Write your story class
 
-In the same directory as your `.story` file, create a Java class that extends `AbstractSpringStories` and call it `<yourStoryName>Story` (naming is important). Add the annotation `@ContextConfiguration(classes = TestConfig.class)` to link it with your TextConfig class. Leave this class empty.
+In the same directory as your `.story` file, create a Java class that extends `AbstractSpringStories` and call it `<yourStoryName>Story` (naming is important). The test configuration will automatically be picked up by Spring Boot. You can leave this class empty.
 ```
-@ContextConfiguration(classes = TestConfig.class)
 public class GoogleStory extends AbstractSpringStories {
 }
 ```

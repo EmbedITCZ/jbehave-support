@@ -10,7 +10,7 @@ import java.time.Month
 import java.time.LocalDateTime
 
 @ContextConfiguration(classes = TestConfig)
-class CompareExpectedRowsFalseStrictMatch extends Specification{
+class CompareExpectedRowsFalseStrictMatch extends Specification {
     @Autowired
     SqlSteps sqlSteps
 

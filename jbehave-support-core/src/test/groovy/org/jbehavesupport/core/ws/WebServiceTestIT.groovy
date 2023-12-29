@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = TestConfig)
-class WebServiceTestIT extends Specification{
+class WebServiceTestIT extends Specification {
 
     @Autowired
     private WebServiceHandler webServiceHandler

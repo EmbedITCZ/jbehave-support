@@ -2,7 +2,6 @@ package org.jbehavesupport.test;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
@@ -25,6 +24,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
@@ -69,12 +69,12 @@ public class TestConfig {
     @Bean
     @Qualifier("TEST")
     public DataSource testDatasource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(env.getProperty("db.driver"));
-        dataSource.setUrl(env.getProperty("db.url"));
-        dataSource.setUsername(env.getProperty("db.username"));
-        dataSource.setPassword(env.getProperty("db.password"));
-        return dataSource;
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(env.getProperty("db.driver"));
+        dataSourceBuilder.url(env.getProperty("db.url"));
+        dataSourceBuilder.username(env.getProperty("db.username"));
+        dataSourceBuilder.password(env.getProperty("db.password"));
+        return dataSourceBuilder.build();
     }
 
     @Bean

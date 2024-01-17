@@ -20,7 +20,7 @@ In case you encounter this behavior then a solution for this is to introduce som
 
 ### Reports
 #### Broken Reports when using JBehave parametrised test with Examples keyword at story level
-Our reports doesn't fully works with examples at story level. Report will be generated, but some features may be broken.
+Our reports don't fully work with examples at story level. Report will be generated, but some features may be broken.
 
 If you wants to use it anyway please put it in Lifecycle, it will break narrative otherwise:
 ```

@@ -22,7 +22,8 @@ In case you encounter this behavior then a solution for this is to introduce som
 #### Broken Reports when using JBehave parametrised test with Examples keyword at story level
 Our reports don't fully work with examples at story level. Report will be generated, but some features may be broken.
 
-If you wants to use it anyway please put it in Lifecycle, it will break narrative otherwise:
+If you really do need to use it anyway please put it inside `Lifecycle`, otherwise it will break the narrative.
+E.g.:
 ```
 Narrative:
 In order to explain how the parametrized scenarios works

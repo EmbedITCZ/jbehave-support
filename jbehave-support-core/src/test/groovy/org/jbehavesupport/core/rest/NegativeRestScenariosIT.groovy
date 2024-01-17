@@ -1,9 +1,10 @@
 package org.jbehavesupport.core.rest
 
+import org.jbehavesupport.test.support.TestAppSupport
 import org.jbehavesupport.test.support.TestSupport
 import spock.lang.Specification
 
-class NegativeRestScenariosIT extends Specification implements TestSupport {
+class NegativeRestScenariosIT extends Specification implements TestSupport, TestAppSupport {
 
     def "Should validate REST response via success handlers"() {
         when:

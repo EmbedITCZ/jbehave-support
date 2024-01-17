@@ -1,9 +1,10 @@
 package org.jbehavesupport.core.web
 
+import org.jbehavesupport.test.support.TestAppSupport
 import org.jbehavesupport.test.support.TestSupport
 import spock.lang.Specification
 
-class WebPropertyNegativeIT extends Specification implements TestSupport {
+class WebPropertyNegativeIT extends Specification implements TestSupport, TestAppSupport {
 
     def "Soft assertions of web properties"() {
         when:

@@ -19,8 +19,8 @@ class CompareExpectedRowsFalseStrictMatch extends Specification {
         def expectations = new ExamplesTable("| INT | DOUBLE | DECIMAL | STRING | DATE                |\r\n"
                                            + "|   1 |   1.01 |   10.01 | fsa#df | 2010-10-10T10:10:10 |\r\n")
         def row = new HashMap<String,Object>(){{
-            put("INT",new Integer(1))
-            put("DOUBLE",new Double(1.01))
+            put("INT", Integer.valueOf(1))
+            put("DOUBLE", Double.valueOf(1.01))
             put("DECIMAL",new BigDecimal("10.01"))
             put("STRING",new String("fsa#df"))
             put("DATE", LocalDateTime.of(2010, Month.OCTOBER, 10, 10, 10, 10))}}

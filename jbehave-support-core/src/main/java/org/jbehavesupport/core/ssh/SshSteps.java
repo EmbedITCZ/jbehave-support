@@ -6,7 +6,6 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter;
 import org.jbehavesupport.core.internal.verification.ContainsVerifier;
-import org.jbehavesupport.core.internal.verification.NotContainsVerifier;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -16,7 +15,6 @@ public final class SshSteps {
 
     private final SshHandler sshHandler;
     private final ContainsVerifier containsVerifier;
-    private final NotContainsVerifier notContainsVerifier;
 
     @Given("current time is saved as log timestamp [$logTimeAlias]")
     public void markLogTime(String logTimeAlias) {

@@ -10,7 +10,6 @@ import org.jbehavesupport.core.internal.verification.RegexVerifier
 import org.jbehavesupport.core.internal.web.WebScreenshotCreator
 import org.jbehavesupport.core.internal.web.by.XpathByFactory
 import org.jbehavesupport.core.rest.RestServiceHandler
-import org.jbehavesupport.core.internal.web.webdriver.WebDriverDelegatingInterceptor
 import org.jbehavesupport.core.ssh.RollingLogResolver
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver
 import org.jbehavesupport.core.ssh.SshLog
@@ -21,12 +20,10 @@ import org.jbehavesupport.core.test.app.oxm.NameRequest
 import org.jbehavesupport.core.test.app.oxm.NameResponse
 import org.jbehavesupport.core.verification.Verifier
 import org.jbehavesupport.core.web.ByFactory
-import org.jbehavesupport.core.web.WebDriverFactoryResolver
 import org.jbehavesupport.core.ws.WebServiceEndpointRegistry
 import org.jbehavesupport.core.ws.WebServiceHandler
 import org.jbehavesupport.test.support.TestWebServiceHandler
 import org.openqa.selenium.WebDriver
-import org.springframework.aop.framework.ProxyFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
@@ -70,14 +67,6 @@ class TestConfig {
     @Bean
     BytesCommand bytesCommand(TestContext testContext) {
         return new BytesCommand(testContext)
-    }
-
-    @Bean
-    WebDriver driver(WebDriverFactoryResolver webDriverFactoryResolver) {
-        ProxyFactory proxyFactory = new ProxyFactory(WebDriver.class, new WebDriverDelegatingInterceptor(webDriverFactoryResolver))
-        proxyFactory.setProxyTargetClass(true)
-        proxyFactory.setTargetClass(webDriverFactoryResolver.resolveWebDriverFactory().getProxyClass())
-        return (WebDriver) proxyFactory.getProxy()
     }
 
     @Bean

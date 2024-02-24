@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.StringUtils.endsWith;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import lombok.RequiredArgsConstructor;
 import org.jbehavesupport.core.web.WebSetting;

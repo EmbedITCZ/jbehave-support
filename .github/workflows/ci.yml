@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 17, 18 ]
+        java: [ 17, 21 ]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -26,7 +26,7 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
       - name: Build with Java ${{ matrix.java }}
-        run: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+        run: mvn clean install -Dspring-boot.build-image.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
   test:
     needs: build
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 17, 18 ]
+        java: [ 17, 21 ]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -50,7 +50,7 @@ jobs:
           distribution: 'zulu'
       - name: Test with Java ${{ matrix.java }}
         run: |
-          mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -B -V
+          mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -Dspring-boot.build-image.skip=true -B -V
       - name: Upload test coverage for unit tests
         if: matrix.java == 17
         uses: actions/upload-artifact@v3
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 17, 18 ]
+        java: [ 17, 21 ]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -78,15 +78,9 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
-      - name: Start test app with Java ${{ matrix.java }}
-        run: |
-          mvn -f jbehave-support-core-test/jbehave-support-core-test-app/pom.xml package spring-boot:start
       - name: System test with Java ${{ matrix.java }}
         run: |
-          xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -D--add-opens -Djava.base/java.lang=ALL-UNNAMED -B -V
-      - name: Stop test app with Java ${{ matrix.java }}
-        if: always()
-        run: mvn -f jbehave-support-core-test/jbehave-support-core-test-app/pom.xml spring-boot:stop
+          xvfb-run mvn org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify org.jacoco:jacoco-maven-plugin:report-integration -DskipUnitTests=true -Djbehave.report.level=STORY -B -V
       - name: Upload reports on Java ${{ matrix.java }}
         uses: actions/upload-artifact@v3
         if: always()

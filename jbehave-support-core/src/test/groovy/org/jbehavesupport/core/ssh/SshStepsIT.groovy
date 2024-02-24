@@ -4,6 +4,7 @@ import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier
 import org.jbehavesupport.core.TestConfig
 import org.jbehavesupport.core.TestContext
+import org.jbehavesupport.core.expression.ExpressionEvaluatingParameter
 import org.jbehavesupport.test.support.SshContainer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
@@ -53,7 +54,7 @@ class SshStepsIT extends Specification {
                     "| anotherInvalidValue  | "
 
         def startTime = ZonedDateTime.now().minusMinutes(5)
-        testContext.put("START_TIME", startTime)
+        sshSteps.saveLogStartTimeOnSaved(new ExpressionEvaluatingParameter<String>(startTime.toString()))
         def timestampFormat = environment.getProperty("ssh.timestampFormat")
         def sshClient = getSshClient()
         def timestamp = ZonedDateTime.now().minusMinutes(1).withZoneSameInstant(ZoneId.of("GMT")).format(DateTimeFormatter.ofPattern(timestampFormat))
@@ -65,7 +66,7 @@ class SshStepsIT extends Specification {
         sshClient.startSession().exec(command)
 
         when:
-        sshSteps.logContainsData("TEST", "START_TIME", table)
+        sshSteps.logContainsData("TEST", table)
 
         then:
         def exception = thrown(AssertionError)

@@ -36,7 +36,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -57,7 +57,6 @@ import static org.jbehavesupport.core.internal.ExampleTableConstraints.ALIAS;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.DATA;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.EXPECTED_VALUE;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.NAME;
-import static org.jbehavesupport.core.internal.ExampleTableConstraints.OPERATOR;
 import static org.jbehavesupport.core.internal.ExampleTableConstraints.VERIFIER;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.assertDuplicatesInColumns;
 import static org.jbehavesupport.core.internal.ExamplesTableUtil.getValue;
@@ -411,20 +410,18 @@ public class RestServiceHandler {
 
     public void saveResponse(ExamplesTable mapping) {
         boolean responsePresent = testContext.get(REST_RESPONSE_JSON) != null;
-        String response = responsePresent ? testContext.get(REST_RESPONSE_JSON).toString() : null;
-        DocumentContext jsonContext = responsePresent ? JsonPath.parse(response) : null;
-        HttpHeaders headers = testContext.get(REST_RESPONSE_HEADERS);
+        var response = responsePresent ? testContext.get(REST_RESPONSE_JSON).toString() : null;
+        var jsonContext = responsePresent ? JsonPath.parse(response) : null;
+        var headers = testContext.<HttpHeaders>get(REST_RESPONSE_HEADERS);
 
         Consumer<Map<String, String>> rowConsumer = row -> {
-            String propertyName = row.get(NAME);
+            var propertyName = row.get(NAME);
             if (!responsePresent) {
                 assertThat(propertyName.startsWith(HEADER_START) || propertyName.startsWith(RAW_BODY_KEY))
                     .as("no such parameter %s found, response body is empty", propertyName)
                     .isTrue();
             }
-            String alias = row.get(ALIAS);
-            Object val = getValueFromJson(propertyName, response, jsonContext, headers);
-            testContext.put(alias, val, MetadataUtil.userDefined());
+            saveValueToTestContext(row.get(ALIAS), getValueFromJson(propertyName, response, jsonContext, headers));
         };
 
         convertCollectionNotation(mapping).getRowsAsParameters()
@@ -440,8 +437,7 @@ public class RestServiceHandler {
     }
 
     private void verifyResponseHeaders(HttpHeaders actualHeaders, ExamplesTable data, String actualResponseMessage) {
-        String usedOperator = data.getHeaders().contains(VERIFIER) ? VERIFIER : OPERATOR;
-        List<Triple<String, Object, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, usedOperator);
+        List<Triple<String, Object, String>> expectedData = ExamplesTableUtil.convertTriple(data, NAME, EXPECTED_VALUE, VERIFIER);
         for (Triple<String, Object, String> triple : expectedData) {
             String key = triple.getLeft();
             if (key.startsWith(HEADER_START) && !key.equals(STATUS_HEADER)) {
@@ -456,9 +452,8 @@ public class RestServiceHandler {
     }
 
     private void verifyResponseJson(String response, ExamplesTable expectedDataTable, String actualResponseMessage) {
-        String usedOperator = expectedDataTable.getHeaders().contains(VERIFIER) ? VERIFIER : OPERATOR;
         List<Triple<String, Object, String>> expectedData =
-            ExamplesTableUtil.convertTriple(expectedDataTable, NAME, EXPECTED_VALUE, usedOperator)
+            ExamplesTableUtil.convertTriple(expectedDataTable, NAME, EXPECTED_VALUE, VERIFIER)
                 .stream()
                 .filter(i -> !i.getLeft().startsWith(HEADER_START))
                 .collect(Collectors.toList());
@@ -566,10 +561,22 @@ public class RestServiceHandler {
 
         String jsonPath = propertyName.startsWith(JSON_PATH_ROOT) ? propertyName : JSON_PATH_ROOT + '.' + propertyName;
         Object propertyValue = jsonContext.read(jsonPath);
-        if (propertyValue instanceof JSONArray && ((JSONArray) propertyValue).size() == 1) {
-            return ((JSONArray) propertyValue).get(0);
+        if (propertyValue instanceof JSONArray jsonArray && jsonArray.size() == 1) {
+            return jsonArray.get(0);
         }
         return propertyValue;
+    }
+
+    private void saveValueToTestContext(String alias, Object val) {
+        if (val instanceof JSONArray jsonArray) {
+            int i = 0;
+
+            for (var item : jsonArray) {
+                testContext.put(alias + "[" + i + "]", item, MetadataUtil.userDefined());
+                i++;
+            }
+        }
+        testContext.put(alias, val, MetadataUtil.userDefined());
     }
 
     /**

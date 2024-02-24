@@ -10,12 +10,12 @@ For each database used in the scenarios a bean of javax.sql.DataSource type with
 @Bean
 @Qualifier("MYAPP")
 public DataSource testDatasource() {
-    BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName(env.getProperty("db.driver"));
-    dataSource.setUrl(env.getProperty("db.url"));
-    dataSource.setUsername(env.getProperty("db.username"));
-    dataSource.setPassword(env.getProperty("db.password"));
-    return dataSource;
+    DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+    dataSourceBuilder.driverClassName(env.getProperty("db.driver"));
+    dataSourceBuilder.url(env.getProperty("db.url"));
+    dataSourceBuilder.username(env.getProperty("db.username"));
+    dataSourceBuilder.password(env.getProperty("db.password"));
+    return dataSourceBuilder.build();
 }
 ```
 

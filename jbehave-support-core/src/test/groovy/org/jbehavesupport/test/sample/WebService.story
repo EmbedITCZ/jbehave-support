@@ -31,7 +31,7 @@ Then [NameResponse] result from [TEST] is:
 | code   |
 | ERR111 |
 
-Scenario: Ws scenario to confirm send request to WS and validate response with all operators
+Scenario: Ws scenario to confirm send request to WS and validate response with all verifiers
 Given [NameRequest] data for [TEST]:
 | name | data |
 | name | test |

@@ -45,15 +45,6 @@ public class SshTemplate {
         static final String CMD_DELIMITER = "; ";
     }
 
-    /**
-     * @deprecated(since = "1.1.0", forRemoval = true)
-     * use {@link #SshTemplate(SshSetting, String, RollingLogResolver, boolean)} instead
-     */
-    @Deprecated
-    public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver) {
-        this(sshSetting, timestampFormat, rollingLogResolver, false);
-    }
-
     public SshTemplate(SshSetting sshSetting, String timestampFormat, RollingLogResolver rollingLogResolver, boolean reportable) {
         isTrue(hasText(sshSetting.getLogPath()), "log path must not be null or empty");
         isTrue(hasText(timestampFormat), "timestamp format must not be null or empty");
@@ -121,7 +112,7 @@ public class SshTemplate {
     }
 
     private SSHClient getSshClient() throws IOException {
-        if (sshClient == null || !sshClient.isConnected()) {
+        if (sshClient == null || !sshClient.isConnected() || !sshClient.isAuthenticated()) {
             sshClient = new SSHClient();
             sshClient.addHostKeyVerifier(new PromiscuousVerifier());
             sshClient.connect(sshSetting.getHostname(), sshSetting.getPort());

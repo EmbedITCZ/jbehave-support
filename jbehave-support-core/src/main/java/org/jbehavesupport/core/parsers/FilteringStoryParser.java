@@ -76,7 +76,7 @@ public class FilteringStoryParser extends RegexStoryParser {
             // Filtering relevant stories
             .filter(scenario -> filter == null
                 || scenario.getExamplesTable().getRowCount() > 0 && this.isMetaByRow(scenario)
-                || filter.allow(scenario.getMeta().inheritFrom(scenario.asMeta(scenarioAsMetaPrefix)
+                || !filter.excluded(scenario.getMeta().inheritFrom(scenario.asMeta(scenarioAsMetaPrefix)
                 .inheritFrom(storyMeta))))
             .collect(Collectors.toList()));
 

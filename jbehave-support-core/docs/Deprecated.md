@@ -4,6 +4,10 @@
 
 ### To be removed - do not use
 
+### To be rewritten - do not use
+
+### Already removed
+
 Class _YamlPropertiesConfigurer_
 
 >Deprecated since version 1.1.4 - will be removed in the future
@@ -31,6 +35,23 @@ Class _YamlPropertiesConfigurer_
 >```
 
 ---
+
+Class _FirefoxWebDriverFactory_
+
+>Deprecated since version 1.0.0 - will be removed soon
+>
+>Chrome browser should be used instead
+
+---
+
+Property `web.browser.driver.version`
+
+>Deprecated since 2.0.0
+>
+>`web.browser.version` should be used instead, for older browser compatibility testing
+
+---
+
 Column _OPERATOR_
 
 >Deprecated since version 1.0.0 - will be removed soon
@@ -49,22 +70,15 @@ Column _OPERATOR_
 >| data      | VERIFIER |
 >| my string | CONTAINS |
 >```
-
 ---
-Class _FirefoxWebDriverFactory_
 
->Deprecated since version 1.0.0 - will be removed soon
->
->Chrome browser should be used instead
-
----
 Step _Then new tab is opened and focused_
 
 >Deprecated since version 1.0.7 - will be removed in future
 >
 >Use _Then tab with [$urlTitle] containing [$text] is focused_ instead
 >
->Step focus an already opened tab instead of opening one
+>Step focuses an already opened tab instead of opening one
 >
 >Example:
 >```
@@ -73,6 +87,7 @@ Step _Then new tab is opened and focused_
 >```
 >
 ---
+
 4 parameters constructor of class _SshTemplate_
 
 >Deprecated since 1.1.0 - will be removed in future
@@ -91,6 +106,7 @@ Step _Then new tab is opened and focused_
 >```
 
 ---
+
 Step _Given log timestamp is saved as [$startTimeAlias]_
 
 >Deprecated since version 1.0.10 - will be removed in future
@@ -109,6 +125,7 @@ Step _Given log timestamp is saved as [$startTimeAlias]_
 >```
 
 ---
+
 Step _Then the following data are present in [$systemQualifier] log since [$startTimeAlias]:$presentData_
 
 >Deprecated since version 1.0.9 - will be removed in future
@@ -146,6 +163,7 @@ Step _Then the following data are present in [$systemQualifier] log since [$star
 >Method _SshHandler.checkLogDataPresence(String systemQualifier, String startTimeAlias, String stringTable, Verifier verifier)_ will be deleted too
 
 ---
+
 Step _Then the following data are not present in [$systemQualifier] log:$missingData_
 
 >Deprecated since version 1.0.10 - will be removed in future
@@ -181,13 +199,18 @@ Step _Then the following data are not present in [$systemQualifier] log:$missing
 >| missing string | NOT_CONTAINS |
 >
 >```
-
-### To be rewritten - do not use
+---
 
 _WebTableSteps_
->Deprecated since 1.1.0 - won't be removed but adjusted
+>Deprecated since 1.1.0 - old version was archived to [separate repository](https://github.com/EmbedITCZ/jbehave-support-web-tables)
 >
->Those steps will be rewritten in future
+>Current steps were rewritten/simplified to support only simple HTML tables.
 
-### Already removed
->_none yet_
+---
+
+_JMSSteps_
+>Old version was archived to [separate repository](https://github.com/EmbedITCZ/jbehave-support-jms)
+>
+>Removed altogether.
+
+--- 

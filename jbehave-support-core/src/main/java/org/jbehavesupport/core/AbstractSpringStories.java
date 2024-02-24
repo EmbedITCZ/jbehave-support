@@ -1,22 +1,5 @@
 package org.jbehavesupport.core;
 
-import static java.util.Objects.nonNull;
-import static org.springframework.util.Assert.notNull;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.jbehavesupport.core.internal.FullScenarioNameStorer;
-import org.jbehavesupport.core.internal.SuffixRemovingStoryNameResolver;
-import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
-import org.jbehavesupport.core.internal.web.GivenStoryHelper;
-import org.jbehavesupport.core.report.XmlReporterFactory;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbehave.core.configuration.Configuration;
@@ -27,7 +10,6 @@ import org.jbehave.core.failures.FailingUponPendingStep;
 import org.jbehave.core.failures.RethrowingFailure;
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.LoadFromClasspath;
-import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.model.Meta;
 import org.jbehave.core.parsers.StoryParser;
 import org.jbehave.core.reporters.FilePrintStreamFactory;
@@ -37,20 +19,33 @@ import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.ParameterControls;
 import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.spring.SpringStepsFactory;
-import org.jbehavesupport.runner.JUnitRunner;
-import org.jbehavesupport.runner.JUnitRunnerConfiguration;
-import org.junit.runner.RunWith;
+import org.jbehavesupport.core.internal.FullScenarioNameStorer;
+import org.jbehavesupport.core.internal.SuffixRemovingStoryNameResolver;
+import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
+import org.jbehavesupport.core.internal.web.GivenStoryHelper;
+import org.jbehavesupport.core.report.XmlReporterFactory;
+import org.jbehavesupport.engine.EmbedderConfiguration;
+import org.jbehavesupport.engine.JUnit5Stories;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
 
-@RunWith(JUnitRunner.class)
-@ContextConfiguration(classes = JBehaveDefaultConfig.class)
-public abstract class AbstractSpringStories extends JUnitStories {
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.util.Objects.nonNull;
+import static org.springframework.util.Assert.notNull;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+public abstract class AbstractSpringStories extends JUnit5Stories {
 
     public static final String JBEHAVE_SCENARIO = "jbehave_scenario";
 
@@ -121,7 +116,7 @@ public abstract class AbstractSpringStories extends JUnitStories {
         Embedder embedder = super.configuredEmbedder();
         embedder.useMetaFilters(Collections.singletonList(CUSTOM_MATCHER));
         embedder.useMetaMatchers(metaMatchers());
-        JUnitRunnerConfiguration.recommendedConfiguration(embedder).useStoryTimeouts(timeout.toString());
+        EmbedderConfiguration.recommendedConfiguration(embedder).useStoryTimeouts(timeout.toString());
         return embedder;
     }
 
@@ -133,10 +128,10 @@ public abstract class AbstractSpringStories extends JUnitStories {
                 .useStoryReporterBuilder(storyReporterBuilder())
                 .useParameterControls(new ParameterControls().useDelimiterNamedParameters(true))
                 .usePendingStepStrategy(new FailingUponPendingStep())
-                .useViewGenerator(new FreemarkerViewGenerator(new SuffixRemovingStoryNameResolver()))
+                .useViewGenerator(new FreemarkerViewGenerator(new SuffixRemovingStoryNameResolver(), FreemarkerViewGenerator.class))
                 .useParameterConverters(parameterConverters)
                 .useFailureStrategy(new RethrowingFailure())
-                .useStoryExecutionComparator((x,y) -> 1); // always return in the same order as passed
+                .useStoryExecutionComparator((x, y) -> 1); // always return in the same order as passed
 
             StoryParser parser = storyParser(configuration);
             if (parser != null) {
@@ -172,15 +167,15 @@ public abstract class AbstractSpringStories extends JUnitStories {
             return loadResources(path, storyName)
                 .filter(Resource::isReadable)
                 .map(r -> getPath(path, r))
-                .collect(Collectors.toList());
+                .toList();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
     private String getPath(String path, Resource resource) {
-        if (resource instanceof ClassPathResource) {
-            return ((ClassPathResource) resource).getPath();
+        if (resource instanceof ClassPathResource classPathResource) {
+            return classPathResource.getPath();
         } else {
             try {
                 String fullPathWithSlashes = resource.getFile().getPath().replace("\\", "/");

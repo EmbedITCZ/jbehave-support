@@ -10,7 +10,6 @@ Light extension to [JBehave](https://jbehave.org) using Spring framework.
 Provides several base steps for working with 
 [REST](jbehave-support-core/docs/Rest-api.md), 
 [SOAP](jbehave-support-core/docs/Web-service.md), 
-[JMS](jbehave-support-core/docs/Jms.md), 
 [SQL](jbehave-support-core/docs/Sql-steps.md), 
 [SSH](jbehave-support-core/docs/Ssh.md), 
 [(Selenium based) web testing](jbehave-support-core/docs/Web-testing.md), 
@@ -19,9 +18,7 @@ along with support for [verification](jbehave-support-core/docs/General.md#verif
 [expression commands](jbehave-support-core/docs/Expression-commands.md) and 
 basic [reporting](jbehave-support-core/docs/Reporting.md).
 
-Currently supported Java versions are 8, 17 (latest LTS) and 18 (latest version).  
-Java 17+ support is limited due to JEP 396 and incompatibilities in some of our dependencies. When running on Java 17+ please use `--add-opens java.base/java.lang=ALL-UNNAMED`
-to bypass the newly introduced restrictions in the meantime.
+Currently supported Java versions are 17 and 21 (latest LTS and latest version).
 
 ## Contents
 1. [Modules](#modules)
@@ -57,7 +54,7 @@ Contributors guide can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 To show you how to set up a project using the jbehave-support library, I am going to make a test that Google searches `EmbedITCZ jbehave-support` and checks the result. To learn more about this example check out [Web-testing.md](jbehave-support-core/docs/Web-testing.md).
 
-Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/examples/Web-service.md), [REST](jbehave-support-core/docs/examples/Rest.md), [JMS](jbehave-support-core/docs/Jms.md)) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
+Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/examples/Web-service.md), [REST](jbehave-support-core/docs/examples/Rest.md) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
 
 ### Add to Java project as a Maven dependency
 
@@ -92,9 +89,10 @@ Also, make sure to have the test resources setup correctly, simple setup to use 
 ### Create a TestConfig configuration file
 
 From this file, jbehave-support will take all the necessary information about tested applications and the types of reports you want.
-First create a Java class and call it `TestConfig`. Add the spring annotation `@Configuration`.
+First create a Java class and call it `TestConfig`. Add the spring annotations `@EnableAutoConfiguration` and `@SpringBootConfiguration` (or `@Configuration` if your project already contains a spring boot configuration).
 ```
-@Configuration
+@SpringBootConfiguration
+@EnableAutoConfiguration
 public class TestConfig {
 ```
 Setting up the application you want to test largely depends on what do you want to test. Generally, you need to add a Spring bean method setting up the necessary parameters. We will be setting-up a WebSetting for Selenium to access google.com. ([More](jbehave-support-core/docs/Web-testing.md#configuration) about setting up web testing)
@@ -178,9 +176,8 @@ This scenario opens `www.google.com`, writes `embeditcz jbehave-support` into th
 
 ### Write your story class
 
-In the same directory as your `.story` file, create a Java class that extends `AbstractSpringStories` and call it `<yourStoryName>Story` (naming is important). Add the annotation `@ContextConfiguration(classes = TestConfig.class)` to link it with your TextConfig class. Leave this class empty.
+In the same directory as your `.story` file, create a Java class that extends `AbstractSpringStories` and call it `<yourStoryName>Story` (naming is important). The test configuration will automatically be picked up by Spring Boot. You can leave this class empty.
 ```
-@ContextConfiguration(classes = TestConfig.class)
 public class GoogleStory extends AbstractSpringStories {
 }
 ```

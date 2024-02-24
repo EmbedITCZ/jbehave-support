@@ -10,11 +10,11 @@ import spock.lang.Specification
 class BigDecimalConverterTest extends Specification {
 
     @Autowired
-    ParameterConverters.ParameterConverter<BigDecimal> converter
+    ParameterConverters.ParameterConverter<String, BigDecimal> converter
 
     def "Accept"() {
         expect:
-        converter.accept(BigDecimal.class) == true
+        converter.canConvertTo(BigDecimal.class) == true
     }
 
     def "ConvertValue"() {

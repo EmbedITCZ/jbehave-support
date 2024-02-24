@@ -96,17 +96,6 @@
                                 </a>
                             </li>
                         </xsl:if>
-                        <xsl:if test="jms">
-                            <li class="nav-item">
-                                <a class="nav-link">
-                                    <xsl:attribute name="href">
-                                        <xsl:value-of select="concat('#jms-messages',$storyIndex)"/>
-                                    </xsl:attribute>
-                                    <i class="fa fa-exchange" aria-hidden="true"></i>
-                                    JMS messages
-                                </a>
-                            </li>
-                        </xsl:if>
                         <xsl:if test="sql">
                             <li class="nav-item">
                                 <a class="nav-link">
@@ -180,9 +169,6 @@
                         <xsl:with-param name="storyIndex" select="$storyIndex"/>
                     </xsl:call-template>
                     <xsl:call-template name="rest">
-                        <xsl:with-param name="storyIndex" select="$storyIndex"/>
-                    </xsl:call-template>
-                    <xsl:call-template name="jms">
                         <xsl:with-param name="storyIndex" select="$storyIndex"/>
                     </xsl:call-template>
                     <xsl:call-template name="sql">

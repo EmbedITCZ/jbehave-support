@@ -1,0 +1,2 @@
+org.jbehavesupport.core.JBehaveAutoConfiguration
+org.jbehavesupport.core.XmlReporterAutoConfiguration

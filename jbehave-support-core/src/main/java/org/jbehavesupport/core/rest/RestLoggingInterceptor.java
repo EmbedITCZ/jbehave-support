@@ -18,12 +18,12 @@ public class RestLoggingInterceptor implements ClientHttpRequestInterceptor {
     public ClientHttpResponse intercept(HttpRequest req, byte[] reqBody, ClientHttpRequestExecution ex) throws IOException {
         ClientHttpResponse response = ex.execute(req, reqBody);
         if (log.isTraceEnabled()) {
-            log.trace("Request body: {} with headers: {}", new String(reqBody, StandardCharsets.UTF_8), req.getHeaders());
+            log.trace("Request to {} with body: {} with headers: {}", req.getURI(), new String(reqBody, StandardCharsets.UTF_8), req.getHeaders());
             InputStreamReader isr = new InputStreamReader(
                 response.getBody(), StandardCharsets.UTF_8);
             String body = new BufferedReader(isr).lines()
                 .collect(Collectors.joining("\n"));
-            log.trace("Response body: {} with headers: {}", body, response.getHeaders());
+            log.trace("Response [{}] from {} with body: {} with headers: {}", response.getStatusCode(), req.getURI(), body, response.getHeaders());
         }
         return response;
     }

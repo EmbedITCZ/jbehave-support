@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import jakarta.annotation.PostConstruct;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -431,7 +431,7 @@ public abstract class WebServiceHandler {
 
     private Verifier getVerifier(Parameters parameters) {
         String verifierName = parameters.values().entrySet().stream()
-            .filter(e -> e.getKey().equals(ExampleTableConstraints.OPERATOR) || e.getKey().equals(ExampleTableConstraints.VERIFIER))
+            .filter(e -> e.getKey().equals(ExampleTableConstraints.VERIFIER))
             .map(Map.Entry::getValue)
             .findFirst()
             .orElse(null);

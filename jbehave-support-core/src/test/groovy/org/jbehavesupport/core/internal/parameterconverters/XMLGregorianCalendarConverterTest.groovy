@@ -13,11 +13,11 @@ import javax.xml.datatype.XMLGregorianCalendar
 class XMLGregorianCalendarConverterTest extends Specification {
 
     @Autowired
-    ParameterConverters.ParameterConverter<XMLGregorianCalendar> converter
+    ParameterConverters.ParameterConverter<String, XMLGregorianCalendar> converter
 
     def "Accept"() {
         expect:
-        converter.accept(XMLGregorianCalendar.class) == true
+        converter.canConvertTo(XMLGregorianCalendar.class) == true
     }
 
     def "ConvertValue"() {

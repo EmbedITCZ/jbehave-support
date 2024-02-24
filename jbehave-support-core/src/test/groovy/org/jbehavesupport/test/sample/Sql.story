@@ -114,7 +114,7 @@ Scenario: Query fails with message
 
 Given this query with expected exception is performed on [TEST]:
 select first_name from person_
-Then query fails and error message contains: Table "PERSON_" not found
+Then query fails and error message contains: bad SQL grammar
 
 
 Scenario: NULL command in step - these rows are present in the query result

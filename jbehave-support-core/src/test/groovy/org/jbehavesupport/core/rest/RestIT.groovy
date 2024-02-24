@@ -3,13 +3,14 @@ package org.jbehavesupport.core.rest
 import org.jbehave.core.model.ExamplesTable
 import org.jbehavesupport.core.TestConfig
 import org.jbehavesupport.core.TestContext
+import org.jbehavesupport.test.support.TestAppSupport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = TestConfig)
-class RestIT extends Specification {
+class RestIT extends Specification implements TestAppSupport {
 
     @Autowired
     private RestServiceHandler restServiceHandler

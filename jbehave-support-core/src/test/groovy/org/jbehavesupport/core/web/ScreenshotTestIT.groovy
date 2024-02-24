@@ -4,9 +4,11 @@ import org.jbehavesupport.core.TestConfig
 import org.jbehavesupport.core.internal.web.WebScreenshotCreator
 import org.openqa.selenium.WebDriver
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
+@DirtiesContext(classMode =  DirtiesContext.ClassMode.BEFORE_CLASS)
 @ContextConfiguration(classes = TestConfig)
 class ScreenshotTestIT extends Specification {
 

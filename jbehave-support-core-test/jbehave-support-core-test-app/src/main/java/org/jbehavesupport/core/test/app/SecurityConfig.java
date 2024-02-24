@@ -1,19 +1,29 @@
 package org.jbehavesupport.core.test.app;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/rest/secure/**").fullyAuthenticated()
-            .and()
-            .httpBasic()
-            .and().headers().frameOptions().sameOrigin();
+    @Bean
+    public SecurityFilterChain basicAuthFilterChain(HttpSecurity http) throws Exception {
+        return http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(matcherRegistry ->
+                matcherRegistry
+                    .requestMatchers(antMatcher("/rest/secure/**")).fullyAuthenticated()
+                    .requestMatchers(antMatcher("/**")).permitAll()
+            )
+            .httpBasic(Customizer.withDefaults())
+            .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+            .build();
     }
+
 }

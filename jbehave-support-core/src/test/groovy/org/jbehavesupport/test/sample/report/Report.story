@@ -12,27 +12,6 @@ Given the following values are saved:
 | MULTI_LINE_VALUE | first line{UNESCAPE:\n}second line{UNESCAPE:\n}another line |
 | RANDOM_STRING    | {RANDOM_STRING:15}                                          |
 
-!-- Publish a JSM message
-Given [NameRequest] data for JMS broker [TEST]:
-| name                     | data                  |
-| name                     | test                  |
-| CUID                     | {RANDOM_STRING:7}     |
-| address.0                | {RANDOM_EMAIL}        |
-| passDate                 | {RANDOM_DATE}         |
-| maxResults               | {RANDOM_NUMBER:9}     |
-| @header.JMSDestination   | queue                 |
-| @header.JMSDeliveryMode  | 1                     |
-| @header.JMSExpiration    | {RANDOM_NUMBER:2}     |
-| @header.JMSPriority      | {RANDOM_NUMBER:1}     |
-| @header.JMSMessageID     | {RANDOM_STRING:5}     |
-| @header.JMSTimestamp     | {RANDOM_NUMBER:10}    |
-| @header.JMSCorrelationID | CID:{RANDOM_STRING:5} |
-| @header.JMSReplyTo       | reply back            |
-| @header.JMSType          | not my type           |
-| @header.JMSRedelivered   | false                 |
-
-When [NameRequest] is sent to destination [QUEUE] on JMS broker [TEST]
-
 !-- Send a POST request a save values
 When [POST] request to [TEST]/[user/] is sent with data:
 | name                 | data                           | contextAlias |

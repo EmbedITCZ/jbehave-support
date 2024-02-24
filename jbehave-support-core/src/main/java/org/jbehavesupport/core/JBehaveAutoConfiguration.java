@@ -2,7 +2,6 @@ package org.jbehavesupport.core;
 
 import org.jbehavesupport.core.expression.ExpressionCommand;
 import org.jbehavesupport.core.expression.ExpressionEvaluator;
-import org.jbehavesupport.core.internal.ConditionalOnMissingBean;
 import org.jbehavesupport.core.internal.TestContextImpl;
 import org.jbehavesupport.core.internal.expression.ExpressionEvaluatorImpl;
 import org.jbehavesupport.core.internal.parameterconverters.ExamplesEvaluationTableConverter;
@@ -18,7 +17,6 @@ import org.jbehavesupport.core.internal.web.webdriver.WebDriverDelegatingInterce
 import org.jbehavesupport.core.internal.web.webdriver.WebDriverFactoryResolverImpl;
 import org.jbehavesupport.core.ssh.SshHandler;
 import org.jbehavesupport.core.support.TimeFacade;
-
 import org.jbehavesupport.core.verification.Verifier;
 import org.jbehavesupport.core.verification.VerifierResolver;
 import org.jbehavesupport.core.web.ByFactory;
@@ -37,10 +35,11 @@ import org.jbehavesupport.core.web.WebWaitConditionResolver;
 import org.openqa.selenium.WebDriver;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -48,16 +47,14 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import java.util.List;
 import java.util.Map;
 
-@Configuration
-@ComponentScan(basePackages = "org.jbehavesupport")
-public class JBehaveDefaultConfig {
+@AutoConfiguration
+@ComponentScan(
+    excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = AutoConfiguration.class)}
+)
+public class JBehaveAutoConfiguration {
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
+    @ConditionalOnMissingBean(TimeFacade.class)
     public TimeFacade timeFacade() {
         return TimeFacade.getDefault();
     }
@@ -112,7 +109,7 @@ public class JBehaveDefaultConfig {
 
     @Bean
     @ConditionalOnMissingBean(SshHandler.class)
-    public SshHandler testSshHandler(TestContext testContext, ConfigurableListableBeanFactory beanFactory,
+    public SshHandler sshHandler(TestContext testContext, ConfigurableListableBeanFactory beanFactory,
                                      ExamplesEvaluationTableConverter tableConverter, VerifierResolver verifierResolver) {
         return new SshHandler(testContext, beanFactory, tableConverter, verifierResolver);
     }
@@ -142,6 +139,7 @@ public class JBehaveDefaultConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean(WebDriver.class)
     public WebDriver webDriver(WebDriverFactoryResolver webDriverFactoryResolver) {
         ProxyFactory proxyFactory = new ProxyFactory(WebDriver.class, new WebDriverDelegatingInterceptor(webDriverFactoryResolver));
         proxyFactory.setProxyTargetClass(true);

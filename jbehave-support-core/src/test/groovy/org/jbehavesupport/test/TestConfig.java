@@ -1,4 +1,41 @@
-package org.jbehavesupport.test.support;
+package org.jbehavesupport.test;
+
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.jbehave.core.model.ExamplesTable;
+import org.jbehavesupport.core.healthcheck.HealthCheck;
+import org.jbehavesupport.core.healthcheck.HealthChecks;
+import org.jbehavesupport.core.rest.RestServiceHandler;
+import org.jbehavesupport.core.rest.RestTemplateConfigurer;
+import org.jbehavesupport.core.ssh.RollingLogResolver;
+import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
+import org.jbehavesupport.core.ssh.SshLog;
+import org.jbehavesupport.core.ssh.SshSetting;
+import org.jbehavesupport.core.ssh.SshTemplate;
+import org.jbehavesupport.core.support.YamlPropertySourceFactory;
+import org.jbehavesupport.core.web.WebDriverFactory;
+import org.jbehavesupport.core.web.WebSetting;
+import org.jbehavesupport.core.ws.WebServiceHandler;
+import org.jbehavesupport.test.support.TestWebServiceHandler;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.ZonedDateTime;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonMap;
@@ -8,63 +45,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.ZonedDateTime;
-
-import javax.jms.ConnectionFactory;
-import javax.sql.DataSource;
-
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.jbehave.core.model.ExamplesTable;
-import org.jbehavesupport.core.TestContext;
-import org.jbehavesupport.core.healthcheck.HealthCheck;
-import org.jbehavesupport.core.healthcheck.HealthChecks;
-import org.jbehavesupport.core.internal.FileNameResolver;
-import org.jbehavesupport.core.jms.JmsJaxbHandler;
-import org.jbehavesupport.core.report.XmlReporterFactory;
-import org.jbehavesupport.core.report.extension.EnvironmentInfoXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.JmsXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.RestXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.ScreenshotReporterExtension;
-import org.jbehavesupport.core.report.extension.ServerLogXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.SqlXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.TestContextXmlReporterExtension;
-import org.jbehavesupport.core.report.extension.WsXmlReporterExtension;
-import org.jbehavesupport.core.rest.RestServiceHandler;
-import org.jbehavesupport.core.rest.RestTemplateConfigurer;
-import org.jbehavesupport.core.ssh.RollingLogResolver;
-import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
-import org.jbehavesupport.core.ssh.SshHandler;
-import org.jbehavesupport.core.ssh.SshLog;
-import org.jbehavesupport.core.ssh.SshSetting;
-import org.jbehavesupport.core.ssh.SshTemplate;
-import org.jbehavesupport.core.support.YamlPropertySourceFactory;
-import org.jbehavesupport.core.test.app.oxm.NameRequest;
-import org.jbehavesupport.core.web.WebDriverFactory;
-import org.jbehavesupport.core.web.WebSetting;
-import org.jbehavesupport.core.ws.WebServiceHandler;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.jms.core.JmsTemplate;
-
-@Configuration
+@SpringBootConfiguration
+@EnableAutoConfiguration
 @ComponentScan
 @RequiredArgsConstructor
 @PropertySource(value = "test.yml", factory = YamlPropertySourceFactory.class)
@@ -85,64 +67,14 @@ public class TestConfig {
     }
 
     @Bean
-    public ConversionService conversionService() {
-        return new DefaultConversionService();
-    }
-
-    @Bean
     @Qualifier("TEST")
     public DataSource testDatasource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(env.getProperty("db.driver"));
-        dataSource.setUrl(env.getProperty("db.url"));
-        dataSource.setUsername(env.getProperty("db.username"));
-        dataSource.setPassword(env.getProperty("db.password"));
-        return dataSource;
-    }
-
-    @Bean
-    public XmlReporterFactory xmlReporterFactory() {
-        return new XmlReporterFactory();
-    }
-
-    @Bean
-    public WsXmlReporterExtension wsXmlReporterExtension() {
-        return new WsXmlReporterExtension();
-    }
-
-    @Bean
-    public RestXmlReporterExtension restXmlReporterExtension(TestContext testContext, FileNameResolver fileNameResolver) {
-        return new RestXmlReporterExtension(testContext, fileNameResolver);
-    }
-
-    @Bean
-    public JmsXmlReporterExtension jmsXmlReporterExtension() {
-        return new JmsXmlReporterExtension();
-    }
-
-    @Bean
-    public EnvironmentInfoXmlReporterExtension environmentInfoXmlReporterExtension() {
-        return new EnvironmentInfoXmlReporterExtension(env);
-    }
-
-    @Bean
-    public TestContextXmlReporterExtension testContextXmlReporterExtension(TestContext testContext) {
-        return new TestContextXmlReporterExtension(testContext);
-    }
-
-    @Bean
-    public ServerLogXmlReporterExtension serverLogXmlReporterExtension(ConfigurableListableBeanFactory beanFactory, SshHandler sshHandler,TestContext testContext, FileNameResolver fileNameResolver) {
-        return new ServerLogXmlReporterExtension(testContext, fileNameResolver, sshHandler, beanFactory);
-    }
-
-    @Bean
-    public SqlXmlReporterExtension sqlXmlReporterExtension() {
-        return new SqlXmlReporterExtension();
-    }
-
-    @Bean
-    public ScreenshotReporterExtension screenshotReporterExtension(TestContext testContext) {
-        return new ScreenshotReporterExtension(testContext);
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(env.getProperty("db.driver"));
+        dataSourceBuilder.url(env.getProperty("db.url"));
+        dataSourceBuilder.username(env.getProperty("db.username"));
+        dataSourceBuilder.password(env.getProperty("db.password"));
+        return dataSourceBuilder.build();
     }
 
     @Bean
@@ -211,8 +143,8 @@ public class TestConfig {
 
         RollingLogResolver rollingLogResolver = new SimpleRollingLogResolver();
         String timestampFormat = env.getProperty("ssh.timestampFormat");
-        SshTemplate passwordTemplate = new SshTemplate(passwordSetting, timestampFormat, rollingLogResolver);
-        SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver);
+        SshTemplate passwordTemplate = new SshTemplate(passwordSetting, timestampFormat, rollingLogResolver, false);
+        SshTemplate keyTemplate = new SshTemplate(keySetting, timestampFormat, rollingLogResolver, false);
 
         return new SshTemplate[]{passwordTemplate, keyTemplate};
     }
@@ -239,19 +171,6 @@ public class TestConfig {
     @Qualifier("TEST")
     HealthCheck realHealthCheck() {
         return HealthChecks.http(env.getProperty("rest.url") + "user/", "", "");
-    }
-
-    @Bean
-    ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory(env.getProperty("jms.brokerUrl"));
-    }
-
-    @Bean
-    @Qualifier("TEST")
-    public JmsJaxbHandler jmsJaxbHandler() {
-        Class[] classesToBeBound = {NameRequest.class};
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
-        return new JmsJaxbHandler(jmsTemplate, classesToBeBound);
     }
 
     @Bean

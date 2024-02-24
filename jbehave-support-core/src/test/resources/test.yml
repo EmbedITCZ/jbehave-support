@@ -18,7 +18,7 @@ db:
 web:
   url: http://localhost:11110/
   browser.driver.version: 2.38
-
+  screenshot.reporting.mode: FAILED
 numeric:
   scale: 5
 
@@ -32,9 +32,6 @@ ssh:
     user: root
     password: sa
     keyPath: 'classpath:/ssh/key'
-
-jms:
-  brokerUrl: vm://localhost?broker.persistent=false
 
 browser-stack:
   username: browser-stack-username

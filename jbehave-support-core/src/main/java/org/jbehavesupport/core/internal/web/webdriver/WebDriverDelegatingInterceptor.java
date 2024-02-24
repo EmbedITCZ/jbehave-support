@@ -1,6 +1,6 @@
 package org.jbehavesupport.core.internal.web.webdriver;
 
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PreDestroy;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.jbehavesupport.core.web.WebDriverFactory;

@@ -18,10 +18,6 @@ function reportReady() {
         showHideAllInElement('#rest-calls-body');
     });
 
-    $('#expand-all-jms-messages').click(function () {
-            showHideAllInElement('#jms-messages-body');
-    });
-
     $('#expand-all-sql-queries').click(function () {
         showHideAllInElement('#sql-queries-body');
     });
@@ -32,6 +28,10 @@ function reportReady() {
 
     $('#expand-all-shell-logs').click(function () {
         showHideAllInElement('#shell-logs-body');
+    });
+
+    $('#expand-all-example-scenarios').click(function () {
+        showHideAllInElement('#example-scenarios');
     });
 
     /* classes for formatting time in format: 2017-10-13T15:14:30.416+02:00[Europe/Prague] */

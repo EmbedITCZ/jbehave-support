@@ -1,42 +1,37 @@
 package org.jbehavesupport.core
 
-import org.jbehavesupport.core.TestConfig
+import org.jbehavesupport.test.support.TestAppSupport
 import org.jbehavesupport.test.support.TestSupportBrowserStack
-import org.junit.runner.JUnitCore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Shared
 import spock.lang.Specification
 
-import static org.jbehavesupport.test.support.TestConfig.SAFARI_BROWSERSTACK
+import static org.jbehavesupport.test.TestConfig.SAFARI_BROWSERSTACK
 
 /**
  * This test verifies that our code is compatible with Safari using BrowserStack.
  * It assumes BrowserStack Local binary is already running.
  */
 @ContextConfiguration(classes = TestConfig.class)
-class BrowserStackSafariT extends Specification implements TestSupportBrowserStack {
+class BrowserStackSafariT extends Specification implements TestSupportBrowserStack, TestAppSupport {
 
     @Autowired
     private Environment env
 
-    @Shared
-    runner = new JUnitCore()
-
     def setup() {
         System.setProperty("web.browser", SAFARI_BROWSERSTACK)
-        System.setProperty("web.url", "http://bs-local.com:11110/")
+        System.setProperty("web.url", "http://bs-local.com:$uiPort/")
         System.setProperty("browser-stack.build", getBuildName())
     }
 
     def "Safari test #story"() {
         when:
         System.setProperty("browser-stack.name", "Safari test " + story)
-        def result = runner.run(runWith(story))
+        def result = run(runWith(story))
 
         then:
-        result.failureCount == 0
+        result.totalFailureCount == 0
 
         where:
         story | _

@@ -1,6 +1,7 @@
 package org.jbehavesupport.core.internal;
 
 import lombok.RequiredArgsConstructor;
+import org.jbehave.core.model.Scenario;
 import org.jbehavesupport.core.TestContext;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,8 +26,8 @@ public class FullScenarioNameStorer extends NullStoryReporter {
     }
 
     @Override
-    public void beforeScenario(String scenarioTitle) {
-        testContext.put(AbstractSpringStories.JBEHAVE_SCENARIO, String.format("%s#%s", CURRENT_STORY.get(), scenarioTitle));
+    public void beforeScenario(Scenario scenario) {
+        testContext.put(AbstractSpringStories.JBEHAVE_SCENARIO, String.format("%s#%s", CURRENT_STORY.get(), scenario.getTitle()));
     }
 
     @Override

@@ -71,7 +71,7 @@
     <properties>
         <java.version>17</java.version>
 
-        <version.jbehave>5.0</version.jbehave>
+        <version.jbehave>5.2.0</version.jbehave>
         <version.jbehave-junit-support>5.0.1</version.jbehave-junit-support>
         <version.spockframework>2.4-M1-groovy-4.0</version.spockframework>
         <version.sshj>0.33.0</version.sshj>

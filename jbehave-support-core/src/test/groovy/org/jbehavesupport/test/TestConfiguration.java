@@ -50,7 +50,7 @@ import static org.mockito.Mockito.when;
 @ComponentScan
 @RequiredArgsConstructor
 @PropertySource(value = "test.yml", factory = YamlPropertySourceFactory.class)
-public class TestConfig {
+public class TestConfiguration {
 
     public static final String FIREFOX_BROWSERSTACK = "firefox-browserstack";
     public static final String SAFARI_BROWSERSTACK = "safari-browserstack";
@@ -151,7 +151,7 @@ public class TestConfig {
 
     @Bean
     @Qualifier("LONG_REPORTABLE")
-    SshTemplate mockSshTemplate() throws IOException {
+    SshTemplate longReportableSshTemplate() throws IOException {
         SshSetting sshSetting = builder()
             .hostname("fake hostname")
             .user("fake user")

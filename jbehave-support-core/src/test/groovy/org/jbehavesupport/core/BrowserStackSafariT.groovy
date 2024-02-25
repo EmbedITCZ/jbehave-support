@@ -7,7 +7,7 @@ import org.springframework.core.env.Environment
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-import static org.jbehavesupport.test.TestConfig.SAFARI_BROWSERSTACK
+import static org.jbehavesupport.test.TestConfiguration.SAFARI_BROWSERSTACK
 
 /**
  * This test verifies that our code is compatible with Safari using BrowserStack.

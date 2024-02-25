@@ -80,9 +80,6 @@
         <version.moxy>4.0.0</version.moxy>
         <version.testcontainers>1.17.3</version.testcontainers>
 
-        <!-- remove once boot is on same or newer version  -->
-        <selenium.version>4.13.0</selenium.version>
-
         <plugin.version.gmavenplus-plugin>1.13.1</plugin.version.gmavenplus-plugin>
         <plugin.version.maven-release-plugin>2.5.3</plugin.version.maven-release-plugin>
         <plugin.version.nexus-staging-maven-plugin>1.6.12</plugin.version.nexus-staging-maven-plugin>

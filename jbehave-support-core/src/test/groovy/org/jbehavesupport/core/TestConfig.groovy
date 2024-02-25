@@ -24,13 +24,11 @@ import org.jbehavesupport.core.ws.WebServiceEndpointRegistry
 import org.jbehavesupport.core.ws.WebServiceHandler
 import org.jbehavesupport.test.support.TestWebServiceHandler
 import org.openqa.selenium.WebDriver
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
 
@@ -43,16 +41,15 @@ import static org.mockito.ArgumentMatchers.any
 import jakarta.annotation.PostConstruct
 import java.util.concurrent.RejectedExecutionException
 
-@Configuration
 @ComponentScan
 @PropertySource(value = "test.yml", factory = YamlPropertySourceFactory.class)
 class TestConfig {
 
-    @Autowired
-    private Environment env
-
-    @Autowired
     private ApplicationContext applicationContext
+
+    TestConfig(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext
+    }
 
     @PostConstruct
     void configuration() {
@@ -109,7 +106,7 @@ class TestConfig {
 
     @Bean
     @Qualifier("TEST")
-    SshTemplate sshTemplate() throws IOException {
+    SshTemplate sshTemplate(Environment env) throws IOException {
         SshSetting passwordSetting = SshSetting.builder()
             .hostname(env.getProperty("ssh.hostname"))
             .user(env.getProperty("ssh.credentials.user"))
@@ -134,7 +131,7 @@ class TestConfig {
 
     @Bean
     @Qualifier("TEST")
-    WebServiceHandler requestFactoryTestHandler() {
+    WebServiceHandler requestFactoryTestHandler(Environment env) {
         return new TestWebServiceHandler(env) {
             @Override
             protected void initEndpoints(WebServiceEndpointRegistry endpointRegistry) {
@@ -148,7 +145,7 @@ class TestConfig {
     }
 
     @Bean
-    RestServiceHandler testRestServiceHandler() {
+    RestServiceHandler testRestServiceHandler(Environment env) {
         return new RestServiceHandler(env.getProperty("rest.url"))
     }
 }

@@ -41,7 +41,7 @@ jobs:
           local-testing: start
           local-identifier: random
       - name: BrowserStack${{ matrix.browser }}T on Java ${{ matrix.java }}
-        uses: nick-invision/retry@v2
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 10
           max_attempts: 3

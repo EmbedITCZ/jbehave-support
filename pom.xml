@@ -83,7 +83,7 @@
         <!-- remove once boot is on same or newer version  -->
         <selenium.version>4.13.0</selenium.version>
 
-        <plugin.version.gmavenplus-plugin>1.13.1</plugin.version.gmavenplus-plugin>
+        <plugin.version.gmavenplus-plugin>3.0.2</plugin.version.gmavenplus-plugin>
         <plugin.version.maven-release-plugin>2.5.3</plugin.version.maven-release-plugin>
         <plugin.version.nexus-staging-maven-plugin>1.6.13</plugin.version.nexus-staging-maven-plugin>
         <plugin.version.maven-gpg-plugin>3.0.1</plugin.version.maven-gpg-plugin>

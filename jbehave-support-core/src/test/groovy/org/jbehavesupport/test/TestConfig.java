@@ -18,8 +18,7 @@ import org.jbehavesupport.core.web.WebDriverFactory;
 import org.jbehavesupport.core.web.WebSetting;
 import org.jbehavesupport.core.ws.WebServiceHandler;
 import org.jbehavesupport.test.support.TestWebServiceHandler;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringBootConfiguration;
@@ -36,6 +35,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonMap;
@@ -178,15 +178,14 @@ public class TestConfig {
         return new WebDriverFactory() {
             @Override
             public RemoteWebDriver createWebDriver() {
-                DesiredCapabilities caps = new DesiredCapabilities();
-                caps.setCapability("os", "OS X");
-                caps.setCapability("os_version", "Catalina");
-                caps.setCapability("browser", "Safari");
-                caps.setCapability("browserstack.safari.driver", "2.48");
-                caps.setCapability("browserstack.safari.enablePopups", "true");
-                caps.setCapability("acceptSslCerts", true);
+                MutableCapabilities capabilities = new MutableCapabilities();
+                HashMap<String, Object> bstackOptions = new HashMap<>();
+                capabilities.setCapability("browserName", "Safari");
+                bstackOptions.put("os", "OS X");
+                bstackOptions.put("osVersion", "Sonoma");
+                bstackOptions.put("acceptSslCerts", "true");
 
-                return getBrowserStackWebDriver(caps);
+                return getBrowserStackWebDriver(capabilities, bstackOptions);
             }
 
             @Override
@@ -201,12 +200,13 @@ public class TestConfig {
         return new WebDriverFactory() {
             @Override
             public RemoteWebDriver createWebDriver() {
-                DesiredCapabilities caps = new DesiredCapabilities();
-                caps.setCapability("os", "Windows");
-                caps.setCapability("os_version", "10");
-                caps.setCapability("browser", "Firefox");
+                MutableCapabilities capabilities = new MutableCapabilities();
+                HashMap<String, Object> bstackOptions = new HashMap<>();
+                capabilities.setCapability("browserName", "Firefox");
+                bstackOptions.put("os", "Windows");
+                bstackOptions.put("osVersion", "11");
 
-                return getBrowserStackWebDriver(caps);
+                return getBrowserStackWebDriver(capabilities, bstackOptions);
             }
 
             @Override
@@ -221,18 +221,13 @@ public class TestConfig {
         return new WebDriverFactory() {
             @Override
             public RemoteWebDriver createWebDriver() {
-                DesiredCapabilities caps = new DesiredCapabilities();
-                caps.setCapability("os", "Windows");
-                caps.setCapability("os_version", "10");
-                caps.setCapability("browser", "Chrome");
+                MutableCapabilities capabilities = new MutableCapabilities();
+                HashMap<String, Object> bstackOptions = new HashMap<>();
+                capabilities.setCapability("browserName", "Chrome");
+                bstackOptions.put("os", "Windows");
+                bstackOptions.put("osVersion", "11");
 
-                // issue with w3c mode set on default - causes fails with window handles
-                // see https://github.com/webdriverio/webdriverio/issues/4187
-                ChromeOptions options = new ChromeOptions();
-                options.setExperimentalOption("w3c", false);
-                caps.setCapability(ChromeOptions.CAPABILITY, options);
-
-                return getBrowserStackWebDriver(caps);
+                return getBrowserStackWebDriver(capabilities, bstackOptions);
             }
 
             @Override
@@ -243,16 +238,15 @@ public class TestConfig {
     }
 
     @SneakyThrows(MalformedURLException.class)
-    private RemoteWebDriver getBrowserStackWebDriver(DesiredCapabilities capabilities) {
-        capabilities.setCapability("resolution", "1920x1080");
-        capabilities.setCapability("browserstack.local", "true");
-        capabilities.setCapability("browser_version", "latest");
-        capabilities.setCapability("browserstack.selenium_version", "3.141.59");
-        capabilities.setCapability("name", env.getProperty("browser-stack.name"));
-        capabilities.setCapability("build", env.getProperty("browser-stack.build"));
+    private RemoteWebDriver getBrowserStackWebDriver(MutableCapabilities capabilities, HashMap<String, Object> bstackOptions) {
+        bstackOptions.put("local", "true");
+        bstackOptions.put("browserVersion", "latest");
+        bstackOptions.put("sessionName", env.getProperty("browser-stack.name"));
+        bstackOptions.put("buildName", env.getProperty("browser-stack.build"));
         if (nonNull(env.getProperty("browserstack.local.identifier"))) {
-            capabilities.setCapability("browserstack.localIdentifier", env.getProperty("browserstack.local.identifier"));
+            bstackOptions.put("localIdentifier", env.getProperty("browserstack.local.identifier"));
         }
+        capabilities.setCapability("bstack:options", bstackOptions);
 
         RemoteWebDriver driver = new RemoteWebDriver(new URL(env.getProperty("browser-stack.url")), capabilities);
         driver.manage().window().maximize();

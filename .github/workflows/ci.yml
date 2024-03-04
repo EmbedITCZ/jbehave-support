@@ -21,7 +21,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Set up Java ${{ matrix.java }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
@@ -44,7 +44,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Set up Java ${{ matrix.java }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
@@ -74,7 +74,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Set up Java ${{ matrix.java }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
@@ -116,7 +116,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Set up Java 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu'

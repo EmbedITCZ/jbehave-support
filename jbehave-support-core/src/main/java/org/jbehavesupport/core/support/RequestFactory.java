@@ -10,6 +10,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -144,7 +145,7 @@ public class RequestFactory<REQUEST> {
             prefix = requestClazz.getSimpleName();
         }
         try {
-            REQUEST request = requestClazz.newInstance();
+            REQUEST request = requestClazz.getDeclaredConstructor().newInstance();
             factoryContext.put(prefix, request);
             handleKeys();
             return request;
@@ -223,7 +224,7 @@ public class RequestFactory<REQUEST> {
         if (isAbstract(type)) {
             throw new UnsupportedOperationException("Abstract classes are not supported as generic");
         }
-        Object value = type.newInstance();
+        Object value = type.getDeclaredConstructor().newInstance();
         Object collection = factoryContext.get(pathPrevious);
         ((Collection) collection).add(value);
         factoryContext.put(pathCurrent, value);
@@ -239,7 +240,7 @@ public class RequestFactory<REQUEST> {
             } else if (isAssignable(type, JAXBElement.class)) {
                 value = resolveJaxbElement(testContext, pathCurrent, null);
             } else if (!isAbstract(type)) {
-                value = type.newInstance();
+                value = type.getDeclaredConstructor().newInstance();
             } else {
                 throw new IllegalStateException(
                     "Field " + pathCurrent + " is abstract. Please provide fully qualified class name in example table or register custom handler");
@@ -368,10 +369,10 @@ public class RequestFactory<REQUEST> {
 
     private Object instantiateClass(Class<?> toInstantiate) {
         try {
-            return toInstantiate.newInstance();
+            return toInstantiate.getDeclaredConstructor().newInstance();
         } catch (IllegalAccessException e) {
             throw new IllegalStateException("Provided implementation is not accessible: " + toInstantiate.getSimpleName(), e);
-        } catch (InstantiationException e) {
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             throw new IllegalStateException("Provided implementation could not be instantiated: " + toInstantiate.getSimpleName(), e);
         }
     }

@@ -5,7 +5,6 @@ import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
@@ -51,11 +50,14 @@ public class HttpHealthCheckImpl implements HealthCheck {
                 .build();
 
             HttpGet httpGet = new HttpGet(url);
-            CloseableHttpResponse response = httpclient.execute(httpGet);
-            if (response.getCode() != 200) {
-                throw new IllegalStateException(
-                    "Status code is " + response.getCode() + ". " + response.getReasonPhrase());
-            }
+            httpclient.execute(httpGet, response -> {
+                if (response.getCode() != 200) {
+                    throw new IllegalStateException(
+                        "Status code is " + response.getCode() + ". " + response.getReasonPhrase());
+                }
+                return null;
+            });
+
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             throw new IllegalStateException(e);
         }

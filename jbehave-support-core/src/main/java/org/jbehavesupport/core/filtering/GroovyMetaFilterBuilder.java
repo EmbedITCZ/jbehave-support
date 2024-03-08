@@ -150,10 +150,10 @@ public class GroovyMetaFilterBuilder {
          */
         public boolean match(Meta meta) {
             try {
-                Object matcher = this.groovyClass.newInstance();
+                Object matcher = this.groovyClass.getDeclaredConstructor().newInstance();
                 this.metaField.set(matcher, meta);
                 return (Boolean) this.match.invoke(matcher);
-            } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
                 throw new IllegalArgumentException("Can't instantiate dynamic groovy matcher", e);
             }
         }

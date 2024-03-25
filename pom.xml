@@ -87,7 +87,7 @@
         <plugin.version.maven-release-plugin>3.0.1</plugin.version.maven-release-plugin>
         <plugin.version.nexus-staging-maven-plugin>1.6.13</plugin.version.nexus-staging-maven-plugin>
         <plugin.version.maven-gpg-plugin>3.2.0</plugin.version.maven-gpg-plugin>
-        <plugin.version.sonar-maven-plugin>3.10.0.2594</plugin.version.sonar-maven-plugin>
+        <plugin.version.sonar-maven-plugin>3.11.0.3922</plugin.version.sonar-maven-plugin>
         <plugin.version.sonar-jacoco-plugin>3.3.2</plugin.version.sonar-jacoco-plugin>
     </properties>
 

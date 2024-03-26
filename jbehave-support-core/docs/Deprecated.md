@@ -10,7 +10,7 @@
 
 Class _YamlPropertiesConfigurer_
 
->Deprecated since version 1.1.4 - will be removed in the future
+>Deprecated since version 1.1.4
 >
 >Replaced with YamlPropertySourceFactory
 >
@@ -38,7 +38,7 @@ Class _YamlPropertiesConfigurer_
 
 Class _FirefoxWebDriverFactory_
 
->Deprecated since version 1.0.0 - will be removed soon
+>Deprecated since version 1.0.0
 >
 >Chrome browser should be used instead
 
@@ -54,7 +54,7 @@ Property `web.browser.driver.version`
 
 Column _OPERATOR_
 
->Deprecated since version 1.0.0 - will be removed soon
+>Deprecated since version 1.0.0 
 >
 >Replaced with column _VERIFIER_
 >
@@ -74,7 +74,7 @@ Column _OPERATOR_
 
 Step _Then new tab is opened and focused_
 
->Deprecated since version 1.0.7 - will be removed in future
+>Deprecated since version 1.0.7
 >
 >Use _Then tab with [$urlTitle] containing [$text] is focused_ instead
 >
@@ -90,7 +90,7 @@ Step _Then new tab is opened and focused_
 
 4 parameters constructor of class _SshTemplate_
 
->Deprecated since 1.1.0 - will be removed in future
+>Deprecated since 1.1.0
 >
 >Use 5 parameters constructor instead
 >
@@ -109,7 +109,7 @@ Step _Then new tab is opened and focused_
 
 Step _Given log timestamp is saved as [$startTimeAlias]_
 
->Deprecated since version 1.0.10 - will be removed in future
+>Deprecated since version 1.0.10
 >
 >Use _Given current time is saved as log timestamp [$logTimeAlias]_ instead
 >
@@ -128,7 +128,7 @@ Step _Given log timestamp is saved as [$startTimeAlias]_
 
 Step _Then the following data are present in [$systemQualifier] log since [$startTimeAlias]:$presentData_
 
->Deprecated since version 1.0.9 - will be removed in future
+>Deprecated since version 1.0.9
 >
 >Use _Then the following data are present in [$systemQualifier] log:$presentData"_ instead
 >
@@ -166,7 +166,7 @@ Step _Then the following data are present in [$systemQualifier] log since [$star
 
 Step _Then the following data are not present in [$systemQualifier] log:$missingData_
 
->Deprecated since version 1.0.10 - will be removed in future
+>Deprecated since version 1.0.10
 >
 >Use _Then the following data are present in [$systemQualifier] log:$presentData"_ instead
 >

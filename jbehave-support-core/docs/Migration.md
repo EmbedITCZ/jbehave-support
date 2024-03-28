@@ -2,6 +2,9 @@
 
 ## Version 2.*
 
+### Dependency updates
+Before/during upgrading we recommend to upgrade your dependencies to relatively latest versions (April 2024 versions as of time of writing) to potentially avoid any problems.
+
 ### Reporting Autoconfiguration
 `XmlReporterFactory` and corresponding `ReporterExtension` classes now get autoconfigured by Spring Boot.  
 There is now no need to declare them explicitly.

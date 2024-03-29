@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jbehavesupport</groupId>
     <artifactId>jbehave-support-core-test</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>jbehave-support-core-test</name>
@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.jbehavesupport</groupId>
         <artifactId>jbehave-support</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1-SNAPSHOT</version>
     </parent>
 
     <modules>

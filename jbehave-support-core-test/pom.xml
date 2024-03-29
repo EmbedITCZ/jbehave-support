@@ -53,6 +53,14 @@
                     <artifactId>cxf-xjc-plugin</artifactId>
                     <version>${plugin.version.cxf-xjc-plugin}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${plugin.version.nexus-staging-maven-plugin}</version>
+                    <configuration>
+                        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>

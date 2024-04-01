@@ -39,7 +39,7 @@ mvn release:perform -Prelease
 ```
 
 ---
->_Note_: The gpg agent should ask for the passphrase to your gpg key automatically, in case that does not happen you can try adding similar property to the `<properties>` section:   
+>_Note_: The gpg agent should ask for the passphrase to your gpg key automatically, in case that does not happen you can try to add property to the `<properties>` section:   
 >```
 ><gpg.passphrase>${gpg.password}</gpg.passphrase>
 >```

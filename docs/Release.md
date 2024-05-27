@@ -22,7 +22,6 @@ Fragment from settings.xml (replace variables with values above):
       </activation>
       <properties>
         <gpg.executable>gpg</gpg.executable>
-        <gpg.passphrase>${gpg.password}</gpg.passphrase>
       </properties>
     </profile>
   </profiles>
@@ -38,3 +37,10 @@ Release is performed by two commands
 mvn release:clean release:prepare -Prelease
 mvn release:perform -Prelease
 ```
+
+---
+>_Note_: The gpg agent should ask for the passphrase to your gpg key automatically, in case that does not happen you can try to add property to the `<properties>` section:   
+>```
+><gpg.passphrase>${gpg.password}</gpg.passphrase>
+>```
+>This approach is however __not recommended__, as it is not secure to store your passphrase anywhere on the filesystem.

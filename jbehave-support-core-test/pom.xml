@@ -22,7 +22,7 @@
     </modules>
 
     <properties>
-        <version.commons-io>2.17.0</version.commons-io>
+        <version.commons-io>2.18.0</version.commons-io>
         <version.moxy>4.0.4</version.moxy>
         <plugin.version.cxf-xjc-plugin>4.0.2</plugin.version.cxf-xjc-plugin>
         <maven.javadoc.skip>true</maven.javadoc.skip>

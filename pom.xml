@@ -71,6 +71,9 @@
     <properties>
         <java.version>17</java.version>
 
+        <!-- enable annotation processing for lombok in java 23: https://github.com/projectlombok/lombok/issues/3752 -->
+        <maven.compiler.proc>full</maven.compiler.proc>
+
         <version.jbehave>5.0</version.jbehave>
         <version.jbehave-junit-support>5.0.1</version.jbehave-junit-support>
         <version.spockframework>2.4-M4-groovy-4.0</version.spockframework>

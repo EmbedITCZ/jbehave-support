@@ -20,14 +20,17 @@ import org.jbehavesupport.core.ws.WebServiceHandler;
 import org.jbehavesupport.test.support.TestWebServiceHandler;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ResourceLoader;
 
 import javax.sql.DataSource;
@@ -40,7 +43,6 @@ import java.util.HashMap;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonMap;
 import static java.util.Objects.nonNull;
-import static org.jbehavesupport.core.ssh.SshSetting.builder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -69,12 +71,21 @@ public class TestConfiguration {
     @Bean
     @Qualifier("TEST")
     public DataSource testDatasource() {
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName(env.getProperty("db.driver"));
-        dataSourceBuilder.url(env.getProperty("db.url"));
-        dataSourceBuilder.username(env.getProperty("db.username"));
-        dataSourceBuilder.password(env.getProperty("db.password"));
-        return dataSourceBuilder.build();
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName(env.getProperty("db.driver"));
+        ds.setUrl(env.getProperty("db.url"));
+        ds.setUsername(env.getProperty("db.username"));
+        ds.setPassword(env.getProperty("db.password"));
+        return ds;
+    }
+
+    @Bean
+    public InitializingBean testDatabaseInitializer(@Qualifier("TEST") DataSource dataSource) {
+        return () -> {
+            ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+            populator.addScript(new ClassPathResource("db/init.sql"));
+            populator.execute(dataSource);
+        };
     }
 
     @Bean
@@ -122,7 +133,7 @@ public class TestConfiguration {
         int port = parseInt(env.getProperty("ssh.port"));
         String logPath = env.getProperty("ssh.logPath");
 
-        SshSetting passwordSetting = builder()
+        SshSetting passwordSetting = SshSetting.builder()
             .hostname(hostname)
             .user(user)
             .password(env.getProperty("ssh.credentials.password"))
@@ -133,7 +144,7 @@ public class TestConfiguration {
         String keyPath = resourceLoader.getResource(env.getProperty("ssh.credentials.keyPath"))
             .getURL()
             .getFile();
-        SshSetting keySetting = builder()
+        SshSetting keySetting = SshSetting.builder()
             .hostname(hostname)
             .user(user)
             .keyPath(keyPath)
@@ -152,7 +163,7 @@ public class TestConfiguration {
     @Bean
     @Qualifier("LONG_REPORTABLE")
     SshTemplate longReportableSshTemplate() throws IOException {
-        SshSetting sshSetting = builder()
+        SshSetting sshSetting = SshSetting.builder()
             .hostname("fake hostname")
             .user("fake user")
             .password("asdf5684Daa")

@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
     </properties>
 
     <dependencies>
@@ -118,7 +118,7 @@
                             <image>
                                 <tags>docker.io/library/jbehave-support-core-test-app:latest</tags>
                                 <env>
-                                    <BP_JVM_VERSION>17</BP_JVM_VERSION>
+                                    <BP_JVM_VERSION>21</BP_JVM_VERSION>
                                 </env>
                             </image>
                         </configuration>

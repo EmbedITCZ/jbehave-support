@@ -127,7 +127,7 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     private void printHeaders(final Writer writer, HttpHeaders headers) {
         if (headers != null) {
             printBegin(writer, HEADERS_TAG);
-            headers.entrySet().forEach(he -> printSelfClosed(writer, HEADER_TAG, getHeaderAttributes(he)));
+            headers.forEach((key, values) -> printSelfClosed(writer, HEADER_TAG, getHeaderAttributes(key, values)));
             printEnd(writer, HEADERS_TAG);
         }
     }
@@ -159,10 +159,10 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
         return responseMessageAttributes;
     }
 
-    private Map<String, String> getHeaderAttributes(Map.Entry<String, List<String>> header) {
+    private Map<String, String> getHeaderAttributes(String key, List<String> values) {
         Map<String, String> headerAttributes = new HashMap<>();
-        headerAttributes.put("key", header.getKey());
-        headerAttributes.put("value", header.getValue().get(0));
+        headerAttributes.put("key", key);
+        headerAttributes.put("value", values.isEmpty() ? "" : values.getFirst());
         return headerAttributes;
     }
 

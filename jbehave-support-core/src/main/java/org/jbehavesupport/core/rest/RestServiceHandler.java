@@ -177,7 +177,7 @@ public class RestServiceHandler {
 
     private HttpEntity createRequestEntity(ExamplesTable data) throws IOException {
         if (data == null) { //return dummy
-            return new HttpEntity<>("", null);
+            return new HttpEntity<>("", HttpHeaders.EMPTY);
         }
         List<Triple<String, Object, String>> requestDataList = ExamplesTableUtil.convertTriple(data, NAME, DATA, ALIAS);
         HttpHeaders headers = createHeaders(requestDataList);
@@ -443,7 +443,7 @@ public class RestServiceHandler {
             if (key.startsWith(HEADER_START) && !key.equals(STATUS_HEADER)) {
                 String headerKey = key.substring(HEADER_START.length());
                 String assertionErrorMessage = "Headers don't contain " + headerKey + "\n" + actualResponseMessage;
-                assertThat(actualHeaders.containsKey(headerKey)).as(assertionErrorMessage).isTrue();
+                assertThat(actualHeaders.get(headerKey) != null).as(assertionErrorMessage).isTrue();
 
                 final Verifier verifier = verifierResolver.getVerifierByName(triple.getRight(), equalsVerifier);
                 verifier.verify(actualHeaders.get(headerKey).get(0), triple.getMiddle());

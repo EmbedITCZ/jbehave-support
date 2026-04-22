@@ -121,12 +121,11 @@ public class UserController {
 
     @PostMapping("/mirror/")
     public ResponseEntity<Mirror> mirror(@RequestBody Mirror mirror) {
-        return (ResponseEntity<Mirror>) new ResponseEntity(mirror,
-            mirror.getHeaders().stream().collect(
-                toMap(Header::getKey, h -> Collections.singletonList(h.getValue()), (a, b) -> {
-                    a.addAll(b);
-                    return a;
-                }, HttpHeaders::new)),
-            HttpStatus.valueOf(mirror.getHttpStatus()));
+        var httpHeaders = new HttpHeaders();
+        if (mirror.getHeaders() != null) {
+            mirror.getHeaders().forEach(h -> httpHeaders.add(h.getKey(), h.getValue()));
+        }
+
+        return new ResponseEntity<>(mirror, httpHeaders, HttpStatus.valueOf(mirror.getHttpStatus()));
     }
 }

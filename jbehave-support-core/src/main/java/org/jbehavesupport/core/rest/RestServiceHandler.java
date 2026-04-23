@@ -443,8 +443,7 @@ public class RestServiceHandler {
             if (key.startsWith(HEADER_START) && !key.equals(STATUS_HEADER)) {
                 String headerKey = key.substring(HEADER_START.length());
                 String assertionErrorMessage = "Headers don't contain " + headerKey + "\n" + actualResponseMessage;
-                assertThat(actualHeaders.get(headerKey) != null).as(assertionErrorMessage).isTrue();
-
+                assertThat(actualHeaders.containsHeader(headerKey)).as(assertionErrorMessage).isTrue();
                 final Verifier verifier = verifierResolver.getVerifierByName(triple.getRight(), equalsVerifier);
                 verifier.verify(actualHeaders.get(headerKey).get(0), triple.getMiddle());
             }

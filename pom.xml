@@ -73,7 +73,6 @@
 
         <!-- enable annotation processing for lombok in java 23: https://github.com/projectlombok/lombok/issues/3752 -->
         <maven.compiler.proc>full</maven.compiler.proc>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <version.jbehave>5.0</version.jbehave>

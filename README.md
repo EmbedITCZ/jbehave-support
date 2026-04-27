@@ -18,7 +18,7 @@ along with support for [verification](jbehave-support-core/docs/General.md#verif
 [expression commands](jbehave-support-core/docs/Expression-commands.md) and 
 basic [reporting](jbehave-support-core/docs/Reporting.md).
 
-Currently supported Java versions are 21 and 25 (latest LTS and latest version).
+Currently supported Java versions are 17, 21 and 25 (latest LTS and latest version).
 
 ## Contents
 1. [Modules](#modules)
@@ -54,7 +54,7 @@ Contributors guide can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 To show you how to set up a project using the jbehave-support library, I am going to make a test that Google searches `EmbedITCZ jbehave-support` and checks the result. To learn more about this example check out [Web-testing.md](jbehave-support-core/docs/Web-testing.md).
 
-Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/examples/Web-service.md), [REST](jbehave-support-core/docs/examples/Rest.md) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
+Of course you can use jbehave-support for much more than just selenium based testing. For example server communication ([SOAP](jbehave-support-core/docs/examples/Web-service.md), [REST](jbehave-support-core/docs/examples/Rest.md)) or database manipulation ([SQL](jbehave-support-core/docs/Sql-steps.md)).
 
 ### Add to Java project as a Maven dependency
 

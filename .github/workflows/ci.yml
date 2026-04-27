@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 21, 25 ]
+        java: [ 17, 21, 25 ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 21, 25 ]
+        java: [ 17, 21, 25 ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -52,7 +52,7 @@ jobs:
         run: |
           mvn org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -Dspring-boot.build-image.skip=true -B -V
       - name: Upload test coverage for unit tests
-        if: matrix.java == 25
+        if: matrix.java == 17
         uses: actions/upload-artifact@v4
         with:
           name: jacoco
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 21, 25 ]
+        java: [ 17, 21, 25 ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4

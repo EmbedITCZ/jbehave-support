@@ -162,7 +162,7 @@ public class RestXmlReporterExtension extends AbstractXmlReporterExtension imple
     private Map<String, String> getHeaderAttributes(String key, List<String> values) {
         Map<String, String> headerAttributes = new HashMap<>();
         headerAttributes.put("key", key);
-        headerAttributes.put("value", values.isEmpty() ? "" : values.getFirst());
+        headerAttributes.put("value", values.isEmpty() ? "" : values.get(0));
         return headerAttributes;
     }
 

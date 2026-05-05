@@ -13,11 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    PathPatternRequestMatcherBuilderFactoryBean requestMatcherBuilder() {
-        return new PathPatternRequestMatcherBuilderFactoryBean();
-    }
-
-    @Bean
     public SecurityFilterChain basicAuthFilterChain(HttpSecurity http) throws Exception {
         return http
             .csrf(AbstractHttpConfigurer::disable)

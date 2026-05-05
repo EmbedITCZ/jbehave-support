@@ -24,6 +24,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.context.annotation.Bean;
@@ -71,21 +72,12 @@ public class TestConfiguration {
     @Bean
     @Qualifier("TEST")
     public DataSource testDatasource() {
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName(env.getProperty("db.driver"));
-        ds.setUrl(env.getProperty("db.url"));
-        ds.setUsername(env.getProperty("db.username"));
-        ds.setPassword(env.getProperty("db.password"));
-        return ds;
-    }
-
-    @Bean
-    public InitializingBean testDatabaseInitializer(@Qualifier("TEST") DataSource dataSource) {
-        return () -> {
-            ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-            populator.addScript(new ClassPathResource("db/init.sql"));
-            populator.execute(dataSource);
-        };
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(env.getProperty("db.driver"));
+        dataSourceBuilder.url(env.getProperty("db.url"));
+        dataSourceBuilder.username(env.getProperty("db.username"));
+        dataSourceBuilder.password(env.getProperty("db.password"));
+        return dataSourceBuilder.build();
     }
 
     @Bean

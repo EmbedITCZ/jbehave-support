@@ -118,7 +118,7 @@
                             <image>
                                 <tags>docker.io/library/jbehave-support-core-test-app:latest</tags>
                                 <env>
-                                    <BP_JVM_VERSION>21</BP_JVM_VERSION>
+                                    <BP_JVM_VERSION>17</BP_JVM_VERSION>
                                 </env>
                             </image>
                         </configuration>

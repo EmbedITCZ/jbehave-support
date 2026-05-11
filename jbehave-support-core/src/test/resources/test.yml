@@ -10,7 +10,7 @@ rest:
   password: sa
 
 db:
-  url: jdbc:h2:mem:test;MODE=ORACLE;DB_CLOSE_DELAY=-1
+  url: jdbc:h2:tcp://localhost:11112/mem:test;MODE=ORACLE
   driver: org.h2.Driver
   username: sa
   password: sa

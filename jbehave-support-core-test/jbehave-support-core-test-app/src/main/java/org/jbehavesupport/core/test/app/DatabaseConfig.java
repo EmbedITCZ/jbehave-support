@@ -21,7 +21,8 @@ public class DatabaseConfig {
     public Server initServer() {
         Server h2Server;
         try {
-            h2Server = Server.createTcpServer("-ifNotExists", "-tcpAllowOthers", "-tcpPort", env.getProperty("spring.datasource.port")).start();            if (h2Server.isRunning(true)) {
+            h2Server = Server.createTcpServer("-ifNotExists", "-tcpAllowOthers", "-tcpPort", env.getProperty("spring.datasource.port")).start();
+            if (h2Server.isRunning(true)) {
                 log.info("H2 server was started and is running.");
             } else {
                 throw new RuntimeException("Could not start H2 server.");

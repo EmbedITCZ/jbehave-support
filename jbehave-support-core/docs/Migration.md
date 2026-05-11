@@ -19,7 +19,7 @@ We have removed all previously deprecated code - please refer to [Deprecated.md]
 ### Spring 7 upgrade
 We are currently using Spring 7 internally, this brings with it several other requirements:
 
-> #### Java 25
+> #### Java 17
 >We now currently require Java 17 as a minimal Java version.
 >
 > #### Jakarta EE 9

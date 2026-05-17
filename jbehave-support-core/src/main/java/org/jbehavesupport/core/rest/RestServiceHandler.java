@@ -29,16 +29,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
+import org.springframework.http.HttpStatusCode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -111,8 +110,12 @@ public class RestServiceHandler {
     @Autowired
     private EqualsVerifier equalsVerifier;
 
-    protected final RestTemplate template = new RestTemplate();
-    protected final RestTemplateConfigurer templateConfigurer = new RestTemplateConfigurer(template);
+    @Autowired(required = false)
+    private OAuth2AuthorizedClientManager authorizedClientManager;
+
+    protected final RestClient.Builder restClientBuilder = RestClient.builder();
+    protected final RestClientConfigurer restClientConfigurer = new RestClientConfigurer(restClientBuilder, authorizedClientManager);
+    private RestClient restClient;
 
     public RestServiceHandler(String url) {
         this.url = url;
@@ -120,37 +123,47 @@ public class RestServiceHandler {
 
     @PostConstruct
     private void init() {
-        initTemplateInternal();
-        initTemplate(templateConfigurer);
+        initRestClientInternal();
+        initRestClient(restClientConfigurer);
+        this.restClient = restClientBuilder.build();
     }
 
-    private void initTemplateInternal() {
+    private void initRestClientInternal() {
         BufferingClientHttpRequestFactory bufferingClientHttpRequestFactory = new BufferingClientHttpRequestFactory(
             new SkipSslVerificationHttpRequestFactory());
-        template.setRequestFactory(bufferingClientHttpRequestFactory);
+        restClientBuilder.requestFactory(bufferingClientHttpRequestFactory);
         if (restXmlReporterExtension != null) {
-            template.getInterceptors().add(restXmlReporterExtension);
+            restClientBuilder.requestInterceptors(list -> list.add(restXmlReporterExtension));
         }
-        template.getInterceptors().add(new RestLoggingInterceptor());
+        restClientBuilder.requestInterceptors(list -> list.add(new RestLoggingInterceptor()));
     }
 
-    public void sendCheckedRequest(String urlPath, HttpMethod requestMethod, ExamplesTable data) throws IOException{
+    public void sendCheckedRequest(String urlPath, HttpMethod requestMethod, ExamplesTable data) throws IOException {
         if (data != null) {
             assertDuplicatesInColumns(data, NAME);
         }
         sendRequest(urlPath, requestMethod, data);
     }
 
-    @SuppressWarnings("squid:S1166")
     public void sendRequest(String urlPath, HttpMethod requestMethod, ExamplesTable data) throws IOException {
         URL apiUrl = new URL(this.url + urlPath);
         HttpEntity requestEntity = createRequestEntity(convertCollectionNotation(data));
-        try {
-            ResponseEntity<String> responseEntity = template.exchange(apiUrl.toString(), requestMethod, requestEntity, String.class);
-            storeResponse(responseEntity);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            storeResponse(e);
+
+        RestClient.RequestBodySpec requestSpec = restClient.method(requestMethod)
+            .uri(apiUrl.toString())
+            .headers(h -> h.addAll(requestEntity.getHeaders()));
+
+        Object bodyContent = requestEntity.getBody();
+        if (bodyContent != null) {
+            requestSpec = requestSpec.body(bodyContent);
         }
+
+        ResponseEntity<String> responseEntity = requestSpec
+            .retrieve()
+            // we want to store the response even for errors
+            .onStatus(HttpStatusCode::isError, (req, resp) -> {})
+            .toEntity(String.class);
+        storeResponse(responseEntity);
     }
 
     /**
@@ -167,12 +180,6 @@ public class RestServiceHandler {
         testContext.put(REST_RESPONSE_CODE, responseEntity.getStatusCode().value());
         testContext.put(REST_RESPONSE_HEADERS, responseEntity.getHeaders());
         testContext.put(REST_RESPONSE_JSON, responseEntity.getBody());
-    }
-
-    private void storeResponse(final HttpStatusCodeException e) {
-        testContext.put(REST_RESPONSE_CODE, e.getStatusCode().value());
-        testContext.put(REST_RESPONSE_HEADERS, e.getResponseHeaders());
-        testContext.put(REST_RESPONSE_JSON, e.getResponseBodyAsString());
     }
 
     private HttpEntity createRequestEntity(ExamplesTable data) throws IOException {
@@ -579,18 +586,18 @@ public class RestServiceHandler {
     }
 
     /**
-     * Custom initialization of {@link RestTemplate}.
+     * Custom initialization of {@link RestClient}.
      * Usually we are passing to configurer authentication details, header builder.
      *
      * <pre>{@code
-     *      templateConfigurer
+     *      restClientConfigurer
      *          .basicAuthorization("username", "password")
      *          .header(this::headers);
      * }</pre>
      *
-     * @param templateConfigurer
+     * @param restClientConfigurer
      */
-    protected void initTemplate(RestTemplateConfigurer templateConfigurer) {
+    protected void initRestClient(RestClientConfigurer restClientConfigurer) {
         // noop
     }
 }

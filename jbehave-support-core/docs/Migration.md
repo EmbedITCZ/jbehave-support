@@ -1,5 +1,12 @@
 # Migration guide
 
+## Version 2.1.*
+
+### RestServiceHandler
+`RestTemplate` was replaced with new `RestClient`, 
+this is potentially backwards incompatible change due to `RestTemplateConfigurer` being replaced with `RestClientConfigurer` 
+and `initTemplate` method of RestServiceHandler being replaced with a similar `initRestClient` method.
+
 ## Version 2.*
 
 ### Dependency updates

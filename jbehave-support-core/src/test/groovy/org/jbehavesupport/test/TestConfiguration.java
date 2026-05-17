@@ -6,8 +6,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehavesupport.core.healthcheck.HealthCheck;
 import org.jbehavesupport.core.healthcheck.HealthChecks;
+import org.jbehavesupport.core.rest.RestClientConfigurer;
 import org.jbehavesupport.core.rest.RestServiceHandler;
-import org.jbehavesupport.core.rest.RestTemplateConfigurer;
 import org.jbehavesupport.core.ssh.RollingLogResolver;
 import org.jbehavesupport.core.ssh.SimpleRollingLogResolver;
 import org.jbehavesupport.core.ssh.SshLog;
@@ -96,8 +96,8 @@ public class TestConfiguration {
     public RestServiceHandler secureTestRestServiceHandler() {
         return new RestServiceHandler(env.getProperty("rest.url")) {
             @Override
-            protected void initTemplate(RestTemplateConfigurer templateConfigurer) {
-                templateConfigurer
+            protected void initRestClient(RestClientConfigurer restClientConfigurer) {
+                restClientConfigurer
                     .basicAuthorization(env.getProperty("rest.username"), env.getProperty("rest.password"))
                     .header(() -> singletonMap("customHeader", "customValue"));
             }
